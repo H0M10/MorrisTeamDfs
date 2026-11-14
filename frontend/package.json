@@ -15,7 +15,7 @@
     "test:a11y": "playwright test"
   },
   "dependencies": {
-    "@mediapipe/tasks-vision": "1.2.3",
+    "@mediapipe/tasks-vision": "^1.2.3",
     "@react-three/drei": "10.7.9",
     "@react-three/fiber": "9.8.2",
     "@supabase/supabase-js": "2.119.0",

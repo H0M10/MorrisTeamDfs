@@ -38,6 +38,22 @@ function Stage({ evaluation }: { evaluation: Evaluation }) {
   const last = evaluation.timeline.length - 1;
   const current = evaluation.timeline[index] ?? evaluation.timeline[0];
 
+  useEffect(() => {
+    function handleArrowKeys(event: KeyboardEvent) {
+      const target = event.target;
+      if (target instanceof HTMLElement && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) return;
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        setIndex((value) => Math.max(0, value - 1));
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        setIndex((value) => Math.min(last, value + 1));
+      }
+    }
+    window.addEventListener("keydown", handleArrowKeys);
+    return () => window.removeEventListener("keydown", handleArrowKeys);
+  }, [last]);
+
   return (
     <>
       <section aria-labelledby="canvas-title">
@@ -47,10 +63,10 @@ function Stage({ evaluation }: { evaluation: Evaluation }) {
         </div>
         {/* Alternativa con teclado a los gestos: recorrer los meses. */}
         <p>
-          <button type="button" onClick={() => setIndex(Math.max(0, index - 1))} disabled={index === 0}>
+          <button type="button" onClick={() => setIndex(Math.max(0, index - 1))} disabled={index === 0} aria-keyshortcuts="ArrowLeft">
             ← {t.showcase.previousMonth}
           </button>{" "}
-          <button type="button" onClick={() => setIndex(Math.min(last, index + 1))} disabled={index === last}>
+          <button type="button" onClick={() => setIndex(Math.min(last, index + 1))} disabled={index === last} aria-keyshortcuts="ArrowRight">
             {t.showcase.nextMonth} →
           </button>
         </p>
@@ -58,7 +74,7 @@ function Stage({ evaluation }: { evaluation: Evaluation }) {
           {t.showcase.month}: {month(current.month)}. {pick(current.crop_label)}. {current.hls_color_hex}
         </p>
       </section>
-      <GestureButton />
+      <GestureButton onPinch={() => setIndex((value) => Math.min(last, value + 1))} />
       <section aria-labelledby="raw-title">
         <h2 id="raw-title">{t.showcase.raw}</h2>
         <pre tabIndex={0}>{JSON.stringify({ parcel: evaluation.parcel, month: current }, null, 2)}</pre>
