@@ -2,8 +2,8 @@
   "project": "Field Shift",
   "team": "The CSC",
   "event": "NASA Space Apps Challenge 2026",
-  "updated_at": "2026-11-14T10:05:00-06:00",
-  "phase": "Ejecución Sábado Mañana — Repo y Pages Activos · Invitaciones Enviadas",
+  "updated_at": "2026-11-14T10:46:00-06:00",
+  "phase": "Ejecución Sábado Mañana — H-01 Completado · Infraestructura Hanniel (Railway + Supabase + Vercel)",
   "repo_url": "https://github.com/H0M10/MorrisTeamDfs",
   "git_remote": "https://github.com/H0M10/MorrisTeamDfs.git",
   "pages_url": "https://h0m10.github.io/MorrisTeamDfs/",
@@ -65,36 +65,42 @@
       "folders": ["/contracts", "/backend", "/supabase", "/frontend/src/lib"],
       "role": "Líder Técnico · Contrato, Motor FAO-56, API FastAPI e Infraestructura",
       "color": "#1247B8",
-      "progress_pct": 60,
-      "doing_now": "Colaboradores invitados (Checo-coder, Gicarrillo, alexishal8), GitHub Pages activado y CODEOWNERS/READMEs actualizados. Sigue despliegue Railway + Supabase (H-02, H-06).",
+      "progress_pct": 65,
+      "doing_now": "H-01 cerrado (repo, invitaciones y Pages listos). Foco actual: Railway (Root Directory=backend, DATA_MODE=fixture), Supabase (SQL + RLS) y Vercel.",
       "done": [
         "Estructura completa del repo y sincronización AGENTS.md == CLAUDE.md.",
         "Contrato JSON v0.1.1 y 3 fixtures de 36 meses (diamond_valley, queretaro, no_viable_options) verificados.",
         "Backend FastAPI (motor FAO-56, índices HLS sin NDRE/CAI, restricciones primero y /ask determinista).",
         "Migración SQL de Supabase (evaluations, reviews, RLS y 4 RPCs por token sin PII).",
-        "Confirmación oficial del organizador (evaluación solo el domingo).",
-        "Repo conectado (H0M10/MorrisTeamDfs), GitHub Pages activado (workflow), CODEOWNERS creado e invitaciones enviadas (201) a checo-coder, Gicarrillo y AlexisHal8."
+        "H-01 Completado: repo H0M10/MorrisTeamDfs en vivo, invitaciones enviadas (201) y GitHub Pages activo en main -> /docs."
       ],
       "todo": [
         {
-          "id": "H-01 (cierre)",
+          "id": "H-02 (Railway)",
           "gate": "G1",
-          "title": "Confirmar que el equipo acepte invitación y revisar Actions en verde",
-          "detail": "Verificar backend.yml, frontend.yml y Deploy Team Command Center to GitHub Pages en verde.",
-          "connects_to": ["Checo-coder", "Gicarrillo", "alexishal8"]
-        },
-        {
-          "id": "H-02 / H-06",
-          "gate": "G1",
-          "title": "Desplegar API en Railway (DATA_MODE=fixture) y crear proyecto Supabase",
-          "detail": "Aplicar 20261114000000_init.sql, verificar 4 RPCs y usar puerto local 8010 en tu laptop.",
+          "title": "Fijar Root Directory = backend en Railway, DATA_MODE=fixture y generar dominio",
+          "detail": "Conectar H0M10/MorrisTeamDfs es normal; solo configura Root Directory = backend, Config = /backend/railway.json y devuelve URL de /health.",
           "connects_to": ["Gicarrillo", "alexishal8"]
         },
         {
-          "id": "Orden #2 / H-07",
+          "id": "H-06 (Supabase)",
+          "gate": "G1-G2",
+          "title": "Crear proyecto Supabase, correr 20261114000000_init.sql y copiar URL + anon key",
+          "detail": "Verificar 4 RPCs + RLS sin políticas; cargar SUPABASE_URL y SUPABASE_ANON_KEY en Railway y .env local (nunca service_role).",
+          "connects_to": ["Gicarrillo"]
+        },
+        {
+          "id": "H-07 (Vercel)",
+          "gate": "G1-G2",
+          "title": "Desplegar /frontend en Vercel con NEXT_PUBLIC_API_URL y actualizar CORS en Railway",
+          "detail": "Root Directory = frontend; comprobar /tool/retrato sin aviso de desconexión.",
+          "connects_to": ["Gicarrillo", "alexishal8"]
+        },
+        {
+          "id": "Orden #2 / D-03",
           "gate": "G2",
-          "title": "Construir backend/app/services/table_to_contract.py y corregir S-01",
-          "detail": "Convertir Parquet de Checo-coder a JSON real (awc_mm_m y organic_matter_pct Van Bemmelen), marcar Modelo 3 experimental en unlabeled y desplegar Vercel.",
+          "title": "Coordinar H-04/H-11 con Checo y correr Orden #2 (table_to_contract.py + fix S-01)",
+          "detail": "Convertir Parquet de Checo-coder a JSON real (awc_mm_m y organic_matter_pct Van Bemmelen) y marcar Modelo 3 experimental en unlabeled.",
           "connects_to": ["Checo-coder", "Gicarrillo"]
         },
         {
@@ -317,29 +323,20 @@
   ],
   "human_items": [
     {
-      "id": "H-00-ORG",
-      "priority": "P0",
-      "owner": "H0M10",
-      "due": "Madrugada Sáb",
-      "title": "Confirmación por escrito del organizador (solo evaluación el domingo)",
-      "blocks": "Permiso oficial de construir todo el sábado",
-      "status": "Completado"
-    },
-    {
       "id": "H-01",
       "priority": "P0",
       "owner": "H0M10",
       "due": "Sáb 10:00",
       "title": "Subir main a H0M10/MorrisTeamDfs, invitar al equipo y activar GitHub Pages",
       "blocks": "Clonado de los 4 integrantes, CI y tablero vivo en Pages",
-      "status": "En curso (invitaciones 201 enviadas + Pages activo)"
+      "status": "Completado"
     },
     {
       "id": "H-02",
       "priority": "P0",
       "owner": "H0M10",
       "due": "Sáb 10:00",
-      "title": "Desplegar API fixture en Railway (Root: backend, DATA_MODE=fixture)",
+      "title": "Desplegar API fixture en Railway (Root Directory: backend, DATA_MODE=fixture)",
       "blocks": "Compuerta G1 y pruebas integradas de frontend",
       "status": "Pendiente"
     },
@@ -450,6 +447,11 @@
       "when": "2026-11-14 10:05",
       "decision": "Invitaciones enviadas en GitHub (201), GitHub Pages activado (workflow) y CODEOWNERS + 12 READMEs actualizados.",
       "impact": "Solo falta que Checo-coder, Gicarrillo y alexishal8 acepten su invitación; cada push a main publica en https://h0m10.github.io/MorrisTeamDfs/."
+    },
+    {
+      "when": "2026-11-14 10:46",
+      "decision": "Retiro de pendientes previos con organizadores en HUMANO.md, cierre de H-01 y respaldo /railway.json para despliegue de H0M10.",
+      "impact": "El repositorio completo conectado a Railway funciona fijando Root Directory = backend y Config File = /backend/railway.json."
     }
   ]
 }

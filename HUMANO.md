@@ -6,8 +6,6 @@ Regla 11 de `AGENTS.md`: Todo lo que requiera intervención humana (cuentas, lla
 
 | Prioridad | Acción humana | Responsable | Para cuándo | Qué bloquea | Estado |
 | --- | --- | --- | --- | --- | --- |
-| **P0 (Crítico)** | Confirmar por escrito con el organizador que no hay revisión el sábado y podemos avanzar desde ya (Gustavo Cruz Zarraga confirmó en WhatsApp oficial: *"nosotros sólo hacemos la evaluación del reto el día domingo, no se hace ninguna revisión el día sábado"*) | Hanniel (`@H0M10`) | Sáb madrugada | Luz verde para construir funciones completas desde el sábado | **Completado** |
-| **P0 (Crítico)** | Revisar el "stack" oficial si el organizador lo entrega a las 09:00 AM y validar compatibilidad antes del congelamiento | Hanniel (`@H0M10`) + ARGON | Sáb 09:00 | Congelamiento del contrato (Sáb 10:00) | Pendiente |
 | **P0 (Crítico)** | Crear/verificar cuentas del equipo: proyecto **Google Earth Engine** de uso no comercial, **Colab** y acceso a **OpenET** (Earthdata Login solo si se usa `earthaccess` fuera de GEE) | `@Checo-coder` + `@H0M10` | Sáb mañana | Tareas D-01 a D-05 (sin GEE/OpenET no hay datos reales ni modelos) | Pendiente |
 | **P0 (Crítico)** | Crear proyectos en **Vercel**, **Railway** y **Supabase**, obtener URLs/llaves y cargar `.env` locales + variables de entorno en la nube (sin subir secretos a Git) | Hanniel (`@H0M10`) | Sáb 10:00 | Despliegue API ejemplo (Sáb 10:00) y RLS `/supabase` | Pendiente |
 | **P1 (Alto)** | Elegir las **2 o 3 zonas de riego** similares a Diamond Valley en Nevada, Idaho y Utah (pivote, alfalfa, granos) para entrenamiento y validación por valle | `@Checo-coder` + `@H0M10` | Sáb mañana | D-02, D-05 y partición correcta por valle en Modelos 1-4 | Pendiente |
@@ -27,20 +25,19 @@ Regla 11 de `AGENTS.md`: Todo lo que requiera intervención humana (cuentas, lla
 
 Cada paso dice qué hacer y qué desbloquea. Los agentes no los simulan.
 
-### H-01. Subir a `H0M10/MorrisTeamDfs`, invitar al equipo y activar GitHub Pages (`@H0M10`)
+### H-01. Subir a `H0M10/MorrisTeamDfs`, invitar al equipo y activar GitHub Pages (`@H0M10`) — **Completado**
 
-El remoto apunta a `https://github.com/H0M10/MorrisTeamDfs.git` con nuestro `README.md` completo (no ejecutar `echo "# MorrisTeamDfs" >> README.md`).
+Ya ejecutado y verificado:
+1. Rama `main` conectada y sincronizada en `https://github.com/H0M10/MorrisTeamDfs.git`.
+2. Invitaciones de colaboradores enviadas en GitHub (`checo-coder`, `Gicarrillo`, `AlexisHal8`). Solo falta que cada integrante acepte la invitación en su cuenta.
+3. GitHub Pages activo desde `main` (`/docs`) y respondiendo en `https://h0m10.github.io/MorrisTeamDfs/`.
 
-1. Push de `main` a `origin` y abrir la pestaña **Actions** para confirmar que `backend`, `frontend` y `Deploy Team Command Center to GitHub Pages` terminen en verde.
-2. Invitar como colaboradores a `Checo-coder`, `Gicarrillo` y `alexishal8` en: `https://github.com/H0M10/MorrisTeamDfs/settings/access`.
-3. Activar GitHub Pages en `https://github.com/H0M10/MorrisTeamDfs/settings/pages`: en **Build and deployment → Source** elegir **GitHub Actions** (o branch `main`, carpeta `/docs`). El tablero queda en `https://h0m10.github.io/MorrisTeamDfs/`.
+### H-02. Desplegar la API de ejemplo en Railway (`@H0M10`, compuerta del sábado 10:00)
 
-Desbloquea: clonado por ramas (`pista/motor-api`, `pista/datos-modelos`, `pista/tool`, `pista/jueces-entrega`), CI y tablero visual compartido.
+> **¿Estuvo mal conectar el repositorio entero (`H0M10/MorrisTeamDfs`) en Railway?** No: Railway siempre conecta el repositorio completo de GitHub; solo debes indicarle que este servicio vive dentro de la carpeta `backend` (el archivo `railway.json` en la raíz sirve únicamente como respaldo si no se ha fijado el directorio raíz).
 
-### H-02. Desplegar la API de ejemplo en Railway (Hanniel, compuerta del sábado 10:00)
-
-1. En railway.com: **New Project → Deploy from GitHub repo** y elige el repositorio.
-2. En el servicio: **Settings → Source → Root Directory** = `backend`.
+1. En railway.com: **New Project → Deploy from GitHub repo** y elige `H0M10/MorrisTeamDfs`.
+2. En el servicio: **Settings → Source → Root Directory** = `backend` (y en **Settings → Config-as-code → Railway Config File** usa `/backend/railway.json` para que no tome la ruta raíz con `cd backend`).
 3. **Variables**: `DATA_MODE=fixture` y, cuando exista el dominio de Vercel, `CORS_ORIGINS=https://<tu-app>.vercel.app,http://localhost:3000`. No hace falta ninguna llave.
 4. **Settings → Networking → Generate Domain**.
 5. Comprueba: `https://<dominio>/health` debe responder `"status":"ok"` y `https://<dominio>/docs` debe abrir.

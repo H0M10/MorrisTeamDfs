@@ -1,7 +1,6 @@
 # PLAN.md — Field Shift (equipo The CSC)
 
-**Coordinación:** ARGON (orquestador/auditor) y Claude (CLI constructor) se coordinan vía `/contracts/`, `PLAN.md`, `HUMANO.md`, `AGENTS.md` y el tablero visual `docs/status.json` (`python scripts/sync_board.py` -> `docs/index.html` en GitHub Pages).
-**Hito de las 9:00 AM (Sábado 14):** Al recibir el "stack" del organizador, ARGON y Hanniel (`@H0M10`) revisan compatibilidad antes de congelar `/contracts/schema.json` a las **10:00 AM**. Ninguna función pesada ni modelo se entrena localmente en laptops de 8 GB.
+**Coordinación:** ARGON (orquestador/auditor) y Claude (CLI constructor) se coordinan vía `/contracts/`, `PLAN.md`, `HUMANO.md`, `AGENTS.md` y el tablero visual `docs/status.json` (`python scripts/sync_board.py` -> `docs/index.html` en GitHub Pages). Ninguna función pesada ni modelo se entrena localmente en laptops de 8 GB.
 **Equipo nominal de 4 y recortes (Sáb 09:50):** Dupla Backend/Datos (`@H0M10` Hanniel + `@Checo-coder` Checo) y Dupla Frontend/Visuales/Entrega (`@Gicarrillo` + `@alexishal8` Alexis). Se recortan preventivamente Extras #4 (`L-04`) y #5 (`L-05`) per `AGENTS.md` §8. Todo cambio de estado/decisión debe reflejarse en `docs/status.json` + `python scripts/sync_board.py`.
 
 ---
@@ -121,7 +120,7 @@ Estado de la orden de la madrugada del sábado. Cada bloque cierra con un commit
 - **Puerto local de la API: 8010.** En la laptop de Hanniel el 8000 lo ocupa un proceso del sistema.
 - **Unidades en inglés en el contrato.** Los fixtures traen `mm/yr` y `days/yr`; la interfaz en español las muestra tal cual. Decidir antes de congelar si el contrato las localiza o si lo hace la interfaz (`HUMANO.md` H-09).
 - **Estado compartido de `/tool`.** Hoy cada pantalla vuelve a pedir la evaluación de la parcela guardada. Cuando existan los controles de restricciones, `@Gicarrillo` debe decidir dónde vive el resultado de `/simulate` entre pantallas.
-- **Convertidor tabla → contrato.** Falta el paso que toma la tabla de una parcela (`build_table.py`) y arma la evaluación real para la API. Es la tarea A-06 y el primer trabajo tras el stack de las 9:00.
+- **Convertidor tabla → contrato.** Falta el paso que toma la tabla de una parcela (`build_table.py`) y arma la evaluación real para la API. Es la tarea A-06 (Orden #2).
 - **`awc_mm_m` no sale de la tabla de datos.** El contrato lo exige en `soil_profile`; hay que decidir si viene de SSURGO o de una función de pedotransferencia sobre SoilGrids, y declararlo.
 - **Métricas sintéticas bloqueadas.** Los guiones de `/models` con `--sample` marcan su `metrics.json`; la API se niega a tratarlo como modelo entrenado (prueba en `backend/tests/test_models_loader.py`).
 
