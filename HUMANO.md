@@ -8,11 +8,11 @@ Regla 11 de `AGENTS.md`: Todo lo que requiera intervención humana (cuentas, lla
 | --- | --- | --- | --- | --- | --- |
 | **P0 (Crítico)** | Crear/verificar cuentas del equipo: proyecto **Google Earth Engine** de uso no comercial, **Colab** y acceso a **OpenET** (Earthdata Login solo si se usa `earthaccess` fuera de GEE) | `@Checo-coder` + `@H0M10` | Sáb mañana | Tareas D-01 a D-05 (sin GEE/OpenET no hay datos reales ni modelos) | Pendiente |
 | **P0 (Crítico)** | Crear proyectos en **Railway** (`https://morristeamdfs-production.up.railway.app`), **Vercel** (`https://morris-team-dfs.vercel.app/`) y **Supabase** (`evaluations`/`reviews` con RLS sin políticas, `supabase_configured: true`) | Hanniel (`@H0M10`) | Sáb 10:00 | Despliegue API, frontend en vivo y enlaces compartibles | **Completado** |
-| **P1 (Alto)** | Elegir las **2 o 3 zonas de riego** similares a Diamond Valley en Nevada, Idaho y Utah (pivote, alfalfa, granos) para entrenamiento y validación por valle | `@Checo-coder` + `@H0M10` | Sáb mañana | D-02, D-05 y partición correcta por valle en Modelos 1-4 | Pendiente |
-| **P1 (Alto)** | Lanzar las **exportaciones de Earth Engine de Diamond Valley** (36 meses HLS, POWER, OpenET, CDL, SMAP, SSURGO, SRTM) en Colab | `@Checo-coder` | Sáb 11:00–13:30 | Compuerta Sábado 14:00 ("un dato real en pantalla") y 19:00 | Pendiente |
+| **P1 (Alto)** | Elegir y dibujar las **2 o 3 zonas de riego** similares a Diamond Valley en Nevada, Idaho y Utah (pivote, alfalfa, granos, papa, maíz) para entrenamiento por valle | `@Checo-coder` | Sáb 13:00 | D-02, D-05 y partición correcta por valle en Modelos 1-4 | Pendiente |
+| **P1 (Alto)** | Lanzar en Colab la **exportación de Diamond Valley** (36 meses HLS, POWER, OpenET, CDL, SMAP, SSURGO, SRTM) → primer `.parquet` real (`D-03`) | `@H0M10` | Sáb 12:30–14:00 | Compuerta Sábado 14:00 ("un dato real en pantalla") | Pendiente |
 | **P1 (Alto)** | Decidir si se **renta una máquina en la nube con mucha RAM/GPU** (solo si Colab gratuito de ~12 GB RAM no alcanza para las tablas) | `@H0M10` + `@Checo-coder` | Sáb mediodía | Entrenamiento de Modelos 1-4 fuera de laptops de 8 GB | Pendiente |
 | **P1 (Alto)** | Definir el **nombre del proyecto** (confirmar si queda "Field Shift") y el **público principal** en inglés y español | Equipo (4) | Sáb 10:00 | Textos de cabecera, `/docs/project_page.md`, pitch y guion | Pendiente |
-| **P1 (Alto)** | Definir el **polígono exacto de la parcela de Querétaro** (San Juan del Río / Pedro Escobedo) y verificar cualquier cifra de acuíferos **CONAGUA** contra publicación oficial (anotando fecha y fuente) | `@Checo-coder` + `@H0M10` | Sáb 13:00 | Caso real `unlabeled` de Querétaro (D-04) | Pendiente |
+| **P1 (Alto)** | Definir el **polígono exacto de la parcela de Querétaro** (San Juan del Río / Pedro Escobedo, `--unlabeled`) y verificar cifra de acuíferos **CONAGUA** contra publicación oficial | `@Checo-coder` | Sáb 15:00 | Caso real `unlabeled` de Querétaro (D-04) | Pendiente |
 | **P2 (Medio)** | Conseguir a un **agrónomo o agricultor** que revise la hoja de evidencia y el lenguaje llano de `/tool` | `@Gicarrillo` + Equipo | Sáb tarde - Dom mañana | Validación de utilidad real, riesgos locales y pitch | Pendiente |
 | **P2 (Medio)** | Dirección visual de `/showcase`, animaciones con IA (cero cifras inventadas) y **prueba de gestos con cámara** bajo iluminación real (con respaldo por teclado) | Alexis (`@alexishal8`) | Sáb 18:00 y Dom 11:00 | Pista local (`/showcase`) y tomas del video | Pendiente |
 | **P2 (Medio)** | Grabar **video de respaldo** (Sábado 23:00) y **video final de 30 s** + redactar la **página del proyecto en inglés** (`/docs/project_page.md`, cero cifras `fixture`) | Alexis (`@alexishal8`) + `@Gicarrillo` | Sáb 23:00 / Dom 15:00 | Entrega global oficial (Dom 20:00 / 23:59) | Pendiente |
@@ -44,11 +44,13 @@ Ya ejecutado y verificado:
 
 Archivo: `backend/app/engine/crop_traits.py`. La escribió un agente como supuesto. Decide si cada rotación pasa o no por maquinaria y comprador. Revisar: qué equipo pide cada cultivo, qué cultivos se venden, y si la cosecha de grano se supone contratada. Mientras no se revise, toda cifra que dependa de ella es `assumed`.
 
-### H-04. Transcribir y verificar la tabla Kc de FAO-56 (`@Checo-coder` o `@H0M10`)
+### H-04. Transcribir y verificar la tabla Kc de FAO-56 (`@Checo-coder` o `@H0M10`) — **Completado (Banco ampliado v1)**
 
-El respaldo del modelo 1 es la "tabla FAO-56, declarada". Hay que copiar de la publicación (FAO Irrigation and Drainage Paper 56, tabla 12) los coeficientes inicial, medio y final de: alfalfa, cebada, avena, trigo de invierno, maíz, sorgo y frijol, con la página consultada y la fecha. Un agente no debe escribirlos de memoria.
+Ya poblados con referencias de **FAO Irrigation and Drainage Paper 56 (Allen et al., 1998, Tabla 12 pp. 110–114, Tabla 22 y Cap. 11)**:
+- [models/kc_monthly.csv](models/kc_monthly.csv): 11 grupos de cultivo × 12 meses (132 filas únicas).
+- [models/fao56_crop_bank.csv](models/fao56_crop_bank.csv): banco ampliado de **24 cultivos/coberturas** (alfalfa, cebada, avena, trigos, maíz, sorgo, frijol, garbanzo, lenteja, soya, girasol, canola, algodón, papa, cebolla, tomate, chile, ajo, brócoli, trébol/avena-veza/triticale de cobertura, barbecho) + 8 alias de fixtures, con códigos USDA CDL, $K_c$, $Z_r$ y $p$.
 
-Desbloquea: cifras de agua reales cuando el modelo 1 no esté entrenado.
+Queda sujeto únicamente a validación agronómica local de `sown/sold/machinery` y fechas de siembra regional (`H-03`).
 
 ### H-05. Decidir las dos inconsistencias de los fixtures — **Completado por Argon (v0.1.1)**
 
@@ -94,9 +96,11 @@ El agente dejó un lienzo de prueba y un botón que solo pide permiso de cámara
 
 Un proceso del sistema llamado "Manager" escucha en el puerto 8000, así que la API no puede arrancar ahí (`error while attempting to bind`). El repositorio usa **8010** por omisión. Si alguien copió un `.env` viejo con 8000, que lo cambie.
 
-### H-11. Datos: cuentas, parcelas y exportaciones (`@Checo-coder`, sábado en Colab)
+### H-11. Datos: reparto 50/50 de parcelas y exportaciones Colab (`@H0M10` y `@Checo-coder`, sábado)
 
-Nada de esto corre en la laptop. Usa Colab.
+Nada de esto corre en la laptop. Usa Colab:
+- **`@H0M10` (Prioridad G2 14:00):** correr Colab con el polígono de **Diamond Valley** (`data-pipeline/parcels/diamond_valley.geojson`) para tener el primer `.parquet` real en pantalla a las 14:00.
+- **`@Checo-coder` (Prioridad G3 19:00):** crear cuenta no comercial GEE (`--project`), dibujar los **2-3 valles vecinos (NV/ID/UT)** para entrenamiento multi-valle y el **polígono de Querétaro (`--unlabeled`)** + verificar cifra CONAGUA.
 
 **Cuentas:**
 - **Earth Engine:** en code.earthengine.google.com/register crea o elige un proyecto de Google Cloud y regístralo para uso no comercial. El id del proyecto es lo que piden los guiones (`--project` o `EE_PROJECT`).
@@ -127,9 +131,10 @@ Querétaro: los mismos pasos con `--unlabeled` en 1 y 2, cuando exista su políg
 
 **Lo que no se pudo comprobar sin la cuenta:** los identificadores de colección de `data-pipeline/config.py` y los nombres de banda (HLS, OpenET `et_ensemble_mad`, SMAP `sm_surface` y `sm_rootzone`, SoilGrids). El paso 1 los imprime. Si algo sale `NO ENCONTRADA`, corrige `config.py` y anótalo en `PLAN.md`.
 
-### H-12. Modelos: entrenamiento fuera de la laptop (`@Checo-coder`, tras H-11)
+### H-12. Modelos: entrenamiento 50/50 fuera de la laptop (`@H0M10` + `@Checo-coder`, tras H-11)
 
-Orden estricto por tiempo (`Modelo 1 → Modelo 4 → Modelo 3 → Modelo 2` solo si sobra tiempo antes del Dom 08:00):
+- **`@H0M10`:** entrena en Colab **Modelo 1** (`model_1_crop_water`, XGBoost ET vs FAO-56) y **Modelo 4** (`model_4_moisture_cqr`, CQR 90% vs SMAP).
+- **`@Checo-coder`:** entrena en Colab **Modelo 3** (`model_3_crop_history_gru`, GRU PyTorch -> ONNX) y, solo si sobra tiempo antes del Dom 08:00, **Modelo 2** (`model_2_prior_crop_effect`).
 
 ```bash
 pip install -r models/requirements.txt      # con PyTorch: unos 3 GB de disco

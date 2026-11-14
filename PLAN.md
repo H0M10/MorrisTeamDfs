@@ -18,30 +18,30 @@
 
 ---
 
-## Pista 1 — Datos (`/data-pipeline`) — Dueño: Checo (`@Checo-coder` · Dupla Backend/Datos, Global)
-*Todo cómputo pesado corre en GEE / Colab / máquina rentada, nunca en laptops de 8 GB.*
+## Pista 1 — Datos (`/data-pipeline`) — Reparto 50/50: `@H0M10` (Diamond Valley + Motor) y `@Checo-coder` (Valles NV/ID/UT + Querétaro)
+*Todo cómputo pesado corre en GEE / Colab / máquina rentada, nunca en laptops de 8 GB. Ver análisis completo de los 24 recursos en `docs/RECURSOS_NASA_Y_BANCO_CULTIVOS.md`.*
 
 | ID | Tarea | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
-| D-01 | Confirmar en catálogo GEE los años exactos cubiertos por HLS, OpenET, USDA CDL, SMAP, SSURGO, SoilGrids y SRTM antes de generar tablas | `@Checo-coder` | G1 (Sáb 10:00) | Bloqueado por `HUMANO.md` (cuentas GEE/OpenET) |
-| D-02 | Elegir 2-3 zonas de riego similares a Diamond Valley en NV, ID y UT (pivote, alfalfa, granos) y exportar muestra de verificación | `@Checo-coder` | G2 (Sáb 14:00) | Bloqueado por `HUMANO.md` |
-| D-03 | Script GEE/Colab para extraer serie de 36 meses de Diamond Valley (HLS RGB/índices, POWER, OpenET, CDL, SMAP 9 km, SSURGO, SRTM) y generar artefacto compacto en JSON/Parquet | `@Checo-coder` | G2 (Sáb 14:00) | Guiones listos (`ee_export.py`, `build_table.py`); falta ejecutarlos (`HUMANO.md` H-11) |
-| D-04 | Script de extracción para la parcela de Querétaro (sin CDL ni OpenET; SoilGrids 250 m + POWER + HLS + SMAP 9 km + SRTM) tras recibir polígono | `@Checo-coder` | G3 (Sáb 19:00) | Bloqueado por `HUMANO.md` (polígono Qro.) |
-| D-05 | Exportación completa multi-valle (NV, ID, UT) para entrenamiento de Modelos 1-4 en la nube | `@Checo-coder` | G3 (Sáb 19:00) | Pendiente |
+| D-01 | Confirmar en catálogo GEE los años exactos cubiertos por HLS, OpenET, USDA CDL, SMAP, SSURGO, SoilGrids y SRTM (+ opcionales S2/IMERG/PRISM) | `@Checo-coder` | G1 (Sáb 10:00) | Guion listo (`ee_coverage.py`); falta ejecutar en Colab (`HUMANO.md` H-11) |
+| D-02 | Dibujar 25–30 pivotes reales de 2-3 zonas vecinas en NV, ID y UT (alfalfa, granos, papa, frijol, maíz) | `@Checo-coder` | G2 (Sáb 14:00) | Pendiente (GeoJSON) |
+| D-03 | Extraer serie de 36 meses de **Diamond Valley** (caso estrella para Compuerta G2) -> `.parquet` real en Colab | `@H0M10` | G2 (Sáb 14:00) | Guiones listos (`ee_export.py`, `build_table.py`); prioridad #1 de Hanniel |
+| D-04 | Polígono real de **Querétaro** (San Juan del Río / Pedro Escobedo, `--unlabeled`) + cifra acuífero CONAGUA verificada -> `.parquet` | `@Checo-coder` | G3 (Sáb 19:00) | Pendiente (GeoJSON + PDF CONAGUA) |
+| D-05 | Exportación multi-valle (NV, ID, UT) para entrenamiento en la nube | `@Checo-coder` + `@H0M10` | G3 (Sáb 19:00) | Depende de D-02 |
 
 ---
 
-## Pista 2 — Modelos (`/models`) — Dueño: Checo (`@Checo-coder` · Dupla Backend/Datos, Global)
-*Ningún modelo llega al agricultor sin métrica medida por valle y archivo `CARD.md`. Orden estricto de entrenamiento: Modelo 1 → Modelo 4 → Modelo 3 → Modelo 2 (solo si sobra tiempo). Respaldos obligatorios si no cumplen.*
+## Pista 2 — Modelos (`/models`) — Reparto 50/50: `@H0M10` (Modelos 1 y 4) y `@Checo-coder` (Modelo 3 + opcional 2)
+*Ningún modelo llega al agricultor sin métrica medida por valle y archivo `CARD.md`. Banco FAO-56 (`kc_monthly.csv` y `fao56_crop_bank.csv`, 24 especies + alias) ya poblado (H-04).*
 
 | ID | Tarea | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
-| M-01 | Definir esqueleto de `CARD.md` (datos, partición por valle, último año fuera, métrica vs línea base, límites) para los 4 modelos | `@Checo-coder` / Claude | G1 (Sáb 10:00) | Completado (`models/*/CARD.md` como plantilla por llenar) |
-| M-02 | **Prioridad 1 · Modelo 1:** entrenar y validar (XGBoost consumo de agua vs tabla FAO-56 en valle no visto; respaldo: tabla FAO-56 declarada tras llenar `kc_monthly.csv`) | `@Checo-coder` | G4 (Dom 08:00) | Bloqueado por D-05 / H-04 |
-| M-03 | **Prioridad 4 (solo si sobra tiempo) · Modelo 2:** entrenar y validar (XGBoost observacional efecto cultivo anterior vs modelo sin cultivo anterior; nunca causal ni ahorro de agua; respaldo: `"Sin evidencia local"`) | `@Checo-coder` | G4 (Dom 08:00) | Bloqueado por D-05 |
-| M-04 | **Prioridad 3 · Modelo 3:** entrenar, validar y exportar a ONNX (GRU ligera con atención temporal, Macro F1 por clase en valle no visto) | `@Checo-coder` | G4 (Dom 08:00) | Bloqueado por D-05 |
-| M-05 | **Prioridad 2 · Modelo 4:** calibrar y validar (Balance FAO-56 + residual + CQR 90% a escala SMAP 9 km; cobertura real reportada) | `@Checo-coder` | G4 (Dom 08:00) | Bloqueado por D-05 |
-| M-06 | Corte de modelos (Domingo 08:00): empaquetar solo artefactos con métrica validada y activar respaldos en los demás | `@Checo-coder` + `@H0M10` + ARGON | G4 (Dom 08:00) | Pendiente |
+| M-01 | Definir esqueleto de `CARD.md` y poblar Banco FAO-56 (`kc_monthly.csv` + `fao56_crop_bank.csv`) | `@H0M10` / ARGON | G1 (Sáb 10:00) | **Completado** (32 códigos / 132 filas Kc; pendiente revisión agronómica H-03) |
+| M-02 | **Prioridad 1 · Modelo 1:** entrenar y validar en Colab (XGBoost consumo de agua vs tabla FAO-56 en valle no visto) | `@H0M10` | G4 (Dom 08:00) | Bloqueado por D-05 (H-04 ya listo) |
+| M-05 | **Prioridad 2 · Modelo 4:** calibrar y validar en Colab (Balance FAO-56 + residual + CQR 90% a escala SMAP 9 km) | `@H0M10` | G4 (Dom 08:00) | Bloqueado por D-05 |
+| M-04 | **Prioridad 3 · Modelo 3:** entrenar en Colab, validar Macro F1 y exportar a ONNX (GRU ligera con atención temporal) | `@Checo-coder` | G4 (Dom 08:00) | Bloqueado por D-05 |
+| M-03 | **Prioridad 4 (solo si sobra tiempo) · Modelo 2:** entrenar XGBoost observacional efecto cultivo anterior (respaldo: `"Sin evidencia local"`) | `@Checo-coder` | G4 (Dom 08:00) | Bloqueado por D-05 |
+| M-06 | Corte de modelos (Domingo 08:00): empaquetar solo artefactos con métrica validada y activar respaldos en los demás | `@H0M10` + `@Checo-coder` + ARGON | G4 (Dom 08:00) | Pendiente |
 
 ---
 
@@ -145,6 +145,6 @@ Estado de la orden de la madrugada del sábado. Cada bloque cierra con un commit
 
 ## Órdenes de trabajo autónomas para Claude (no requieren llaves ni cuentas externas)
 
-- **Orden #2 (`@H0M10` Hanniel + apoyo `@Checo-coder` / Claude · `/backend` y `/data-pipeline`):** Construir `backend/app/services/table_to_contract.py` (convierte salida Parquet de `build_table.py` en payload del contrato con `data_status="real"`, `awc_mm_m` y `organic_matter_pct` declarados), corregir `S-01` (`experimental: True` en Modelo 3 cuando `region_mode == "unlabeled"`) y normalizar pesos de atención a suma `1.0`.
+- **Orden #2 (`@H0M10` Hanniel / Claude Fable 5.2 · `/backend` y `/data-pipeline`):** Prompt completo en `docs/PROMPT_CLAUDE_ORDEN_2.md`. Incluye: corregir `S-01` en `loader.py`, conectar el banco ampliado `models/fao56_crop_bank.csv` + `models/kc_monthly.csv` en `backend/app/engine/crop_bank.py`, construir `backend/app/services/table_to_contract.py` (`S-02` + `DATA_MODE=real`) y agregar fuentes opcionales Grupo B (`gpm_imerg`, `prism`) en `data-pipeline/config.py`.
 - **Orden #3 (`@Gicarrillo` / Claude · `/frontend/src/app/tool`):** Sustituir los `<Pending>` de `/tool`: estado compartido de simulación (`/api/v1/simulate`), formulario accesible de `/tool/restricciones`, calendario 36m con tramas además de color en `/tool/rotaciones`, tarjeta completa de métricas + consulta `/ask` por voz (Web Speech API) y texto en `/tool/evidencia`, vista de escalas reales en `/tool` / `/tool/retrato`, y flujo de enlace compartible + revisión de técnico en `/tool/compartir` (degradando elegante si `supabase_configured === false`).
 - **Orden #4 (`@alexishal8` / Claude · `/frontend/src/app/engineer` y `/docs`):** Completar `/engineer` leyendo métricas, intervalos CQR y atención de la API (ocultando red en vivo si `model_3_crop_history_gru.status !== "trained"`), generar animaciones IA / clips de apoyo (sin cifras `fixture`) y crear plantillas limpias de `/docs/project_page.md` (en inglés, cero cifras `fixture`) y `/docs/video_script.md` (30 s, guion compartido).

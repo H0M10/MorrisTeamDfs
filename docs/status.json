@@ -2,8 +2,8 @@
   "project": "Field Shift",
   "team": "The CSC",
   "event": "NASA Space Apps Challenge 2026",
-  "updated_at": "2026-11-14T11:57:00-06:00",
-  "phase": "Infraestructura Nube 100% Verificada (Pages + Railway + Supabase RLS + Vercel) · Rumbo a G2 (14:00)",
+  "updated_at": "2026-11-14T12:08:00-06:00",
+  "phase": "Banco FAO-56 (24 cultivos, H-04) + Reparto 50/50 Hanniel/Checo + Análisis 24 Recursos · Rumbo a G2 (14:00)",
   "repo_url": "https://github.com/H0M10/MorrisTeamDfs",
   "git_remote": "https://github.com/H0M10/MorrisTeamDfs.git",
   "pages_url": "https://h0m10.github.io/MorrisTeamDfs/",
@@ -65,8 +65,8 @@
       "folders": ["/contracts", "/backend", "/supabase", "/frontend/src/lib"],
       "role": "Líder Técnico · Contrato, Motor FAO-56, API FastAPI e Infraestructura",
       "color": "#1247B8",
-      "progress_pct": 85,
-      "doing_now": "Infraestructura 100% cerrada (GitHub Pages + Railway + Supabase RLS + Vercel verificados punta a punta). Foco actual: Orden #2 (table_to_contract.py + S-01 + S-02) y dupla con @Checo-coder para G2 (14:00).",
+      "progress_pct": 88,
+      "doing_now": "H-04 completado (banco 24 cultivos FAO-56 + kc_monthly.csv). Reparto 50/50 con Checo: Hanniel toma Orden #2 (Claude Fable 5.2), Diamond Valley real (D-03) y Modelos 1 + 4.",
       "done": [
         "Estructura completa del repo y sincronización AGENTS.md == CLAUDE.md.",
         "Contrato JSON v0.1.1 y 3 fixtures de 36 meses (diamond_valley, queretaro, no_viable_options) verificados.",
@@ -74,22 +74,30 @@
         "H-01 Completado: repo H0M10/MorrisTeamDfs en vivo, invitaciones enviadas (201) y GitHub Pages activo en main -> /docs.",
         "H-02 / G1 Completado: API FastAPI en vivo en Railway (https://morristeamdfs-production.up.railway.app/health y /docs) + soporte sb_publishable_.",
         "H-06 / A-04 Completado: migración SQL aplicada en Supabase (evaluations y reviews con RLS enabled sin políticas) y /health respondió supabase_configured: true.",
-        "H-07 Completado: Vercel en vivo (https://morris-team-dfs.vercel.app/tool/retrato mostrando tira de parcela sin error de conexión)."
+        "H-07 Completado: Vercel en vivo (https://morris-team-dfs.vercel.app/tool/retrato mostrando tira de parcela sin error de conexión).",
+        "H-04 + Banco Ampliado Completado: models/kc_monthly.csv (132 filas) + models/fao56_crop_bank.csv (24 especies + 8 alias) + análisis 24 recursos + PROMPT_CLAUDE_ORDEN_2.md."
       ],
       "todo": [
         {
-          "id": "Orden #2 / D-03",
+          "id": "Orden #2 (Claude)",
           "gate": "G2",
-          "title": "Coordinar H-04/H-11 con Checo y correr Orden #2 (table_to_contract.py + fix S-01)",
-          "detail": "Convertir Parquet de Checo-coder a JSON real (awc_mm_m y organic_matter_pct Van Bemmelen) y marcar Modelo 3 experimental en unlabeled.",
-          "connects_to": ["Checo-coder", "Gicarrillo"]
+          "title": "Pasar docs/PROMPT_CLAUDE_ORDEN_2.md a Claude (table_to_contract.py + crop_bank + S-01/S-02)",
+          "detail": "Conectar banco de 24 cultivos, corregir S-01 y habilitar DATA_MODE=real.",
+          "connects_to": ["Gicarrillo", "Checo-coder"]
         },
         {
-          "id": "A-06 / A-07",
-          "gate": "G3-G4",
-          "title": "Servir 3 rotaciones reales y cargar artefactos validados en corte Dom 08:00",
-          "detail": "Activar respaldos explícitos donde falte métrica verificada por valle.",
-          "connects_to": ["Checo-coder", "Gicarrillo", "alexishal8"]
+          "id": "D-03 (Hanniel Colab)",
+          "gate": "G2",
+          "title": "Correr Colab sobre Diamond Valley -> primer .parquet real antes de 14:00",
+          "detail": "Caso estrella de EE. UU. con HLS, POWER, OpenET, CDL, SMAP y SSURGO/SRTM.",
+          "connects_to": ["Gicarrillo"]
+        },
+        {
+          "id": "M-02 / M-05",
+          "gate": "G4",
+          "title": "Entrenar Modelos principales 1 (XGBoost ET) y 4 (Humedad CQR 90% vs SMAP)",
+          "detail": "Partición estricta por valle + último año fuera sobre tabla multi-valle de Checo.",
+          "connects_to": ["Checo-coder", "alexishal8"]
         }
       ]
     },
@@ -100,42 +108,36 @@
       "pair": "Dupla Backend, Datos y Modelos",
       "branch": "pista/datos-modelos",
       "folders": ["/data-pipeline", "/models", "/backend (apoyo)"],
-      "role": "Datos Satelitales GEE/Colab, Modelos ML (1→4→3→2) y Apoyo Backend",
+      "role": "Datos Multi-Valle (NV/ID/UT), Querétaro (unlabeled) y Modelo 3 (GRU->ONNX)",
       "color": "#2F7D32",
-      "progress_pct": 30,
-      "doing_now": "Clonando el repo en rama pista/datos-modelos, configurando Earth Engine / Colab (H-11) y transcribiendo tabla FAO-56 en models/kc_monthly.csv (H-04).",
+      "progress_pct": 35,
+      "doing_now": "Reparto 50/50 con Hanniel (H-04 ya resuelto): Checo arma polígonos de 2-3 valles vecinos (NV/ID/UT) + Querétaro (D-01/D-02/D-04/D-05) y entrena Modelo 3 (ONNX).",
       "done": [
         "Guiones base en /data-pipeline (ee_coverage.py, ee_export.py, build_table.py, notebook Colab).",
         "Guiones de entrenamiento en /models (XGBoost 1/2/4, GRU->ONNX 3, partición por valle y último año fuera).",
-        "Plantillas CARD.md y salvaguarda contra métricas sintéticas (--sample)."
+        "Plantillas CARD.md y salvaguarda contra métricas sintéticas (--sample).",
+        "Desbloqueo H-04: kc_monthly.csv y fao56_crop_bank.csv ya listos en /models."
       ],
       "todo": [
         {
-          "id": "H-04",
-          "gate": "G1",
-          "title": "Llenar models/kc_monthly.csv con Tabla 12 de FAO-56 + cita",
-          "detail": "Kc inicial/medio/final para alfalfa, cebada, avena, trigo de invierno, maíz, sorgo y frijol.",
-          "connects_to": ["H0M10"]
-        },
-        {
-          "id": "D-01 / H-11",
+          "id": "D-01 / D-02",
           "gate": "G2",
-          "title": "Validar catálogo GEE y definir pivotes reales (NV, ID, UT + Querétaro)",
-          "detail": "Dibujar ~25-30 pivotes/valle en geojson.io (Diamond Valley + 2-3 zonas vecinas) y fijar polígono de Querétaro.",
+          "title": "Confirmar catálogo GEE y dibujar 25-30 pivotes en 2-3 zonas (NV, ID, UT)",
+          "detail": "Exportar tabla multi-valle limpia sin duplicar Diamond Valley (que corre Hanniel).",
           "connects_to": ["H0M10"]
         },
         {
-          "id": "D-03 / D-05",
-          "gate": "G2-G3",
-          "title": "Correr ee_export.py + build_table.py en Colab -> tablas .parquet",
-          "detail": "Entregar tablas compactas (sin bajar rasters crudos a laptops de 8 GB) para alimentar Orden #2.",
+          "id": "D-04 (Querétaro)",
+          "gate": "G3",
+          "title": "Definir polígono real de San Juan del Río / Pedro Escobedo (--unlabeled) + CONAGUA",
+          "detail": "Verificar cifra de acuífero CONAGUA con PDF y fecha oficial; exportar .parquet.",
           "connects_to": ["H0M10", "Gicarrillo"]
         },
         {
-          "id": "H-12 / G4",
+          "id": "M-04 (+ M-03 opc.)",
           "gate": "G4",
-          "title": "Entrenar modelos en orden estricto 1 -> 4 -> 3 -> 2 y llenar CARD.md",
-          "detail": "Prioridad: Modelo 1 (ET), Modelo 4 (CQR 90% SMAP), Modelo 3 (GRU->ONNX), Modelo 2 solo si sobra tiempo.",
+          "title": "Entrenar Modelo 3 (GRU atención temporal -> ONNX) y llenar CARD.md",
+          "detail": "Reportar Macro F1 por clase en valle no visto; Modelo 2 solo si sobra tiempo antes Dom 08:00.",
           "connects_to": ["H0M10", "alexishal8"]
         }
       ]
@@ -333,19 +335,19 @@
     {
       "id": "H-04",
       "priority": "P0",
-      "owner": "Checo-coder",
+      "owner": "H0M10",
       "due": "Sáb 10:30",
-      "title": "Transcribir Tabla 12 FAO-56 en models/kc_monthly.csv con página y fecha",
-      "blocks": "Respaldo real del Modelo 1 y cálculo real de consumo por cultivo",
-      "status": "Pendiente"
+      "title": "Transcribir Tabla 12/22 FAO-56 en models/kc_monthly.csv y fao56_crop_bank.csv (24 cultivos)",
+      "blocks": "Respaldo real del Modelo 1 y cálculo real para banco ampliado",
+      "status": "Completado (132 filas Kc + 32 códigos/24 cultivos; pendiente H-03)"
     },
     {
       "id": "H-11",
       "priority": "P0",
-      "owner": "Checo-coder",
-      "due": "Sáb 11:00–13:30",
-      "title": "Cuentas Earth Engine no comercial, polígonos (NV/ID/UT + Querétaro) y corrida en Colab",
-      "blocks": "Tablas .parquet reales, G2 (un dato real) y entrenamiento de Modelos 1–4",
+      "owner": "H0M10 / Checo-coder",
+      "due": "Sáb 12:30–15:00",
+      "title": "Reparto 50/50 Colab: Diamond Valley (H0M10) y valles NV/ID/UT + Querétaro (Checo-coder)",
+      "blocks": "Tablas .parquet reales, G2 (un dato real) y entrenamiento multi-valle",
       "status": "Pendiente"
     },
     {
@@ -396,9 +398,9 @@
     {
       "id": "H-12",
       "priority": "P1",
-      "owner": "Checo-coder",
+      "owner": "H0M10 / Checo-coder",
       "due": "Dom 08:00",
-      "title": "Entrenamiento en Colab (1->4->3->2), llenado de CARD.md y subida de artefactos a backend",
+      "title": "Entrenamiento 50/50 en Colab: Modelos 1+4 (H0M10) y Modelo 3 ONNX + opc. 2 (Checo-coder)",
       "blocks": "Compuerta G4 (corte de modelos) y Extra #3 Red en vivo",
       "status": "Pendiente"
     }
@@ -448,6 +450,11 @@
       "when": "2026-11-14 11:57",
       "decision": "H-06 / A-04 completado: SQL de Supabase aplicado (RLS sin políticas), /health supabase_configured: true y /tool/retrato conectado en Vercel.",
       "impact": "Toda la infraestructura en la nube quedó verificada punta a punta; el foco pasa 100% a Orden #2 (backend/data) y H-04/H-11 para G2 (14:00)."
+    },
+    {
+      "when": "2026-11-14 12:09",
+      "decision": "Reparto 50/50 Hanniel-Checo, Banco FAO-56 ampliado a 24 cultivos (H-04), análisis de los 24 recursos NASA y Prompt Orden #2 para Claude (Fable 5.2).",
+      "impact": "H0M10 lidera Orden #2, Diamond Valley (G2 14:00) y Modelos 1+4; Checo-coder cubre NV/ID/UT + Querétaro y Modelo 3 ONNX sin sobrecarga."
     }
   ]
 }
