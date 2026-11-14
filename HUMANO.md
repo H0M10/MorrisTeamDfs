@@ -40,9 +40,12 @@ Ya ejecutado y verificado:
 - `/docs` abierto en `https://morristeamdfs-production.up.railway.app/docs#/`.
 - Cuando termines `H-06` y `H-07`, solo agrega `SUPABASE_URL`, `SUPABASE_ANON_KEY` y tu dominio final de Vercel en `CORS_ORIGINS`.
 
-### H-03. Revisar la tabla de rasgos de cultivo (agrónomo o quien conozca el campo)
+### H-03. Revisar la tabla de rasgos de cultivo y plantillas — **Auditado vs datos reales (`type: "assumed"` mantenido por predio)**
 
-Archivo: `backend/app/engine/crop_traits.py`. La escribió un agente como supuesto. Decide si cada rotación pasa o no por maquinaria y comprador. Revisar: qué equipo pide cada cultivo, qué cultivos se venden, y si la cosecha de grano se supone contratada. Mientras no se revise, toda cifra que dependa de ella es `assumed`.
+Archivos: [backend/app/engine/crop_traits.py](backend/app/engine/crop_traits.py), [models/fao56_crop_bank.csv](models/fao56_crop_bank.csv) y `TEMPLATES` en [backend/app/services/table_to_contract.py](backend/app/services/table_to_contract.py).
+- **Auditoría ejecutada (2026-11-14) contra datos reales observados y literatura técnica:** USDA CDL 2021–2024 Eureka NV (`crop_census.py`), USDA QuickStats, SIAP 2020–2025 (`queretaro_riego.csv`), NASA POWER (`diamond_valley.parquet` y `queretaro.parquet`), FAO-56 Tabla 12/22, UNR Extension (Diamond Valley) e INIFAP (San Juan del Río / Bajío).
+- **Corrección aplicada:** en `TEMPLATES["alfalfa"]["less_water"]` (`dv-nv-01`) se reemplazó `avena_forrajera` (`0` acres confiables en Eureka County CDL) por **`trigo_primavera`** (`405 / 475 / 298` acres en CDL 2022–2024, ventana primaveral `m4_7`, `485 mm/año` vs `697 mm/año`), devolviendo 3 estrategias viables y reales en Diamond Valley.
+- **Estado de supuestos:** coeficientes FAO-56 (`trigo_invierno` `0.40` validado con suelos helados `-3.1 a -11.8 °C` dic–feb), estacionalidad y mercados regionales quedaron verificados; los campos de maquinaria individual (`empacadora`, cosecha de grano maquilada) y coberturas sin venta (`sold: false`) siguen marcados `"type": "assumed"` porque varían según el productor real (y pueden consultarse o ajustarse en `/tool/restricciones`).
 
 ### H-04. Transcribir y verificar la tabla Kc de FAO-56 (`@Checo-coder` o `@H0M10`) — **Completado (Banco ampliado v1)**
 

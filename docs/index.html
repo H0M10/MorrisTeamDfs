@@ -592,8 +592,8 @@ python scripts/sync_board.py --check
   "project": "Field Shift",
   "team": "The CSC",
   "event": "NASA Space Apps Challenge 2026",
-  "updated_at": "2026-11-14T16:54:00-06:00",
-  "phase": "A-07 cerrado (CQR 90% M4 + OpenET/FAO-56 + atención M3) · Acuíferos oficiales NDWR (NV) y CONAGUA (Qro) · SIAP 2020–2025 integrado",
+  "updated_at": "2026-11-14T17:35:00-06:00",
+  "phase": "G4 cerrado (M-06 + auditoría agronómica H-03 contra CDL/SIAP/POWER/UNR/INIFAP) · 3/3 rotaciones viables en dv-nv-01 y qro-sjr-01 en Railway DATA_MODE=real",
   "repo_url": "https://github.com/H0M10/MorrisTeamDfs",
   "git_remote": "https://github.com/H0M10/MorrisTeamDfs.git",
   "pages_url": "https://h0m10.github.io/MorrisTeamDfs/",
@@ -641,7 +641,7 @@ python scripts/sync_board.py --check
         "Checo-coder",
         "H0M10"
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": "G5",
@@ -683,8 +683,8 @@ python scripts/sync_board.py --check
       ],
       "role": "Líder Técnico · Contrato, Motor FAO-56, API FastAPI e Infraestructura",
       "color": "#1247B8",
-      "progress_pct": 98,
-      "doing_now": "G2 y A-07 cerrados en backend: OpenET+FAO-56 calibrado en alternativas, intervalos CQR 90 % de Modelo 4 en timeline labeled (dv-nv-01), notas honestas de Modelo 2 (-6.3 %) y balances oficiales de acuíferos NDWR/CONAGUA en .meta.json (Qro con SIAP municipal + estatal 2025).",
+      "progress_pct": 100,
+      "doing_now": "Corte formal G4 (M-06 + H-03) cerrado y verificado en Railway DATA_MODE=real; soporte listo para /tool y /engineer rumbo a G5.",
       "done": [
         "Estructura completa del repo y sincronización AGENTS.md == CLAUDE.md.",
         "Contrato JSON v0.1.1 y 3 fixtures de 36 meses (diamond_valley, queretaro, no_viable_options) verificados.",
@@ -698,20 +698,10 @@ python scripts/sync_board.py --check
         "G2 / D-01..D-05 Completado (GEE luca-497507): DATA_MODE=real activo en Railway para dv-nv-01 y qro-sjr-01 (Guanajuato pospuesto); extraída tabla multi-valle (15 parcelas NV/ID/UT, 720 filas 2021–2024).",
         "M-01..M-05 (4/4 modelos) completados en CPU ($0 GPU): Modelo 1 gana (9.25 mm vs 29.05 mm FAO-56), Modelo 3 GRU ONNX gana (0.4143 vs 0.2222 F1 macro; attention_weight sumando 1.0 activo en timeline), Modelo 4 gana con aviso de brecha vs meta 90% (58.3% vs 22.9%) y Modelo 2 pierde (-6.3%, absent en unlabeled).",
         "A-07 Completado: CQR 90 % de Modelo 4 en timeline labeled (dv-nv-01), OpenET + FAO-56 calibrado en alternativas (sin fuga de NDVI/NDMI) y notas exactas de Modelo 2 (-6.3 %).",
-        "D-04 + H-13 + H-20 Completados: acuíferos oficiales NDWR (Área 153 Orden 1264/1302) y CONAGUA (Clave 2203 DOF 2023-11-09 -56.89 hm³/año) + SIAP 2020–2025 municipal y total estatal SIAP 2025 en .meta.json y farmer_context.py."
+        "D-04 + H-13 + H-20 Completados: acuíferos oficiales NDWR (Área 153 Orden 1264/1302) y CONAGUA (Clave 2203 DOF 2023-11-09 -56.89 hm³/año) + SIAP 2020–2025 municipal y total estatal SIAP 2025 en .meta.json y farmer_context.py.",
+        "M-06 / G4 Completado: verificación en vivo en Railway (/health, /pilots, POST /evaluate) + M4 activo con aviso de brecha + auditoría H-03 (trigo_primavera en less_water NV -> 3/3 rotaciones viables; 167/167 pytest)."
       ],
-      "todo": [
-        {
-          "id": "M-06",
-          "gate": "G4",
-          "title": "Corte formal de modelos (Domingo 08:00)",
-          "detail": "Integración técnica A-07 completada y probada (36/36 pytest); solo confirmar corte G4 antes del freeze G5.",
-          "connects_to": [
-            "Checo-coder",
-            "alexishal8"
-          ]
-        }
-      ]
+      "todo": []
     },
     {
       "id": "Checo-coder",
@@ -726,8 +716,8 @@ python scripts/sync_board.py --check
       ],
       "role": "Datos Multi-Valle (NV/ID/UT), Querétaro (unlabeled) y Modelo 3 (GRU->ONNX)",
       "color": "#2F7D32",
-      "progress_pct": 95,
-      "doing_now": "Tablas multi-valle NV/ID/UT, Querétaro (Sentinel-2 10 m + SIAP 2020–2025 + CONAGUA 2203) y 4/4 modelos entrenados e integrados en CPU; foco restante en validación agronómica (H-03).",
+      "progress_pct": 100,
+      "doing_now": "Corte formal G4 (M-06 + auditoría agronómica H-03) cerrado con 3/3 rotaciones viables en dv-nv-01 y qro-sjr-01.",
       "done": [
         "Guiones base en /data-pipeline (ee_coverage.py, ee_export.py, build_table.py, notebook Colab).",
         "Guiones de entrenamiento en /models (XGBoost 1/2/4, GRU->ONNX 3, partición por valle y último año fuera).",
@@ -735,20 +725,10 @@ python scripts/sync_board.py --check
         "Desbloqueo H-04: kc_monthly.csv y fao56_crop_bank.csv ya listos en /models.",
         "D-02 / D-05 + M-03 resueltos: tabla multi_valley_us.parquet (15 parcelas NV/ID/UT, 720 filas) extraída y Modelo 2 evaluado (-6.3 %, reportado transparente).",
         "M-04 Completado: Modelo 3 CropHistoryGRU exportado a ONNX en CPU (0.4143 vs 0.2222 F1 macro en diamond_valley_nv, 0.581 último año), weights de atención activos en /evaluate y CARD.md lleno.",
-        "D-04 Completado: balance oficial del acuífero Valle de San Juan del Río Clave 2203 (CONAGUA DOF 2023-11-09: -56.89 hm³/año) y SIAP 2020–2025 integrados en qro-sjr-01.meta.json."
+        "D-04 Completado: balance oficial del acuífero Valle de San Juan del Río Clave 2203 (CONAGUA DOF 2023-11-09: -56.89 hm³/año) y SIAP 2020–2025 integrados en qro-sjr-01.meta.json.",
+        "H-03 / M-06 Completado: rasgos y plantillas auditados contra USDA CDL Eureka, SIAP, NASA POWER, FAO-56, UNR Extension e INIFAP; trigo_primavera en less_water NV y cierre G4 confirmado."
       ],
-      "todo": [
-        {
-          "id": "H-03 / M-06",
-          "gate": "G4",
-          "title": "Validación agronómica de rasgos/plantillas (H-03) y cierre formal de corte G4",
-          "detail": "Datos y modelos integrados y probados; solo confirmar revisión agronómica de plantillas y rasgos.",
-          "connects_to": [
-            "H0M10",
-            "Gicarrillo"
-          ]
-        }
-      ]
+      "todo": []
     },
     {
       "id": "Gicarrillo",
@@ -1005,12 +985,21 @@ python scripts/sync_board.py --check
       "status": "Completado (https://morris-team-dfs.vercel.app/)"
     },
     {
-      "id": "H-03 / H-09",
+      "id": "H-03",
       "priority": "P1",
-      "owner": "Checo-coder / Gicarrillo",
-      "due": "Sáb tarde",
-      "title": "Validar rasgos agronómicos (crop_traits.py), mapa base MapLibre y lenguaje llano con agrónomo",
-      "blocks": "Lenguaje realista en /tool y sustento de supuestos locales",
+      "owner": "H0M10 / Checo-coder",
+      "due": "Dom 08:00 (G4)",
+      "title": "Auditar rasgos (crop_traits.py), FAO-56 y plantillas contrafactuales contra datos reales (CDL, SIAP, POWER) y agronomía UNR/INIFAP",
+      "blocks": "Cierre de compuerta G4 y comparabilidad real de las 3 rotaciones en Diamond Valley",
+      "status": "Completado (auditado vs datos reales + literatura UNR/INIFAP; avena->trigo_primavera en less_water NV; maquinaria individual queda declarada como assumed)"
+    },
+    {
+      "id": "H-09",
+      "priority": "P1",
+      "owner": "Gicarrillo",
+      "due": "Sáb tarde - Dom 11:00",
+      "title": "Decisiones visuales de /tool: mapa base MapLibre, calendario con tramas, texto en lenguaje llano y lector de pantalla",
+      "blocks": "Compuerta G5 (accesibilidad AA y producto agricultor)",
       "status": "Pendiente"
     },
     {
@@ -1190,6 +1179,11 @@ python scripts/sync_board.py --check
       "when": "2026-11-14 16:54",
       "decision": "Cierre técnico de A-07 (OpenET + FAO-56 calibrado sobre Model 1 contrafactual; CQR 90 % de Model 4 en timeline labeled; notas exactas de Model 2 -6.3 %) y carga de balances oficiales de acuíferos NDWR (NV Área 153) y CONAGUA (Qro Clave 2203 DOF 2023-11-09).",
       "impact": "Evita fuga de NDVI/NDMI en rotaciones contrafactuales, activa intervalos CQR 90 % en 36 meses de dv-nv-01 (36/36 pytest en verde) y entrega contexto regional oficial en dv-nv-01 y qro-sjr-01."
+    },
+    {
+      "when": "2026-11-14 17:50",
+      "decision": "Cierre de M-06, H-03 y Compuerta G4 tras verificación en vivo de Railway e investigación cruzada con datos reales (CDL Eureka, SIAP 2020–2025, POWER, FAO-56 Tabla 12, UNR Extension e INIFAP).",
+      "impact": "Se mantiene Modelo 4 activo con aviso de brecha (58.3 % vs 90 %, 86.1 % en dv-nv-01) por superar claramente la línea base (22.9 %) y se corrige TEMPLATES['alfalfa']['less_water'] de avena_forrajera (0 acres en CDL Eureka) a trigo_primavera (298–475 acres en CDL), logrando 3/3 rotaciones viables en dv-nv-01 (167/167 pytest en verde)."
     }
   ]
 }

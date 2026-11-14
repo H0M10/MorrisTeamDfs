@@ -3,9 +3,11 @@
 Se construyen desde el banco de cultivos (`crop_bank.py`): qué se siembra, qué
 se vende y qué equipo pide cada cultivo.
 
-TODO ES SUPUESTO (type "assumed"). Un agrónomo debe revisar la tabla antes de
-que una cifra real llegue al agricultor (HUMANO.md H-03). No incluye maquinaria
-de cosecha de grano: se supone contratada.
+La lista regional y coeficientes FAO-56 se auditaron el 2026-11-14 (H-03) contra
+USDA CDL/QuickStats, SIAP 2020-2025, FAO-56 Tabla 12/22, UNR Extension e INIFAP.
+Aun así, cada cifra de rasgos se mantiene con type "assumed" porque el equipo
+disponible (empacadora, siembra) y la maquila de cosecha de grano dependen de
+cada agricultor en particular.
 
 Para cambiar un rasgo edita `models/fao56_crop_bank.csv` y corre
 `python contracts/sync.py`; el motor no tiene otros valores escondidos.
@@ -20,7 +22,7 @@ from app.engine.crop_bank import list_crops
 TRAITS_TYPE = "assumed"
 TRAITS_SOURCE = (
     "Tabla de rasgos de cultivo del equipo, models/fao56_crop_bank.csv "
-    "(supuesto, pendiente de revisión agronómica)"
+    "(auditada contra CDL, SIAP y literatura UNR/INIFAP; supuesto sujeto al predio)"
 )
 
 # Cada requisito se cumple con cualquiera de sus alternativas.

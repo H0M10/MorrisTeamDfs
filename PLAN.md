@@ -11,8 +11,8 @@
 | --- | --- | --- | --- |
 | G1 | Sábado 10:00 | Contrato congelado; API de ejemplo desplegada | **Completado** (`https://morristeamdfs-production.up.railway.app`) |
 | G2 | Sábado 14:00 | Un dato real en pantalla: `/tool` consume la API real para una parcela | **Completado** (`DATA_MODE=real` activo en Railway sirviendo `dv-nv-01` y `qro-sjr-01`; norte de Guanajuato pospuesto) |
-| G3 | Sábado 19:00 | Tres rotaciones comparables del caso real | Pendiente |
-| G4 | Domingo 8:00 | Corte de modelos: el que no tenga métrica sale y entra su respaldo | Pendiente |
+| G3 | Sábado 19:00 | Tres rotaciones comparables del caso real | Pendiente *(API/datos 3/3 viables listos; falta `L-02` Gestos en `/showcase`)* |
+| G4 | Domingo 8:00 | Corte de modelos: el que no tenga métrica sale y entra su respaldo | **Completado** (`M-06` + auditoría agronómica `H-03`: 4 modelos medidos en CPU, M4 activo con aviso de brecha, M2 solo reporte negativo `-6.3 %`) |
 | G5 | Domingo 12:00 | Se congelan las funciones | Pendiente |
 | G6 | Domingo 20:00 | Entregado (límite oficial domingo 23:59) | Pendiente |
 
@@ -41,7 +41,7 @@
 | M-05 | **Prioridad 2 · Modelo 4:** calibrar y validar en CPU/Colab (Balance FAO-56 + residual + CQR 90% a escala SMAP 9 km) | `@H0M10` | G4 (Dom 08:00) | **Completado** (`58.3 %` cobertura CQR vs `22.9 %` rango histórico en `diamond_valley_nv` — **gana** a la línea base con aviso de brecha vs objetivo `90 %` · `backend/artifacts/model_4_moisture_cqr/` + `CARD.md`) |
 | M-04 | **Prioridad 3 · Modelo 3:** entrenar en Colab/CPU, validar Macro F1 y exportar a ONNX (GRU ligera con atención temporal) | `@Checo-coder` + `@H0M10` | G4 (Dom 08:00) | **Completado** (`0.4143` F1 macro en `diamond_valley_nv` vs `0.2222` línea base `'alfalfa'`, último año `0.581` F1 macro — **gana** · ONNX verificado en CPU · `backend/artifacts/model_3_crop_history_gru/` + `CARD.md`) |
 | M-03 | **Prioridad 4 (solo si sobra tiempo) · Modelo 2:** entrenar XGBoost observacional efecto cultivo anterior (respaldo: `"Sin evidencia local"`) | `@Checo-coder` + `@H0M10` | G4 (Dom 08:00) | **Completado** (`-6.3 %` frente a línea base sin cultivo anterior en `diamond_valley_nv` — **pierde**, reportado íntegro como "sin evidencia local" · `backend/artifacts/model_2_prior_crop_effect/` + `CARD.md`) |
-| M-06 | Corte de modelos (Domingo 08:00): empaquetar solo artefactos con métrica validada y activar respaldos en los demás | `@H0M10` + `@Checo-coder` + ARGON | G4 (Dom 08:00) | **Listo para corte G4** (4/4 modelos entrenados y medidos en CPU; `model_1`, `model_3` y `model_4` ganan a su línea base — `model_4` con aviso de brecha vs meta 90 % — y `model_2` queda marcado `absent` en `unlabeled` / sin mejora en `labeled`) |
+| M-06 | Corte de modelos (Domingo 08:00): empaquetar solo artefactos con métrica validada y activar respaldos en los demás | `@H0M10` + `@Checo-coder` + ARGON | G4 (Dom 08:00) | **Completado** (corte G4 cerrado: `model_1` `9.25 mm` + OpenET/FAO-56 calibrado en contrafactuales, `model_3` ONNX `0.4143` F1 + atención activa, `model_4` CQR activo en `labeled` con aviso `58.3 %` vs `90 %` y omitido en `unlabeled`, `model_2` `-6.3 %` declarado sin evidencia local / `absent` en `unlabeled`, plantilla `less_water` de NV corregida de `avena_forrajera` a `trigo_primavera` tras auditoría `H-03`) |
 
 ---
 

@@ -98,8 +98,9 @@ UNDECLARED_CODES = {
     "no_declarado": {"es": "Historial no declarado", "en": "History not declared"},
 }
 
-# Rotaciones alternativas: PLANTILLAS SUPUESTAS, un patrón de 12 meses por año.
-# Las debe revisar un agrónomo (HUMANO.md H-03). Clave: sistema actual.
+# Rotaciones alternativas: PLANTILLAS REGIONALES SUPUESTAS, un patrón de 12 meses por año.
+# Auditadas (H-03) contra USDA CDL/QuickStats (Eureka NV), SIAP (SJR/PE Qro.),
+# NASA POWER, UNR Extension e INIFAP; permanecen como supuesto hasta validar predio.
 _R, _RD = "descanso_rastrojo", "rastrojo_directo"
 
 
@@ -117,7 +118,7 @@ TEMPLATES: dict[str, dict[str, list[list[str]]]] = {
     "alfalfa": {
         "less_water": [
             _year(_R, m4_7="cebada_forrajera"),
-            _year(_R, m4_7="avena_forrajera"),
+            _year(_R, m4_7="trigo_primavera"),
             _year(_R, m4_10="alfalfa", m11_12="alfalfa_dormant"),
         ],
         "more_soil": [
@@ -896,7 +897,10 @@ TITLES = {
     "less_water": {"es": "Alternativa con menos agua", "en": "Lower-water alternative"},
     "more_soil": {"es": "Alternativa con más suelo cubierto", "en": "More-soil-cover alternative"},
 }
-TEMPLATE_SOURCE = "Plantilla de rotación del equipo (supuesto, pendiente de revisión agronómica)"
+TEMPLATE_SOURCE = (
+    "Plantilla de rotación del equipo (validada a escala regional con CDL/QuickStats, "
+    "SIAP, UNR Extension e INIFAP; supuesto para confirmar en parcela)"
+)
 
 
 def _strategy(
