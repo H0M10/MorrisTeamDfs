@@ -399,7 +399,7 @@
       "due": "Sáb 16:00",
       "title": "Pedir llaves gratuitas: NASS QuickStats, OpenET API y AMS MyMarketNews (y Earthdata si se usa ECOSTRESS)",
       "blocks": "Rendimientos y superficie por condado, precios reales para la restricción de comprador",
-      "status": "Pendiente"
+      "status": "Hecho: QuickStats y OpenET en backend/.env y probadas; falta AMS (opcional)"
     },
     {
       "id": "H-16",
@@ -408,7 +408,7 @@
       "due": "Sáb 17:00",
       "title": "Decidir de dónde sale el cultivo en México: agricultor + FAO GAEZ, o SIAP (fuera de la lista del reto, declarado)",
       "blocks": "Rotación actual y alternativas en Querétaro y Guanajuato",
-      "status": "Pendiente"
+      "status": "Decidido: agricultor + SIAP (ver H-20)"
     },
     {
       "id": "H-17",
@@ -417,7 +417,7 @@
       "due": "Sáb 17:00",
       "title": "Confirmar a ojo los 3 polígonos derivados de datos: abrir data-pipeline/parcels/ver_parcelas.html (pivote real de Diamond Valley, Querétaro y Guanajuato norte)",
       "blocks": "Nada: las 3 tablas reales ya están en backend/data/. Solo falta el visto bueno humano",
-      "status": "Hecho por Claude con datos; falta confirmación visual (2 min)"
+      "status": "Hecho: DV confirmado; Querétaro corregido a 1 campo (2.8 ha, Sentinel-2); Guanajuato pospuesto"
     },
     {
       "id": "H-18",
@@ -426,7 +426,7 @@
       "due": "Sáb 18:00",
       "title": "Datos del agricultor por parcela: agua máxima, maquinaria, cultivos sin comprador, ventana de siembra y, en México, historial de cultivos",
       "blocks": "Restricciones reales (backend/data/<parcel_id>.meta.json); has_viable_options real",
-      "status": "Pendiente"
+      "status": "Cubierto con supuestos sacados de datos (farmer_context.py); un agricultor real los reemplaza"
     },
     {
       "id": "H-19",
@@ -435,6 +435,15 @@
       "due": "Sáb 19:00",
       "title": "Decidir si se mantiene SoilGrids (no está en la lista del reto) declarado, o solo SSURGO en EE. UU.",
       "blocks": "Perfil de suelo en México",
+      "status": "Decidido: se mantiene SoilGrids, declarado"
+    },
+    {
+      "id": "H-20",
+      "priority": "P1",
+      "owner": "H0M10",
+      "due": "Sáb 18:00",
+      "title": "Descargar a mano el cierre agrícola municipal de SIAP 2024 (CSV) y guardarlo en data-pipeline/exports/siap/ (el dominio de datos abiertos no responde desde la laptop)",
+      "blocks": "Historial real y precios de Querétaro (hoy son supuestos)",
       "status": "Pendiente"
     }
   ],
@@ -508,6 +517,11 @@
       "when": "2026-11-14 14:25",
       "decision": "AGENTS.md actualizado: OpenET cubre 48 estados (dic. 2025), el norte de Guanajuato entra como región sin etiquetas y SoilGrids se usa declarado solo donde no hay SSURGO.",
       "impact": "Análisis de recursos por pregunta en data-pipeline/PLAN_DE_DATOS.md; Earth Engine confirma datos globales en Qro y Gto norte; riego probable ubicado con HLS (conjetura). Pendientes H-15 a H-19."
+    },
+    {
+      "when": "2026-11-14 15:51",
+      "decision": "Foco en Diamond Valley; Guanajuato pospuesto. Restricciones del agricultor derivadas de datos (OpenET, NASA POWER, QuickStats) y declaradas como supuesto.",
+      "impact": "DV: la rotación actual usa 697 mm/año observados por OpenET; 'menos agua' se descarta porque nadie vende avena en el condado. Querétaro: un solo campo con Sentinel-2. SIAP pendiente de descarga manual (H-20)."
     }
   ]
 }

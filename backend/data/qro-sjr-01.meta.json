@@ -1,0 +1,40 @@
+{
+  "name": {
+    "es": "Parcela de riego — zona San Juan del Río y Pedro Escobedo, Qro.",
+    "en": "Irrigated field — San Juan del Río and Pedro Escobedo area, Qro."
+  },
+  "declared_history": {
+    "1": "alfalfa",
+    "2": "alfalfa",
+    "3": "alfalfa",
+    "4": "alfalfa",
+    "5": "alfalfa",
+    "6": "alfalfa",
+    "7": "alfalfa",
+    "8": "alfalfa",
+    "9": "alfalfa",
+    "10": "alfalfa",
+    "11": "alfalfa",
+    "12": "alfalfa"
+  },
+  "constraints": {
+    "max_water_mm_year": 836,
+    "available_machinery": [
+      "riego_compuerta",
+      "sembradora_convencional",
+      "empacadora"
+    ],
+    "crops_without_buyer": [],
+    "planting_window": {
+      "start_month": 1,
+      "end_month": 12
+    }
+  },
+  "constraints_source": "Supuesto del equipo, no declarado por un agricultor ni tomado de SIAP. Historial: meses verdes en HLS (enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, noviembre, diciembre); verde 10 meses o más al año: se supone un forraje perenne (alfalfa), común bajo riego en el Bajío. Falta confirmarlo con SIAP o el agricultor. Agua: FAO-56 para ese historial (836 mm/año; no se asigna agua extra). Ventana: NASA POWER, todos los meses tienen temperatura media de 5 °C o más. Maquinaria: la que pide ese historial (riego_compuerta, sembradora_convencional, empacadora), con riego por gravedad (supuesto). Sin comprador: sin dato.",
+  "context_notes": [
+    {
+      "es": "Qué se siembra y a qué precio en el municipio debe salir del cierre agrícola municipal de SIAP (riego, ciclos otoño-invierno y primavera-verano). Aún no se integra: pendiente de descarga.",
+      "en": "What is grown and at what price in the municipality should come from SIAP's municipal crop closure. Not integrated yet: pending download."
+    }
+  ]
+}

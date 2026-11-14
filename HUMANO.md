@@ -202,3 +202,21 @@ Va en `backend/data/<parcel_id>.meta.json` (formato en `backend/README.md`). Sin
 ### H-19. Decidir si se mantiene SoilGrids (Hanniel)
 
 SoilGrids (ISRIC) da el suelo en la tabla real y es la única fuente de suelo para México, pero **no está en la lista de recursos del reto**. Opciones: (a) mantenerlo y declararlo en la página del proyecto; (b) usar solo SSURGO en EE. UU. y dejar el suelo de México como "información que falta". `AGENTS.md` ya dice que se usa declarado y solo donde no hay SSURGO.
+
+### H-20. Descargar el cierre agrícola municipal de SIAP (Hanniel, cuando puedas)
+
+Decidiste usar también estadística oficial mexicana. El dominio de datos abiertos de SIAP (`nube.siap.gob.mx`) no resuelve desde la laptop (DNS: dominio inexistente), así que la descarga es manual:
+
+1. En el navegador entra a https://www.gob.mx/siap y busca **"Cierre de la producción agrícola"** (datos abiertos, por municipio).
+2. Descarga el CSV de **2024** (y 2023 si está). Trae municipio, cultivo, ciclo (otoño-invierno, primavera-verano), riego o temporal, superficie sembrada, producción y **precio medio rural**.
+3. Guárdalo en `data-pipeline/exports/siap/` (esa carpeta no se sube al repositorio) y avísame.
+
+Con eso reemplazo el historial supuesto de Querétaro por lo que de verdad se siembra con riego en el municipio, y agrego precios.
+
+### Estado de H-15 a H-19 (actualizado por Claude)
+
+- **H-15:** llaves de QuickStats y OpenET guardadas en `backend/.env` y probadas; falta AMS (opcional). Como las pegaste en el chat, conviene regenerarlas después del evento.
+- **H-16:** decidido: agricultor más SIAP (H-20).
+- **H-17:** Diamond Valley confirmado. Querétaro corregido a un solo campo de 2.8 ha con Sentinel-2 (10 m). Guanajuato pospuesto.
+- **H-18:** cubierto con supuestos sacados de datos (`data-pipeline/farmer_context.py`): agua que ya usa el campo (OpenET), ventana por temperatura (POWER), mercado por censo y CDL (QuickStats), precios de heno (QuickStats). Un agricultor real los reemplaza.
+- **H-19:** decidido: se mantiene SoilGrids, declarado.

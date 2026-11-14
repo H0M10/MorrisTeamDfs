@@ -106,7 +106,7 @@ def evaluate(parcel_id: str, settings: Settings) -> EvaluationDict:
     if settings.data_mode == "real":
         evaluation, meta = _real_base(parcel_id, settings)
         if meta.constraints is not None:
-            return apply_constraints(evaluation, meta.constraints)
+            return apply_constraints(evaluation, meta.constraints, meta.constraints_source)
         # Sin restricciones declaradas no hay nada que descartar; se dice en cada ficha.
         for strategy in evaluation["strategies"]:
             strategy["evidence_card"]["information_gaps"].append(table_to_contract.UNDECLARED_GAP)
@@ -134,7 +134,9 @@ def crop_labels(evaluation: EvaluationDict) -> dict[str, dict[str, str]]:
     return labels
 
 
-def apply_constraints(evaluation: EvaluationDict, declared: ConstraintsIn) -> EvaluationDict:
+def apply_constraints(
+    evaluation: EvaluationDict, declared: ConstraintsIn, source: str | None = None
+) -> EvaluationDict:
     """Pasa las tres rotaciones por el evaluador y actualiza la evaluación en sitio."""
     window = declared.planting_window
     farmer = FarmerConstraints(
@@ -161,7 +163,7 @@ def apply_constraints(evaluation: EvaluationDict, declared: ConstraintsIn) -> Ev
         **constraints["max_water_mm_year"],
         "value": declared.max_water_mm_year,
         "type": "fixture" if is_fixture else "assumed",
-        "source": "Restricción declarada por el agricultor"
+        "source": (source or "Restricción declarada por el agricultor")
         + (" (simulación sobre datos de ejemplo)" if is_fixture else ""),
     }
     constraints["available_machinery"] = list(declared.available_machinery)

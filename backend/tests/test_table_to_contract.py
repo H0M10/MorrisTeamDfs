@@ -229,17 +229,25 @@ def test_strategies_water_and_models(
     assert list(by_id) == ["current", "less_water", "more_soil"]
 
     current = by_id["current"]["metrics"]
-    assert current["annual_water_mm"]["value"] == 855  # alfalfa, calculado a mano arriba
+    # Con OpenET completo la rotación actual usa el agua medida:
+    # OpenET 80 mm/mes sin lluvia -> 960 mm/año de riego neto.
+    assert current["annual_water_mm"]["value"] == 960
     assert current["annual_water_mm"]["type"] == "modeled"
-    assert "FAO-56" in current["annual_water_mm"]["source"]
+    assert "OpenET" in current["annual_water_mm"]["source"]
+    assert current["annual_water_mm"]["native_scale"] == "30 m (campo)"
     assert current["water_delta_vs_current_mm"]["value"] == 0
     assert current["soil_cover_months_36m"]["value"] == 36
     assert current["prior_crop_vigor_delta_pct"]["value"] is None  # modelo 2 no inventa
     assert current["frost_risk_days_year"]["value"] == 30
 
     less = by_id["less_water"]["metrics"]
-    assert less["annual_water_mm"]["value"] < 855
-    assert less["water_delta_vs_current_mm"]["value"] == less["annual_water_mm"]["value"] - 855
+    # Alternativas: FAO-56 calibrado con la parcela (factor 960 / 855 = 1.12)
+    assert "calibrado" in less["annual_water_mm"]["source"]
+    assert "1.12" in less["annual_water_mm"]["source"]
+    assert less["annual_water_mm"]["value"] < 960
+    assert less["water_delta_vs_current_mm"]["value"] == pytest.approx(
+        less["annual_water_mm"]["value"] - 960, abs=1
+    )
     assert less["soil_cover_months_36m"]["type"] == "assumed"  # la secuencia es una plantilla
     assert "plantilla" in by_id["less_water"]["evidence_card"]["information_gaps"][2]["es"]
     assert by_id["more_soil"]["metrics"]["soil_cover_months_36m"]["value"] == 36
@@ -417,7 +425,7 @@ def test_api_real_mode_end_to_end(make_client: Callable[..., TestClient], tmp_pa
     ).json()
     assert_contract(simulated)
     assert simulated["has_viable_options"] is False
-    assert "855 mm" in simulated["strategies"][0]["rejection_reason"]["es"]
+    assert "960 mm" in simulated["strategies"][0]["rejection_reason"]["es"]
     assert simulated["constraints"]["max_water_mm_year"]["type"] == "assumed"
 
     answer = client.post(
@@ -426,7 +434,7 @@ def test_api_real_mode_end_to_end(make_client: Callable[..., TestClient], tmp_pa
     ).json()
     assert answer["answered"] is True
     assert not answer["answer"].startswith("Datos de ejemplo")
-    assert "855 mm/yr (modelado" in answer["answer"]
+    assert "960 mm/yr (modelado" in answer["answer"]
 
     assert client.post("/api/v1/evaluate", json={"parcel_id": "otra"}).status_code == 404
 
@@ -461,3 +469,37 @@ def test_api_real_mode_without_any_table_is_503(
     response = client.post("/api/v1/evaluate", json={"parcel_id": PARCEL})
     assert response.status_code == 503
     assert response.json()["error"] == "real_data_unavailable"
+
+
+def test_without_openet_the_current_rotation_uses_fao56(
+    make_settings: Callable[..., Settings], tmp_path: Path
+) -> None:
+    table = make_table()
+    table.loc[5, "openet_et_mm"] = None  # un mes sin OpenET: no se mezcla medido con estimado
+    settings = real_settings(make_settings, write_table(tmp_path / "data", table))
+    current = evaluation_service.evaluate(PARCEL, settings)["strategies"][0]["metrics"]
+    assert current["annual_water_mm"]["value"] == 855
+    assert "FAO-56" in current["annual_water_mm"]["source"]
+
+
+def test_meta_constraint_source_and_context_notes(
+    make_settings: Callable[..., Settings], tmp_path: Path
+) -> None:
+    note = {"es": "Censo agrícola 2022: alfalfa en el condado.", "en": "2022 census: alfalfa."}
+    meta = {
+        "constraints": {
+            "max_water_mm_year": 960,
+            "available_machinery": ["pivote_central", "sembradora_grano", "empacadora"],
+            "crops_without_buyer": [],
+            "planting_window": {"start_month": 3, "end_month": 10},
+        },
+        "constraints_source": "Supuesto con datos: riego observado por OpenET",
+        "context_notes": [note],
+    }
+    settings = real_settings(make_settings, write_table(tmp_path / "data", make_table(), meta))
+    evaluation = evaluation_service.evaluate(PARCEL, settings)
+    assert_contract(evaluation)
+    assert evaluation["constraints"]["max_water_mm_year"]["source"].startswith("Supuesto con datos")
+    for strategy in evaluation["strategies"]:
+        assert note in strategy["evidence_card"]["supporting_evidence"]
+    assert evaluation["strategies"][0]["viable"] is True  # usa exactamente lo observado

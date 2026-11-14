@@ -78,7 +78,7 @@ Correcciones que ya se decidieron y no se reabren:
 **Regiones:**
 
 - **Con etiquetas:** Diamond Valley, Nevada (el caso del reto; centro aproximado 39.68, -116.03) y dos o tres zonas de riego parecidas de Nevada, Idaho y Utah, elegidas por similitud: pivote, alfalfa y granos. Aquí se entrena y se mide.
-- **Sin etiquetas:** parcelas de Querétaro (zona de riego de San Juan del Río y Pedro Escobedo) y del norte de Guanajuato (San Felipe, San Diego de la Unión, Dolores Hidalgo, San Luis de la Paz). Los polígonos los define una persona del equipo. No hay CDL ni OpenET: corre la física y el modelo 3 aparece como experimental. Las zonas probables de riego salen de `data-pipeline/ee_irrigated_scout.py`; son una conjetura de ubicación, no una etiqueta.
+- **Sin etiquetas:** parcelas de Querétaro (zona de riego de San Juan del Río y Pedro Escobedo). El norte de Guanajuato quedó pospuesto el 14 de noviembre: el foco es Diamond Valley, donde están todos los datos. Los polígonos los define una persona del equipo. No hay CDL ni OpenET: corre la física y el modelo 3 aparece como experimental. Las zonas probables de riego salen de `data-pipeline/ee_irrigated_scout.py`; son una conjetura de ubicación, no una etiqueta.
 - Qué datos hay en cada región y qué responde cada recurso: `data-pipeline/PLAN_DE_DATOS.md`.
 - Las cifras de disponibilidad de acuíferos de CONAGUA solo se muestran si una persona las verificó contra la publicación oficial y anotó la fecha. Van como contexto de cuenca.
 

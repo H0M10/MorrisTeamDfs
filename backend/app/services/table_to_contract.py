@@ -165,6 +165,10 @@ class ParcelMeta(BaseModel):
     declared_history: dict[int, str] | None = None  # mes del calendario -> crop_code
     aquifer_name: LocalizedText | None = None
     aquifer_status_note: LocalizedText | None = None
+    # De dónde salen las restricciones si no las dijo el agricultor (supuesto con dato).
+    constraints_source: str | None = None
+    # Contexto con fuente (mercado, censo, precios): se agrega a la evidencia de cada rotación.
+    context_notes: list[LocalizedText] | None = None
 
 
 # ---------- lectura ----------
@@ -386,6 +390,33 @@ def is_cover(code: str) -> bool:
     """¿El suelo queda cubierto ese mes? Cultivo en pie o rastrojo retenido."""
     spec = crop_bank.get_crop_spec(code)
     return spec is not None and (spec.sown or "rastrojo" in code)
+
+
+SRC_OPENET_WATER = (
+    "Riego neto observado: OpenET (ET real del campo) menos lluvia efectiva USDA SCS "
+    "de NASA POWER, promedio por año"
+)
+SRC_FAO_CALIBRATED = (
+    "Balance FAO-56 con el banco de cultivos, calibrado con el riego observado de esta "
+    "parcela por OpenET (factor {factor:.2f})"
+)
+
+
+def water_scale(source: str) -> str:
+    return "30 m (campo)" if "OpenET" in source else SCALE_POWER
+
+
+def observed_net_irrigation(rows: list[Row]) -> float | None:
+    """Riego neto medio por año con ET real de OpenET. None si falta algún mes."""
+    totals: dict[str, float] = {}
+    for row in rows:
+        et, rain = row.get("openet_et_mm"), row.get("rain_mm")
+        if et is None or rain is None:
+            return None
+        year = row["month"][:4]
+        need = wb.net_irrigation_requirement(float(et), wb.effective_rain_usda(float(rain)))
+        totals[year] = totals.get(year, 0.0) + need
+    return sum(totals.values()) / len(totals) if totals else None
 
 
 def annual_water_mm(
@@ -652,10 +683,28 @@ def build_evaluation(
             years[i // 12][int(months[i][5:7]) - 1] for i in range(MONTHS_REQUIRED)
         ]
     water = {key: annual_water_mm(months, crops, et0, rain) for key, crops in sequences.items()}
+    water_source = dict.fromkeys(water, SRC_FAO_WATER)
+    observed = observed_net_irrigation(rows)
+    if observed is not None and water["current"]:
+        # La rotación actual usa el agua medida; las alternativas, FAO-56 calibrado con la
+        # misma parcela para que la comparación sea justa.
+        factor = observed / water["current"]
+        for key, value in water.items():
+            if key != "current" and value is not None:
+                water[key] = value * factor
+                water_source[key] = SRC_FAO_CALIBRATED.format(factor=factor)
+        water["current"] = observed
+        water_source["current"] = SRC_OPENET_WATER
     strategies = [
-        _strategy(key, sequences[key], months, water, frost_year, heat_year, period, labeled)
+        _strategy(
+            key, sequences[key], months, water, water_source, frost_year, heat_year, period, labeled
+        )
         for key in ("current", "less_water", "more_soil")
     ]
+    for strategy in strategies:
+        strategy["evidence_card"]["supporting_evidence"].extend(
+            note.model_dump() for note in meta.context_notes or []
+        )
 
     footprints = dict(PIXEL_FOOTPRINTS_M) | (LABELED_FOOTPRINTS_M if labeled else {})
     name = (
@@ -778,6 +827,7 @@ def _strategy(
     crops: list[str],
     months: list[str],
     water: dict[str, float | None],
+    water_source: dict[str, str],
     frost_year: float | None,
     heat_year: float | None,
     period: str,
@@ -911,10 +961,22 @@ def _strategy(
         "sequence_36m": palette_items,
         "metrics": {
             "annual_water_mm": card(
-                mine, "mm/yr", "modeled", SRC_FAO_WATER, period, SCALE_POWER, 0
+                mine,
+                "mm/yr",
+                "modeled",
+                water_source[key],
+                period,
+                water_scale(water_source[key]),
+                0,
             ),
             "water_delta_vs_current_mm": card(
-                delta, "mm/yr", "modeled", SRC_FAO_WATER, period, SCALE_POWER, 0
+                delta,
+                "mm/yr",
+                "modeled",
+                water_source[key],
+                period,
+                water_scale(water_source[key]),
+                0,
             ),
             "soil_cover_months_36m": card(
                 cover, "months", sequence_type, sequence_source, period, "parcela", 0
