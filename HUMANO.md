@@ -7,7 +7,7 @@ Regla 11 de `AGENTS.md`: Todo lo que requiera intervención humana (cuentas, lla
 | Prioridad | Acción humana | Responsable | Para cuándo | Qué bloquea | Estado |
 | --- | --- | --- | --- | --- | --- |
 | **P0 (Crítico)** | Crear/verificar cuentas del equipo: proyecto **Google Earth Engine** de uso no comercial, **Colab** y acceso a **OpenET** (Earthdata Login solo si se usa `earthaccess` fuera de GEE) | `@Checo-coder` + `@H0M10` | Sáb mañana | Tareas D-01 a D-05 (sin GEE/OpenET no hay datos reales ni modelos) | Pendiente |
-| **P0 (Crítico)** | Crear proyectos en **Vercel**, **Railway** y **Supabase**, obtener URLs/llaves y cargar `.env` locales + variables de entorno en la nube (sin subir secretos a Git) | Hanniel (`@H0M10`) | Sáb 10:00 | Despliegue API ejemplo (Sáb 10:00) y RLS `/supabase` | Pendiente |
+| **P0 (Crítico)** | Crear proyectos en **Railway** (**Completado**: `https://morristeamdfs-production.up.railway.app`), **Supabase** y **Vercel**, aplicar SQL y cargar variables en la nube (sin secretos en Git) | Hanniel (`@H0M10`) | Sáb 10:00 | Railway listo (G1); falta SQL de Supabase y Vercel | En curso (Railway listo) |
 | **P1 (Alto)** | Elegir las **2 o 3 zonas de riego** similares a Diamond Valley en Nevada, Idaho y Utah (pivote, alfalfa, granos) para entrenamiento y validación por valle | `@Checo-coder` + `@H0M10` | Sáb mañana | D-02, D-05 y partición correcta por valle en Modelos 1-4 | Pendiente |
 | **P1 (Alto)** | Lanzar las **exportaciones de Earth Engine de Diamond Valley** (36 meses HLS, POWER, OpenET, CDL, SMAP, SSURGO, SRTM) en Colab | `@Checo-coder` | Sáb 11:00–13:30 | Compuerta Sábado 14:00 ("un dato real en pantalla") y 19:00 | Pendiente |
 | **P1 (Alto)** | Decidir si se **renta una máquina en la nube con mucha RAM/GPU** (solo si Colab gratuito de ~12 GB RAM no alcanza para las tablas) | `@H0M10` + `@Checo-coder` | Sáb mediodía | Entrenamiento de Modelos 1-4 fuera de laptops de 8 GB | Pendiente |
@@ -32,18 +32,13 @@ Ya ejecutado y verificado:
 2. Invitaciones de colaboradores enviadas en GitHub (`checo-coder`, `Gicarrillo`, `AlexisHal8`). Solo falta que cada integrante acepte la invitación en su cuenta.
 3. GitHub Pages activo desde `main` (`/docs`) y respondiendo en `https://h0m10.github.io/MorrisTeamDfs/`.
 
-### H-02. Desplegar la API de ejemplo en Railway (`@H0M10`, compuerta del sábado 10:00)
+### H-02. Desplegar la API de ejemplo en Railway (`@H0M10`, compuerta del sábado 10:00) — **Completado**
 
-> **¿Estuvo mal conectar el repositorio entero (`H0M10/MorrisTeamDfs`) en Railway?** No: Railway siempre conecta el repositorio completo de GitHub; solo debes indicarle que este servicio vive dentro de la carpeta `backend` (el archivo `railway.json` en la raíz sirve únicamente como respaldo si no se ha fijado el directorio raíz).
-
-1. En railway.com: **New Project → Deploy from GitHub repo** y elige `H0M10/MorrisTeamDfs`.
-2. En el servicio: **Settings → Source → Root Directory** = `backend` (y en **Settings → Config-as-code → Railway Config File** usa `/backend/railway.json` para que no tome la ruta raíz con `cd backend`).
-3. **Variables**: `DATA_MODE=fixture` y, cuando exista el dominio de Vercel, `CORS_ORIGINS=https://<tu-app>.vercel.app,http://localhost:3000`. No hace falta ninguna llave.
-4. **Settings → Networking → Generate Domain**.
-5. Comprueba: `https://<dominio>/health` debe responder `"status":"ok"` y `https://<dominio>/docs` debe abrir.
-6. Si la compilación falla porque no reconoce el constructor, cambia `"builder": "RAILPACK"` por `"NIXPACKS"` en `backend/railway.json` y vuelve a desplegar. No se pudo probar sin la cuenta.
-
-Desbloquea: la compuerta "API de ejemplo desplegada" y `NEXT_PUBLIC_API_URL` para el frontend.
+Ya ejecutado y verificado:
+- URL pública en vivo: `https://morristeamdfs-production.up.railway.app`
+- `/health` respondió `"status": "ok"`, `"data_mode": "fixture"`, `"contract_version": "0.1.1"`, `"supabase_configured": false` y los cuatro modelos en `"fallback"`.
+- `/docs` abierto en `https://morristeamdfs-production.up.railway.app/docs#/`.
+- Cuando termines `H-06` y `H-07`, solo agrega `SUPABASE_URL`, `SUPABASE_ANON_KEY` y tu dominio final de Vercel en `CORS_ORIGINS`.
 
 ### H-03. Revisar la tabla de rasgos de cultivo (agrónomo o quien conozca el campo)
 
@@ -76,10 +71,10 @@ Resuelto en `contracts/CHANGELOG.md` v0.1.1: `diamond_valley.json` amplía `plan
    ```
    Las cuatro primeras deben devolver una fila. Si alguna falla, copia el error en `PLAN.md`: la migración solo pasó un analizador sintáctico, no se ha corrido en una base real.
 4. **Table Editor**: `evaluations` y `reviews` deben decir "RLS enabled" y no tener políticas.
-5. **Project Settings → API**: copia **Project URL** y la llave **anon public**. No copies `service_role` a ningún lado.
+5. **Project Settings → API Keys**: copia el **Project URL** y la llave pública **`Publishable`** (`sb_publishable_...`, o la `anon public` si usas Legacy API Keys). **Nunca** copies la llave JWT con `"role": "service_role"` ni `sb_secret_...` a ningún lado.
 6. Ponlas en:
-   - `backend/.env` y variables de Railway: `SUPABASE_URL`, `SUPABASE_ANON_KEY`.
-   - `frontend/.env.local` y variables de Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+   - `backend/.env` y variables de Railway: `SUPABASE_URL`, `SUPABASE_ANON_KEY` (= la `sb_publishable_...`; el backend solo envía `Authorization: Bearer` si recibe un JWT clásico).
+   - `frontend/.env.local` y variables de Vercel: `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` (o `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, el cliente acepta ambas).
 7. Comprueba: `GET /health` de la API debe decir `"supabase_configured": true`, y `POST /api/v1/share` con un fixture debe devolver un token.
 
 Desbloquea: enlaces compartibles (A-04) y revisión del técnico (T-04). (Extra #5 `/remote` quedó recortado preventivamente por equipo de 4).

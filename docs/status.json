@@ -2,8 +2,8 @@
   "project": "Field Shift",
   "team": "The CSC",
   "event": "NASA Space Apps Challenge 2026",
-  "updated_at": "2026-11-14T10:46:00-06:00",
-  "phase": "Ejecución Sábado Mañana — H-01 Completado · Infraestructura Hanniel (Railway + Supabase + Vercel)",
+  "updated_at": "2026-11-14T11:22:00-06:00",
+  "phase": "Compuerta G1 Completada (API en Railway en vivo) · Rumbo a G2 (14:00)",
   "repo_url": "https://github.com/H0M10/MorrisTeamDfs",
   "git_remote": "https://github.com/H0M10/MorrisTeamDfs.git",
   "pages_url": "https://h0m10.github.io/MorrisTeamDfs/",
@@ -17,7 +17,7 @@
       "when": "Sábado 10:00",
       "goal": "Contrato congelado v0.1.1; API fixture desplegada en Railway; repo público con 4 ramas",
       "owners": ["H0M10"],
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "G2",
@@ -65,28 +65,22 @@
       "folders": ["/contracts", "/backend", "/supabase", "/frontend/src/lib"],
       "role": "Líder Técnico · Contrato, Motor FAO-56, API FastAPI e Infraestructura",
       "color": "#1247B8",
-      "progress_pct": 65,
-      "doing_now": "H-01 cerrado (repo, invitaciones y Pages listos). Foco actual: Railway (Root Directory=backend, DATA_MODE=fixture), Supabase (SQL + RLS) y Vercel.",
+      "progress_pct": 75,
+      "doing_now": "G1 y Railway en vivo (https://morristeamdfs-production.up.railway.app). Foco actual: ejecutar SQL en Supabase (H-06) y desplegar Vercel (H-07) con soporte sb_publishable_.",
       "done": [
         "Estructura completa del repo y sincronización AGENTS.md == CLAUDE.md.",
         "Contrato JSON v0.1.1 y 3 fixtures de 36 meses (diamond_valley, queretaro, no_viable_options) verificados.",
         "Backend FastAPI (motor FAO-56, índices HLS sin NDRE/CAI, restricciones primero y /ask determinista).",
         "Migración SQL de Supabase (evaluations, reviews, RLS y 4 RPCs por token sin PII).",
-        "H-01 Completado: repo H0M10/MorrisTeamDfs en vivo, invitaciones enviadas (201) y GitHub Pages activo en main -> /docs."
+        "H-01 Completado: repo H0M10/MorrisTeamDfs en vivo, invitaciones enviadas (201) y GitHub Pages activo en main -> /docs.",
+        "H-02 / G1 Completado: API FastAPI en vivo en Railway (https://morristeamdfs-production.up.railway.app/health y /docs) + soporte sb_publishable_ en backend y frontend."
       ],
       "todo": [
         {
-          "id": "H-02 (Railway)",
-          "gate": "G1",
-          "title": "Fijar Root Directory = backend en Railway, DATA_MODE=fixture y generar dominio",
-          "detail": "Conectar H0M10/MorrisTeamDfs es normal; solo configura Root Directory = backend, Config = /backend/railway.json y devuelve URL de /health.",
-          "connects_to": ["Gicarrillo", "alexishal8"]
-        },
-        {
           "id": "H-06 (Supabase)",
-          "gate": "G1-G2",
-          "title": "Crear proyecto Supabase, correr 20261114000000_init.sql y copiar URL + anon key",
-          "detail": "Verificar 4 RPCs + RLS sin políticas; cargar SUPABASE_URL y SUPABASE_ANON_KEY en Railway y .env local (nunca service_role).",
+          "gate": "G2",
+          "title": "Correr 20261114000000_init.sql en SQL Editor y guardar sb_publishable_ en Railway",
+          "detail": "Verificar 4 RPCs + RLS sin políticas; cargar SUPABASE_URL y SUPABASE_ANON_KEY (sb_publishable_...) en Railway (nunca service_role).",
           "connects_to": ["Gicarrillo"]
         },
         {
@@ -338,7 +332,7 @@
       "due": "Sáb 10:00",
       "title": "Desplegar API fixture en Railway (Root Directory: backend, DATA_MODE=fixture)",
       "blocks": "Compuerta G1 y pruebas integradas de frontend",
-      "status": "Pendiente"
+      "status": "Completado (https://morristeamdfs-production.up.railway.app)"
     },
     {
       "id": "H-06",
@@ -452,6 +446,11 @@
       "when": "2026-11-14 10:46",
       "decision": "Retiro de pendientes previos con organizadores en HUMANO.md, cierre de H-01 y respaldo /railway.json para despliegue de H0M10.",
       "impact": "El repositorio completo conectado a Railway funciona fijando Root Directory = backend y Config File = /backend/railway.json."
+    },
+    {
+      "when": "2026-11-14 11:22",
+      "decision": "Compuerta G1 / H-02 cumplida (Railway en vivo) y compatibilidad con llaves sb_publishable_ de Supabase.",
+      "impact": "share.py solo envía Authorization Bearer con JWT clásico y frontend/src/lib/supabase.ts acepta NEXT_PUBLIC_SUPABASE_ANON_KEY o NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY."
     }
   ]
 }

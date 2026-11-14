@@ -54,10 +54,9 @@ class ShareStore:
         if not settings.supabase_configured:
             raise share_unavailable("Supabase no está configurado / Supabase is not configured")
         url = f"{settings.supabase_url.rstrip('/')}/rest/v1/rpc/{function}"
-        headers = {
-            "apikey": settings.supabase_anon_key,
-            "Authorization": f"Bearer {settings.supabase_anon_key}",
-        }
+        headers = {"apikey": settings.supabase_anon_key}
+        if settings.supabase_anon_key.count(".") == 2:
+            headers["Authorization"] = f"Bearer {settings.supabase_anon_key}"
         try:
             with httpx.Client(
                 timeout=settings.supabase_timeout_s, transport=self._transport
