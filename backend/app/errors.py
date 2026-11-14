@@ -34,6 +34,15 @@ def real_data_unavailable(parcel_id: str) -> ApiError:
     )
 
 
+def real_data_incomplete(parcel_id: str, detail: str) -> ApiError:
+    return ApiError(
+        503,
+        "real_data_incomplete",
+        f"La tabla de datos reales de '{parcel_id}' no alcanza para evaluar: {detail}.",
+        f"The real-data table for '{parcel_id}' is not enough to evaluate: {detail}.",
+    )
+
+
 async def api_error_handler(_: Request, exc: ApiError) -> JSONResponse:
     return JSONResponse(
         status_code=exc.status_code,

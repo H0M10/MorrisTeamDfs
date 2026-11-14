@@ -4,8 +4,9 @@ DATA_MODE=fixture: /evaluate sirve el fixture tal cual. /simulate toma el mismo
 fixture y solo vuelve a pasar las rotaciones por el evaluador de restricciones
 con lo que declaró el agricultor; todo sigue marcado como dato de ejemplo.
 
-DATA_MODE=real: usará las tablas precalculadas de /data-pipeline. Hoy no
-existen, así que responde 503 en vez de inventar.
+DATA_MODE=real: arma la evaluación desde las tablas .parquet de /data-pipeline
+que haya en DATA_DIR (ver table_to_contract.py). Si no hay tabla, o no alcanza
+para una evaluación honesta, responde 503 en vez de inventar.
 """
 
 from __future__ import annotations
@@ -13,6 +14,7 @@ from __future__ import annotations
 import copy
 import json
 from functools import lru_cache
+from pathlib import Path
 from typing import Any
 
 from app.config import FIXTURES_DIR, Settings
@@ -22,8 +24,10 @@ from app.engine.constraints import (
     RotationPlan,
     evaluate_rotations,
 )
-from app.errors import parcel_not_found, real_data_unavailable
+from app.errors import ApiError, parcel_not_found, real_data_incomplete, real_data_unavailable
+from app.models.loader import get_registry
 from app.schemas.api import ConstraintsIn
+from app.services import table_to_contract
 
 EvaluationDict = dict[str, Any]
 
@@ -44,25 +48,62 @@ def contract_version() -> str:
 
 def list_pilots(settings: Settings) -> dict[str, Any]:
     if settings.data_mode == "real":
-        # Aún no hay parcelas con datos reales precalculados.
-        return {"data_status": "real", "pilots": []}
-    pilots = [
-        {
-            "id": data["parcel"]["id"],
-            "name": data["parcel"]["name"],
-            "center": data["parcel"]["center"],
-            "area_ha": data["parcel"]["area_ha"],
-            "region_mode": data["parcel"]["region_mode"],
-            "has_viable_options": data["has_viable_options"],
-        }
-        for data in load_fixtures().values()
-    ]
-    return {"data_status": "fixture", "pilots": pilots}
+        pilots = []
+        for parcel_id in sorted(table_to_contract.find_tables(_data_dir(settings))):
+            try:
+                pilots.append(_summary(evaluate(parcel_id, settings)))
+            except ApiError:
+                continue  # tabla incompleta: no se ofrece como piloto
+        return {"data_status": "real", "pilots": pilots}
+    return {
+        "data_status": "fixture",
+        "pilots": [_summary(data) for data in load_fixtures().values()],
+    }
+
+
+def _summary(data: EvaluationDict) -> dict[str, Any]:
+    return {
+        "id": data["parcel"]["id"],
+        "name": data["parcel"]["name"],
+        "center": data["parcel"]["center"],
+        "area_ha": data["parcel"]["area_ha"],
+        "region_mode": data["parcel"]["region_mode"],
+        "has_viable_options": data["has_viable_options"],
+    }
+
+
+def _data_dir(settings: Settings) -> Path:
+    return settings.resolve(settings.data_dir)
+
+
+def _real_base(
+    parcel_id: str, settings: Settings
+) -> tuple[EvaluationDict, table_to_contract.ParcelMeta]:
+    """Evaluación real desde la tabla de /data-pipeline, sin restricciones aplicadas."""
+    data_dir = _data_dir(settings)
+    tables = table_to_contract.find_tables(data_dir)
+    if not tables:
+        raise real_data_unavailable(parcel_id)
+    if parcel_id not in tables:
+        raise parcel_not_found(parcel_id)
+    try:
+        rows = table_to_contract.read_rows(tables[parcel_id], parcel_id)
+        meta = table_to_contract.load_meta(data_dir, parcel_id)
+        registry = get_registry(settings.resolve(settings.models_dir))
+        return table_to_contract.build_evaluation(rows, meta, registry, contract_version()), meta
+    except table_to_contract.TableError as exc:
+        raise real_data_incomplete(parcel_id, str(exc)) from exc
 
 
 def evaluate(parcel_id: str, settings: Settings) -> EvaluationDict:
     if settings.data_mode == "real":
-        raise real_data_unavailable(parcel_id)
+        evaluation, meta = _real_base(parcel_id, settings)
+        if meta.constraints is not None:
+            return apply_constraints(evaluation, meta.constraints)
+        # Sin restricciones declaradas no hay nada que descartar; se dice en cada ficha.
+        for strategy in evaluation["strategies"]:
+            strategy["evidence_card"]["information_gaps"].append(table_to_contract.UNDECLARED_GAP)
+        return evaluation
     fixture = load_fixtures().get(parcel_id)
     if fixture is None:
         raise parcel_not_found(parcel_id)
@@ -71,6 +112,9 @@ def evaluate(parcel_id: str, settings: Settings) -> EvaluationDict:
 
 def simulate(parcel_id: str, declared: ConstraintsIn, settings: Settings) -> EvaluationDict:
     """Recalcula viabilidad con las restricciones declaradas. No toca otras cifras."""
+    if settings.data_mode == "real":
+        evaluation, _ = _real_base(parcel_id, settings)
+        return apply_constraints(evaluation, declared)
     evaluation = copy.deepcopy(evaluate(parcel_id, settings))
     return apply_constraints(evaluation, declared)
 
