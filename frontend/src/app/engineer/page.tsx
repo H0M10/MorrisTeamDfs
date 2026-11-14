@@ -35,11 +35,14 @@ function ModelsTable({
     if (!model) {
       return [{
         key,
+        modelKey: key,
         status: copy.pending,
         metric: copy.metric,
         value: null,
         unit: "—",
+        partition: copy.pending,
         description: copy.pending,
+        limitations: copy.modelLimits[key as keyof typeof copy.modelLimits] ?? copy.pending,
       }];
     }
 
@@ -51,19 +54,25 @@ function ModelsTable({
     const metricRows = [
       {
         key: `${key}-metric`,
+        modelKey: key,
         status: model.status ?? "Pendiente",
         metric: localizedText(model.metric_name, lang, copy.pending),
         value: model.metric?.value,
         unit: model.metric?.unit ?? "—",
+        partition: localizedText(model.partition_method, lang, copy.pending),
         description: provenance(model.metric),
+        limitations: copy.modelLimits[key as keyof typeof copy.modelLimits] ?? description,
       },
       {
         key: `${key}-baseline`,
+        modelKey: key,
         status: model.status ?? "Pendiente",
         metric: localizedText(model.baseline_name, lang, copy.pending),
         value: model.baseline_metric?.value,
         unit: model.baseline_metric?.unit ?? "—",
+        partition: localizedText(model.partition_method, lang, copy.pending),
         description: provenance(model.baseline_metric),
+        limitations: copy.modelLimits[key as keyof typeof copy.modelLimits] ?? description,
       },
     ];
     return metricRows;
@@ -80,21 +89,25 @@ function ModelsTable({
             <th scope="col">{copy.metric}</th>
             <th scope="col">{copy.value}</th>
             <th scope="col">{copy.unit}</th>
+            <th scope="col">{copy.partition}</th>
             <th scope="col">{copy.description}</th>
+            <th scope="col">{copy.limits}</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((row) => {
-            const model = models[row.key.replace(/-(metric|baseline)$/, "")];
+            const model = models[row.modelKey];
             const pending = row.value === null || row.value === undefined;
             return (
               <tr key={row.key}>
-                <th scope="row">{model?.algorithm ?? row.key.replace(/-(metric|baseline)$/, "")}</th>
+                <th scope="row">{model?.algorithm ?? row.modelKey}</th>
                 <td>{row.status}</td>
                 <td>{row.metric}</td>
                 <td>{pending ? copy.pending : formatValue(row.value, copy.pending)}</td>
                 <td>{row.unit}</td>
+                <td>{row.partition}</td>
                 <td>{row.description}</td>
+                <td>{row.limitations}</td>
               </tr>
             );
           })}
@@ -130,7 +143,7 @@ export default function EngineerPage() {
         {state.status === "ok" && (
           <>
             {(state.mockMode || state.data.dataStatus === "fixture") && (
-              <p className="fixture-banner" role="status">
+              <p className="fixture-banner" role="status" data-testid="fixture-banner">
                 <strong>Datos de ejemplo</strong>
                 <span>
                   {lang === "es"

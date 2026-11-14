@@ -28,6 +28,22 @@ dirige una persona: las decisiones visuales abiertas están en `HUMANO.md` (H-08
    solo con datos reales (IMERG o `rain_mm`); nada inventado.
 5. **Teléfono como control**: ver `/remote`.
 
+## Zoom y clips de apoyo
+
+- `src/app/showcase/_lib/showcaseConfig.ts` es la única configuración de capas y clips. Las
+   capas describen resoluciones nativas; no son una proyección de píxeles ni
+   límites reales. La visualización queda marcada como "Datos de ejemplo"
+   hasta que se conecte un mapa con datos verificados.
+- Three.js solo se monta cuando la sección del globo entra en pantalla. El
+   archivo del clip y su poster solo se comprueban al acercarse cada clip al
+   viewport. Coloca los archivos en `frontend/public/clips/` con los nombres
+   de esa configuración; el componente muestra "Clip pendiente" si falta uno.
+- Presupuesto recomendado: hasta **5 MB por clip**, duración ideal de 5–8
+   segundos, WebM con VP9 (o H.264 en MP4 si hace falta compatibilidad), sin
+   audio y resolución máxima 1280 × 720. Mantén cada poster WebP por debajo de
+   200 KB. La reducción de movimiento desactiva autoplay y deja visible el
+   poster.
+
 ## Reglas
 
 - Solo lee la API. No agrega campos al contrato.

@@ -18,7 +18,8 @@ export const engineerCopy = {
     empiricalCoverage: "Cobertura empírica",
     nominalCoverage: "Cobertura nominal",
     meanWidth: "Ancho promedio del intervalo",
-    noCqrData: "No se calcula cobertura con datos de ejemplo ni sin observaciones reales.",
+    noCqrData:
+      "Esta evaluación no entrega observaciones y límites CQR con procedencia para calcular cobertura empírica.",
     noChartData: "Sin observaciones reales para dibujar la banda CQR.",
     chartAlt: "Banda de intervalos CQR y observaciones reales, con tabla alternativa debajo",
     chartTitle: "Banda CQR y observaciones reales",
@@ -31,6 +32,18 @@ export const engineerCopy = {
     source: "Fuente",
     date: "Fecha",
     nativeScale: "Escala nativa",
+    partition: "Partición",
+    limits: "Límites declarados en la ficha",
+    modelLimits: {
+      model_1_crop_water:
+        "Se evalúa frente a OpenET, no a mediciones de campo; requiere OpenET y CDL (EE. UU.); el uso en rotaciones alternativas aún no está integrado.",
+      model_2_prior_crop_effect:
+        "Resultado observacional, no causal ni de ahorro de agua. Sin CDL no existe fuera de EE. UU. Muestra pequeña: 39 parcela-años en 15 parcelas; algunas secuencias tienen solo una observación de entrenamiento y no permiten generalizar entre valles.",
+      model_3_crop_history_gru:
+        "Solo reconoce cuatro clases; la atención no es causal; sin etiquetas en Querétaro es experimental y no sustituye la declaración del agricultor.",
+      model_4_moisture_cqr:
+        "Contexto regional SMAP de 9 km, no humedad de parcela. La cobertura medida queda por debajo de la nominal del 90%; el cambio de distribución entre valles y los 24 puntos de calibración limitan la garantía. El balance usa capacidad de agua supuesta.",
+    },
     networkTitle: "Red en vivo · Arquitectura del modelo 3",
     networkDescription:
       "Vista de arquitectura; no muestra activaciones ni predicciones. La ficha describe una secuencia de 12 meses, una GRU pequeña con atención temporal y cuatro grupos de cultivo.",
@@ -62,7 +75,8 @@ export const engineerCopy = {
     empiricalCoverage: "Empirical coverage",
     nominalCoverage: "Nominal coverage",
     meanWidth: "Mean interval width",
-    noCqrData: "Coverage is not calculated from example data or without real observations.",
+    noCqrData:
+      "This evaluation does not provide sourced observations and CQR bounds to calculate empirical coverage.",
     noChartData: "No real observations are available to draw the CQR band.",
     chartAlt: "CQR interval band and real observations, with an alternative table below",
     chartTitle: "CQR band and real observations",
@@ -75,6 +89,18 @@ export const engineerCopy = {
     source: "Source",
     date: "Date",
     nativeScale: "Native scale",
+    partition: "Partition",
+    limits: "Limitations stated in the model card",
+    modelLimits: {
+      model_1_crop_water:
+        "Evaluated against OpenET, not field measurements; requires OpenET and CDL (U.S.); use for alternative rotations is not yet integrated.",
+      model_2_prior_crop_effect:
+        "Observational, not causal and not evidence of water savings. Without CDL it is unavailable outside the U.S. Small sample: 39 parcel-years across 15 parcels; some sequences have only one training observation and cannot support cross-valley generalization.",
+      model_3_crop_history_gru:
+        "Recognizes only four classes; attention is not causal; without labels in Querétaro it is experimental and does not replace the grower's declaration.",
+      model_4_moisture_cqr:
+        "Regional 9 km SMAP context, not parcel moisture. Measured coverage is below the nominal 90%; cross-valley distribution shift and 24 calibration points limit the guarantee. The balance uses assumed water capacity.",
+    },
     networkTitle: "Live network · Model 3 architecture",
     networkDescription:
       "Architecture view only; it shows no activations or predictions. The model card describes a 12-month sequence, a small GRU with temporal attention, and four crop groups.",

@@ -17,12 +17,15 @@ export interface LocalizedText {
 
 export interface ModelRecord {
   status?: string;
+  experimental?: boolean;
   algorithm?: string;
+  partition_method?: LocalizedText;
   metric_name?: LocalizedText;
   metric?: MetricValue | null;
   baseline_name?: LocalizedText;
   baseline_metric?: MetricValue | null;
   active_mode_note?: LocalizedText;
+  card_path?: string;
 }
 
 export type ModelsRegistry = Record<string, ModelRecord | null | undefined>;

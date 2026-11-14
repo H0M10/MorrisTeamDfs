@@ -78,12 +78,17 @@ function mergeRegistry(
   return Object.fromEntries(
     Object.entries(report).map(([key, model]) => {
       const currentStatus = health?.[key]?.status;
+      const reportStatus = model?.status;
       return [
         key,
         model
           ? {
               ...model,
-              ...(typeof currentStatus === "string" ? { status: currentStatus } : {}),
+              ...(typeof reportStatus === "string"
+                ? { status: reportStatus }
+                : typeof currentStatus === "string"
+                  ? { status: currentStatus }
+                  : {}),
             }
           : model,
       ];
