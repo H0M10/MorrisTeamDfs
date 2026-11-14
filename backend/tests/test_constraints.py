@@ -235,14 +235,8 @@ def test_one_viable_rotation_is_enough() -> None:
 
 # ---------- el motor contra los fixtures ----------
 
-# Banderas del fixture que el motor no reproduce. Son inconsistencias del
-# fixture con su propia ventana de siembra, anotadas en PLAN.md para Argon:
-KNOWN_FIXTURE_DIVERGENCES = {
-    # Trigo de invierno sembrado en octubre con ventana de marzo a septiembre.
-    ("diamond_valley", "more_soil", "calendar_ok"),
-    # Alfalfa ya establecida: no hay siembra en el horizonte que pueda fallar.
-    ("no_viable_options", "current", "calendar_ok"),
-}
+# Banderas del fixture ya alineadas con el motor (v0.1.1); este set debe seguir vacío.
+KNOWN_FIXTURE_DIVERGENCES: set[tuple[str, str, str]] = set()
 
 
 def engine_flags(name: str) -> dict[tuple[str, str, str], tuple[bool, bool]]:

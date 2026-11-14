@@ -1,5 +1,5 @@
 {
-  "contract_version": "0.1.0",
+  "contract_version": "0.1.1",
   "data_status": "fixture",
   "fixture_disclaimer": {
     "es": "DATOS DE EJEMPLO (FIXTURE): Cifras sintéticas verosímiles para construir y probar las interfaces antes de la ingesta real. Prohibido usar en el video, página del proyecto o pitch.",
@@ -4403,10 +4403,10 @@
     "crops_without_buyer": [],
     "planting_window": {
       "start_month": 3,
-      "end_month": 9,
+      "end_month": 10,
       "label": {
-        "es": "Marzo a septiembre (libre de heladas extremas)",
-        "en": "March to September (avoiding severe frost)"
+        "es": "Marzo a octubre (incluye siembra otoñal de cereal de invierno)",
+        "en": "March to October (includes fall seeding of winter grain)"
       }
     }
   },

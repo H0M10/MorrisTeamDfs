@@ -1,5 +1,5 @@
 {
-  "contract_version": "0.1.0",
+  "contract_version": "0.1.1",
   "data_status": "fixture",
   "fixture_disclaimer": {
     "es": "DATOS DE EJEMPLO (FIXTURE — RESTRICCIONES PRIMERO): Demuestra que si agua, comprador, maquinaria o calendario descartan las tres rotaciones, la API responde has_viable_options: false sin rellenar recomendaciones.",
@@ -4423,11 +4423,11 @@
         "water_ok": false,
         "buyer_ok": true,
         "machinery_ok": false,
-        "calendar_ok": false
+        "calendar_ok": true
       },
       "rejection_reason": {
-        "es": "Descartada por restricción hídrica (demanda estimada ~795 mm/año > límite de 320 mm/año), falta empacadora y ventana de corte marzo-octubre fuera de mayo-junio.",
-        "en": "Rejected by water constraint (estimated demand ~795 mm/yr > 320 mm/yr limit), missing baler machinery, and March-October window outside May-June."
+        "es": "Descartada por restricción hídrica (demanda estimada ~795 mm/año > límite de 320 mm/año) y falta de empacadora.",
+        "en": "Rejected by water constraint (estimated demand ~795 mm/yr > 320 mm/yr limit) and missing baler machinery."
       },
       "sequence_36m": [
         {

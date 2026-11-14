@@ -113,9 +113,7 @@ Estado de la orden de la madrugada del sábado. Cada bloque cierra con un commit
 
 - **Copias del contrato.** Railway despliega solo `/backend` y Vercel solo `/frontend`, así que cada uno guarda una copia de `schema.json` y de los fixtures (`backend/app/contract_data/`, `frontend/src/lib/contract/`). La fuente de verdad sigue en `/contracts`. Tras cualquier cambio: `python contracts/sync.py`. La CI falla si las copias difieren.
 - **Python 3.11.** La laptop solo tiene 3.13 y 3.14; el backend usa `uv`, que descarga 3.11 y fija versiones en `uv.lock`.
-- **Dos banderas de los fixtures no cuadran con su propia ventana de siembra.** El motor aplica la regla "toda siembra dentro del horizonte cae en la ventana" y difiere del fixture en dos casos. Están fijados en `backend/tests/test_constraints.py` (`KNOWN_FIXTURE_DIVERGENCES`); si se corrigen los fixtures esa prueba avisa. Pedido para Argon o Hanniel antes de congelar a las 10:00:
-  1. `diamond_valley.json`, rotación `more_soil`: siembra trigo de invierno en octubre de 2023 con ventana de marzo a septiembre, y aun así dice `calendar_ok: true`. Con las mismas restricciones `/evaluate` la da por viable y `/simulate` la descarta. Arreglo sugerido: ventana de marzo a octubre.
-  2. `no_viable_options.json`, rotación `current`: dice `calendar_ok: false` por "ventana de corte", pero la alfalfa ya está establecida y no hay ninguna siembra en los 36 meses. El motor da `calendar_ok: true` (la rotación sigue descartada por agua y maquinaria). Arreglo sugerido: poner `calendar_ok: true` y quitar la frase del corte.
+- **Dos banderas de los fixtures corregidas (v0.1.1, Argon):** se amplió `planting_window.end_month` a `10` en `diamond_valley.json`, se ajustó `calendar_ok: true` en `no_viable_options.json` (`current`), se sincronizaron copias (`contracts/sync.py`) y `KNOWN_FIXTURE_DIVERGENCES` quedó vacío.
 - **`/evaluate` en modo fixture ignora las restricciones** que mande el cliente (sirve el fixture tal cual). Para recalcular con restricciones se usa `/simulate`.
 - **Enlaces compartibles por RPC.** El backend no usa la llave `service_role`: llama a dos funciones de Postgres (`create_shared_evaluation`, `get_shared_evaluation`) con la llave anónima. Las define la migración del bloque 2.
 - **Respaldo del modelo 1 incompleto.** El cargador ya reporta `fallback`, pero la tabla de coeficientes de cultivo (Kc) de FAO-56 no está cargada: la debe transcribir y verificar una persona (ver `HUMANO.md`).
@@ -125,3 +123,28 @@ Estado de la orden de la madrugada del sábado. Cada bloque cierra con un commit
 - **Convertidor tabla → contrato.** Falta el paso que toma la tabla de una parcela (`build_table.py`) y arma la evaluación real para la API. Es la tarea A-06 y el primer trabajo tras el stack de las 9:00.
 - **`awc_mm_m` no sale de la tabla de datos.** El contrato lo exige en `soil_profile`; hay que decidir si viene de SSURGO o de una función de pedotransferencia sobre SoilGrids, y declararlo.
 - **Métricas sintéticas bloqueadas.** Los guiones de `/models` con `--sample` marcan su `metrics.json`; la API se niega a tratarlo como modelo entrenado (prueba en `backend/tests/test_models_loader.py`).
+
+---
+
+## Auditoría científica y de accesibilidad (Argon — Bloques 0 a 4)
+
+### Hallazgos científicos (`AGENTS.md` §1, §4, §5)
+- **S-01 (`backend/app/models/loader.py:244-245`):** cuando un modelo está en `fallback` en modo `unlabeled` (Querétaro), `_report()` fija `"experimental": False`. Para `model_3_crop_history_gru`, `AGENTS.md` §4 y `contracts/fixtures/queretaro.json` exigen `"experimental": True` en modo `unlabeled` incluso cuando corre en respaldo. Corregir en Orden #2.
+- **S-02 (`data-pipeline/build_table.py:111-115` + `backend/app/services/evaluation.py`):** falta calcular y declarar `organic_matter_pct` (`soc_gkg * 0.1724`, factor Van Bemmelen declarado) y `awc_mm_m` (pedotransferencia declarada sobre `clay_pct`/`sand_pct`/`organic_matter_pct` o SSURGO en EE. UU.), además del convertidor `table_to_contract.py` para `DATA_MODE=real`. Asignado a Orden #2.
+- **S-03 (`backend/app/engine/crop_traits.py:1-79`):** los rasgos (`sown`, `sold`, `machinery`) están declarados como supuesto (`assumed`), pero falta exponer su procedencia como `MetricValue` / nota de supuesto en las estrategias simuladas si cambian la viabilidad. Mantener aviso en `HUMANO.md` H-03.
+- **S-04 (Correcto, sin cambios):** `indices.py` excluye NDRE y CAI correctamente; `climate.py` declara POWER 50 km regional; `constraints.py` evalúa restricciones antes de todo y devuelve `has_viable_options: false`; `loader.py` bloquea corridas `--sample`; `models/model_*.py` particionan por valle y último año fuera.
+
+### Hallazgos de accesibilidad y producto (`frontend/src/app/tool`, `AGENTS.md` §8 y §9)
+- **A11Y-01 (`frontend/src/app/tool/restricciones/page.tsx:33` y `rotaciones/page.tsx:41`):** siguen en estado `<Pending>` (solo lectura de restricciones sin sliders/checkboxes conectados a `/api/v1/simulate`, y `/rotaciones` sin la tira comparativa de 36 meses con tramas). Asignado a Orden #3.
+- **A11Y-02 (`frontend/src/app/tool/page.tsx:48` y `retrato`):** falta la vista de mapa MapLibre mostrando el tamaño real del píxel por fuente (`30 m`, `250 m`, `9 km`, `50 km`) y la tabla/leyenda de escalas. Asignado a Orden #3.
+- **A11Y-03 (`frontend/src/app/tool/evidencia/page.tsx`):** falta mostrar la ficha completa de todas las métricas (`annual_water_mm`, `water_delta_vs_current_mm`, `soil_cover_months_36m`, `prior_crop_vigor_delta_pct`, `frost_risk_days_year`, `heat_risk_days_year`) y falta la interfaz de preguntas por voz/texto (`Web Speech API` + `/api/v1/ask` determinista). Asignado a Orden #3.
+- **A11Y-04 (`frontend/src/app/tool/compartir/page.tsx:69`):** falta el botón funcional para generar enlace compartible (`POST /api/v1/share`) y el formulario de revisión del técnico (`reviews`). Asignado a Orden #3.
+- **A11Y-05 (Correcto, sin cambios):** `globals.css` respeta paleta oficial, base 18 px (`112.5%`), foco visible, objetivos `>=44 px`, `prefers-reduced-motion`, `@media print`, tramas/símbolos en estados, y tabla accesible en `ParcelStrip.tsx` (31 pruebas Playwright + axe en verde).
+
+---
+
+## Órdenes de trabajo autónomas para Claude (no requieren llaves ni cuentas externas)
+
+- **Orden #2 (`/backend` y `/data-pipeline`):** Construir `backend/app/services/table_to_contract.py` (convierte salida Parquet de `build_table.py` en payload del contrato con `data_status="real"`, `awc_mm_m` y `organic_matter_pct` declarados), corregir `S-01` (`experimental: True` en Modelo 3 cuando `region_mode == "unlabeled"`) y normalizar pesos de atención a suma `1.0`.
+- **Orden #3 (`/frontend/src/app/tool`):** Sustituir los `<Pending>` de `/tool`: estado compartido de simulación (`/api/v1/simulate`), formulario accesible de `/tool/restricciones`, calendario 36m con tramas además de color en `/tool/rotaciones`, tarjeta completa de métricas + consulta `/ask` por voz (Web Speech API) y texto en `/tool/evidencia`, vista de escalas reales en `/tool` / `/tool/retrato`, y flujo de enlace compartible + revisión de técnico en `/tool/compartir` (degradando elegante si `supabase_configured === false`).
+- **Orden #4 (`/frontend/src/app/engineer` y `/docs`):** Completar `/engineer` leyendo métricas, intervalos CQR y atención de la API (ocultando red en vivo si `model_3_crop_history_gru.status !== "trained"`), y crear plantillas limpias de `/docs/project_page.md` (en inglés, cero cifras `fixture`) y `/docs/video_script.md` (30 s, guion compartido).

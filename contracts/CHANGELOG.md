@@ -2,6 +2,11 @@
 
 Regla de gobernanza: El contrato se congela el **sábado 14 de noviembre de 2026 a las 10:00 AM**. Después de esa hora, **ningún cambio entra sin aprobación explícita de Hanniel** y su registro aquí.
 
+## [0.1.1] - 2026-11-14 (Auditoría pre-congelamiento)
+### Corregido
+- Alineación de `calendar_ok` en `fixtures/diamond_valley.json` (`planting_window.end_month: 10` para cubrir la siembra otoñal de `trigo_invierno` en `2023-10`) y en `fixtures/no_viable_options.json` (`strategies[0].constraint_evaluation.calendar_ok: true` porque la alfalfa ya está establecida y no hay nueva siembra en los 36 meses; sigue descartada por agua y maquinaria).
+- Actualización de `contract_version` a `"0.1.1"` en los tres fixtures (`diamond_valley.json`, `queretaro.json`, `no_viable_options.json`) para eliminar las divergencias conocidas en `backend/tests/test_constraints.py`.
+
 ## [0.1.0] - 2026-11-14 (Madrugada)
 ### Agregado
 - `schema.json` (JSON Schema Draft 2020-12):

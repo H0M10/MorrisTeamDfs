@@ -96,16 +96,17 @@ Para el video global son 30 segundos: pasos 1, 2, 3 y 4, con una toma del paso 5
 
 | Entregable | Pista | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
-| Caso real en `/tool` | Global | Hanniel, persona 4 | Sábado 14:00 | Pendiente |
-| Tres rotaciones comparables | Global | Hanniel | Sábado 19:00 | Pendiente |
-| Modelos con métrica | Global | Personas 1 y 2 | Domingo 8:00 | Pendiente |
-| Accesibilidad probada | Global | Persona 4 | Domingo 12:00 | Pendiente |
+| Contrato y fixtures v0.1.1 + API fixture | Global | Hanniel / Argon / Claude | Sábado 10:00 | Listo en local (falta desplegar Railway, H-02) |
+| Caso real en `/tool` | Global | Hanniel, persona 4 | Sábado 14:00 | Esqueleto `/tool` listo (31 tests axe); faltan controles y datos reales |
+| Tres rotaciones comparables | Global | Hanniel | Sábado 19:00 | Motor físico y evaluador listos; falta convertidor tabla→contrato |
+| Modelos con métrica | Global | Personas 1 y 2 | Domingo 8:00 | Guiones GEE/XGBoost/ONNX/CQR listos; sin correr en nube (H-11, H-12) |
+| Accesibilidad probada | Global | Persona 4 | Domingo 12:00 | Base axe en verde; falta flujo completo y lector de pantalla |
 | Página en inglés | Global | Persona 6 | Domingo 15:00 | Pendiente |
 | Video de 30 segundos | Ambas | Persona 6 | Domingo 15:00 | Pendiente |
-| Gestos | Local | Persona 5 | Sábado 19:00 | Pendiente |
-| Globo y terreno 3D | Local | Persona 5 | Domingo 12:00 | Pendiente |
-| Red en vivo | Local | Persona 6 | Domingo 12:00 | Pendiente |
-| Teléfono como control | Local | Persona 5 | Domingo 12:00 | Pendiente |
+| Gestos | Local | Persona 5 | Sábado 19:00 | Botón cámara en crudo; falta bajar MediaPipe y lógica (H-08) |
+| Globo y terreno 3D | Local | Persona 5 | Domingo 12:00 | Lienzo diferido en crudo; falta escena 3D |
+| Red en vivo | Local | Persona 6 | Domingo 12:00 | `/engineer` en crudo; depende de Modelo 3 |
+| Teléfono como control | Local | Persona 5 | Domingo 12:00 | Guía Broadcast lista; bloqueado por Supabase (H-06) |
 | Pitch ensayado | Local | Equipo | Domingo 18:00 | Pendiente |
 
 Argon actualiza esta tabla junto con `PLAN.md`.

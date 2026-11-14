@@ -60,9 +60,9 @@ El respaldo del modelo 1 es la "tabla FAO-56, declarada". Hay que copiar de la p
 
 Desbloquea: cifras de agua reales cuando el modelo 1 no esté entrenado.
 
-### H-05. Decidir las dos inconsistencias de los fixtures (Hanniel, antes de congelar a las 10:00)
+### H-05. Decidir las dos inconsistencias de los fixtures — **Completado por Argon (v0.1.1)**
 
-Detalle en `PLAN.md`, sección "Notas para Argon y Hanniel". Son dos banderas `calendar_ok` que no cuadran con la ventana de siembra del propio fixture.
+Resuelto en `contracts/CHANGELOG.md` v0.1.1: `diamond_valley.json` amplía `planting_window` a octubre (`3..10`) para cubrir la siembra otoñal de trigo de invierno, `no_viable_options.json` corrige `current.constraint_evaluation.calendar_ok` a `true` (alfalfa ya establecida; sigue descartada por agua y maquinaria), y `KNOWN_FIXTURE_DIVERGENCES` en `backend/tests/test_constraints.py` quedó vacío.
 
 ### H-06. Crear el proyecto de Supabase y aplicar la migración (Hanniel, sábado 09:30)
 
