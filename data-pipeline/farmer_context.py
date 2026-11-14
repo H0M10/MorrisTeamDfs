@@ -185,7 +185,7 @@ def labeled_context(args: argparse.Namespace, table: pd.DataFrame) -> dict:
         f"Sin comprador: cultivos sin registro en el censo 2022 de QuickStats ni más de "
         f"{MIN_ACRES:.0f} acres en CDL del condado."
     )
-    return {
+    out = {
         "constraints": {
             "max_water_mm_year": round(water),
             "available_machinery": machinery,
@@ -195,6 +195,29 @@ def labeled_context(args: argparse.Namespace, table: pd.DataFrame) -> dict:
         "constraints_source": source,
         "context_notes": notes,
     }
+    if args.state.upper() == "NV" and args.county.upper() == "EUREKA":
+        out["aquifer_name"] = {
+            "es": "Cuenca Hidrográfica de Diamond Valley (Área 153, Nevada — Contexto Regional)",
+            "en": "Diamond Valley Hydrographic Basin (Area 153, Nevada — Regional Context)",
+        }
+        out["aquifer_status_note"] = {
+            "es": (
+                "Contexto regional de cuenca (NDWR, Área Hidrográfica 153): rendimiento "
+                "perenne oficial de 30,000 acre-pies/año (~37.0 hm³/año) frente a un bombeo "
+                "histórico cercano a 76,000 acre-pies/año; designada Área de Manejo Crítico "
+                "(CMA) por Orden 1264 (2015-08-25) con Plan de Manejo de Agua Subterránea "
+                "(GMP) aprobado por Orden 1302 (2019-01-11). Sujeto a verificación de "
+                "derechos individuales del predio."
+            ),
+            "en": (
+                "Regional basin context (NDWR, Hydrographic Area 153): official perennial "
+                "yield of 30,000 acre-feet/yr (~37.0 hm³/yr) against historical pumping near "
+                "76,000 acre-feet/yr; designated a Critical Management Area (CMA) by Order "
+                "1264 (2015-08-25) with Groundwater Management Plan (GMP) approved by Order "
+                "1302 (2019-01-11). Subject to parcel-level water-right verification."
+            ),
+        }
+    return out
 
 
 def _plain(text: str) -> str:
@@ -357,6 +380,14 @@ def unlabeled_with_siap(args: argparse.Namespace, table: pd.DataFrame) -> dict:
         f"({', '.join(machinery)}), con riego por gravedad (supuesto). Sin comprador: cultivos sin "
         "al menos 100 ha de riego al año en SIAP en esos municipios (últimos 3 años)."
     )
+    notes.append({
+        "es": "Total estatal de Querétaro (SIAP 2025, cíclicos + perennes, riego + temporal): "
+              "117,320.01 ha sembradas, 110,271.76 ha cosechadas y valor de producción de "
+              "5,608,171.22 miles de pesos. Agregado estatal complementario al cierre municipal.",
+        "en": "Querétaro state total (SIAP 2025, cyclic + perennial, irrigated + rainfed): "
+              "117,320.01 ha planted, 110,271.76 ha harvested, production value 5,608,171.22 "
+              "thousand MXN. State aggregate complementing the municipal closure.",
+    })
     return {
         "declared_history": history,
         "constraints": {
@@ -367,6 +398,26 @@ def unlabeled_with_siap(args: argparse.Namespace, table: pd.DataFrame) -> dict:
         },
         "constraints_source": source,
         "context_notes": notes,
+        "aquifer_name": {
+            "es": "Acuífero Valle de San Juan del Río (Clave 2203, Querétaro — Contexto Regional)",
+            "en": "Valle de San Juan del Río Aquifer (Code 2203, Querétaro — Regional Context)",
+        },
+        "aquifer_status_note": {
+            "es": (
+                "Contexto regional de cuenca (CONAGUA, DOF 2023-11-09, Clave 2203): recarga "
+                "media anual 277.9 hm³/año, descarga natural comprometida 0.0 hm³/año, extracción "
+                "334.79 hm³/año y disponibilidad media anual -56.89 hm³/año (en déficit / "
+                "sobreexplotado; NOM-011-CONAGUA-2015). Describe el acuífero regional, no un "
+                "pozo individual."
+            ),
+            "en": (
+                "Regional basin context (CONAGUA, DOF 2023-11-09, Code 2203): mean annual "
+                "recharge 277.9 hm³/yr, committed natural discharge 0.0 hm³/yr, groundwater "
+                "extraction 334.79 hm³/yr, and mean annual availability -56.89 hm³/yr (in "
+                "deficit / overexploited; NOM-011-CONAGUA-2015). Describes the regional aquifer, "
+                "not an individual well."
+            ),
+        },
     }
 
 

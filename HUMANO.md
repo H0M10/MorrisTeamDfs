@@ -157,7 +157,7 @@ python models/model_2_prior_crop_effect/train.py --table <tabla>.parquet --test-
 ### H-13. Poner datos reales en la API (`@H0M10`, tras D-03) — **Completado**
 
 1. `backend/data/diamond_valley.parquet` y `backend/data/queretaro.parquet` validados contra `contracts/schema.json` en `DATA_MODE=real` (norte de Guanajuato pospuesto).
-2. *(Opcional cuando un humano confirme las restricciones reales del agricultor)*: completar/revisar `backend/data/<parcel_id>.meta.json` con límites confirmados.
+2. *(Opcional cuando un humano confirme las restricciones reales del agricultor)*: completar/revisar `backend/data/<parcel_id>.meta.json` con límites confirmados. Ya quedaron cargados en `dv-nv-01.meta.json` y `qro-sjr-01.meta.json` los registros regionales oficiales de acuífero (NDWR Área 153 Orden 1264/1302 y CONAGUA DOF 2023-11-09 Clave 2203).
 3. En Railway, la variable **`DATA_MODE=real`** ya quedó activa en vivo en `https://morristeamdfs-production.up.railway.app` (`/api/v1/pilots` sirviendo `dv-nv-01` y `qro-sjr-01` en modo `real`).
 
 ### H-14. Verificación humana visual de la tabla FAO-56 (Hanniel)
@@ -216,7 +216,7 @@ Decidiste usar también estadística oficial mexicana. El dominio de datos abier
 
 Con eso reemplazo el historial supuesto de Querétaro por lo que de verdad se siembra con riego en el municipio, y agrego precios.
 
-> **Avance 2026-11-14 (`@H0M10`):** ya quedó registrado en `backend/data/qro-sjr-01.meta.json` (`context_notes`) el agregado estatal oficial de SIAP 2025 para Querétaro (`117,320.01 ha` sembradas, `110,271.76 ha` cosechadas, `5,608,171.22` miles de pesos; ciclos cíclicos + perennes, riego + temporal), declarado explícitamente como contexto estatal sin extrapolar cultivos ni precios por municipio. El CSV municipal por cultivo sigue opcional/pendiente.
+> **Avance 2026-11-14 (`@H0M10`):** ya quedaron integrados tanto el cierre municipal de riego **SIAP 2020–2025** (`data-pipeline/siap/queretaro_riego.csv` + `farmer_context.py`) como el total estatal **SIAP 2025** para Querétaro (`117,320.01 ha` sembradas, `110,271.76 ha` cosechadas, `5,608,171.22` miles de pesos) y los datos oficiales de CONAGUA del **Acuífero Valle de San Juan del Río (Clave 2203, DOF 2023-11-09: `-56.89 hm³/año`)** en `backend/data/qro-sjr-01.meta.json`.
 
 ### Estado de H-15 a H-19 (actualizado por Claude)
 

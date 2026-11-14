@@ -46,5 +46,13 @@
       "es": "Censo agrícola 2022, condado Eureka: acres cosechados — Barley: (D); Corn, Silage: 216; Hay, (Excl Alfalfa): 4,799; Hay, Alfalfa: 31,519 ((D) = dato reservado por confidencialidad). Fuente: USDA NASS QuickStats.",
       "en": "2022 Census of Agriculture, Eureka County: acres harvested — Barley: (D); Corn, Silage: 216; Hay, (Excl Alfalfa): 4,799; Hay, Alfalfa: 31,519 ((D) = withheld). Source: USDA NASS QuickStats."
     }
-  ]
+  ],
+  "aquifer_name": {
+    "es": "Cuenca Hidrográfica de Diamond Valley (Área 153, Nevada — Contexto Regional)",
+    "en": "Diamond Valley Hydrographic Basin (Area 153, Nevada — Regional Context)"
+  },
+  "aquifer_status_note": {
+    "es": "Contexto regional de cuenca (NDWR, Área Hidrográfica 153): rendimiento perenne oficial de 30,000 acre-pies/año (~37.0 hm³/año) frente a un bombeo histórico cercano a 76,000 acre-pies/año; designada Área de Manejo Crítico (CMA) por Orden 1264 (2015-08-25) con Plan de Manejo de Agua Subterránea (GMP) aprobado por Orden 1302 (2019-01-11). Sujeto a verificación de derechos individuales del predio.",
+    "en": "Regional basin context (NDWR, Hydrographic Area 153): official perennial yield of 30,000 acre-feet/yr (~37.0 hm³/yr) against historical pumping near 76,000 acre-feet/yr; designated a Critical Management Area (CMA) by Order 1264 (2015-08-25) with Groundwater Management Plan (GMP) approved by Order 1302 (2019-01-11). Subject to parcel-level water-right verification."
+  }
 }

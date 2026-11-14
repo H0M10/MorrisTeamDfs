@@ -521,6 +521,66 @@ def attention_weights(rows: list[Row], registry: ModelRegistry) -> list[float] |
         return None  # un fallo de inferencia no tumba la evaluación: queda sin pesos
 
 
+def moisture_intervals(
+    rows: list[Row], registry: ModelRegistry, labeled: bool
+) -> list[dict[str, float]] | None:
+    """Intervalos CQR al 90 % del modelo 4 en regiones etiquetadas. None si no aplica."""
+    model = registry.get("model_4_moisture_cqr")
+    if not labeled or model.status != "trained":
+        return None
+    try:
+        import numpy as np  # noqa: PLC0415
+
+        extra = (model.metrics or {}).get("extra") or {}
+        has_keys = all(k in extra for k in ("balance_slope", "balance_intercept", "conformal_q"))
+        has_weather = not any(
+            row.get(col) is None
+            for row in rows
+            for col in ("et0_mm", "rain_mm", "tmax_c", "tmin_c")
+        )
+        if not (has_keys and has_weather):
+            return None
+        taw = float(extra.get("taw_mm_assumed", 150.0))
+        balance = wb.monthly_water_balance(
+            [float(r["et0_mm"]) for r in rows],
+            [float(r["rain_mm"]) for r in rows],
+            [1.0] * len(rows),
+            taw_mm=taw,
+        )
+        rzi = [wb.root_zone_index(m.depletion_mm, taw) for m in balance]
+        features = np.asarray(
+            [
+                [
+                    int(r["month"][5:7]),
+                    float(r["et0_mm"]),
+                    float(r["rain_mm"]),
+                    float(r["tmax_c"]),
+                    float(r["tmin_c"]),
+                    0.0 if r.get("ndvi") is None else float(r["ndvi"]),
+                    rzi[i],
+                ]
+                for i, r in enumerate(rows)
+            ],
+            dtype=np.float32,
+        )
+        quantiles = np.asarray(model.predict(features), dtype=np.float64)
+        if quantiles.shape != (len(rows), 2):
+            return None
+        slope = float(extra["balance_slope"])
+        intercept = float(extra["balance_intercept"])
+        q_hat = float(extra["conformal_q"])
+        confidence = round(float(extra.get("target_coverage", 0.9)), 2)
+        intervals: list[dict[str, float]] = []
+        for i in range(len(rows)):
+            base = slope * rzi[i] + intercept
+            low = max(0.0, round(base + float(quantiles[i, 0]) - q_hat, 3))
+            high = min(1.0, round(max(low, base + float(quantiles[i, 1]) + q_hat), 3))
+            intervals.append({"lower": low, "upper": high, "confidence": confidence})
+        return intervals
+    except Exception:
+        return None
+
+
 def build_evaluation(
     rows: list[Row], meta: ParcelMeta, registry: ModelRegistry, contract_version: str
 ) -> dict[str, Any]:
@@ -584,6 +644,7 @@ def build_evaluation(
     current = current_sequence(rows, meta, labeled)
     index_values, index_source, index_scale = root_zone_index(rows, awc, current)
     attention = attention_weights(rows, registry)
+    intervals = moisture_intervals(rows, registry, labeled)
     last_moisture = next(
         (
             (row["month"], value)
@@ -628,6 +689,10 @@ def build_evaluation(
                 1,
             )
         moisture = _first(row, ROOTZONE_COLUMNS) or _first(row, SURFACE_COLUMNS)
+        soil_moisture_card = card(moisture, "m3/m3", "modeled", SRC_SMAP, month, SCALE_SMAP)
+        if moisture is not None and intervals is not None:
+            soil_moisture_card["interval"] = intervals[i]
+            soil_moisture_card["source"] = SRC_SMAP + "; intervalo CQR al 90 % (Modelo 4)"
         timeline.append(
             {
                 "month": month,
@@ -656,7 +721,7 @@ def build_evaluation(
                     month,
                     index_scale,
                 ),
-                "soil_moisture": card(moisture, "m3/m3", "modeled", SRC_SMAP, month, SCALE_SMAP),
+                "soil_moisture": soil_moisture_card,
                 "frost_days": card(
                     row["frost_days"], "days", "modeled", frost_src, month, SCALE_POWER, 0
                 ),
@@ -697,9 +762,19 @@ def build_evaluation(
                 water_source[key] = SRC_FAO_CALIBRATED.format(factor=factor)
         water["current"] = observed
         water_source["current"] = SRC_OPENET_WATER
+    model_2_trained = labeled and registry.get("model_2_prior_crop_effect").status == "trained"
     strategies = [
         _strategy(
-            key, sequences[key], months, water, water_source, frost_year, heat_year, period, labeled
+            key,
+            sequences[key],
+            months,
+            water,
+            water_source,
+            frost_year,
+            heat_year,
+            period,
+            labeled,
+            model_2_trained=model_2_trained,
         )
         for key in ("current", "less_water", "more_soil")
     ]
@@ -834,6 +909,8 @@ def _strategy(
     heat_year: float | None,
     period: str,
     labeled: bool,
+    *,
+    model_2_trained: bool = False,
 ) -> dict[str, Any]:
     is_current = key == "current"
     distinct = [
@@ -899,18 +976,47 @@ def _strategy(
             "en": "Without a crop history the months of soil cover cannot be stated.",
         }
     ]
-    gaps = [
-        {
+    if model_2_trained:
+        prior_source = (
+            "Sin evidencia local: en la validación por valle (Modelo 2, -6.3 %) el cultivo "
+            "anterior no mejoró la predicción de vigor"
+        )
+        prior_gap = {
+            "es": "Sin evidencia local del efecto del cultivo anterior: en la validación por "
+            "valle (Modelo 2, -6.3 % frente a la línea base) agregar el cultivo previo no "
+            "mejoró la predicción de vigor.",
+            "en": "No local evidence on the prior-crop effect: in unseen-valley validation "
+            "(Model 2, -6.3% vs baseline) adding the prior crop did not improve vigor "
+            "prediction.",
+        }
+    else:
+        prior_source = "Sin evidencia local (modelo 2 en respaldo)"
+        prior_gap = {
             "es": "No hay evidencia local del efecto del cultivo anterior (modelo 2 en respaldo).",
             "en": "There is no local evidence on the prior-crop effect (model 2 in fallback).",
-        },
-        {
-            "es": "El agua sale de una tabla de referencia y del clima regional de cerca de 50 km, "
-            "no de mediciones en la parcela.",
+        }
+    if water_source[key] == SRC_OPENET_WATER:
+        water_gap = {
+            "es": "La ET real viene de OpenET (30 m en parcela), pero la lluvia efectiva viene "
+            "del clima regional de NASA POWER (cerca de 50 km).",
+            "en": "Actual ET comes from OpenET (30 m on field), while effective rainfall comes "
+            "from NASA POWER regional climate (about 50 km).",
+        }
+    elif "calibrado" in water_source[key]:
+        water_gap = {
+            "es": "El agua de la alternativa usa la tabla FAO-56 calibrada con el OpenET de la "
+            "parcela (30 m) y el clima regional de cerca de 50 km.",
+            "en": "Alternative water use comes from the FAO-56 table calibrated with the "
+            "field's OpenET (30 m) and regional climate at about 50 km.",
+        }
+    else:
+        water_gap = {
+            "es": "El agua sale de una tabla de referencia y del clima regional de cerca de "
+            "50 km, no de mediciones en la parcela.",
             "en": "Water comes from a reference table and regional climate at about 50 km, "
             "not from measurements in the field.",
-        },
-    ]
+        }
+    gaps = [prior_gap, water_gap]
     if not is_current:
         gaps.append(
             {
@@ -983,9 +1089,7 @@ def _strategy(
             "soil_cover_months_36m": card(
                 cover, "months", sequence_type, sequence_source, period, "parcela", 0
             ),
-            "prior_crop_vigor_delta_pct": card(
-                None, "%", "assumed", "Sin evidencia local (modelo 2 en respaldo)", period, "30 m"
-            ),
+            "prior_crop_vigor_delta_pct": card(None, "%", "assumed", prior_source, period, "30 m"),
             "frost_risk_days_year": card(
                 frost_year,
                 "days/yr",

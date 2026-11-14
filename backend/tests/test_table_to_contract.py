@@ -53,6 +53,8 @@ def make_table(labeled: bool = True, months: int = 36, **overrides: Any) -> pd.D
             "ndti": 0.15,
             "rain_mm": 0.0,
             "et0_mm": 100.0,
+            "tmax_c": 24.0,
+            "tmin_c": 8.0,
             "frost_days": 10 if month in (1, 2, 12) else 0,
             "heat_days": 3 if month == 7 else 0,
             "smap_sm_surface": 0.10 + 0.01 * (i % 12),
@@ -396,6 +398,73 @@ def test_attention_weights_are_normalized_when_model_3_is_trained(tmp_path: Path
     assert sum(weights) == pytest.approx(1.0, abs=1e-4)
     assert weights[0] == pytest.approx(2 / 54, abs=1e-5)
     assert "no es explicación causal" in evaluation["timeline"][0]["attention_weight"]["source"]
+
+
+def test_moisture_intervals_are_attached_when_model_4_is_trained(tmp_path: Path) -> None:
+    class FakeModel4:
+        status = "trained"
+
+        def __init__(self) -> None:
+            self.metrics = {
+                "extra": {
+                    "balance_slope": 0.04,
+                    "balance_intercept": 0.14,
+                    "conformal_q": 0.036,
+                    "target_coverage": 0.9,
+                    "taw_mm_assumed": 150.0,
+                }
+            }
+
+        def predict(self, features: Any) -> Any:
+            assert features.shape == (36, 7)
+            return [[-0.03, 0.03]] * 36
+
+    class FakeRegistry(ModelRegistry):
+        def get(self, name: str) -> Any:
+            return FakeModel4() if name == "model_4_moisture_cqr" else super().get(name)
+
+    labeled_dir = write_table(tmp_path / "labeled", make_table(labeled=True))
+    labeled_rows = ttc.read_rows(labeled_dir / f"{PARCEL}.parquet", PARCEL)
+    labeled_eval = ttc.build_evaluation(
+        labeled_rows, ttc.ParcelMeta(), FakeRegistry(tmp_path / "x"), "0.1.1"
+    )
+    assert_contract(labeled_eval)
+    for month in labeled_eval["timeline"]:
+        interval = month["soil_moisture"].get("interval")
+        assert interval is not None
+        assert 0.0 <= interval["lower"] <= interval["upper"] <= 1.0
+        assert interval["confidence"] == 0.9
+        assert "intervalo CQR al 90 %" in month["soil_moisture"]["source"]
+
+    unlabeled_dir = write_table(tmp_path / "unlabeled", make_table(labeled=False))
+    unlabeled_rows = ttc.read_rows(unlabeled_dir / f"{PARCEL}.parquet", PARCEL)
+    unlabeled_eval = ttc.build_evaluation(
+        unlabeled_rows, ttc.ParcelMeta(), FakeRegistry(tmp_path / "y"), "0.1.1"
+    )
+    assert_contract(unlabeled_eval)
+    assert all("interval" not in month["soil_moisture"] for month in unlabeled_eval["timeline"])
+
+
+def test_model_2_trained_note_replaces_fallback_only_when_labeled(tmp_path: Path) -> None:
+    class FakeModel2:
+        status = "trained"
+
+    class FakeRegistry(ModelRegistry):
+        def get(self, name: str) -> Any:
+            return FakeModel2() if name == "model_2_prior_crop_effect" else super().get(name)
+
+    folder = write_table(tmp_path / "data", make_table(labeled=True))
+    rows = ttc.read_rows(folder / f"{PARCEL}.parquet", PARCEL)
+    evaluation = ttc.build_evaluation(
+        rows, ttc.ParcelMeta(), FakeRegistry(tmp_path / "x"), "0.1.1"
+    )
+    assert_contract(evaluation)
+    current = evaluation["strategies"][0]
+    assert "-6.3 %" in current["metrics"]["prior_crop_vigor_delta_pct"]["source"]
+    assert "-6.3 %" in current["evidence_card"]["information_gaps"][0]["es"]
+    assert "OpenET (30 m en parcela)" in current["evidence_card"]["information_gaps"][1]["es"]
+    alt = evaluation["strategies"][1]
+    assert "calibrada con el OpenET" in alt["evidence_card"]["information_gaps"][1]["es"]
 
 
 # ---------- DATA_MODE=real en la API ----------
