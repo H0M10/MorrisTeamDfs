@@ -52,7 +52,7 @@
 | A-01 | Crear estructura del repo, `CLAUDE.md`, `contracts/schema.json`, 3 fixtures y `CHANGELOG.md` v0.1.0 | ARGON | Madrugada Sáb | Completado |
 | A-02 | **Orden #1 Claude:** Esqueleto FastAPI en `/backend` sirviendo los 3 fixtures con validación Pydantic v2, `/health`, `/evaluate`, `/ask` (enrutador por reglas) + tipos TypeScript y cliente en `/frontend/src/lib` + `.env.example` | Hanniel / Claude | G1 (Sáb 10:00) | Backend completado; `/frontend/src/lib` va en el bloque 3 |
 | A-03 | Revisar stack del organizador (09:00 AM) y congelar `/contracts/schema.json` a las 10:00 AM; desplegar API fixture en Railway | Hanniel | G1 (Sáb 10:00) | Pendiente (09:00 AM) |
-| A-04 | Migraciones SQL y políticas RLS por token en `/supabase/migrations/` (`evaluations` y `reviews` sin PII) + degradación elegante si Supabase falla | Hanniel / Claude | G2 (Sáb 14:00) | Bloqueado por `HUMANO.md` (proyecto Supabase) |
+| A-04 | Migraciones SQL y políticas RLS por token en `/supabase/migrations/` (`evaluations` y `reviews` sin PII) + degradación elegante si Supabase falla | Hanniel / Claude | G2 (Sáb 14:00) | Migración escrita y API con 503 claro; falta aplicarla (`HUMANO.md` H-06) |
 | A-05 | Motor físico determinista `/backend/app/engine/`: evaluador de restricciones **primero** (`has_viable_options: false` si aplica), FAO-56 mensual, heladas/calor POWER, índices HLS (sin NDRE en Landsat, sin CAI) y filtro exponencial raíz | Hanniel / Claude | G2 (Sáb 14:00) | Funciones puras completadas y probadas; falta conectarlas a datos reales (A-06) |
 | A-06 | Integración de datos reales de Diamond Valley + 3 rotaciones comparables (actual, menos agua, más suelo) y soporte modo `unlabeled` (Querétaro) | Hanniel / Claude | G3 (Sáb 19:00) | Pendiente |
 | A-07 | Integración de artefactos ONNX/XGBoost aprobados en corte de modelos (o activación explícita de respaldos) | Hanniel / Claude | G4 (Dom 08:00) | Pendiente |
@@ -105,7 +105,7 @@ Estado de la orden de la madrugada del sábado. Cada bloque cierra con un commit
 | --- | --- | --- |
 | 0 | Base del repositorio: `.gitignore`, `.editorconfig`, `.env.example`, `README.md`, CI por carpeta (`.github/workflows/`), `contracts/sync.py` | Completado |
 | 1 | Motor y API (`/backend`): FastAPI, modelos Pydantic generados, restricciones, FAO-56, índices, clima, POWER, cargador de modelos, rutas `/api/v1`, `DATA_MODE`, CORS. 126 pruebas | Completado |
-| 2 | Base de datos (`/supabase`) | Pendiente |
+| 2 | Base de datos (`/supabase`): migración con `evaluations`, `reviews`, RLS sin políticas y cuatro funciones por token. Analizada con `pglast`; falta ejecutarla en un proyecto real (`HUMANO.md` H-06) | Completado (sin ejecutar) |
 | 3 | Frontend, solo esqueleto (`/frontend`) | Pendiente |
 | 4 | Guiones de datos y modelos (`/data-pipeline`, `/models`) | Pendiente |
 

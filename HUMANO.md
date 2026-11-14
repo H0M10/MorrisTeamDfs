@@ -63,3 +63,28 @@ Desbloquea: cifras de agua reales cuando el modelo 1 no esté entrenado.
 ### H-05. Decidir las dos inconsistencias de los fixtures (Hanniel, antes de congelar a las 10:00)
 
 Detalle en `PLAN.md`, sección "Notas para Argon y Hanniel". Son dos banderas `calendar_ok` que no cuadran con la ventana de siembra del propio fixture.
+
+### H-06. Crear el proyecto de Supabase y aplicar la migración (Hanniel, sábado 09:30)
+
+1. En supabase.com: **New project**. Región cercana (us-west o us-east). Guarda la contraseña de la base en tu gestor, no en el repositorio.
+2. **SQL Editor → New query**: pega completo `supabase/migrations/20261114000000_init.sql` y pulsa **Run**. Debe terminar sin errores.
+   (Alternativa con la CLI: `npx supabase login`, `npx supabase link --project-ref <ref>`, `npx supabase db push`.)
+3. Comprueba en el mismo editor:
+   ```sql
+   select public.create_shared_evaluation(
+     'prueba-token-0123456789', '{}'::jsonb,
+     '{"contract_version":"0.1.0","data_status":"fixture","strategies":[]}'::jsonb);
+   select * from public.get_shared_evaluation('prueba-token-0123456789');
+   select public.submit_review('prueba-token-0123456789', 'approve', 'prueba', null);
+   select * from public.get_reviews('prueba-token-0123456789');
+   delete from public.evaluations where share_token = 'prueba-token-0123456789';
+   ```
+   Las cuatro primeras deben devolver una fila. Si alguna falla, copia el error en `PLAN.md`: la migración solo pasó un analizador sintáctico, no se ha corrido en una base real.
+4. **Table Editor**: `evaluations` y `reviews` deben decir "RLS enabled" y no tener políticas.
+5. **Project Settings → API**: copia **Project URL** y la llave **anon public**. No copies `service_role` a ningún lado.
+6. Ponlas en:
+   - `backend/.env` y variables de Railway: `SUPABASE_URL`, `SUPABASE_ANON_KEY`.
+   - `frontend/.env.local` y variables de Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+7. Comprueba: `GET /health` de la API debe decir `"supabase_configured": true`, y `POST /api/v1/share` con un fixture debe devolver un token.
+
+Desbloquea: enlaces compartibles (A-04), revisión del técnico (T-04) y el teléfono como control (L-05). Realtime Broadcast viene activo por omisión; no requiere tabla.
