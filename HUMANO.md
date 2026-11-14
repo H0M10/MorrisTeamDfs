@@ -150,3 +150,14 @@ python models/model_2_prior_crop_effect/train.py --table <tabla>.parquet --test-
 - El modelo 1 se detiene si `models/kc_monthly.csv` está vacío (H-04).
 - El guion del modelo 3 **no se ha ejecutado nunca** (PyTorch no se instala en la laptop). Pruébalo primero con `--sample`.
 - Al terminar: llena `models/<modelo>/CARD.md` y sube `backend/artifacts/<modelo>/` (`model.ubj` u `.onnx` más `metrics.json`).
+
+### H-13. Poner datos reales en la API (Hanniel o Checo, tras H-11)
+
+1. Copia el `.parquet` de `build_table.py` a `backend/data/` (debe traer 36 meses consecutivos de la parcela).
+2. Escribe `backend/data/<parcel_id>.meta.json` con el nombre de la parcela y **las restricciones que declare el agricultor** (formato en `backend/README.md`). Un agente no puede inventarlas. En Querétaro agrega `declared_history`: no hay CDL.
+3. Prueba en local: `DATA_MODE=real uv run uvicorn app.main:app --port 8010` y abre `/api/v1/pilots`.
+4. Sube los dos archivos y pon `DATA_MODE=real` en Railway.
+
+### H-14. Reabrir la verificación del banco FAO-56 (Hanniel)
+
+`models/fao56_crop_bank.csv` lo transcribió un agente y tiene diferencias con la tabla 12 de FAO-56 (lista en `PLAN.md`, hallazgo C-01). Una persona debe abrir la publicación (fao.org/4/x0490e/x0490e0b.htm, tabla 12; la columna de Kc inicial es una imagen), corregir los valores, poner su nombre en `verified_by` y correr `python contracts/sync.py`. Mientras tanto la API declara esas cifras como `assumed`.

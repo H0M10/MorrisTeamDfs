@@ -32,13 +32,15 @@ En la laptop de 8 GB, detén `npm run dev` antes de correrlas.
 | `app/schemas/contract.py` | **Generado** desde `contracts/schema.json`. No se edita a mano |
 | `app/schemas/api.py` | Peticiones y respuestas que envuelven la evaluación |
 | `app/engine/constraints.py` | Restricciones primero: `viable`, `rejection_reason`, `has_viable_options` |
-| `app/engine/crop_traits.py` | Rasgos de cultivo (todo supuesto; lo revisa un agrónomo) |
+| `app/engine/crop_bank.py` | Banco FAO-56: Kc, raíces y Kc mensual por grupo (copia de `/models`) |
+| `app/engine/crop_traits.py` | Rasgos de cultivo, construidos desde el banco (todo supuesto) |
 | `app/engine/water_balance.py` | ET0 Penman-Monteith, balance FAO-56 mensual, filtro exponencial |
 | `app/engine/indices.py` | NDVI, NDMI, BSI, NDTI. Sin NDRE ni CAI |
 | `app/engine/climate.py` | Frecuencia de heladas y calor por mes |
 | `app/sources/power.py` | NASA POWER con caché en disco y tiempo de espera |
 | `app/models/loader.py` | Artefactos XGBoost y ONNX; sin artefacto o sin métrica entra el respaldo |
 | `app/services/evaluation.py` | Arma la evaluación (modo fixture o real) |
+| `app/services/table_to_contract.py` | Tabla de `/data-pipeline` → evaluación del contrato |
 | `app/services/ask.py` | Enrutador de preguntas por reglas |
 | `app/services/share.py` | Enlaces compartibles en Supabase |
 | `app/contract_data/` | Copia de `/contracts` (la mantiene `python contracts/sync.py`) |
@@ -49,6 +51,7 @@ En la laptop de 8 GB, detén `npm run dev` antes de correrlas.
 | --- | --- |
 | `GET /health` | Estado, `data_mode`, versión del contrato y estado de cada modelo |
 | `GET /api/v1/pilots` | Parcelas piloto |
+| `GET /api/v1/crops` | Banco de cultivos FAO-56 y rasgos (todo `assumed`) |
 | `POST /api/v1/evaluate` | Evaluación completa según el contrato |
 | `POST /api/v1/simulate` | La misma evaluación con la viabilidad recalculada |
 | `POST /api/v1/ask` | Respuesta por reglas, solo con campos del contrato |
@@ -77,12 +80,42 @@ Los errores salen como `{"error": "codigo", "message": {"es": "...", "en": "..."
   `data_status: "fixture"`. `/simulate` solo vuelve a evaluar las restricciones
   sobre el mismo fixture; las demás cifras no cambian y todo sigue marcado
   como dato de ejemplo.
-- `real`: usará las tablas precalculadas de `/data-pipeline`. Aún no existen:
-  `/evaluate` responde 503 `real_data_unavailable` en vez de inventar.
+- `real`: arma la evaluación desde las tablas `.parquet` de `/data-pipeline` que
+  haya en `DATA_DIR` (por omisión `backend/data/`), con
+  `app/services/table_to_contract.py`. Sin tabla responde 503
+  `real_data_unavailable`; con tabla incompleta, 503 `real_data_incomplete`.
 
-Para conectar los datos reales el punto de entrada es `evaluate()` en
-`app/services/evaluation.py`. El motor (`app/engine/`) ya son funciones puras
-listas para recibir las series.
+### Datos reales de una parcela
+
+1. Copia a `backend/data/` el `.parquet` de `build_table.py` (pocos KB). Debe
+   traer 36 meses consecutivos de la parcela.
+2. Opcional, `backend/data/<parcel_id>.meta.json` con lo que solo sabe una
+   persona:
+
+```json
+{
+  "name": {"es": "Pivote norte", "en": "North pivot"},
+  "constraints": {
+    "max_water_mm_year": 600,
+    "available_machinery": ["pivote_central", "sembradora_grano", "empacadora"],
+    "crops_without_buyer": [],
+    "planting_window": {"start_month": 3, "end_month": 10}
+  },
+  "declared_history": {"1": "barbecho", "5": "maiz"},
+  "aquifer_name": {"es": "...", "en": "..."},
+  "aquifer_status_note": {"es": "...", "en": "..."}
+}
+```
+
+   `declared_history` (mes del calendario a código de cultivo) solo hace falta
+   donde no hay CDL. Sin `constraints` no se descarta ninguna rotación y la
+   respuesta lo dice.
+3. Arranca con `DATA_MODE=real`.
+
+Qué sale de dónde: índices y color de HLS (30 m, `observed`); clima de NASA
+POWER y humedad de SMAP como contexto regional (`modeled`); suelo de SoilGrids;
+agua de cada rotación por balance FAO-56 con el banco de cultivos (respaldo
+declarado del modelo 1). Las rotaciones alternativas son plantillas supuestas.
 
 ## Modelos
 
@@ -131,5 +164,6 @@ Directorio raíz del servicio: `backend`. Variables: las del bloque Backend de
   que en Linux pesan cientos de MB.
 - La tabla de rasgos de cultivo no incluye maquinaria de cosecha de grano.
 - No hay RUSLE, NDRE ni CAI.
-- La tabla de coeficientes de cultivo (Kc) de FAO-56, que es el respaldo del
-  modelo 1, aún no está cargada: debe transcribirla y verificarla una persona.
+- La tabla de Kc de FAO-56 (respaldo del modelo 1) ya está conectada, pero la
+  transcribió un agente y tiene diferencias con la publicación (PLAN.md, C-01).
+  Por eso todo lo que sale de ella se declara `assumed`.

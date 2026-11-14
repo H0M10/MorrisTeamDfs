@@ -1121,6 +1121,11 @@ python scripts/sync_board.py --check
       "when": "2026-11-14 12:09",
       "decision": "Reparto 50/50 Hanniel-Checo, Banco FAO-56 ampliado a 24 cultivos (H-04), análisis de los 24 recursos NASA y Prompt Orden #2 para Claude (Fable 5.2).",
       "impact": "H0M10 lidera Orden #2, Diamond Valley (G2 14:00) y Modelos 1+4; Checo-coder cubre NV/ID/UT + Querétaro y Modelo 3 ONNX sin sobrecarga."
+    },
+    {
+      "when": "2026-11-14 13:03",
+      "decision": "Orden #2 (Claude, rama pista/motor-api): S-01 y S-02 resueltos, banco FAO-56 conectado al motor con GET /api/v1/crops, table_to_contract.py y DATA_MODE=real probados con tablas sintéticas.",
+      "impact": "G2 queda a un paso: copiar la tabla real de Diamond Valley a backend/data/ (H-13). Auditoría C-01: el banco FAO-56 difiere de la tabla 12 en 6 cultivos y no lo verificó una persona; se sirve como 'assumed' y se recomienda reabrir H-04 (H-14)."
     }
   ]
 }
