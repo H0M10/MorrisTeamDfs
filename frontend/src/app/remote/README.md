@@ -1,6 +1,6 @@
 # /remote — El teléfono como control
 
-Dueño: Persona 5 (Control remoto).
+Dueño: Alexis (`@alexishal8` — Control remoto, congelado como esqueleto por recorte de equipo de 4).
 Entrega: vista móvil conectada por QR y Supabase Realtime Broadcast para que el
 juez controle la pantalla desde su teléfono.
 

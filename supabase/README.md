@@ -1,6 +1,6 @@
 # /supabase — Base de datos
 
-Dueño: Hanniel (Motor y API).
+Dueño: Hanniel (`@H0M10` — Motor y API).
 Entrega: migraciones SQL y acceso por token para evaluaciones compartibles y
 revisiones del técnico, sin datos personales.
 

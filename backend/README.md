@@ -1,6 +1,6 @@
 # /backend — Motor y API
 
-Dueño: Hanniel (Motor y API).
+Dueño: Hanniel (`@H0M10`) y Checo (`@Checo-coder`) — Motor y API.
 Entrega: API en FastAPI para Railway (solo CPU), motor físico determinista
 FAO-56, evaluador de restricciones e inferencia de modelos.
 

@@ -1,6 +1,6 @@
 # /frontend/src/lib
 
-Dueño: Hanniel (Motor y API).
+Dueño: Hanniel (`@H0M10` — Motor y API).
 Entrega: cliente tipado de la API, tipos TypeScript generados desde
 `/contracts/schema.json` y respaldo local con los fixtures.
 

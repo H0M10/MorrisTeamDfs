@@ -1,6 +1,6 @@
 # /engineer — Modo Ingeniero
 
-Dueño: Persona 6 (Modo Ingeniero).
+Dueño: Alexis (`@alexishal8` — Modo Ingeniero).
 Entrega: panel técnico con la red en vivo (pesos reales del modelo 3), métricas
 de validación por valle e intervalos conformales.
 

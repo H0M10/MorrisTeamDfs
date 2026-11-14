@@ -1,6 +1,6 @@
 # /showcase — Landing para los jueces
 
-Dueño: Persona 5 (Landing y 3D).
+Dueño: Alexis (`@alexishal8` — Landing, Globo, Gestos y Animaciones IA).
 Entrega: landing con zoom del globo, terreno 3D y control por gestos, con
 alternativa de teclado y respeto a `prefers-reduced-motion`.
 

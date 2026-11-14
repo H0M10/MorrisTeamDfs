@@ -1,0 +1,20 @@
+# Propietarios oficiales por pista — MorrisTeamDfs (Field Shift / The CSC)
+# Cada carpeta tiene dueño según AGENTS.md §2 y §9.
+
+*                               @H0M10
+
+/contracts/                     @H0M10
+/backend/                       @H0M10 @Checo-coder
+/supabase/                      @H0M10
+/frontend/src/lib/              @H0M10
+
+/data-pipeline/                 @Checo-coder @H0M10
+/models/                        @Checo-coder @H0M10
+
+/frontend/src/app/tool/         @Gicarrillo
+/frontend/tests/                @Gicarrillo
+
+/frontend/src/app/showcase/     @alexishal8 @Gicarrillo
+/frontend/src/app/engineer/     @alexishal8
+/frontend/src/app/remote/       @alexishal8
+/docs/                          @alexishal8 @Gicarrillo

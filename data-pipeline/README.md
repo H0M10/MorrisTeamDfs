@@ -1,6 +1,6 @@
 # /data-pipeline — Datos
 
-Dueño: Persona 1 (Datos).
+Dueño: Checo (`@Checo-coder`) y Hanniel (`@H0M10`) — Datos.
 Entrega: guiones de extracción y cruce (Earth Engine, NASA POWER) que corren
 **fuera de las laptops** y dejan una tabla mensual por parcela en GeoParquet.
 

@@ -1,2 +1,2 @@
-Dueño: Persona 6 (Documentación y entrega).
-Entrega: Página del proyecto en inglés, guion del video de 30 segundos y fichas técnicas de datos y modelos.
+Dueño: Alexis (`@alexishal8` — Documentación, animaciones IA y entrega) y equipo (`@H0M10`, `@Checo-coder`, `@Gicarrillo`).
+Entrega: Centro de Mando (`index.html`), presentación (`kickoff_equipo_the_csc.html`), página en inglés (`project_page.md`), guion de video 30 s (`video_script.md`) y fichas técnicas.

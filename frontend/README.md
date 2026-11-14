@@ -1,6 +1,6 @@
 # /frontend — Una sola app Next.js
 
-Dueños: personas 4, 5 y 6 y Hanniel, según la subcarpeta de `src/`.
+Dueños: `@Gicarrillo` (`/tool`), Alexis (`@alexishal8`, `/showcase` y `/engineer`) y Hanniel (`@H0M10`, `/src/lib`).
 Entrega: aplicación en Next.js (App Router, TypeScript, Tailwind) desplegada en
 Vercel, para agricultores y para jueces.
 

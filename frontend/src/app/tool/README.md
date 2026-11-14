@@ -1,6 +1,6 @@
 # /tool — La herramienta del agricultor
 
-Dueño: Persona 4 (Herramienta).
+Dueño: `@Gicarrillo` (Herramienta).
 Entrega: herramienta accesible para el agricultor y su técnico: tira de 36
 meses, restricciones, tres rotaciones, ficha de evidencia y hoja imprimible.
 

@@ -1,6 +1,6 @@
 # /models — Modelos
 
-Dueño: Persona 2 (Modelos).
+Dueño: Checo (`@Checo-coder`) y Hanniel (`@H0M10`) — Modelos.
 Entrega: entrenamiento con partición por valle, artefactos ligeros para CPU
 (XGBoost y ONNX) y una ficha `CARD.md` por modelo con su métrica frente a la
 línea base.
