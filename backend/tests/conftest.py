@@ -28,6 +28,7 @@ def make_settings(tmp_path: Path) -> Callable[..., Settings]:
     def build(**overrides: Any) -> Settings:
         values: dict[str, Any] = {
             "data_mode": "fixture",
+            "data_dir": tmp_path / "data",
             "models_dir": tmp_path / "artifacts",
             "power_cache_dir": tmp_path / "power",
             "supabase_url": "",

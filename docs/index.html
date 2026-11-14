@@ -592,8 +592,8 @@ python scripts/sync_board.py --check
   "project": "Field Shift",
   "team": "The CSC",
   "event": "NASA Space Apps Challenge 2026",
-  "updated_at": "2026-11-14T13:26:00-06:00",
-  "phase": "Orden #2 y C-01 completados · Proyecto GEE luca-497507 habilitado + --local-dir listo · Rumbo a D-03 y G2 (14:00)",
+  "updated_at": "2026-11-14T14:18:00-06:00",
+  "phase": "D-03 Completado · diamond_valley.parquet real (2022–2024) validado · Fijar DATA_MODE=real en Railway para cerrar G2",
   "repo_url": "https://github.com/H0M10/MorrisTeamDfs",
   "git_remote": "https://github.com/H0M10/MorrisTeamDfs.git",
   "pages_url": "https://h0m10.github.io/MorrisTeamDfs/",
@@ -620,7 +620,7 @@ python scripts/sync_board.py --check
         "Checo-coder",
         "Gicarrillo"
       ],
-      "status": "pending"
+      "status": "in_progress"
     },
     {
       "id": "G3",
@@ -683,8 +683,8 @@ python scripts/sync_board.py --check
       ],
       "role": "Líder Técnico · Contrato, Motor FAO-56, API FastAPI e Infraestructura",
       "color": "#1247B8",
-      "progress_pct": 92,
-      "doing_now": "Orden #2 completada (Claude) y C-01 corregido en fao56_crop_bank.csv; proyecto GEE luca-497507 habilitado con descarga directa --local-dir lista en ee_export.py. Falta correr D-03 para cerrar G2.",
+      "progress_pct": 96,
+      "doing_now": "D-03 completado sobre GEE luca-497507: backend/data/diamond_valley.parquet (36 meses 2022–2024) validado contra contracts/schema.json y con alias dv-nv-fixture-01 -> dv-nv-01 listo para activar DATA_MODE=real en Railway.",
       "done": [
         "Estructura completa del repo y sincronización AGENTS.md == CLAUDE.md.",
         "Contrato JSON v0.1.1 y 3 fixtures de 36 meses (diamond_valley, queretaro, no_viable_options) verificados.",
@@ -695,18 +695,9 @@ python scripts/sync_board.py --check
         "H-07 Completado: Vercel en vivo (https://morris-team-dfs.vercel.app/tool/retrato mostrando tira de parcela sin error de conexión).",
         "H-04 + C-01 Completado: models/kc_monthly.csv (132 filas) + models/fao56_crop_bank.csv (24 cultivos + 8 alias) corregidos vs Tabla 12 FAO-56 y sincronizados.",
         "Orden #2 / A-06 Completado: S-01 resuelto, GET /api/v1/crops, table_to_contract.py (S-02 + DATA_MODE=real) y plantilla dv-nv-01.meta.json.example listos.",
-        "Cuenta GEE luca-497507 habilitada y fijada por omisión + bandera --local-dir agregada en data-pipeline/ee_export.py."
+        "D-01 / D-03 Completado (GEE luca-497507): 14 colecciones verificadas (2015–2024) y tabla real backend/data/diamond_valley.parquet (36 meses 2022-01 a 2024-12 para dv-nv-01) validada en DATA_MODE=real."
       ],
       "todo": [
-        {
-          "id": "D-03 (Diamond Valley Python local)",
-          "gate": "G2",
-          "title": "Extraer Diamond Valley con luca-497507 -> primer .parquet real en backend/data/",
-          "detail": "Correr ee_coverage.py, ee_export.py --local-dir y build_table.py hacia backend/data/diamond_valley.parquet (H-13).",
-          "connects_to": [
-            "Gicarrillo"
-          ]
-        },
         {
           "id": "M-02 / M-05",
           "gate": "G4",
@@ -1004,9 +995,9 @@ python scripts/sync_board.py --check
       "priority": "P0",
       "owner": "H0M10 / Checo-coder",
       "due": "Sáb 12:30–15:00",
-      "title": "GEE luca-497507 habilitado + --local-dir: extraer Diamond Valley (H0M10) y NV/ID/UT + Querétaro (Checo-coder)",
-      "blocks": "Tablas .parquet reales, G2 (un dato real) y entrenamiento multi-valle",
-      "status": "En curso (luca-497507 habilitado por H0M10)"
+      "title": "GEE luca-497507: Diamond Valley (H0M10) extraído; falta NV/ID/UT + Querétaro (Checo-coder) y activar DATA_MODE=real en Railway",
+      "blocks": "Tablas multi-valle .parquet (M-02..M-05) y datos reales en producción (G2)",
+      "status": "En curso (D-03 COMPLETADO por H0M10; falta D-02/D-04 por Checo-coder)"
     },
     {
       "id": "H-05",
@@ -1123,6 +1114,11 @@ python scripts/sync_board.py --check
       "when": "2026-11-14 13:26",
       "decision": "Proyecto GEE luca-497507 fijado por omisión, adición de --local-dir en ee_export.py, corrección de 6 filas C-01 en fao56_crop_bank.csv y plantilla dv-nv-01.meta.json.example.",
       "impact": "Listo para extraer Diamond Valley directo a local sin esperar Drive, mientras backend y banco quedan sincronizados para DATA_MODE=real."
+    },
+    {
+      "when": "2026-11-14 14:18",
+      "decision": "D-03 completado con luca-497507 (backend/data/diamond_valley.parquet, 2022–2024) y alias fixture->real (dv-nv-fixture-01 -> dv-nv-01) en evaluation.py.",
+      "impact": "Validado 100% contra contracts/schema.json y 161 pruebas pytest en verde; activar DATA_MODE=real en Railway sirve al instante datos satelitales reales en /tool."
     }
   ]
 }

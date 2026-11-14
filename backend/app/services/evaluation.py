@@ -31,6 +31,11 @@ from app.services import table_to_contract
 
 EvaluationDict = dict[str, Any]
 
+FIXTURE_TO_REAL_PARCEL: dict[str, str] = {
+    "dv-nv-fixture-01": "dv-nv-01",
+    "qro-sjr-fixture-01": "qro-sjr-01",
+}
+
 
 @lru_cache
 def load_fixtures() -> dict[str, EvaluationDict]:
@@ -84,6 +89,8 @@ def _real_base(
     tables = table_to_contract.find_tables(data_dir)
     if not tables:
         raise real_data_unavailable(parcel_id)
+    if parcel_id not in tables and FIXTURE_TO_REAL_PARCEL.get(parcel_id) in tables:
+        parcel_id = FIXTURE_TO_REAL_PARCEL[parcel_id]
     if parcel_id not in tables:
         raise parcel_not_found(parcel_id)
     try:

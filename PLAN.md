@@ -10,7 +10,7 @@
 | Compuerta | Cuándo | Condición de paso | Estado |
 | --- | --- | --- | --- |
 | G1 | Sábado 10:00 | Contrato congelado; API de ejemplo desplegada | **Completado** (`https://morristeamdfs-production.up.railway.app`) |
-| G2 | Sábado 14:00 | Un dato real en pantalla: `/tool` consume la API real para una parcela | Pendiente |
+| G2 | Sábado 14:00 | Un dato real en pantalla: `/tool` consume la API real para una parcela | En curso (tabla real `backend/data/diamond_valley.parquet` lista; activar `DATA_MODE=real` en Railway) |
 | G3 | Sábado 19:00 | Tres rotaciones comparables del caso real | Pendiente |
 | G4 | Domingo 8:00 | Corte de modelos: el que no tenga métrica sale y entra su respaldo | Pendiente |
 | G5 | Domingo 12:00 | Se congelan las funciones | Pendiente |
@@ -23,9 +23,9 @@
 
 | ID | Tarea | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
-| D-01 | Confirmar en catálogo GEE los años exactos cubiertos por HLS, OpenET, USDA CDL, SMAP, SSURGO, SoilGrids y SRTM (+ opcionales S2/IMERG/PRISM) | `@Checo-coder` | G1 (Sáb 10:00) | Guion listo (`ee_coverage.py`); falta ejecutar en Colab (`HUMANO.md` H-11) |
+| D-01 | Confirmar en catálogo GEE los años exactos cubiertos por HLS, OpenET, USDA CDL, SMAP, SSURGO, SoilGrids y SRTM (+ opcionales S2/IMERG/PRISM) | `@Checo-coder` | G1 (Sáb 10:00) | **Completado** (`ee_coverage.py` verificado sobre `luca-497507`: 2015–2024 en común) |
 | D-02 | Dibujar 25–30 pivotes reales de 2-3 zonas vecinas en NV, ID y UT (alfalfa, granos, papa, frijol, maíz) | `@Checo-coder` | G2 (Sáb 14:00) | Pendiente (GeoJSON) |
-| D-03 | Extraer serie de 36 meses de **Diamond Valley** (caso estrella para Compuerta G2) -> `.parquet` real | `@H0M10` | G2 (Sáb 14:00) | Proyecto GEE `luca-497507` habilitado por defecto; `--local-dir` agregado en `ee_export.py`; falta ejecutar descarga y `build_table.py` |
+| D-03 | Extraer serie de 36 meses de **Diamond Valley** (caso estrella para Compuerta G2) -> `.parquet` real | `@H0M10` | G2 (Sáb 14:00) | **Completado** (`backend/data/diamond_valley.parquet`, 36 meses 2022–2024 validado contra `contracts/schema.json`) |
 | D-04 | Polígono real de **Querétaro** (San Juan del Río / Pedro Escobedo, `--unlabeled`) + cifra acuífero CONAGUA verificada -> `.parquet` | `@Checo-coder` | G3 (Sáb 19:00) | Pendiente (GeoJSON + PDF CONAGUA) |
 | D-05 | Exportación multi-valle (NV, ID, UT) para entrenamiento en la nube | `@Checo-coder` + `@H0M10` | G3 (Sáb 19:00) | Depende de D-02 |
 
@@ -53,8 +53,8 @@
 | A-02 | **Orden #1 Claude:** Esqueleto FastAPI en `/backend` sirviendo los 3 fixtures con validación Pydantic v2, `/health`, `/evaluate`, `/ask` (enrutador por reglas) + tipos TypeScript y cliente en `/frontend/src/lib` + `.env.example` | `@H0M10` / Claude | G1 (Sáb 10:00) | Completado (Backend + `/frontend/src/lib`) |
 | A-03 | Conectar `H0M10/MorrisTeamDfs`, congelar `/contracts/schema.json` a las 10:00 AM; desplegar API fixture en Railway | `@H0M10` | G1 (Sáb 10:00) | **Completado** (`https://morristeamdfs-production.up.railway.app`) |
 | A-04 | Migraciones SQL y políticas RLS por token en `/supabase/migrations/` (`evaluations` y `reviews` sin PII) + degradación elegante si Supabase falla | `@H0M10` / Claude | G2 (Sáb 14:00) | **Completado** (SQL aplicado, RLS activo sin políticas y `/health` con `supabase_configured: true`) |
-| A-05 | Motor físico determinista `/backend/app/engine/`: evaluador de restricciones **primero** (`has_viable_options: false` si aplica), FAO-56 mensual, heladas/calor POWER, índices HLS (sin NDRE en Landsat, sin CAI) y filtro exponencial raíz | `@H0M10` / Claude | G2 (Sáb 14:00) | Funciones puras completadas y probadas; falta conectarlas a datos reales (A-06) |
-| A-06 | Integración de datos reales de Diamond Valley + 3 rotaciones comparables (actual, menos agua, más suelo) y soporte modo `unlabeled` (Querétaro) | `@H0M10` + `@Checo-coder` / Claude | G3 (Sáb 19:00) | **Completado (código y Orden #2)** — convertidor `table_to_contract.py`, `DATA_MODE=real` y plantilla `dv-nv-01.meta.json.example` listos; resta depositar `.parquet` de D-03 en `backend/data/` |
+| A-05 | Motor físico determinista `/backend/app/engine/`: evaluador de restricciones **primero** (`has_viable_options: false` si aplica), FAO-56 mensual, heladas/calor POWER, índices HLS (sin NDRE en Landsat, sin CAI) y filtro exponencial raíz | `@H0M10` / Claude | G2 (Sáb 14:00) | **Completado** — funciones probadas y conectadas a `backend/data/diamond_valley.parquet` vía `table_to_contract.py` |
+| A-06 | Integración de datos reales de Diamond Valley + 3 rotaciones comparables (actual, menos agua, más suelo) y soporte modo `unlabeled` (Querétaro) | `@H0M10` + `@Checo-coder` / Claude | G3 (Sáb 19:00) | **Completado (Diamond Valley)** — `backend/data/diamond_valley.parquet` depositado y validado en `DATA_MODE=real` (activar en Railway); soporte `unlabeled` listo para Querétaro (D-04) |
 | A-07 | Integración de artefactos ONNX/XGBoost aprobados en corte de modelos (o activación explícita de respaldos) | `@H0M10` + `@Checo-coder` / Claude | G4 (Dom 08:00) | Pendiente |
 
 ---
