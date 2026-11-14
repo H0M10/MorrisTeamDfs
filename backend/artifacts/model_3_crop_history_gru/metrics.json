@@ -1,0 +1,66 @@
+{
+  "model": "model_3_crop_history_gru",
+  "metric": {
+    "value": 0.125,
+    "unit": "F1",
+    "type": "modeled",
+    "source": "F1 macro de cuatro clases en 'diamond_valley_nv'",
+    "date": "2026-11",
+    "native_scale": "30 m"
+  },
+  "baseline_metric": {
+    "value": 0.125,
+    "unit": "F1",
+    "type": "modeled",
+    "source": "F1 macro de decir siempre 'small_grain' en 'diamond_valley_nv'",
+    "date": "2026-11",
+    "native_scale": "30 m"
+  },
+  "partition_method": {
+    "es": "Partición por valle: se mide en 'diamond_valley_nv', que no se usó para entrenar. El último año de los valles de entrenamiento queda como segunda prueba.",
+    "en": "Split by valley: measured on 'diamond_valley_nv', never used for training. The last year of the training valleys is held out as a second test."
+  },
+  "test_valley": "diamond_valley_nv",
+  "sample_run": false,
+  "extra": {
+    "classes": [
+      "alfalfa",
+      "small_grain",
+      "corn",
+      "fallow"
+    ],
+    "input": {
+      "name": "sequence",
+      "shape": [
+        "batch",
+        12,
+        5
+      ],
+      "columns": [
+        "ndvi",
+        "ndmi",
+        "bsi",
+        "ndti",
+        "missing_flag"
+      ]
+    },
+    "outputs": [
+      "logits",
+      "attention"
+    ],
+    "f1_per_class": {
+      "alfalfa": 0.0,
+      "small_grain": 0.5,
+      "corn": 0.0,
+      "fallow": 0.0
+    },
+    "baseline_f1_per_class": {
+      "alfalfa": 0.0,
+      "small_grain": 0.5,
+      "corn": 0.0,
+      "fallow": 0.0
+    },
+    "f1_macro_last_year": 0.2679,
+    "n_test": 6
+  }
+}

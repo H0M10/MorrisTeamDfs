@@ -1,0 +1,45 @@
+{
+  "model": "model_4_moisture_cqr",
+  "metric": {
+    "value": 80.5556,
+    "unit": "%",
+    "type": "modeled",
+    "source": "Cobertura real del intervalo CQR al 90 % en 'diamond_valley_nv'",
+    "date": "2026-11",
+    "native_scale": "9 km (contexto regional, validado a escala de zona)"
+  },
+  "baseline_metric": {
+    "value": 25.0,
+    "unit": "%",
+    "type": "modeled",
+    "source": "Cobertura del rango histórico sobre el balance FAO-56 en 'diamond_valley_nv'",
+    "date": "2026-11",
+    "native_scale": "9 km (contexto regional, validado a escala de zona)"
+  },
+  "partition_method": {
+    "es": "Partición por valle: se mide en 'diamond_valley_nv', que no se usó para entrenar. El último año de los valles de entrenamiento queda como segunda prueba.",
+    "en": "Split by valley: measured on 'diamond_valley_nv', never used for training. The last year of the training valleys is held out as a second test."
+  },
+  "test_valley": "diamond_valley_nv",
+  "sample_run": false,
+  "extra": {
+    "features": [
+      "month_num",
+      "et0_mm",
+      "rain_mm",
+      "tmax_c",
+      "tmin_c",
+      "ndvi",
+      "root_zone_index"
+    ],
+    "target_coverage": 0.9,
+    "conformal_q": 0.038585428414379536,
+    "balance_slope": 0.05683056856842584,
+    "balance_intercept": 0.1306604622180606,
+    "taw_mm_assumed": 150.0,
+    "mean_width_m3m3": 0.12439,
+    "baseline_mean_width_m3m3": 0.05016,
+    "n_calibration": 24,
+    "n_test": 36
+  }
+}

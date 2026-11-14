@@ -1,0 +1,41 @@
+{
+  "model": "model_1_crop_water",
+  "metric": {
+    "value": 11.675,
+    "unit": "mm",
+    "type": "modeled",
+    "source": "MAE mensual contra OpenET en 'diamond_valley_nv'",
+    "date": "2026-11",
+    "native_scale": "30 m"
+  },
+  "baseline_metric": {
+    "value": 45.1146,
+    "unit": "mm",
+    "type": "modeled",
+    "source": "MAE de FAO-56 (Kc × ET0) en 'diamond_valley_nv'",
+    "date": "2026-11",
+    "native_scale": "30 m"
+  },
+  "partition_method": {
+    "es": "Partición por valle: se mide en 'diamond_valley_nv', que no se usó para entrenar. El último año de los valles de entrenamiento queda como segunda prueba.",
+    "en": "Split by valley: measured on 'diamond_valley_nv', never used for training. The last year of the training valleys is held out as a second test."
+  },
+  "test_valley": "diamond_valley_nv",
+  "sample_run": false,
+  "extra": {
+    "features": [
+      "crop_code",
+      "month_num",
+      "et0_mm",
+      "rain_mm",
+      "tmax_c",
+      "tmin_c",
+      "ndvi",
+      "ndmi",
+      "elevation_m"
+    ],
+    "mae_last_year_mm": 11.035,
+    "n_test": 72,
+    "best_iteration": 236
+  }
+}
