@@ -161,3 +161,18 @@ python models/model_2_prior_crop_effect/train.py --table <tabla>.parquet --test-
 ### H-14. Verificación humana visual de la tabla FAO-56 (Hanniel)
 
 Claude auditó `models/fao56_crop_bank.csv` contra la tabla 12 en línea de FAO-56 (`PLAN.md`, hallazgo C-01) y Argon corrigió las 6 diferencias detectadas (`trigo_invierno`, `garbanzo`, `soya`, `girasol`, `papa`, `trebol_cobertura`) sincronizando `backend/app/engine/data/fao56_crop_bank.csv`. Solo falta que una persona confirme visualmente la tabla original en `fao.org/4/x0490e/x0490e0b.htm` (la columna de Kc inicial es una imagen) y registre su nombre como verificador. Mientras tanto, la API sigue declarando esas cifras como `assumed`.
+
+### H-15. Llaves gratuitas para datos de apoyo (Hanniel o Checo)
+
+Verificado el 2026-11-14: estas APIs responden "no autorizado" sin llave. Cada una se pide con un registro gratuito; la llave va en `.env` y en Railway, nunca en el repositorio.
+
+- **USDA NASS QuickStats** (superficie y rendimiento por condado): registro en quickstats.nass.usda.gov/api.
+- **OpenET** (ET real por campo): cuenta en etdata.org. Alternativa sin llave: la colección de OpenET en Earth Engine.
+- **USDA AMS MyMarketNews** (precios): registro en mymarketnews.ams.usda.gov.
+- **Earthdata Login** (ECOSTRESS por AppEEARS, si se usa).
+
+Sin llave funcionan: NASA POWER, CropScape (CDL), Soil Data Access (SSURGO) y la API nueva de agua de USGS.
+
+### H-16. Decidir cómo se sabe qué se siembra en Querétaro (equipo)
+
+Ningún recurso de la lista del reto dice qué se cultiva en México. Opciones: (a) lo declara el agricultor, con FAO GAEZ como aptitud; (b) usar estadística oficial mexicana (SIAP), saliendo de la lista y declarándolo en la página del proyecto. Detalle en `data-pipeline/PLAN_DE_DATOS.md` §5.
