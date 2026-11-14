@@ -4,7 +4,8 @@ Regla 11 de `AGENTS.md`: Todo lo que requiera intervención humana (cuentas, lla
 
 | Prioridad | Acción humana | Responsable | Para cuándo | Qué bloquea | Estado |
 | --- | --- | --- | --- | --- | --- |
-| **P0 (Crítico)** | Pedir por escrito al organizador la autorización para preparar estructura/esqueleto antes de las 9:00 AM y revisar el "stack" oficial a las 9:00 AM | Hanniel / Capitán | Esta noche / Sáb 09:00 | Congelamiento del contrato (Sáb 10:00) y elegibilidad oficial | Pendiente |
+| **P0 (Crítico)** | Confirmar por escrito con el organizador que no hay revisión el sábado y podemos avanzar desde ya (Gustavo Cruz Zarraga confirmó en WhatsApp oficial: *"nosotros sólo hacemos la evaluación del reto el día domingo, no se hace ninguna revisión el día sábado"*) | Hanniel / Capitán | Sáb madrugada | Luz verde para construir funciones completas desde el sábado | **Completado** |
+| **P0 (Crítico)** | Revisar el "stack" oficial si el organizador lo entrega a las 09:00 AM y validar compatibilidad antes del congelamiento | Hanniel + ARGON | Sáb 09:00 | Congelamiento del contrato (Sáb 10:00) | Pendiente (09:00 AM) |
 | **P0 (Crítico)** | Crear/verificar cuentas de los 6 integrantes: **Earthdata Login** (y generar token para HLS/SMAP), proyecto **Google Earth Engine** de uso no comercial, y acceso a **OpenET** | Los 6 (coordina Persona 1) | Madrugada / Sáb 08:30 | Tareas D-01 a D-05 (sin GEE/Earthdata no hay datos reales ni modelos) | Pendiente |
 | **P0 (Crítico)** | Crear proyectos en **Vercel**, **Railway** y **Supabase**, obtener URLs/llaves y cargar `.env` locales + variables de entorno en la nube (sin subir secretos a Git) | Hanniel | Sáb 09:30 | Despliegue API ejemplo (Sáb 10:00), RLS `/supabase`, Broadcast `/remote` | Pendiente |
 | **P1 (Alto)** | Elegir las **2 o 3 zonas de riego** similares a Diamond Valley en Nevada, Idaho y Utah (pivote, alfalfa, granos) para entrenamiento y validación por valle | Persona 1 + Persona 2 | Sáb 09:30 | D-02, D-05 y partición correcta por valle en Modelos 1-4 | Pendiente |
@@ -17,3 +18,48 @@ Regla 11 de `AGENTS.md`: Todo lo que requiera intervención humana (cuentas, lla
 | **P2 (Medio)** | Grabar **video de respaldo** (Sábado 23:00) y **video final de 30 s** + redactar la **página del proyecto en inglés** (`/docs/project_page.md`, cero cifras `fixture`) | Persona 6 + Equipo | Sáb 23:00 / Dom 15:00 | Entrega global oficial (Dom 20:00 / 23:59) | Pendiente |
 | **P2 (Medio)** | Ejecutar **prueba manual con lector de pantalla** (NVDA/VoiceOver) y teclado sobre `/tool` | Persona 4 | Dom 11:00 | Requisito obligatorio de accesibilidad (§9 de `AGENTS.md`) | Pendiente |
 | **P2 (Medio)** | Preparar logística de demo local: laptop a corriente con GPU dedicada, pestañas precargadas y **red propia desde teléfono** por si falla el Wi-Fi de la sede | Equipo | Dom 17:00 | Plan anti-fallos de demo en vivo (`PISTAS_PARALELAS.md`) | Pendiente |
+
+---
+
+## Pasos exactos anotados por Claude (constructor)
+
+Cada paso dice qué hacer y qué desbloquea. Los agentes no los simulan.
+
+### H-01. Subir el repositorio a GitHub (Hanniel, antes de que el equipo clone)
+
+El repositorio existe solo en la laptop (`git init` hecho, rama `main`, sin remoto).
+
+1. Crea un repositorio **vacío** en GitHub (sin README ni licencia). Debe ser público para la entrega.
+2. En la raíz del proyecto:
+   ```bash
+   git remote add origin https://github.com/<usuario>/<repositorio>.git
+   git push -u origin main
+   ```
+3. Abre la pestaña **Actions** y confirma que `backend` termina en verde.
+
+Desbloquea: que los compañeros clonen y que corra la integración continua.
+
+### H-02. Desplegar la API de ejemplo en Railway (Hanniel, compuerta del sábado 10:00)
+
+1. En railway.com: **New Project → Deploy from GitHub repo** y elige el repositorio.
+2. En el servicio: **Settings → Source → Root Directory** = `backend`.
+3. **Variables**: `DATA_MODE=fixture` y, cuando exista el dominio de Vercel, `CORS_ORIGINS=https://<tu-app>.vercel.app,http://localhost:3000`. No hace falta ninguna llave.
+4. **Settings → Networking → Generate Domain**.
+5. Comprueba: `https://<dominio>/health` debe responder `"status":"ok"` y `https://<dominio>/docs` debe abrir.
+6. Si la compilación falla porque no reconoce el constructor, cambia `"builder": "RAILPACK"` por `"NIXPACKS"` en `backend/railway.json` y vuelve a desplegar. No se pudo probar sin la cuenta.
+
+Desbloquea: la compuerta "API de ejemplo desplegada" y `NEXT_PUBLIC_API_URL` para el frontend.
+
+### H-03. Revisar la tabla de rasgos de cultivo (agrónomo o quien conozca el campo)
+
+Archivo: `backend/app/engine/crop_traits.py`. La escribió un agente como supuesto. Decide si cada rotación pasa o no por maquinaria y comprador. Revisar: qué equipo pide cada cultivo, qué cultivos se venden, y si la cosecha de grano se supone contratada. Mientras no se revise, toda cifra que dependa de ella es `assumed`.
+
+### H-04. Transcribir y verificar la tabla Kc de FAO-56 (Persona 2 o Hanniel)
+
+El respaldo del modelo 1 es la "tabla FAO-56, declarada". Hay que copiar de la publicación (FAO Irrigation and Drainage Paper 56, tabla 12) los coeficientes inicial, medio y final de: alfalfa, cebada, avena, trigo de invierno, maíz, sorgo y frijol, con la página consultada y la fecha. Un agente no debe escribirlos de memoria.
+
+Desbloquea: cifras de agua reales cuando el modelo 1 no esté entrenado.
+
+### H-05. Decidir las dos inconsistencias de los fixtures (Hanniel, antes de congelar a las 10:00)
+
+Detalle en `PLAN.md`, sección "Notas para Argon y Hanniel". Son dos banderas `calendar_ok` que no cuadran con la ventana de siembra del propio fixture.

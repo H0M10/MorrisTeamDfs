@@ -33,7 +33,7 @@ jobs:
         working-directory: .
         run: python3 contracts/sync.py --check
       - name: Instalar dependencias
-        run: uv sync --frozen --all-extras
+        run: uv sync --frozen
       - name: Ruff (lint)
         run: uv run ruff check .
       - name: Ruff (formato)

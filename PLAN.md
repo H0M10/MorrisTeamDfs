@@ -50,10 +50,10 @@
 | ID | Tarea | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
 | A-01 | Crear estructura del repo, `CLAUDE.md`, `contracts/schema.json`, 3 fixtures y `CHANGELOG.md` v0.1.0 | ARGON | Madrugada Sáb | Completado |
-| A-02 | **Orden #1 Claude:** Esqueleto FastAPI en `/backend` sirviendo los 3 fixtures con validación Pydantic v2, `/health`, `/evaluate`, `/ask` (enrutador por reglas) + tipos TypeScript y cliente en `/frontend/src/lib` + `.env.example` | Hanniel / Claude | G1 (Sáb 10:00) | Listo para ejecutar |
+| A-02 | **Orden #1 Claude:** Esqueleto FastAPI en `/backend` sirviendo los 3 fixtures con validación Pydantic v2, `/health`, `/evaluate`, `/ask` (enrutador por reglas) + tipos TypeScript y cliente en `/frontend/src/lib` + `.env.example` | Hanniel / Claude | G1 (Sáb 10:00) | Backend completado; `/frontend/src/lib` va en el bloque 3 |
 | A-03 | Revisar stack del organizador (09:00 AM) y congelar `/contracts/schema.json` a las 10:00 AM; desplegar API fixture en Railway | Hanniel | G1 (Sáb 10:00) | Pendiente (09:00 AM) |
 | A-04 | Migraciones SQL y políticas RLS por token en `/supabase/migrations/` (`evaluations` y `reviews` sin PII) + degradación elegante si Supabase falla | Hanniel / Claude | G2 (Sáb 14:00) | Bloqueado por `HUMANO.md` (proyecto Supabase) |
-| A-05 | Motor físico determinista `/backend/app/engine/`: evaluador de restricciones **primero** (`has_viable_options: false` si aplica), FAO-56 mensual, heladas/calor POWER, índices HLS (sin NDRE en Landsat, sin CAI) y filtro exponencial raíz | Hanniel / Claude | G2 (Sáb 14:00) | Pendiente tras G1 |
+| A-05 | Motor físico determinista `/backend/app/engine/`: evaluador de restricciones **primero** (`has_viable_options: false` si aplica), FAO-56 mensual, heladas/calor POWER, índices HLS (sin NDRE en Landsat, sin CAI) y filtro exponencial raíz | Hanniel / Claude | G2 (Sáb 14:00) | Funciones puras completadas y probadas; falta conectarlas a datos reales (A-06) |
 | A-06 | Integración de datos reales de Diamond Valley + 3 rotaciones comparables (actual, menos agua, más suelo) y soporte modo `unlabeled` (Querétaro) | Hanniel / Claude | G3 (Sáb 19:00) | Pendiente |
 | A-07 | Integración de artefactos ONNX/XGBoost aprobados en corte de modelos (o activación explícita de respaldos) | Hanniel / Claude | G4 (Dom 08:00) | Pendiente |
 
@@ -104,7 +104,7 @@ Estado de la orden de la madrugada del sábado. Cada bloque cierra con un commit
 | Bloque | Qué | Estado |
 | --- | --- | --- |
 | 0 | Base del repositorio: `.gitignore`, `.editorconfig`, `.env.example`, `README.md`, CI por carpeta (`.github/workflows/`), `contracts/sync.py` | Completado |
-| 1 | Motor y API (`/backend`) | En curso |
+| 1 | Motor y API (`/backend`): FastAPI, modelos Pydantic generados, restricciones, FAO-56, índices, clima, POWER, cargador de modelos, rutas `/api/v1`, `DATA_MODE`, CORS. 126 pruebas | Completado |
 | 2 | Base de datos (`/supabase`) | Pendiente |
 | 3 | Frontend, solo esqueleto (`/frontend`) | Pendiente |
 | 4 | Guiones de datos y modelos (`/data-pipeline`, `/models`) | Pendiente |
@@ -113,3 +113,9 @@ Estado de la orden de la madrugada del sábado. Cada bloque cierra con un commit
 
 - **Copias del contrato.** Railway despliega solo `/backend` y Vercel solo `/frontend`, así que cada uno guarda una copia de `schema.json` y de los fixtures (`backend/app/contract_data/`, `frontend/src/lib/contract/`). La fuente de verdad sigue en `/contracts`. Tras cualquier cambio: `python contracts/sync.py`. La CI falla si las copias difieren.
 - **Python 3.11.** La laptop solo tiene 3.13 y 3.14; el backend usa `uv`, que descarga 3.11 y fija versiones en `uv.lock`.
+- **Dos banderas de los fixtures no cuadran con su propia ventana de siembra.** El motor aplica la regla "toda siembra dentro del horizonte cae en la ventana" y difiere del fixture en dos casos. Están fijados en `backend/tests/test_constraints.py` (`KNOWN_FIXTURE_DIVERGENCES`); si se corrigen los fixtures esa prueba avisa. Pedido para Argon o Hanniel antes de congelar a las 10:00:
+  1. `diamond_valley.json`, rotación `more_soil`: siembra trigo de invierno en octubre de 2023 con ventana de marzo a septiembre, y aun así dice `calendar_ok: true`. Con las mismas restricciones `/evaluate` la da por viable y `/simulate` la descarta. Arreglo sugerido: ventana de marzo a octubre.
+  2. `no_viable_options.json`, rotación `current`: dice `calendar_ok: false` por "ventana de corte", pero la alfalfa ya está establecida y no hay ninguna siembra en los 36 meses. El motor da `calendar_ok: true` (la rotación sigue descartada por agua y maquinaria). Arreglo sugerido: poner `calendar_ok: true` y quitar la frase del corte.
+- **`/evaluate` en modo fixture ignora las restricciones** que mande el cliente (sirve el fixture tal cual). Para recalcular con restricciones se usa `/simulate`.
+- **Enlaces compartibles por RPC.** El backend no usa la llave `service_role`: llama a dos funciones de Postgres (`create_shared_evaluation`, `get_shared_evaluation`) con la llave anónima. Las define la migración del bloque 2.
+- **Respaldo del modelo 1 incompleto.** El cargador ya reporta `fallback`, pero la tabla de coeficientes de cultivo (Kc) de FAO-56 no está cargada: la debe transcribir y verificar una persona (ver `HUMANO.md`).

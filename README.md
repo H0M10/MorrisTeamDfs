@@ -60,8 +60,9 @@ Pruebas (detén antes el servidor de Next.js):
 uv run ruff check . && uv run ruff format --check . && uv run pytest
 ```
 
-`uv sync` instala solo lo necesario para servir la API (unos 150 MB).
-`uv sync --all-extras` agrega xgboost y onnxruntime para cargar modelos.
+El entorno pesa unos 450 MB en disco. xgboost y onnxruntime solo se cargan en
+memoria cuando existe un artefacto de modelo. Si `uv` no queda en el PATH tras
+`pip install uv`, usa `python -m uv`.
 
 ### 3. Interfaz (`/frontend`)
 

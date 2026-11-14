@@ -1,0 +1,49 @@
+[project]
+name = "fieldshift-backend"
+version = "0.1.0"
+description = "Field Shift: API y motor físico (equipo The CSC, NASA Space Apps 2026)"
+requires-python = "==3.11.*"
+dependencies = [
+    "fastapi==0.162.7",
+    "httpx==0.28.1",
+    "numpy==2.4.6",
+    "onnxruntime==1.32.0",
+    "pandas==3.1.1",
+    "pyarrow==26.0.1",
+    "pydantic==2.14.3",
+    "pydantic-settings==2.16.3",
+    "uvicorn==0.54.0",
+    "xgboost-cpu==3.2.0",
+]
+
+[project.optional-dependencies]
+train = [
+    "scikit-learn==1.9.1",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["app/schemas/contract.py"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "PL", "RUF"]
+ignore = ["PLR2004", "PLR0912", "PLR0913", "PLR0917", "RUF001", "RUF002", "RUF003", "RUF005"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["PLR0915"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[dependency-groups]
+dev = [
+    "datamodel-code-generator==0.96.0",
+    "jsonschema==4.26.0",
+    "pytest==9.2.0",
+    "ruff==0.17.5",
+]
