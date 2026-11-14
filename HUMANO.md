@@ -6,10 +6,10 @@ Regla 11 de `AGENTS.md`: Todo lo que requiera intervención humana (cuentas, lla
 
 | Prioridad | Acción humana | Responsable | Para cuándo | Qué bloquea | Estado |
 | --- | --- | --- | --- | --- | --- |
-| **P0 (Crítico)** | Crear/verificar cuentas del equipo: proyecto **Google Earth Engine** de uso no comercial, **Colab** y acceso a **OpenET** (Earthdata Login solo si se usa `earthaccess` fuera de GEE) | `@Checo-coder` + `@H0M10` | Sáb mañana | Tareas D-01 a D-05 (sin GEE/OpenET no hay datos reales ni modelos) | Pendiente |
+| **P0 (Crítico)** | Crear/verificar cuentas del equipo: proyecto **Google Earth Engine (`luca-497507`)** habilitado de uso no comercial, **Colab** y acceso a **OpenET** | `@Checo-coder` + `@H0M10` | Sáb mañana | Tareas D-01 a D-05 | **Completado (`luca-497507` habilitado por `@H0M10`)** |
 | **P0 (Crítico)** | Crear proyectos en **Railway** (`https://morristeamdfs-production.up.railway.app`), **Vercel** (`https://morris-team-dfs.vercel.app/`) y **Supabase** (`evaluations`/`reviews` con RLS sin políticas, `supabase_configured: true`) | Hanniel (`@H0M10`) | Sáb 10:00 | Despliegue API, frontend en vivo y enlaces compartibles | **Completado** |
 | **P1 (Alto)** | Elegir y dibujar las **2 o 3 zonas de riego** similares a Diamond Valley en Nevada, Idaho y Utah (pivote, alfalfa, granos, papa, maíz) para entrenamiento por valle | `@Checo-coder` | Sáb 13:00 | D-02, D-05 y partición correcta por valle en Modelos 1-4 | Pendiente |
-| **P1 (Alto)** | Lanzar en Colab la **exportación de Diamond Valley** (36 meses HLS, POWER, OpenET, CDL, SMAP, SSURGO, SRTM) → primer `.parquet` real (`D-03`) | `@H0M10` | Sáb 12:30–14:00 | Compuerta Sábado 14:00 ("un dato real en pantalla") | Pendiente |
+| **P1 (Alto)** | Ejecutar extracción de **Diamond Valley** (`luca-497507`, 36 meses HLS, POWER, OpenET, CDL, SMAP, SSURGO, SRTM) → primer `.parquet` real (`D-03`) | `@H0M10` | Sáb 12:30–14:00 | Compuerta Sábado 14:00 ("un dato real en pantalla") | En curso (`luca-497507` + `--local-dir` listos) |
 | **P1 (Alto)** | Decidir si se **renta una máquina en la nube con mucha RAM/GPU** (solo si Colab gratuito de ~12 GB RAM no alcanza para las tablas) | `@H0M10` + `@Checo-coder` | Sáb mediodía | Entrenamiento de Modelos 1-4 fuera de laptops de 8 GB | Pendiente |
 | **P1 (Alto)** | Definir el **nombre del proyecto** (confirmar si queda "Field Shift") y el **público principal** en inglés y español | Equipo (4) | Sáb 10:00 | Textos de cabecera, `/docs/project_page.md`, pitch y guion | Pendiente |
 | **P1 (Alto)** | Definir el **polígono exacto de la parcela de Querétaro** (San Juan del Río / Pedro Escobedo, `--unlabeled`) y verificar cifra de acuíferos **CONAGUA** contra publicación oficial | `@Checo-coder` | Sáb 15:00 | Caso real `unlabeled` de Querétaro (D-04) | Pendiente |
@@ -96,35 +96,35 @@ El agente dejó un lienzo de prueba y un botón que solo pide permiso de cámara
 
 Un proceso del sistema llamado "Manager" escucha en el puerto 8000, así que la API no puede arrancar ahí (`error while attempting to bind`). El repositorio usa **8010** por omisión. Si alguien copió un `.env` viejo con 8000, que lo cambie.
 
-### H-11. Datos: reparto 50/50 de parcelas y exportaciones Colab (`@H0M10` y `@Checo-coder`, sábado)
+### H-11. Datos: reparto 50/50 de parcelas y exportaciones GEE (`@H0M10` y `@Checo-coder`, sábado)
 
-Nada de esto corre en la laptop. Usa Colab:
-- **`@H0M10` (Prioridad G2 14:00):** correr Colab con el polígono de **Diamond Valley** (`data-pipeline/parcels/diamond_valley.geojson`) para tener el primer `.parquet` real en pantalla a las 14:00.
-- **`@Checo-coder` (Prioridad G3 19:00):** crear cuenta no comercial GEE (`--project`), dibujar los **2-3 valles vecinos (NV/ID/UT)** para entrenamiento multi-valle y el **polígono de Querétaro (`--unlabeled`)** + verificar cifra CONAGUA.
+El proyecto de Google Earth Engine **`luca-497507`** ya quedó habilitado y configurado por omisión en `ee_common.py`, `.env.example` y el cuaderno de Colab. Las exportaciones de parcelas individuales pueden descargarse directo por HTTP con `--local-dir exports_dv` (sin pasar por Drive; el cómputo pesado sigue en Earth Engine):
+- **`@H0M10` (Prioridad G2 14:00):** correr con Python local o Colab el polígono de **Diamond Valley** (`data-pipeline/parcels/diamond_valley.geojson`) usando `--project luca-497507 --local-dir exports_dv` para tener el primer `.parquet` real en `backend/data/`.
+- **`@Checo-coder` (Prioridad G3 19:00):** autenticarse en GEE (o pedir acceso a `luca-497507`), dibujar los **2-3 valles vecinos (NV/ID/UT)** para entrenamiento multi-valle y el **polígono de Querétaro (`--unlabeled`)** + verificar cifra CONAGUA.
 
 **Cuentas:**
-- **Earth Engine:** en code.earthengine.google.com/register crea o elige un proyecto de Google Cloud y regístralo para uso no comercial. El id del proyecto es lo que piden los guiones (`--project` o `EE_PROJECT`).
-- **Google Drive:** las exportaciones caen en la carpeta `fieldshift_exports` del Drive de quien las lanza.
+- **Earth Engine (Completado para `@H0M10`):** proyecto **`luca-497507`** habilitado y fijado por defecto en el repositorio.
+- **Google Drive:** solo hace falta si exportas muchas parcelas sin `--local-dir` (`fieldshift_exports`).
 - **NASA POWER:** no pide cuenta ni llave.
 - **Earthdata Login** solo hace falta si se usa `earthaccess` para algo fuera de Earth Engine (hoy no).
 
 **Parcelas reales (decisión de una persona):** `data-pipeline/parcels/diamond_valley.geojson` trae un rectángulo de ejemplo. Hay que dibujar los pivotes reales de Diamond Valley (por ejemplo en geojson.io, mirando la imagen), cada uno con `parcel_id` y `valley: "diamond_valley_nv"`. Lo mismo para las dos o tres zonas de Nevada, Idaho y Utah, con su propio `valley`. Sin al menos dos valles no se puede entrenar.
 
-**Comandos, en orden (cuaderno `data-pipeline/notebooks/field_shift_pipeline.ipynb` en Colab, o a mano):**
+**Comandos, en orden (Python local / máquina rentada para pocas parcelas con `--local-dir`, o Colab `data-pipeline/notebooks/field_shift_pipeline.ipynb`):**
 
 ```bash
-pip install -r data-pipeline/requirements.txt          # 1 a 2 GB de disco en Colab
+pip install -r data-pipeline/requirements.txt          # 1 a 2 GB si instalas todo; para D-03 local basta earthengine-api geopandas pandas pyarrow numpy httpx
 earthengine authenticate                               # en Colab: ee.Authenticate()
 cd data-pipeline
 
-# 1. Cobertura. RAM: < 1 GB. Lee la salida antes de fijar años.
-python ee_coverage.py --parcels parcels/diamond_valley.geojson --project <proyecto-ee>
+# 1. Cobertura. RAM: < 1 GB. Lee la salida antes de fijar años (`luca-497507` va por omisión).
+python ee_coverage.py --parcels parcels/diamond_valley.geojson --project luca-497507
 
-# 2. Exportación a Drive. RAM: < 1 GB (el cruce corre en Earth Engine). De minutos a una hora.
-python ee_export.py --parcels parcels/diamond_valley.geojson --start-year <A> --end-year <B> --project <proyecto-ee> --wait
+# 2. Descarga directa sin pasar por Drive (para pocas parcelas). RAM: < 1 GB.
+python ee_export.py --parcels parcels/diamond_valley.geojson --start-year <A> --end-year <B> --project luca-497507 --local-dir exports_dv
 
 # 3. Tabla final. RAM: < 1 GB con decenas de parcelas. Pide POWER por internet.
-python build_table.py --parcels parcels/diamond_valley.geojson --exports <carpeta-de-drive> --out <salida>.parquet
+python build_table.py --parcels parcels/diamond_valley.geojson --exports exports_dv --out ../backend/data/diamond_valley.parquet
 ```
 
 Querétaro: los mismos pasos con `--unlabeled` en 1 y 2, cuando exista su polígono.
@@ -158,6 +158,6 @@ python models/model_2_prior_crop_effect/train.py --table <tabla>.parquet --test-
 3. Prueba en local: `DATA_MODE=real uv run uvicorn app.main:app --port 8010` y abre `/api/v1/pilots`.
 4. Sube los dos archivos y pon `DATA_MODE=real` en Railway.
 
-### H-14. Reabrir la verificación del banco FAO-56 (Hanniel)
+### H-14. Verificación humana visual de la tabla FAO-56 (Hanniel)
 
-`models/fao56_crop_bank.csv` lo transcribió un agente y tiene diferencias con la tabla 12 de FAO-56 (lista en `PLAN.md`, hallazgo C-01). Una persona debe abrir la publicación (fao.org/4/x0490e/x0490e0b.htm, tabla 12; la columna de Kc inicial es una imagen), corregir los valores, poner su nombre en `verified_by` y correr `python contracts/sync.py`. Mientras tanto la API declara esas cifras como `assumed`.
+Claude auditó `models/fao56_crop_bank.csv` contra la tabla 12 en línea de FAO-56 (`PLAN.md`, hallazgo C-01) y Argon corrigió las 6 diferencias detectadas (`trigo_invierno`, `garbanzo`, `soya`, `girasol`, `papa`, `trebol_cobertura`) sincronizando `backend/app/engine/data/fao56_crop_bank.csv`. Solo falta que una persona confirme visualmente la tabla original en `fao.org/4/x0490e/x0490e0b.htm` (la columna de Kc inicial es una imagen) y registre su nombre como verificador. Mientras tanto, la API sigue declarando esas cifras como `assumed`.

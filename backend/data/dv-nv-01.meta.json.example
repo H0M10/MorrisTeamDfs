@@ -1,0 +1,27 @@
+{
+  "name": {
+    "es": "Pivote Norte — Diamond Valley, NV",
+    "en": "North Pivot — Diamond Valley, NV"
+  },
+  "constraints": {
+    "max_water_mm_year": 600,
+    "available_machinery": [
+      "pivote_central",
+      "sembradora_grano",
+      "empacadora"
+    ],
+    "crops_without_buyer": [],
+    "planting_window": {
+      "start_month": 3,
+      "end_month": 10
+    }
+  },
+  "aquifer_name": {
+    "es": "Cuenca hidrográfica de Diamond Valley (NV)",
+    "en": "Diamond Valley Hydrographic Basin (NV)"
+  },
+  "aquifer_status_note": {
+    "es": "Plantilla de ejemplo para metadatos del agricultor (HUMANO.md H-13). Confirmar topes reales de bombeo y restricciones antes de copiar a dv-nv-01.meta.json.",
+    "en": "Example template for grower-declared metadata (HUMANO.md H-13). Confirm actual pumping limits and constraints before copying to dv-nv-01.meta.json."
+  }
+}

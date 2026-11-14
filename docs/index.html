@@ -592,8 +592,8 @@ python scripts/sync_board.py --check
   "project": "Field Shift",
   "team": "The CSC",
   "event": "NASA Space Apps Challenge 2026",
-  "updated_at": "2026-11-14T12:08:00-06:00",
-  "phase": "Banco FAO-56 (24 cultivos, H-04) + Reparto 50/50 Hanniel/Checo + Análisis 24 Recursos · Rumbo a G2 (14:00)",
+  "updated_at": "2026-11-14T13:26:00-06:00",
+  "phase": "Orden #2 y C-01 completados · Proyecto GEE luca-497507 habilitado + --local-dir listo · Rumbo a D-03 y G2 (14:00)",
   "repo_url": "https://github.com/H0M10/MorrisTeamDfs",
   "git_remote": "https://github.com/H0M10/MorrisTeamDfs.git",
   "pages_url": "https://h0m10.github.io/MorrisTeamDfs/",
@@ -683,8 +683,8 @@ python scripts/sync_board.py --check
       ],
       "role": "Líder Técnico · Contrato, Motor FAO-56, API FastAPI e Infraestructura",
       "color": "#1247B8",
-      "progress_pct": 88,
-      "doing_now": "H-04 completado (banco 24 cultivos FAO-56 + kc_monthly.csv). Reparto 50/50 con Checo: Hanniel toma Orden #2 (Claude Fable 5.2), Diamond Valley real (D-03) y Modelos 1 + 4.",
+      "progress_pct": 92,
+      "doing_now": "Orden #2 completada (Claude) y C-01 corregido en fao56_crop_bank.csv; proyecto GEE luca-497507 habilitado con descarga directa --local-dir lista en ee_export.py. Falta correr D-03 para cerrar G2.",
       "done": [
         "Estructura completa del repo y sincronización AGENTS.md == CLAUDE.md.",
         "Contrato JSON v0.1.1 y 3 fixtures de 36 meses (diamond_valley, queretaro, no_viable_options) verificados.",
@@ -693,24 +693,16 @@ python scripts/sync_board.py --check
         "H-02 / G1 Completado: API FastAPI en vivo en Railway (https://morristeamdfs-production.up.railway.app/health y /docs) + soporte sb_publishable_.",
         "H-06 / A-04 Completado: migración SQL aplicada en Supabase (evaluations y reviews con RLS enabled sin políticas) y /health respondió supabase_configured: true.",
         "H-07 Completado: Vercel en vivo (https://morris-team-dfs.vercel.app/tool/retrato mostrando tira de parcela sin error de conexión).",
-        "H-04 + Banco Ampliado Completado: models/kc_monthly.csv (132 filas) + models/fao56_crop_bank.csv (24 especies + 8 alias) + análisis 24 recursos + PROMPT_CLAUDE_ORDEN_2.md."
+        "H-04 + C-01 Completado: models/kc_monthly.csv (132 filas) + models/fao56_crop_bank.csv (24 cultivos + 8 alias) corregidos vs Tabla 12 FAO-56 y sincronizados.",
+        "Orden #2 / A-06 Completado: S-01 resuelto, GET /api/v1/crops, table_to_contract.py (S-02 + DATA_MODE=real) y plantilla dv-nv-01.meta.json.example listos.",
+        "Cuenta GEE luca-497507 habilitada y fijada por omisión + bandera --local-dir agregada en data-pipeline/ee_export.py."
       ],
       "todo": [
         {
-          "id": "Orden #2 (Claude)",
+          "id": "D-03 (Diamond Valley Python local)",
           "gate": "G2",
-          "title": "Pasar docs/PROMPT_CLAUDE_ORDEN_2.md a Claude (table_to_contract.py + crop_bank + S-01/S-02)",
-          "detail": "Conectar banco de 24 cultivos, corregir S-01 y habilitar DATA_MODE=real.",
-          "connects_to": [
-            "Gicarrillo",
-            "Checo-coder"
-          ]
-        },
-        {
-          "id": "D-03 (Hanniel Colab)",
-          "gate": "G2",
-          "title": "Correr Colab sobre Diamond Valley -> primer .parquet real antes de 14:00",
-          "detail": "Caso estrella de EE. UU. con HLS, POWER, OpenET, CDL, SMAP y SSURGO/SRTM.",
+          "title": "Extraer Diamond Valley con luca-497507 -> primer .parquet real en backend/data/",
+          "detail": "Correr ee_coverage.py, ee_export.py --local-dir y build_table.py hacia backend/data/diamond_valley.parquet (H-13).",
           "connects_to": [
             "Gicarrillo"
           ]
@@ -1012,9 +1004,9 @@ python scripts/sync_board.py --check
       "priority": "P0",
       "owner": "H0M10 / Checo-coder",
       "due": "Sáb 12:30–15:00",
-      "title": "Reparto 50/50 Colab: Diamond Valley (H0M10) y valles NV/ID/UT + Querétaro (Checo-coder)",
+      "title": "GEE luca-497507 habilitado + --local-dir: extraer Diamond Valley (H0M10) y NV/ID/UT + Querétaro (Checo-coder)",
       "blocks": "Tablas .parquet reales, G2 (un dato real) y entrenamiento multi-valle",
-      "status": "Pendiente"
+      "status": "En curso (luca-497507 habilitado por H0M10)"
     },
     {
       "id": "H-05",
@@ -1126,6 +1118,11 @@ python scripts/sync_board.py --check
       "when": "2026-11-14 13:03",
       "decision": "Orden #2 (Claude, rama pista/motor-api): S-01 y S-02 resueltos, banco FAO-56 conectado al motor con GET /api/v1/crops, table_to_contract.py y DATA_MODE=real probados con tablas sintéticas.",
       "impact": "G2 queda a un paso: copiar la tabla real de Diamond Valley a backend/data/ (H-13). Auditoría C-01: el banco FAO-56 difiere de la tabla 12 en 6 cultivos y no lo verificó una persona; se sirve como 'assumed' y se recomienda reabrir H-04 (H-14)."
+    },
+    {
+      "when": "2026-11-14 13:26",
+      "decision": "Proyecto GEE luca-497507 fijado por omisión, adición de --local-dir en ee_export.py, corrección de 6 filas C-01 en fao56_crop_bank.csv y plantilla dv-nv-01.meta.json.example.",
+      "impact": "Listo para extraer Diamond Valley directo a local sin esperar Drive, mientras backend y banco quedan sincronizados para DATA_MODE=real."
     }
   ]
 }

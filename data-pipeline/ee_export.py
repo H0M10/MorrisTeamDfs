@@ -18,6 +18,7 @@ Corre antes ee_coverage.py para elegir los años.
 from __future__ import annotations
 
 import argparse
+import csv
 import math
 import time
 from pathlib import Path
@@ -179,6 +180,26 @@ def export(collection: ee.FeatureCollection, name: str, folder: str, columns: li
     return task
 
 
+def export_local(
+    collection: ee.FeatureCollection, out_dir: Path, name: str, columns: list[str]
+) -> Path:
+    """Descarga filas ya reducidas por Earth Engine directo a CSV local sin pasar por Drive."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    data = collection.select(columns, retainGeometry=False).getInfo()
+    features = data.get("features", []) if isinstance(data, dict) else []
+    dest = out_dir / f"{name}.csv"
+    with dest.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=columns, extrasaction="ignore")
+        writer.writeheader()
+        for feature in features:
+            props = feature.get("properties") or {}
+            writer.writerow(
+                {col: ("" if props.get(col) is None else props.get(col)) for col in columns}
+            )
+    print(f"  descargado local: {dest} ({len(features)} filas)")
+    return dest
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--parcels", required=True)
@@ -187,6 +208,11 @@ def main() -> None:
     parser.add_argument("--project", default=None)
     parser.add_argument("--unlabeled", action="store_true", help="región sin CDL ni OpenET")
     parser.add_argument("--drive-folder", default="fieldshift_exports")
+    parser.add_argument(
+        "--local-dir",
+        default=None,
+        help="descarga directa de CSV a esta carpeta sin hacer cola en Google Drive",
+    )
     parser.add_argument("--prefix", default=None, help="por omisión, el nombre del GeoJSON")
     parser.add_argument("--wait", action="store_true", help="esperar a que terminen las tareas")
     args = parser.parse_args()
@@ -215,29 +241,38 @@ def main() -> None:
         "parcel_id", "valley", "month", "hls_n_images", "red", "green", "blue",
         "ndvi", "ndmi", "bsi", "ndti", "smap_sm_surface", "smap_sm_rootzone",
     ] + (["openet_et_mm"] if labeled else [])
-    tasks = [
-        export(
+    jobs = [
+        (
             monthly_table(parcels, resolved, args.start_year, args.end_year, labeled),
             f"{prefix}_monthly",
-            args.drive_folder,
             monthly_columns,
         ),
-        export(
+        (
             static_table(parcels, resolved),
             f"{prefix}_static",
-            args.drive_folder,
             ["parcel_id", "valley", "elevation_m", "slope_pct", "clay_gkg", "sand_gkg", "silt_gkg", "soc_dgkg"],
         ),
     ]
     if labeled:
-        tasks.append(
-            export(
+        jobs.append(
+            (
                 cdl_table(parcels, resolved, args.start_year - 1, args.end_year),
                 f"{prefix}_cdl",
-                args.drive_folder,
                 ["parcel_id", "valley", "year", "cdl_code"],
             )
         )
+
+    if args.local_dir:
+        out_dir = Path(args.local_dir)
+        for collection, name, columns in jobs:
+            export_local(collection, out_dir, name, columns)
+        print("Descarga local terminada.")
+        return
+
+    tasks = [
+        export(collection, name, args.drive_folder, columns)
+        for collection, name, columns in jobs
+    ]
 
     if not args.wait:
         print("\nSigue las tareas en https://code.earthengine.google.com/tasks")

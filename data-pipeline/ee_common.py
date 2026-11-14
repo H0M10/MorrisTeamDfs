@@ -10,12 +10,12 @@ import ee
 
 from config import SOURCE_BY_KEY, SOURCES, Source
 
+DEFAULT_EE_PROJECT = "luca-497507"
+
 
 def init_ee(project: str | None = None) -> None:
     """Inicia Earth Engine. Requiere haber corrido `earthengine authenticate` (o ee.Authenticate en Colab)."""
-    project = project or os.environ.get("EE_PROJECT")
-    if not project:
-        raise SystemExit("Falta el proyecto: usa --project o la variable EE_PROJECT.")
+    project = project or os.environ.get("EE_PROJECT") or DEFAULT_EE_PROJECT
     ee.Initialize(project=project)
 
 
@@ -83,4 +83,12 @@ def year_range(asset_id: str, region: ee.Geometry) -> tuple[int, int] | None:
     )
 
 
-__all__ = ["SOURCE_BY_KEY", "init_ee", "load_parcels", "resolve", "resolve_all", "year_range"]
+__all__ = [
+    "DEFAULT_EE_PROJECT",
+    "SOURCE_BY_KEY",
+    "init_ee",
+    "load_parcels",
+    "resolve",
+    "resolve_all",
+    "year_range",
+]
