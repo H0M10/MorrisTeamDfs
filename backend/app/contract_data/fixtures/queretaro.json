@@ -1,0 +1,5659 @@
+{
+  "contract_version": "0.1.0",
+  "data_status": "fixture",
+  "fixture_disclaimer": {
+    "es": "DATOS DE EJEMPLO (FIXTURE — MODO SIN ETIQUETAS): Parcela provisional en Querétaro para probar el flujo fuera de EE. UU. Sin CDL ni OpenET; Modelo 3 en modo experimental.",
+    "en": "FIXTURE DATA (UNLABELED MODE): Provisional parcel in Queretaro to test non-US workflow. No CDL or OpenET; Model 3 marked experimental."
+  },
+  "parcel": {
+    "id": "qro-sjr-fixture-01",
+    "name": {
+      "es": "Parcela San Juan del Río / Pedro Escobedo, Qro. (Ejemplo)",
+      "en": "San Juan del Rio / Pedro Escobedo Parcel, Qro. (Fixture)"
+    },
+    "center": {
+      "lat": 20.48,
+      "lon": -100.06
+    },
+    "polygon_wgs84": [
+      [
+        -100.0625,
+        20.482
+      ],
+      [
+        -100.0575,
+        20.482
+      ],
+      [
+        -100.0575,
+        20.478
+      ],
+      [
+        -100.0625,
+        20.478
+      ],
+      [
+        -100.0625,
+        20.482
+      ]
+    ],
+    "area_ha": {
+      "value": 18.5,
+      "unit": "ha",
+      "type": "fixture",
+      "source": "Polígono provisional (pendiente definición humana)",
+      "date": "2026-11",
+      "native_scale": "30 m"
+    },
+    "region_mode": "unlabeled",
+    "native_pixel_footprints_m": {
+      "hls_landsat": 30,
+      "srtm": 30,
+      "soilgrids": 250,
+      "smap": 9000,
+      "nasa_power": 50000
+    },
+    "soil_profile": {
+      "clay_pct": {
+        "value": 34.5,
+        "unit": "%",
+        "type": "fixture",
+        "source": "SoilGrids 250 m (fixture sintético)",
+        "date": "2026-11",
+        "native_scale": "250 m"
+      },
+      "sand_pct": {
+        "value": 28.0,
+        "unit": "%",
+        "type": "fixture",
+        "source": "SoilGrids 250 m (fixture sintético)",
+        "date": "2026-11",
+        "native_scale": "250 m"
+      },
+      "silt_pct": {
+        "value": 37.5,
+        "unit": "%",
+        "type": "fixture",
+        "source": "SoilGrids 250 m (fixture sintético)",
+        "date": "2026-11",
+        "native_scale": "250 m"
+      },
+      "organic_matter_pct": {
+        "value": 2.1,
+        "unit": "%",
+        "type": "fixture",
+        "source": "SoilGrids 250 m (fixture sintético)",
+        "date": "2026-11",
+        "native_scale": "250 m"
+      },
+      "awc_mm_m": {
+        "value": 158.0,
+        "unit": "mm/m",
+        "type": "fixture",
+        "source": "SoilGrids / estimación textura (fixture sintético)",
+        "date": "2026-11",
+        "native_scale": "250 m"
+      },
+      "elevation_m": {
+        "value": 1912.0,
+        "unit": "m",
+        "type": "fixture",
+        "source": "SRTM (fixture sintético)",
+        "date": "2026-11",
+        "native_scale": "30 m"
+      },
+      "slope_pct": {
+        "value": 1.8,
+        "unit": "%",
+        "type": "fixture",
+        "source": "SRTM (fixture sintético)",
+        "date": "2026-11",
+        "native_scale": "30 m"
+      }
+    },
+    "climate_summary": {
+      "annual_et0_mm": {
+        "value": 1460.0,
+        "unit": "mm/yr",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2023-2025",
+        "native_scale": "50 km"
+      },
+      "annual_precip_mm": {
+        "value": 590.0,
+        "unit": "mm/yr",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2023-2025",
+        "native_scale": "50 km"
+      },
+      "frost_days_year": {
+        "value": 14.0,
+        "unit": "days/yr",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2023-2025",
+        "native_scale": "50 km"
+      },
+      "heat_days_year": {
+        "value": 16.0,
+        "unit": "days/yr",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2023-2025",
+        "native_scale": "50 km"
+      }
+    },
+    "basin_context": {
+      "aquifer_name": {
+        "es": "Acuífero Valle de San Juan del Río (Contexto Regional)",
+        "en": "San Juan del Rio Valley Aquifer (Regional Context)"
+      },
+      "scale_note": {
+        "es": "Modo sin etiquetas (fuera de EE. UU.): sin OpenET ni USDA CDL. SMAP (9 km) y acuífero solo dan contexto regional.",
+        "en": "Unlabeled mode (outside US): no OpenET or USDA CDL. SMAP (9 km) and aquifer records provide regional context only."
+      },
+      "smap_regional_moisture": {
+        "value": 0.215,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP L4 (fixture sintético)",
+        "date": "2025-12",
+        "native_scale": "9 km (contexto regional)"
+      },
+      "aquifer_status_note": {
+        "es": "Cifras oficiales de disponibilidad de CONAGUA NO incluidas hasta verificación humana directa contra la publicación oficial.",
+        "en": "Official CONAGUA aquifer availability figures are NOT displayed until verified by a team member against the official publication."
+      }
+    }
+  },
+  "timeline": [
+    {
+      "month": "2023-01",
+      "hls_color_hex": "#927E62",
+      "hls_rgb": [
+        146,
+        126,
+        98
+      ],
+      "crop_code": "barbecho",
+      "crop_label": {
+        "es": "Descanso / preparación",
+        "en": "Fallow / seedbed prep"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.212,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-01",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": -0.102,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-01",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.254,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-01",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.213,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-01",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 8.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2023-01",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 24.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2023-01",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.341,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2023-01",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.149,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2023-01",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.104,
+          "upper": 0.194,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 4,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2023-01",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2023-01",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2023-01",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2023-02",
+      "hls_color_hex": "#988266",
+      "hls_rgb": [
+        152,
+        130,
+        102
+      ],
+      "crop_code": "barbecho",
+      "crop_label": {
+        "es": "Descanso / preparación",
+        "en": "Fallow / seedbed prep"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.325,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-02",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.0,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-02",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.155,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-02",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.195,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-02",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 8.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2023-02",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 41.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2023-02",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.4,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2023-02",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.175,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2023-02",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.13,
+          "upper": 0.22,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 1,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2023-02",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2023-02",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2023-02",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2023-03",
+      "hls_color_hex": "#9E8668",
+      "hls_rgb": [
+        158,
+        134,
+        104
+      ],
+      "crop_code": "barbecho",
+      "crop_label": {
+        "es": "Descanso / preparación",
+        "en": "Fallow / seedbed prep"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.48,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-03",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.14,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-03",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.02,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-03",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.17,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-03",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 8.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2023-03",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 68.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2023-03",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.48,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2023-03",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.21,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2023-03",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.165,
+          "upper": 0.255,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2023-03",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2023-03",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2023-03",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2023-04",
+      "hls_color_hex": "#907E60",
+      "hls_rgb": [
+        144,
+        126,
+        96
+      ],
+      "crop_code": "barbecho",
+      "crop_label": {
+        "es": "Descanso / preparación",
+        "en": "Fallow / seedbed prep"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.635,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-04",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.28,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-04",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": -0.115,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-04",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.145,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-04",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 34.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2023-04",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 95.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2023-04",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.56,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2023-04",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.245,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2023-04",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.2,
+          "upper": 0.29,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2023-04",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 6,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2023-04",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.039437,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2023-04",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2023-05",
+      "hls_color_hex": "#6C844A",
+      "hls_rgb": [
+        108,
+        132,
+        74
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.748,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-05",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.382,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-05",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": -0.214,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-05",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.127,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-05",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 34.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2023-05",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 114.8,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2023-05",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.619,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2023-05",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.271,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2023-05",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.226,
+          "upper": 0.316,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2023-05",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 6,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2023-05",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.039437,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2023-05",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2023-06",
+      "hls_color_hex": "#488E3A",
+      "hls_rgb": [
+        72,
+        142,
+        58
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.79,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-06",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.42,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-06",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": -0.25,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-06",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.12,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-06",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 118.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2023-06",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 122.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2023-06",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.64,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2023-06",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.28,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2023-06",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.235,
+          "upper": 0.325,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2023-06",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2023-06",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.039437,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2023-06",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2023-07",
+      "hls_color_hex": "#369632",
+      "hls_rgb": [
+        54,
+        150,
+        50
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.748,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-07",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.382,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-07",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": -0.214,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-07",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.127,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-07",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 118.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2023-07",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 114.8,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2023-07",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.619,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2023-07",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.271,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2023-07",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.226,
+          "upper": 0.316,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2023-07",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2023-07",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.039437,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2023-07",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2023-08",
+      "hls_color_hex": "#309830",
+      "hls_rgb": [
+        48,
+        152,
+        48
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.635,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-08",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.28,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-08",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": -0.115,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-08",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.145,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-08",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 118.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2023-08",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 95.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2023-08",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.56,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2023-08",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.245,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2023-08",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.2,
+          "upper": 0.29,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2023-08",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2023-08",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.039437,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2023-08",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2023-09",
+      "hls_color_hex": "#428C38",
+      "hls_rgb": [
+        66,
+        140,
+        56
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.48,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-09",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.14,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-09",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.02,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-09",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.17,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-09",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 118.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2023-09",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 68.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2023-09",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.48,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2023-09",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.21,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2023-09",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.165,
+          "upper": 0.255,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2023-09",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2023-09",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.039437,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2023-09",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2023-10",
+      "hls_color_hex": "#768048",
+      "hls_rgb": [
+        118,
+        128,
+        72
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.325,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-10",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.0,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-10",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.155,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-10",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.195,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-10",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 34.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2023-10",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 41.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2023-10",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.4,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2023-10",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.175,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2023-10",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.13,
+          "upper": 0.22,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2023-10",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2023-10",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2023-10",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2023-11",
+      "hls_color_hex": "#A8925E",
+      "hls_rgb": [
+        168,
+        146,
+        94
+      ],
+      "crop_code": "rastrojo_maiz",
+      "crop_label": {
+        "es": "Rastrojo de maíz",
+        "en": "Corn residue"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.212,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-11",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": -0.102,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-11",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.254,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-11",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.213,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-11",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 8.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2023-11",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 24.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2023-11",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.341,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2023-11",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.149,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2023-11",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.104,
+          "upper": 0.194,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 1,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2023-11",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2023-11",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2023-11",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2023-12",
+      "hls_color_hex": "#9A8464",
+      "hls_rgb": [
+        154,
+        132,
+        100
+      ],
+      "crop_code": "rastrojo_maiz",
+      "crop_label": {
+        "es": "Rastrojo de maíz",
+        "en": "Corn residue"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.17,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-12",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": -0.14,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-12",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.29,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-12",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.22,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2023-12",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 8.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2023-12",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 24.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2023-12",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.32,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2023-12",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.14,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2023-12",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.095,
+          "upper": 0.185,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 4,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2023-12",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2023-12",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2023-12",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2024-01",
+      "hls_color_hex": "#927E62",
+      "hls_rgb": [
+        146,
+        126,
+        98
+      ],
+      "crop_code": "barbecho",
+      "crop_label": {
+        "es": "Descanso / preparación",
+        "en": "Fallow / seedbed prep"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.222,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-01",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": -0.102,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-01",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.254,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-01",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.213,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-01",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 8.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2024-01",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 24.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2024-01",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.341,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2024-01",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.149,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2024-01",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.104,
+          "upper": 0.194,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 4,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2024-01",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2024-01",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2024-01",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2024-02",
+      "hls_color_hex": "#988266",
+      "hls_rgb": [
+        152,
+        130,
+        102
+      ],
+      "crop_code": "barbecho",
+      "crop_label": {
+        "es": "Descanso / preparación",
+        "en": "Fallow / seedbed prep"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.335,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-02",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.0,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-02",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.155,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-02",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.195,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-02",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 8.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2024-02",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 41.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2024-02",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.4,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2024-02",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.175,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2024-02",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.13,
+          "upper": 0.22,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 1,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2024-02",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2024-02",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2024-02",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2024-03",
+      "hls_color_hex": "#9E8668",
+      "hls_rgb": [
+        158,
+        134,
+        104
+      ],
+      "crop_code": "barbecho",
+      "crop_label": {
+        "es": "Descanso / preparación",
+        "en": "Fallow / seedbed prep"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.49,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-03",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.14,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-03",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.02,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-03",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.17,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-03",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 8.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2024-03",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 68.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2024-03",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.48,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2024-03",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.21,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2024-03",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.165,
+          "upper": 0.255,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2024-03",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2024-03",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2024-03",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2024-04",
+      "hls_color_hex": "#907E60",
+      "hls_rgb": [
+        144,
+        126,
+        96
+      ],
+      "crop_code": "barbecho",
+      "crop_label": {
+        "es": "Descanso / preparación",
+        "en": "Fallow / seedbed prep"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.645,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-04",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.28,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-04",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": -0.115,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-04",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.145,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-04",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 34.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2024-04",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 95.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2024-04",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.56,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2024-04",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.245,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2024-04",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.2,
+          "upper": 0.29,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2024-04",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 6,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2024-04",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.039437,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2024-04",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2024-05",
+      "hls_color_hex": "#6C844A",
+      "hls_rgb": [
+        108,
+        132,
+        74
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.758,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-05",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.382,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-05",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": -0.214,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-05",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.127,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-05",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 34.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2024-05",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 114.8,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2024-05",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.619,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2024-05",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.271,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2024-05",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.226,
+          "upper": 0.316,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2024-05",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 6,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2024-05",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.039437,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2024-05",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2024-06",
+      "hls_color_hex": "#488E3A",
+      "hls_rgb": [
+        72,
+        142,
+        58
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.8,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-06",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.42,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-06",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": -0.25,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-06",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.12,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-06",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 118.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2024-06",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 122.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2024-06",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.64,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2024-06",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.28,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2024-06",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.235,
+          "upper": 0.325,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2024-06",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2024-06",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.039437,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2024-06",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2024-07",
+      "hls_color_hex": "#369632",
+      "hls_rgb": [
+        54,
+        150,
+        50
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.758,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-07",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.382,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-07",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": -0.214,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-07",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.127,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-07",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 118.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2024-07",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 114.8,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2024-07",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.619,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2024-07",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.271,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2024-07",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.226,
+          "upper": 0.316,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2024-07",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2024-07",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.039437,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2024-07",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2024-08",
+      "hls_color_hex": "#309830",
+      "hls_rgb": [
+        48,
+        152,
+        48
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.645,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-08",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.28,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-08",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": -0.115,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-08",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.145,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-08",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 118.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2024-08",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 95.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2024-08",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.56,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2024-08",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.245,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2024-08",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.2,
+          "upper": 0.29,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2024-08",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2024-08",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.039437,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2024-08",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2024-09",
+      "hls_color_hex": "#428C38",
+      "hls_rgb": [
+        66,
+        140,
+        56
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.49,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-09",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.14,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-09",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.02,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-09",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.17,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-09",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 118.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2024-09",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 68.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2024-09",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.48,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2024-09",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.21,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2024-09",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.165,
+          "upper": 0.255,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2024-09",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2024-09",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.039437,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2024-09",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2024-10",
+      "hls_color_hex": "#768048",
+      "hls_rgb": [
+        118,
+        128,
+        72
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.335,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-10",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.0,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-10",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.155,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-10",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.195,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-10",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 34.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2024-10",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 41.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2024-10",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.4,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2024-10",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.175,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2024-10",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.13,
+          "upper": 0.22,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2024-10",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2024-10",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2024-10",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2024-11",
+      "hls_color_hex": "#A8925E",
+      "hls_rgb": [
+        168,
+        146,
+        94
+      ],
+      "crop_code": "rastrojo_maiz",
+      "crop_label": {
+        "es": "Rastrojo de maíz",
+        "en": "Corn residue"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.222,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-11",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": -0.102,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-11",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.254,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-11",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.213,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-11",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 8.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2024-11",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 24.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2024-11",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.341,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2024-11",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.149,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2024-11",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.104,
+          "upper": 0.194,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 1,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2024-11",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2024-11",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2024-11",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2024-12",
+      "hls_color_hex": "#9A8464",
+      "hls_rgb": [
+        154,
+        132,
+        100
+      ],
+      "crop_code": "rastrojo_maiz",
+      "crop_label": {
+        "es": "Rastrojo de maíz",
+        "en": "Corn residue"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.18,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-12",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": -0.14,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-12",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.29,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-12",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.22,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2024-12",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 8.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2024-12",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 24.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2024-12",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.32,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2024-12",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.14,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2024-12",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.095,
+          "upper": 0.185,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 4,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2024-12",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2024-12",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2024-12",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2025-01",
+      "hls_color_hex": "#927E62",
+      "hls_rgb": [
+        146,
+        126,
+        98
+      ],
+      "crop_code": "barbecho",
+      "crop_label": {
+        "es": "Descanso / preparación",
+        "en": "Fallow / seedbed prep"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.212,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-01",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": -0.102,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-01",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.254,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-01",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.213,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-01",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 8.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2025-01",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 24.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2025-01",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.341,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2025-01",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.149,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2025-01",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.104,
+          "upper": 0.194,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 4,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2025-01",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2025-01",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2025-01",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2025-02",
+      "hls_color_hex": "#988266",
+      "hls_rgb": [
+        152,
+        130,
+        102
+      ],
+      "crop_code": "barbecho",
+      "crop_label": {
+        "es": "Descanso / preparación",
+        "en": "Fallow / seedbed prep"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.325,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-02",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.0,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-02",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.155,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-02",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.195,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-02",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 8.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2025-02",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 41.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2025-02",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.4,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2025-02",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.175,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2025-02",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.13,
+          "upper": 0.22,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 1,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2025-02",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2025-02",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2025-02",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2025-03",
+      "hls_color_hex": "#9E8668",
+      "hls_rgb": [
+        158,
+        134,
+        104
+      ],
+      "crop_code": "barbecho",
+      "crop_label": {
+        "es": "Descanso / preparación",
+        "en": "Fallow / seedbed prep"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.48,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-03",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.14,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-03",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.02,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-03",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.17,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-03",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 8.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2025-03",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 68.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2025-03",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.48,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2025-03",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.21,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2025-03",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.165,
+          "upper": 0.255,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2025-03",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2025-03",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2025-03",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2025-04",
+      "hls_color_hex": "#907E60",
+      "hls_rgb": [
+        144,
+        126,
+        96
+      ],
+      "crop_code": "barbecho",
+      "crop_label": {
+        "es": "Descanso / preparación",
+        "en": "Fallow / seedbed prep"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.635,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-04",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.28,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-04",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": -0.115,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-04",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.145,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-04",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 34.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2025-04",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 95.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2025-04",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.56,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2025-04",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.245,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2025-04",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.2,
+          "upper": 0.29,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2025-04",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 6,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2025-04",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.039437,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2025-04",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2025-05",
+      "hls_color_hex": "#6C844A",
+      "hls_rgb": [
+        108,
+        132,
+        74
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.748,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-05",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.382,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-05",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": -0.214,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-05",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.127,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-05",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 34.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2025-05",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 114.8,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2025-05",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.619,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2025-05",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.271,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2025-05",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.226,
+          "upper": 0.316,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2025-05",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 6,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2025-05",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.051643,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2025-05",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2025-06",
+      "hls_color_hex": "#488E3A",
+      "hls_rgb": [
+        72,
+        142,
+        58
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.79,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-06",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.42,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-06",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": -0.25,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-06",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.12,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-06",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 118.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2025-06",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 122.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2025-06",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.64,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2025-06",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.28,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2025-06",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.235,
+          "upper": 0.325,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2025-06",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2025-06",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.051643,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2025-06",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2025-07",
+      "hls_color_hex": "#369632",
+      "hls_rgb": [
+        54,
+        150,
+        50
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.748,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-07",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.382,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-07",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": -0.214,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-07",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.127,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-07",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 118.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2025-07",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 114.8,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2025-07",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.619,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2025-07",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.271,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2025-07",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.226,
+          "upper": 0.316,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2025-07",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2025-07",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.051643,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2025-07",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2025-08",
+      "hls_color_hex": "#309830",
+      "hls_rgb": [
+        48,
+        152,
+        48
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.635,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-08",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.28,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-08",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": -0.115,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-08",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.145,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-08",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 118.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2025-08",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 95.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2025-08",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.56,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2025-08",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.245,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2025-08",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.2,
+          "upper": 0.29,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2025-08",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2025-08",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.039437,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2025-08",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2025-09",
+      "hls_color_hex": "#428C38",
+      "hls_rgb": [
+        66,
+        140,
+        56
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.48,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-09",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.14,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-09",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.02,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-09",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.17,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-09",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 118.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2025-09",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 68.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2025-09",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.48,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2025-09",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.21,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2025-09",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.165,
+          "upper": 0.255,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2025-09",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2025-09",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.039437,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2025-09",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2025-10",
+      "hls_color_hex": "#768048",
+      "hls_rgb": [
+        118,
+        128,
+        72
+      ],
+      "crop_code": "maiz",
+      "crop_label": {
+        "es": "Maíz de riego",
+        "en": "Irrigated corn"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.325,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-10",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": 0.0,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-10",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.155,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-10",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.195,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-10",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 34.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2025-10",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 41.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2025-10",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.4,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2025-10",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.175,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2025-10",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.13,
+          "upper": 0.22,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2025-10",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2025-10",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2025-10",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2025-11",
+      "hls_color_hex": "#A8925E",
+      "hls_rgb": [
+        168,
+        146,
+        94
+      ],
+      "crop_code": "rastrojo_maiz",
+      "crop_label": {
+        "es": "Rastrojo de maíz",
+        "en": "Corn residue"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.212,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-11",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": -0.102,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-11",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.254,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-11",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.213,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-11",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 8.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2025-11",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 24.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2025-11",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.341,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2025-11",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.149,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2025-11",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.104,
+          "upper": 0.194,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 1,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2025-11",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2025-11",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014085,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2025-11",
+        "native_scale": "30 m (parcela)"
+      }
+    },
+    {
+      "month": "2025-12",
+      "hls_color_hex": "#9A8464",
+      "hls_rgb": [
+        154,
+        132,
+        100
+      ],
+      "crop_code": "rastrojo_maiz",
+      "crop_label": {
+        "es": "Rastrojo de maíz",
+        "en": "Corn residue"
+      },
+      "indices": {
+        "ndvi": {
+          "value": 0.17,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-12",
+          "native_scale": "30 m"
+        },
+        "ndmi": {
+          "value": -0.14,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-12",
+          "native_scale": "30 m"
+        },
+        "bsi": {
+          "value": 0.29,
+          "unit": "index",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-12",
+          "native_scale": "30 m"
+        },
+        "ndti": {
+          "value": 0.22,
+          "unit": "index (indicio cualitativo de rastrojo)",
+          "type": "fixture",
+          "source": "HLS L30/S30 (fixture sintético)",
+          "date": "2025-12",
+          "native_scale": "30 m"
+        }
+      },
+      "rain_mm": {
+        "value": 8.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "NASA POWER (fixture sintético)",
+        "date": "2025-12",
+        "native_scale": "50 km"
+      },
+      "et_mm": {
+        "value": 24.0,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Balance FAO-56 + NASA POWER (fixture sintético)",
+        "date": "2025-12",
+        "native_scale": "50 km"
+      },
+      "root_zone_water_index": {
+        "value": 0.32,
+        "unit": "relative_index_0_1",
+        "type": "fixture",
+        "source": "Filtro exponencial recursivo FAO-56 (fixture sintético)",
+        "date": "2025-12",
+        "native_scale": "30 m (parcela)"
+      },
+      "soil_moisture": {
+        "value": 0.14,
+        "unit": "m3/m3",
+        "type": "fixture",
+        "source": "SMAP + Balance FAO-56 CQR (fixture sintético)",
+        "date": "2025-12",
+        "native_scale": "9 km (contexto regional)",
+        "interval": {
+          "lower": 0.095,
+          "upper": 0.185,
+          "confidence": 0.9
+        }
+      },
+      "frost_days": {
+        "value": 4,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmin <= 0 C (fixture sintético)",
+        "date": "2025-12",
+        "native_scale": "50 km"
+      },
+      "heat_days": {
+        "value": 0,
+        "unit": "days",
+        "type": "fixture",
+        "source": "NASA POWER Tmax >= 35 C (fixture sintético)",
+        "date": "2025-12",
+        "native_scale": "50 km"
+      },
+      "attention_weight": {
+        "value": 0.014071,
+        "unit": "attention_weight",
+        "type": "fixture",
+        "source": "Modelo 3 GRU atención temporal (fixture sintético)",
+        "date": "2025-12",
+        "native_scale": "30 m (parcela)"
+      }
+    }
+  ],
+  "constraints": {
+    "evaluated_before_models": true,
+    "max_water_mm_year": {
+      "value": 650.0,
+      "unit": "mm/yr",
+      "type": "fixture",
+      "source": "Restricción declarada por agricultor (fixture)",
+      "date": "2026-11",
+      "native_scale": "parcela"
+    },
+    "available_machinery": [
+      "riego_compuerta",
+      "sembradora_convencional",
+      "cultivadora",
+      "trilladora_contratada"
+    ],
+    "crops_without_buyer": [],
+    "planting_window": {
+      "start_month": 4,
+      "end_month": 11,
+      "label": {
+        "es": "Abril a noviembre (temporal + auxilio de riego)",
+        "en": "April to November (rainfed + supplemental irrigation)"
+      }
+    }
+  },
+  "has_viable_options": true,
+  "strategies": [
+    {
+      "id": "current",
+      "title": {
+        "es": "Rotación actual: Maíz continuo de riego",
+        "en": "Current rotation: Continuous irrigated corn"
+      },
+      "viable": true,
+      "constraint_evaluation": {
+        "water_ok": true,
+        "buyer_ok": true,
+        "machinery_ok": true,
+        "calendar_ok": true
+      },
+      "rejection_reason": null,
+      "sequence_36m": [
+        {
+          "month": "2023-01",
+          "crop_code": "barbecho",
+          "crop_label": {
+            "es": "Descanso / preparación",
+            "en": "Fallow / prep"
+          },
+          "palette_token": "straw",
+          "pattern": "dots"
+        },
+        {
+          "month": "2023-02",
+          "crop_code": "barbecho",
+          "crop_label": {
+            "es": "Descanso / preparación",
+            "en": "Fallow / prep"
+          },
+          "palette_token": "straw",
+          "pattern": "dots"
+        },
+        {
+          "month": "2023-03",
+          "crop_code": "barbecho",
+          "crop_label": {
+            "es": "Descanso / preparación",
+            "en": "Fallow / prep"
+          },
+          "palette_token": "straw",
+          "pattern": "dots"
+        },
+        {
+          "month": "2023-04",
+          "crop_code": "barbecho",
+          "crop_label": {
+            "es": "Descanso / preparación",
+            "en": "Fallow / prep"
+          },
+          "palette_token": "straw",
+          "pattern": "dots"
+        },
+        {
+          "month": "2023-05",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2023-06",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2023-07",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2023-08",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2023-09",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2023-10",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2023-11",
+          "crop_code": "rastrojo_maiz",
+          "crop_label": {
+            "es": "Rastrojo de maíz",
+            "en": "Corn residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2023-12",
+          "crop_code": "rastrojo_maiz",
+          "crop_label": {
+            "es": "Rastrojo de maíz",
+            "en": "Corn residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2024-01",
+          "crop_code": "barbecho",
+          "crop_label": {
+            "es": "Descanso / preparación",
+            "en": "Fallow / prep"
+          },
+          "palette_token": "straw",
+          "pattern": "dots"
+        },
+        {
+          "month": "2024-02",
+          "crop_code": "barbecho",
+          "crop_label": {
+            "es": "Descanso / preparación",
+            "en": "Fallow / prep"
+          },
+          "palette_token": "straw",
+          "pattern": "dots"
+        },
+        {
+          "month": "2024-03",
+          "crop_code": "barbecho",
+          "crop_label": {
+            "es": "Descanso / preparación",
+            "en": "Fallow / prep"
+          },
+          "palette_token": "straw",
+          "pattern": "dots"
+        },
+        {
+          "month": "2024-04",
+          "crop_code": "barbecho",
+          "crop_label": {
+            "es": "Descanso / preparación",
+            "en": "Fallow / prep"
+          },
+          "palette_token": "straw",
+          "pattern": "dots"
+        },
+        {
+          "month": "2024-05",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2024-06",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2024-07",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2024-08",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2024-09",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2024-10",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2024-11",
+          "crop_code": "rastrojo_maiz",
+          "crop_label": {
+            "es": "Rastrojo de maíz",
+            "en": "Corn residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2024-12",
+          "crop_code": "rastrojo_maiz",
+          "crop_label": {
+            "es": "Rastrojo de maíz",
+            "en": "Corn residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2025-01",
+          "crop_code": "barbecho",
+          "crop_label": {
+            "es": "Descanso / preparación",
+            "en": "Fallow / prep"
+          },
+          "palette_token": "straw",
+          "pattern": "dots"
+        },
+        {
+          "month": "2025-02",
+          "crop_code": "barbecho",
+          "crop_label": {
+            "es": "Descanso / preparación",
+            "en": "Fallow / prep"
+          },
+          "palette_token": "straw",
+          "pattern": "dots"
+        },
+        {
+          "month": "2025-03",
+          "crop_code": "barbecho",
+          "crop_label": {
+            "es": "Descanso / preparación",
+            "en": "Fallow / prep"
+          },
+          "palette_token": "straw",
+          "pattern": "dots"
+        },
+        {
+          "month": "2025-04",
+          "crop_code": "barbecho",
+          "crop_label": {
+            "es": "Descanso / preparación",
+            "en": "Fallow / prep"
+          },
+          "palette_token": "straw",
+          "pattern": "dots"
+        },
+        {
+          "month": "2025-05",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2025-06",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2025-07",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2025-08",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2025-09",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2025-10",
+          "crop_code": "maiz",
+          "crop_label": {
+            "es": "Maíz de riego",
+            "en": "Irrigated corn"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2025-11",
+          "crop_code": "rastrojo_maiz",
+          "crop_label": {
+            "es": "Rastrojo de maíz",
+            "en": "Corn residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2025-12",
+          "crop_code": "rastrojo_maiz",
+          "crop_label": {
+            "es": "Rastrojo de maíz",
+            "en": "Corn residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        }
+      ],
+      "metrics": {
+        "annual_water_mm": {
+          "value": 620.0,
+          "unit": "mm/yr",
+          "type": "fixture",
+          "source": "Motor físico FAO-56 + NASA POWER (fixture sintético)",
+          "date": "2023-2025",
+          "native_scale": "50 km"
+        },
+        "water_delta_vs_current_mm": {
+          "value": 0.0,
+          "unit": "mm/yr",
+          "type": "fixture",
+          "source": "Comparación base (fixture sintético)",
+          "date": "2026-11",
+          "native_scale": "parcela"
+        },
+        "soil_cover_months_36m": {
+          "value": 22.0,
+          "unit": "months",
+          "type": "fixture",
+          "source": "Secuencia planificada (fixture)",
+          "date": "2026-11",
+          "native_scale": "parcela"
+        },
+        "prior_crop_vigor_delta_pct": {
+          "value": 0.0,
+          "unit": "%",
+          "type": "fixture",
+          "source": "Sin evidencia local (sin CDL en México)",
+          "date": "2026-11",
+          "native_scale": "N/A"
+        },
+        "frost_risk_days_year": {
+          "value": 14.0,
+          "unit": "days/yr",
+          "type": "fixture",
+          "source": "NASA POWER (fixture sintético)",
+          "date": "2023-2025",
+          "native_scale": "50 km"
+        },
+        "heat_risk_days_year": {
+          "value": 16.0,
+          "unit": "days/yr",
+          "type": "fixture",
+          "source": "NASA POWER (fixture sintético)",
+          "date": "2023-2025",
+          "native_scale": "50 km"
+        }
+      },
+      "evidence_card": {
+        "why_suggested": {
+          "es": "Práctica actual de referencia en parcela de Querétaro evaluada solo con motor físico FAO-56 y Landsat/HLS.",
+          "en": "Current baseline practice in Queretaro evaluated solely via deterministic FAO-56 physics and Landsat/HLS."
+        },
+        "supporting_evidence": [
+          {
+            "es": "Balance FAO-56 con lluvia de NASA POWER estima demanda cercana al tope en años con canícula seca.",
+            "en": "FAO-56 water balance with NASA POWER rain shows demand near the annual cap in dry mid-summer years."
+          },
+          {
+            "es": "En modo sin etiquetas no hay OpenET ni CDL; la secuencia histórica depende de declaración local y lectura experimental del Modelo 3.",
+            "en": "Unlabeled mode lacks OpenET/CDL; crop history relies on grower declaration and experimental Model 3 reading."
+          }
+        ],
+        "benefits": [
+          {
+            "es": "Maquinaria y comercialización de maíz plenamente resueltas en la región.",
+            "en": "Machinery and corn buyer channels are fully established locally."
+          }
+        ],
+        "information_gaps": [
+          {
+            "es": "Sin etiquetas locales (CDL) ni ET satelital de alta resolución (OpenET); no hay evidencia observacional del Modelo 2.",
+            "en": "No local CDL labels or OpenET; Model 2 observational evidence is unavailable."
+          },
+          {
+            "es": "Falta polígono exacto verificado por el equipo y dato oficial verificado de CONAGUA.",
+            "en": "Requires team-verified parcel polygon and human-verified CONAGUA aquifer data."
+          }
+        ],
+        "local_review_risks": [
+          {
+            "es": "Validar en sitio la fecha real de siembra y lámina entregada por el módulo de riego.",
+            "en": "Verify actual planting date and canal water delivery schedule on site."
+          }
+        ]
+      }
+    },
+    {
+      "id": "less_water",
+      "title": {
+        "es": "Alternativa menos agua: Sorgo de bajo riego + avena invernal",
+        "en": "Lower-water option: Low-irrigation sorghum + winter forage oat"
+      },
+      "viable": true,
+      "constraint_evaluation": {
+        "water_ok": true,
+        "buyer_ok": true,
+        "machinery_ok": true,
+        "calendar_ok": true
+      },
+      "rejection_reason": null,
+      "sequence_36m": [
+        {
+          "month": "2023-01",
+          "crop_code": "avena_forrajera",
+          "crop_label": {
+            "es": "Avena forrajera de invierno",
+            "en": "Winter forage oat"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2023-02",
+          "crop_code": "avena_forrajera",
+          "crop_label": {
+            "es": "Avena forrajera de invierno",
+            "en": "Winter forage oat"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2023-03",
+          "crop_code": "rastrojo_sorgo",
+          "crop_label": {
+            "es": "Rastrojo conservado",
+            "en": "Retained residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2023-04",
+          "crop_code": "rastrojo_sorgo",
+          "crop_label": {
+            "es": "Rastrojo conservado",
+            "en": "Retained residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2023-05",
+          "crop_code": "sorgo_grano",
+          "crop_label": {
+            "es": "Sorgo de bajo riego",
+            "en": "Low-irrigation sorghum"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2023-06",
+          "crop_code": "sorgo_grano",
+          "crop_label": {
+            "es": "Sorgo de bajo riego",
+            "en": "Low-irrigation sorghum"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2023-07",
+          "crop_code": "sorgo_grano",
+          "crop_label": {
+            "es": "Sorgo de bajo riego",
+            "en": "Low-irrigation sorghum"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2023-08",
+          "crop_code": "sorgo_grano",
+          "crop_label": {
+            "es": "Sorgo de bajo riego",
+            "en": "Low-irrigation sorghum"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2023-09",
+          "crop_code": "sorgo_grano",
+          "crop_label": {
+            "es": "Sorgo de bajo riego",
+            "en": "Low-irrigation sorghum"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2023-10",
+          "crop_code": "rastrojo_sorgo",
+          "crop_label": {
+            "es": "Rastrojo conservado",
+            "en": "Retained residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2023-11",
+          "crop_code": "avena_forrajera",
+          "crop_label": {
+            "es": "Avena forrajera de invierno",
+            "en": "Winter forage oat"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2023-12",
+          "crop_code": "avena_forrajera",
+          "crop_label": {
+            "es": "Avena forrajera de invierno",
+            "en": "Winter forage oat"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2024-01",
+          "crop_code": "avena_forrajera",
+          "crop_label": {
+            "es": "Avena forrajera de invierno",
+            "en": "Winter forage oat"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2024-02",
+          "crop_code": "avena_forrajera",
+          "crop_label": {
+            "es": "Avena forrajera de invierno",
+            "en": "Winter forage oat"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2024-03",
+          "crop_code": "rastrojo_sorgo",
+          "crop_label": {
+            "es": "Rastrojo conservado",
+            "en": "Retained residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2024-04",
+          "crop_code": "rastrojo_sorgo",
+          "crop_label": {
+            "es": "Rastrojo conservado",
+            "en": "Retained residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2024-05",
+          "crop_code": "sorgo_grano",
+          "crop_label": {
+            "es": "Sorgo de bajo riego",
+            "en": "Low-irrigation sorghum"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2024-06",
+          "crop_code": "sorgo_grano",
+          "crop_label": {
+            "es": "Sorgo de bajo riego",
+            "en": "Low-irrigation sorghum"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2024-07",
+          "crop_code": "sorgo_grano",
+          "crop_label": {
+            "es": "Sorgo de bajo riego",
+            "en": "Low-irrigation sorghum"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2024-08",
+          "crop_code": "sorgo_grano",
+          "crop_label": {
+            "es": "Sorgo de bajo riego",
+            "en": "Low-irrigation sorghum"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2024-09",
+          "crop_code": "sorgo_grano",
+          "crop_label": {
+            "es": "Sorgo de bajo riego",
+            "en": "Low-irrigation sorghum"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2024-10",
+          "crop_code": "rastrojo_sorgo",
+          "crop_label": {
+            "es": "Rastrojo conservado",
+            "en": "Retained residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2024-11",
+          "crop_code": "avena_forrajera",
+          "crop_label": {
+            "es": "Avena forrajera de invierno",
+            "en": "Winter forage oat"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2024-12",
+          "crop_code": "avena_forrajera",
+          "crop_label": {
+            "es": "Avena forrajera de invierno",
+            "en": "Winter forage oat"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2025-01",
+          "crop_code": "avena_forrajera",
+          "crop_label": {
+            "es": "Avena forrajera de invierno",
+            "en": "Winter forage oat"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2025-02",
+          "crop_code": "avena_forrajera",
+          "crop_label": {
+            "es": "Avena forrajera de invierno",
+            "en": "Winter forage oat"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2025-03",
+          "crop_code": "rastrojo_sorgo",
+          "crop_label": {
+            "es": "Rastrojo conservado",
+            "en": "Retained residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2025-04",
+          "crop_code": "rastrojo_sorgo",
+          "crop_label": {
+            "es": "Rastrojo conservado",
+            "en": "Retained residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2025-05",
+          "crop_code": "sorgo_grano",
+          "crop_label": {
+            "es": "Sorgo de bajo riego",
+            "en": "Low-irrigation sorghum"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2025-06",
+          "crop_code": "sorgo_grano",
+          "crop_label": {
+            "es": "Sorgo de bajo riego",
+            "en": "Low-irrigation sorghum"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2025-07",
+          "crop_code": "sorgo_grano",
+          "crop_label": {
+            "es": "Sorgo de bajo riego",
+            "en": "Low-irrigation sorghum"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2025-08",
+          "crop_code": "sorgo_grano",
+          "crop_label": {
+            "es": "Sorgo de bajo riego",
+            "en": "Low-irrigation sorghum"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2025-09",
+          "crop_code": "sorgo_grano",
+          "crop_label": {
+            "es": "Sorgo de bajo riego",
+            "en": "Low-irrigation sorghum"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2025-10",
+          "crop_code": "rastrojo_sorgo",
+          "crop_label": {
+            "es": "Rastrojo conservado",
+            "en": "Retained residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2025-11",
+          "crop_code": "avena_forrajera",
+          "crop_label": {
+            "es": "Avena forrajera de invierno",
+            "en": "Winter forage oat"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2025-12",
+          "crop_code": "avena_forrajera",
+          "crop_label": {
+            "es": "Avena forrajera de invierno",
+            "en": "Winter forage oat"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        }
+      ],
+      "metrics": {
+        "annual_water_mm": {
+          "value": 485.0,
+          "unit": "mm/yr",
+          "type": "fixture",
+          "source": "Motor físico FAO-56 (fixture sintético)",
+          "date": "2026-11",
+          "native_scale": "50 km"
+        },
+        "water_delta_vs_current_mm": {
+          "value": -135.0,
+          "unit": "mm/yr",
+          "type": "fixture",
+          "source": "Balance FAO-56 vs base (fixture sintético)",
+          "date": "2026-11",
+          "native_scale": "parcela"
+        },
+        "soil_cover_months_36m": {
+          "value": 29.0,
+          "unit": "months",
+          "type": "fixture",
+          "source": "Secuencia planificada (fixture)",
+          "date": "2026-11",
+          "native_scale": "parcela"
+        },
+        "prior_crop_vigor_delta_pct": {
+          "value": 0.0,
+          "unit": "%",
+          "type": "fixture",
+          "source": "Sin evidencia local (Modelo 2 en respaldo)",
+          "date": "2026-11",
+          "native_scale": "N/A"
+        },
+        "frost_risk_days_year": {
+          "value": 14.0,
+          "unit": "days/yr",
+          "type": "fixture",
+          "source": "NASA POWER (fixture sintético)",
+          "date": "2023-2025",
+          "native_scale": "50 km"
+        },
+        "heat_risk_days_year": {
+          "value": 16.0,
+          "unit": "days/yr",
+          "type": "fixture",
+          "source": "NASA POWER (fixture sintético)",
+          "date": "2023-2025",
+          "native_scale": "50 km"
+        }
+      },
+      "evidence_card": {
+        "why_suggested": {
+          "es": "Reduce la necesidad de riegos de auxilio en verano mediante sorgo y aprovecha humedad residual con avena forrajera.",
+          "en": "Reduces summer supplemental irrigation demand using sorghum and leverages residual moisture with winter forage oat."
+        },
+        "supporting_evidence": [
+          {
+            "es": "Tabla FAO-56 asigna menor coeficiente de cultivo (Kc) en etapas críticas respecto a maíz continuo.",
+            "en": "FAO-56 coefficients indicate lower peak water requirement than continuous corn."
+          }
+        ],
+        "benefits": [
+          {
+            "es": "Disminuye presión hídrica estimada y genera forraje invernal de ciclo corto.",
+            "en": "Lowers estimated water stress and adds a short-cycle winter forage harvest."
+          }
+        ],
+        "information_gaps": [
+          {
+            "es": "Sin evidencia local del efecto de cultivo anterior (Modelo 2 inactivo fuera de EE. UU.).",
+            "en": "No local prior-crop observational evidence (Model 2 inactive outside the US)."
+          }
+        ],
+        "local_review_risks": [
+          {
+            "es": "Revisar presencia de pulgón amarillo en sorgo y disponibilidad de comprador forrajero local.",
+            "en": "Check local sugarcane aphid pressure in sorghum and forage buyer terms."
+          }
+        ]
+      }
+    },
+    {
+      "id": "more_soil",
+      "title": {
+        "es": "Alternativa más suelo: Maíz-frijol + triticale de cobertura",
+        "en": "Soil-first option: Corn-bean intercrop + triticale cover"
+      },
+      "viable": true,
+      "constraint_evaluation": {
+        "water_ok": true,
+        "buyer_ok": true,
+        "machinery_ok": true,
+        "calendar_ok": true
+      },
+      "rejection_reason": null,
+      "sequence_36m": [
+        {
+          "month": "2023-01",
+          "crop_code": "triticale_cobertura",
+          "crop_label": {
+            "es": "Triticale de cobertura",
+            "en": "Triticale cover crop"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2023-02",
+          "crop_code": "triticale_cobertura",
+          "crop_label": {
+            "es": "Triticale de cobertura",
+            "en": "Triticale cover crop"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2023-03",
+          "crop_code": "rastrojo_directo",
+          "crop_label": {
+            "es": "Rastrojo en superficie",
+            "en": "Surface residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2023-04",
+          "crop_code": "rastrojo_directo",
+          "crop_label": {
+            "es": "Rastrojo en superficie",
+            "en": "Surface residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2023-05",
+          "crop_code": "maiz_frijol",
+          "crop_label": {
+            "es": "Maíz intercalado con frijol",
+            "en": "Corn intercropped with bean"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2023-06",
+          "crop_code": "maiz_frijol",
+          "crop_label": {
+            "es": "Maíz intercalado con frijol",
+            "en": "Corn intercropped with bean"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2023-07",
+          "crop_code": "maiz_frijol",
+          "crop_label": {
+            "es": "Maíz intercalado con frijol",
+            "en": "Corn intercropped with bean"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2023-08",
+          "crop_code": "maiz_frijol",
+          "crop_label": {
+            "es": "Maíz intercalado con frijol",
+            "en": "Corn intercropped with bean"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2023-09",
+          "crop_code": "maiz_frijol",
+          "crop_label": {
+            "es": "Maíz intercalado con frijol",
+            "en": "Corn intercropped with bean"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2023-10",
+          "crop_code": "triticale_cobertura",
+          "crop_label": {
+            "es": "Triticale de cobertura",
+            "en": "Triticale cover crop"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2023-11",
+          "crop_code": "triticale_cobertura",
+          "crop_label": {
+            "es": "Triticale de cobertura",
+            "en": "Triticale cover crop"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2023-12",
+          "crop_code": "triticale_cobertura",
+          "crop_label": {
+            "es": "Triticale de cobertura",
+            "en": "Triticale cover crop"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2024-01",
+          "crop_code": "triticale_cobertura",
+          "crop_label": {
+            "es": "Triticale de cobertura",
+            "en": "Triticale cover crop"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2024-02",
+          "crop_code": "triticale_cobertura",
+          "crop_label": {
+            "es": "Triticale de cobertura",
+            "en": "Triticale cover crop"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2024-03",
+          "crop_code": "rastrojo_directo",
+          "crop_label": {
+            "es": "Rastrojo en superficie",
+            "en": "Surface residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2024-04",
+          "crop_code": "rastrojo_directo",
+          "crop_label": {
+            "es": "Rastrojo en superficie",
+            "en": "Surface residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2024-05",
+          "crop_code": "maiz_frijol",
+          "crop_label": {
+            "es": "Maíz intercalado con frijol",
+            "en": "Corn intercropped with bean"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2024-06",
+          "crop_code": "maiz_frijol",
+          "crop_label": {
+            "es": "Maíz intercalado con frijol",
+            "en": "Corn intercropped with bean"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2024-07",
+          "crop_code": "maiz_frijol",
+          "crop_label": {
+            "es": "Maíz intercalado con frijol",
+            "en": "Corn intercropped with bean"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2024-08",
+          "crop_code": "maiz_frijol",
+          "crop_label": {
+            "es": "Maíz intercalado con frijol",
+            "en": "Corn intercropped with bean"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2024-09",
+          "crop_code": "maiz_frijol",
+          "crop_label": {
+            "es": "Maíz intercalado con frijol",
+            "en": "Corn intercropped with bean"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2024-10",
+          "crop_code": "triticale_cobertura",
+          "crop_label": {
+            "es": "Triticale de cobertura",
+            "en": "Triticale cover crop"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2024-11",
+          "crop_code": "triticale_cobertura",
+          "crop_label": {
+            "es": "Triticale de cobertura",
+            "en": "Triticale cover crop"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2024-12",
+          "crop_code": "triticale_cobertura",
+          "crop_label": {
+            "es": "Triticale de cobertura",
+            "en": "Triticale cover crop"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2025-01",
+          "crop_code": "triticale_cobertura",
+          "crop_label": {
+            "es": "Triticale de cobertura",
+            "en": "Triticale cover crop"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2025-02",
+          "crop_code": "triticale_cobertura",
+          "crop_label": {
+            "es": "Triticale de cobertura",
+            "en": "Triticale cover crop"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2025-03",
+          "crop_code": "rastrojo_directo",
+          "crop_label": {
+            "es": "Rastrojo en superficie",
+            "en": "Surface residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2025-04",
+          "crop_code": "rastrojo_directo",
+          "crop_label": {
+            "es": "Rastrojo en superficie",
+            "en": "Surface residue"
+          },
+          "palette_token": "earth",
+          "pattern": "hatch"
+        },
+        {
+          "month": "2025-05",
+          "crop_code": "maiz_frijol",
+          "crop_label": {
+            "es": "Maíz intercalado con frijol",
+            "en": "Corn intercropped with bean"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2025-06",
+          "crop_code": "maiz_frijol",
+          "crop_label": {
+            "es": "Maíz intercalado con frijol",
+            "en": "Corn intercropped with bean"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2025-07",
+          "crop_code": "maiz_frijol",
+          "crop_label": {
+            "es": "Maíz intercalado con frijol",
+            "en": "Corn intercropped with bean"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2025-08",
+          "crop_code": "maiz_frijol",
+          "crop_label": {
+            "es": "Maíz intercalado con frijol",
+            "en": "Corn intercropped with bean"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2025-09",
+          "crop_code": "maiz_frijol",
+          "crop_label": {
+            "es": "Maíz intercalado con frijol",
+            "en": "Corn intercropped with bean"
+          },
+          "palette_token": "leaf",
+          "pattern": "solid"
+        },
+        {
+          "month": "2025-10",
+          "crop_code": "triticale_cobertura",
+          "crop_label": {
+            "es": "Triticale de cobertura",
+            "en": "Triticale cover crop"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2025-11",
+          "crop_code": "triticale_cobertura",
+          "crop_label": {
+            "es": "Triticale de cobertura",
+            "en": "Triticale cover crop"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        },
+        {
+          "month": "2025-12",
+          "crop_code": "triticale_cobertura",
+          "crop_label": {
+            "es": "Triticale de cobertura",
+            "en": "Triticale cover crop"
+          },
+          "palette_token": "straw",
+          "pattern": "stripe"
+        }
+      ],
+      "metrics": {
+        "annual_water_mm": {
+          "value": 555.0,
+          "unit": "mm/yr",
+          "type": "fixture",
+          "source": "Motor físico FAO-56 (fixture sintético)",
+          "date": "2026-11",
+          "native_scale": "50 km"
+        },
+        "water_delta_vs_current_mm": {
+          "value": -65.0,
+          "unit": "mm/yr",
+          "type": "fixture",
+          "source": "Balance FAO-56 vs base (fixture sintético)",
+          "date": "2026-11",
+          "native_scale": "parcela"
+        },
+        "soil_cover_months_36m": {
+          "value": 33.0,
+          "unit": "months",
+          "type": "fixture",
+          "source": "Secuencia planificada con rastrojo (fixture)",
+          "date": "2026-11",
+          "native_scale": "parcela"
+        },
+        "prior_crop_vigor_delta_pct": {
+          "value": 0.0,
+          "unit": "%",
+          "type": "fixture",
+          "source": "Sin evidencia local (Modelo 2 en respaldo)",
+          "date": "2026-11",
+          "native_scale": "N/A"
+        },
+        "frost_risk_days_year": {
+          "value": 14.0,
+          "unit": "days/yr",
+          "type": "fixture",
+          "source": "NASA POWER (fixture sintético)",
+          "date": "2023-2025",
+          "native_scale": "50 km"
+        },
+        "heat_risk_days_year": {
+          "value": 16.0,
+          "unit": "days/yr",
+          "type": "fixture",
+          "source": "NASA POWER (fixture sintético)",
+          "date": "2023-2025",
+          "native_scale": "50 km"
+        }
+      },
+      "evidence_card": {
+        "why_suggested": {
+          "es": "Incrementa meses con cobertura vegetal viva y rastrojo superficial en suelo arcilloso-limoso (SoilGrids 250 m).",
+          "en": "Increases living-cover and surface-residue duration on clay-loam soils (SoilGrids 250 m)."
+        },
+        "supporting_evidence": [
+          {
+            "es": "Aumenta cobertura de 22 a 33 meses sobre el ciclo de 36 meses frente al manejo actual.",
+            "en": "Expands soil cover from 22 to 33 months over the 36-month horizon compared to baseline."
+          }
+        ],
+        "benefits": [
+          {
+            "es": "Aporta fijación biológica de nitrógeno con leguminosa y reduce suelo desnudo en invierno.",
+            "en": "Adds legume nitrogen fixation and cuts winter bare-soil exposure."
+          }
+        ],
+        "information_gaps": [
+          {
+            "es": "SoilGrids tiene resolución de 250 m y no reemplaza un muestreo de suelo en parcela.",
+            "en": "SoilGrids 250 m resolution does not replace on-parcel soil sampling."
+          }
+        ],
+        "local_review_risks": [
+          {
+            "es": "Confirmar adaptación de sembradora convencional para asociar maíz-frijol y manejo de residuos.",
+            "en": "Confirm planter calibration for corn-bean intercropping and residue handling."
+          }
+        ]
+      }
+    }
+  ],
+  "models": {
+    "model_1_crop_water": {
+      "status": "fallback",
+      "experimental": false,
+      "algorithm": "Tabla FAO-56 determinista (sin OpenET en Querétaro)",
+      "partition_method": {
+        "es": "No aplicable en región sin etiquetas",
+        "en": "Not applicable in unlabeled region"
+      },
+      "metric_name": {
+        "es": "Error medio absoluto (MAE) en mm",
+        "en": "Mean Absolute Error (MAE) in mm"
+      },
+      "metric": {
+        "value": null,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "No entrenado para México (respaldo activo)",
+        "date": "2026-11",
+        "native_scale": "50 km"
+      },
+      "baseline_name": {
+        "es": "Tabla FAO-56 determinista",
+        "en": "Deterministic FAO-56 table"
+      },
+      "baseline_metric": {
+        "value": null,
+        "unit": "mm",
+        "type": "fixture",
+        "source": "Respaldo determinista activo",
+        "date": "2026-11",
+        "native_scale": "50 km"
+      },
+      "active_mode_note": {
+        "es": "Respaldo activo: en Querétaro no existe OpenET; toda cifra de agua viene de física FAO-56 declarada.",
+        "en": "Fallback active: OpenET is unavailable in Queretaro; water estimates come from declared FAO-56 physics."
+      },
+      "card_path": "models/model_1_crop_water/CARD.md"
+    },
+    "model_2_prior_crop_effect": {
+      "status": "absent",
+      "experimental": false,
+      "algorithm": "Desactivado en región sin etiquetas CDL",
+      "partition_method": {
+        "es": "No aplicable sin secuencias de CDL",
+        "en": "Not applicable without CDL sequences"
+      },
+      "metric_name": {
+        "es": "Mejora frente a modelo sin cultivo anterior",
+        "en": "Gain over model without prior crop"
+      },
+      "metric": {
+        "value": null,
+        "unit": "delta_R2",
+        "type": "fixture",
+        "source": "Sin evidencia local",
+        "date": "2026-11",
+        "native_scale": "N/A"
+      },
+      "baseline_name": {
+        "es": "Sin evidencia local",
+        "en": "No local evidence"
+      },
+      "baseline_metric": {
+        "value": null,
+        "unit": "delta_R2",
+        "type": "fixture",
+        "source": "Sin evidencia local",
+        "date": "2026-11",
+        "native_scale": "N/A"
+      },
+      "active_mode_note": {
+        "es": "Sin evidencia local: se declara explícitamente la ausencia de datos de cultivo anterior calibrados en la zona.",
+        "en": "No local evidence: explicitly reports the absence of calibrated prior-crop sequence data in this region."
+      },
+      "card_path": "models/model_2_prior_crop_effect/CARD.md"
+    },
+    "model_3_crop_history_gru": {
+      "status": "fallback",
+      "experimental": true,
+      "algorithm": "GRU ligera con atención temporal (MODO EXPERIMENTAL fuera de EE. UU.)",
+      "partition_method": {
+        "es": "Entrenada solo en valles de EE. UU.; transferencia sin etiquetas a Querétaro marcada experimental",
+        "en": "Trained on US valleys only; unlabeled transfer to Queretaro marked experimental"
+      },
+      "metric_name": {
+        "es": "Macro F1 en valles de EE. UU. (sin verdad terreno local en Qro.)",
+        "en": "Macro F1 in US valleys (no local ground truth in Qro.)"
+      },
+      "metric": {
+        "value": null,
+        "unit": "F1",
+        "type": "fixture",
+        "source": "Sin verdad terreno en Querétaro (experimental)",
+        "date": "2026-11",
+        "native_scale": "30 m"
+      },
+      "baseline_name": {
+        "es": "Historial declarado por el agricultor",
+        "en": "Grower-declared crop history"
+      },
+      "baseline_metric": {
+        "value": null,
+        "unit": "F1",
+        "type": "fixture",
+        "source": "Declaración local obligatoria",
+        "date": "2026-11",
+        "native_scale": "parcela"
+      },
+      "active_mode_note": {
+        "es": "EXPERIMENTAL: sin CDL en Querétaro el modelo 3 no sustituye la declaración del agricultor; pesos de atención son solo indicio visual.",
+        "en": "EXPERIMENTAL: without CDL in Queretaro, Model 3 does not replace grower declaration; attention weights are visual cues only."
+      },
+      "card_path": "models/model_3_crop_history_gru/CARD.md"
+    },
+    "model_4_moisture_cqr": {
+      "status": "fallback",
+      "experimental": false,
+      "algorithm": "Balance FAO-56 sin intervalo calibrado + rango histórico SMAP",
+      "partition_method": {
+        "es": "Validación regional pendiente para cuenca de Querétaro",
+        "en": "Regional validation pending for Queretaro basin"
+      },
+      "metric_name": {
+        "es": "Cobertura real del intervalo al 90%",
+        "en": "Empirical coverage of 90% interval"
+      },
+      "metric": {
+        "value": null,
+        "unit": "coverage_pct",
+        "type": "fixture",
+        "source": "Respaldo activo (fixture)",
+        "date": "2026-11",
+        "native_scale": "9 km"
+      },
+      "baseline_name": {
+        "es": "Balance FAO-56 con rango histórico",
+        "en": "FAO-56 balance with historical range"
+      },
+      "baseline_metric": {
+        "value": 0.72,
+        "unit": "coverage_ratio",
+        "type": "fixture",
+        "source": "Referencia fixture",
+        "date": "2026-11",
+        "native_scale": "9 km"
+      },
+      "active_mode_note": {
+        "es": "Contexto regional a 9 km (SMAP) presentado con rango histórico sin calibración local.",
+        "en": "Regional 9 km context (SMAP) shown with historical range without local calibration."
+      },
+      "card_path": "models/model_4_moisture_cqr/CARD.md"
+    }
+  }
+}

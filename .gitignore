@@ -1,0 +1,49 @@
+# Secretos: nunca entran al repositorio (AGENTS.md regla 8)
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Cachés y datos locales (AGENTS.md regla 7: solo artefactos compactos)
+backend/.cache/
+data-pipeline/exports/
+data-pipeline/.cache/
+*.tif
+*.tiff
+*.nc
+*.h5
+*.hdf
+*.zip
+# Las tablas crudas se quedan en data-pipeline/exports/. Las tablas compactas
+# por parcela (pocos KB) sí entran, en backend/data/ y models/*/sample/.
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+.vercel/
+playwright-report/
+test-results/
+
+# Supabase CLI local
+supabase/.branches/
+supabase/.temp/
+
+# Editores y sistema
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.log

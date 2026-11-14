@@ -1,0 +1,718 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fieldshift.thecsc.dev/contracts/schema.json",
+  "title": "Field Shift Evaluation Contract",
+  "description": "Contrato oficial de evaluación de rotaciones de cultivos para Field Shift (equipo The CSC, NASA Space Apps Challenge 2026).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "data_status",
+    "parcel",
+    "timeline",
+    "constraints",
+    "has_viable_options",
+    "strategies",
+    "models"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "data_status": {
+      "type": "string",
+      "enum": [
+        "fixture",
+        "real"
+      ]
+    },
+    "fixture_disclaimer": {
+      "$ref": "#/$defs/LocalizedText"
+    },
+    "parcel": {
+      "$ref": "#/$defs/Parcel"
+    },
+    "timeline": {
+      "type": "array",
+      "minItems": 36,
+      "maxItems": 36,
+      "items": {
+        "$ref": "#/$defs/TimelineMonth"
+      }
+    },
+    "constraints": {
+      "$ref": "#/$defs/Constraints"
+    },
+    "has_viable_options": {
+      "type": "boolean"
+    },
+    "strategies": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "$ref": "#/$defs/Strategy"
+      }
+    },
+    "models": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model_1_crop_water",
+        "model_2_prior_crop_effect",
+        "model_3_crop_history_gru",
+        "model_4_moisture_cqr"
+      ],
+      "properties": {
+        "model_1_crop_water": {
+          "$ref": "#/$defs/ModelReport"
+        },
+        "model_2_prior_crop_effect": {
+          "$ref": "#/$defs/ModelReport"
+        },
+        "model_3_crop_history_gru": {
+          "$ref": "#/$defs/ModelReport"
+        },
+        "model_4_moisture_cqr": {
+          "$ref": "#/$defs/ModelReport"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "LocalizedText": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "es",
+        "en"
+      ],
+      "properties": {
+        "es": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "LocalizedList": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/LocalizedText"
+      }
+    },
+    "MetricInterval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lower",
+        "upper",
+        "confidence"
+      ],
+      "properties": {
+        "lower": {
+          "type": "number"
+        },
+        "upper": {
+          "type": "number"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "MetricValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "unit",
+        "type",
+        "source",
+        "date",
+        "native_scale"
+      ],
+      "properties": {
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": "string"
+        },
+        "interval": {
+          "$ref": "#/$defs/MetricInterval"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "observed",
+            "modeled",
+            "assumed",
+            "fixture"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "date": {
+          "type": "string",
+          "minLength": 4
+        },
+        "native_scale": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "Parcel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "center",
+        "polygon_wgs84",
+        "area_ha",
+        "region_mode",
+        "native_pixel_footprints_m",
+        "soil_profile",
+        "climate_summary",
+        "basin_context"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "$ref": "#/$defs/LocalizedText"
+        },
+        "center": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "lat",
+            "lon"
+          ],
+          "properties": {
+            "lat": {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90
+            },
+            "lon": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            }
+          }
+        },
+        "polygon_wgs84": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "area_ha": {
+          "$ref": "#/$defs/MetricValue"
+        },
+        "region_mode": {
+          "type": "string",
+          "enum": [
+            "labeled",
+            "unlabeled"
+          ]
+        },
+        "native_pixel_footprints_m": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "soil_profile": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "clay_pct",
+            "sand_pct",
+            "silt_pct",
+            "organic_matter_pct",
+            "awc_mm_m",
+            "elevation_m",
+            "slope_pct"
+          ],
+          "properties": {
+            "clay_pct": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "sand_pct": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "silt_pct": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "organic_matter_pct": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "awc_mm_m": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "elevation_m": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "slope_pct": {
+              "$ref": "#/$defs/MetricValue"
+            }
+          }
+        },
+        "climate_summary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "annual_et0_mm",
+            "annual_precip_mm",
+            "frost_days_year",
+            "heat_days_year"
+          ],
+          "properties": {
+            "annual_et0_mm": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "annual_precip_mm": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "frost_days_year": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "heat_days_year": {
+              "$ref": "#/$defs/MetricValue"
+            }
+          }
+        },
+        "basin_context": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "aquifer_name",
+            "scale_note",
+            "smap_regional_moisture",
+            "aquifer_status_note"
+          ],
+          "properties": {
+            "aquifer_name": {
+              "$ref": "#/$defs/LocalizedText"
+            },
+            "scale_note": {
+              "$ref": "#/$defs/LocalizedText"
+            },
+            "smap_regional_moisture": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "aquifer_status_note": {
+              "$ref": "#/$defs/LocalizedText"
+            },
+            "aquifer_balance_metric": {
+              "$ref": "#/$defs/MetricValue"
+            }
+          }
+        }
+      }
+    },
+    "TimelineMonth": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "month",
+        "hls_color_hex",
+        "hls_rgb",
+        "crop_code",
+        "crop_label",
+        "indices",
+        "rain_mm",
+        "et_mm",
+        "root_zone_water_index",
+        "soil_moisture",
+        "frost_days",
+        "heat_days",
+        "attention_weight"
+      ],
+      "properties": {
+        "month": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}$"
+        },
+        "hls_color_hex": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "hls_rgb": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255
+          }
+        },
+        "crop_code": {
+          "type": "string"
+        },
+        "crop_label": {
+          "$ref": "#/$defs/LocalizedText"
+        },
+        "indices": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "ndvi",
+            "ndmi",
+            "bsi",
+            "ndti"
+          ],
+          "properties": {
+            "ndvi": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "ndmi": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "bsi": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "ndti": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "ndre": {
+              "$ref": "#/$defs/MetricValue"
+            }
+          }
+        },
+        "rain_mm": {
+          "$ref": "#/$defs/MetricValue"
+        },
+        "et_mm": {
+          "$ref": "#/$defs/MetricValue"
+        },
+        "root_zone_water_index": {
+          "$ref": "#/$defs/MetricValue"
+        },
+        "soil_moisture": {
+          "$ref": "#/$defs/MetricValue"
+        },
+        "frost_days": {
+          "$ref": "#/$defs/MetricValue"
+        },
+        "heat_days": {
+          "$ref": "#/$defs/MetricValue"
+        },
+        "attention_weight": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MetricValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "Constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evaluated_before_models",
+        "max_water_mm_year",
+        "available_machinery",
+        "crops_without_buyer",
+        "planting_window"
+      ],
+      "properties": {
+        "evaluated_before_models": {
+          "type": "boolean",
+          "const": true
+        },
+        "max_water_mm_year": {
+          "$ref": "#/$defs/MetricValue"
+        },
+        "available_machinery": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "crops_without_buyer": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "planting_window": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "start_month",
+            "end_month",
+            "label"
+          ],
+          "properties": {
+            "start_month": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "end_month": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "label": {
+              "$ref": "#/$defs/LocalizedText"
+            }
+          }
+        }
+      }
+    },
+    "Strategy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "viable",
+        "constraint_evaluation",
+        "rejection_reason",
+        "sequence_36m",
+        "metrics",
+        "evidence_card"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "enum": [
+            "current",
+            "less_water",
+            "more_soil"
+          ]
+        },
+        "title": {
+          "$ref": "#/$defs/LocalizedText"
+        },
+        "viable": {
+          "type": "boolean"
+        },
+        "constraint_evaluation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "water_ok",
+            "buyer_ok",
+            "machinery_ok",
+            "calendar_ok"
+          ],
+          "properties": {
+            "water_ok": {
+              "type": "boolean"
+            },
+            "buyer_ok": {
+              "type": "boolean"
+            },
+            "machinery_ok": {
+              "type": "boolean"
+            },
+            "calendar_ok": {
+              "type": "boolean"
+            }
+          }
+        },
+        "rejection_reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LocalizedText"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sequence_36m": {
+          "type": "array",
+          "minItems": 36,
+          "maxItems": 36,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "month",
+              "crop_code",
+              "crop_label",
+              "palette_token",
+              "pattern"
+            ],
+            "properties": {
+              "month": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}$"
+              },
+              "crop_code": {
+                "type": "string"
+              },
+              "crop_label": {
+                "$ref": "#/$defs/LocalizedText"
+              },
+              "palette_token": {
+                "type": "string",
+                "enum": [
+                  "leaf",
+                  "straw",
+                  "earth",
+                  "gate_blue"
+                ]
+              },
+              "pattern": {
+                "type": "string",
+                "enum": [
+                  "solid",
+                  "hatch",
+                  "dots",
+                  "stripe"
+                ]
+              }
+            }
+          }
+        },
+        "metrics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "annual_water_mm",
+            "water_delta_vs_current_mm",
+            "soil_cover_months_36m",
+            "prior_crop_vigor_delta_pct",
+            "frost_risk_days_year",
+            "heat_risk_days_year"
+          ],
+          "properties": {
+            "annual_water_mm": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "water_delta_vs_current_mm": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "soil_cover_months_36m": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "prior_crop_vigor_delta_pct": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "frost_risk_days_year": {
+              "$ref": "#/$defs/MetricValue"
+            },
+            "heat_risk_days_year": {
+              "$ref": "#/$defs/MetricValue"
+            }
+          }
+        },
+        "evidence_card": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "why_suggested",
+            "supporting_evidence",
+            "benefits",
+            "information_gaps",
+            "local_review_risks"
+          ],
+          "properties": {
+            "why_suggested": {
+              "$ref": "#/$defs/LocalizedText"
+            },
+            "supporting_evidence": {
+              "$ref": "#/$defs/LocalizedList"
+            },
+            "benefits": {
+              "$ref": "#/$defs/LocalizedList"
+            },
+            "information_gaps": {
+              "$ref": "#/$defs/LocalizedList"
+            },
+            "local_review_risks": {
+              "$ref": "#/$defs/LocalizedList"
+            }
+          }
+        }
+      }
+    },
+    "ModelReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "experimental",
+        "algorithm",
+        "partition_method",
+        "metric_name",
+        "metric",
+        "baseline_name",
+        "baseline_metric",
+        "active_mode_note",
+        "card_path"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "trained",
+            "fallback",
+            "absent"
+          ]
+        },
+        "experimental": {
+          "type": "boolean"
+        },
+        "algorithm": {
+          "type": "string"
+        },
+        "partition_method": {
+          "$ref": "#/$defs/LocalizedText"
+        },
+        "metric_name": {
+          "$ref": "#/$defs/LocalizedText"
+        },
+        "metric": {
+          "$ref": "#/$defs/MetricValue"
+        },
+        "baseline_name": {
+          "$ref": "#/$defs/LocalizedText"
+        },
+        "baseline_metric": {
+          "$ref": "#/$defs/MetricValue"
+        },
+        "active_mode_note": {
+          "$ref": "#/$defs/LocalizedText"
+        },
+        "card_path": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

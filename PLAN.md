@@ -94,3 +94,22 @@
 | E-03 | Borrador de `/docs/project_page.md` (en inglés, sin cifras fixture) y `/docs/video_script.md` (30 s, guion compartido) | Persona 6 | G3 (Sáb 19:00) | Pendiente |
 | E-04 | Grabar video de respaldo sábado 23:00 y video final domingo tras congelar funciones (con datos reales, cero `fixture`) | Persona 6 + Equipo | Dom 15:00 | Bloqueado por datos reales |
 | E-05 | Revisión final de `AI_USAGE.md`, `README.md` raíz, enlace público del repo y ensayo del pitch | Persona 6 + Equipo | G6 (Dom 20:00) | Pendiente |
+
+---
+
+## Bitácora de construcción (Claude)
+
+Estado de la orden de la madrugada del sábado. Cada bloque cierra con un commit.
+
+| Bloque | Qué | Estado |
+| --- | --- | --- |
+| 0 | Base del repositorio: `.gitignore`, `.editorconfig`, `.env.example`, `README.md`, CI por carpeta (`.github/workflows/`), `contracts/sync.py` | Completado |
+| 1 | Motor y API (`/backend`) | En curso |
+| 2 | Base de datos (`/supabase`) | Pendiente |
+| 3 | Frontend, solo esqueleto (`/frontend`) | Pendiente |
+| 4 | Guiones de datos y modelos (`/data-pipeline`, `/models`) | Pendiente |
+
+### Notas para Argon y Hanniel
+
+- **Copias del contrato.** Railway despliega solo `/backend` y Vercel solo `/frontend`, así que cada uno guarda una copia de `schema.json` y de los fixtures (`backend/app/contract_data/`, `frontend/src/lib/contract/`). La fuente de verdad sigue en `/contracts`. Tras cualquier cambio: `python contracts/sync.py`. La CI falla si las copias difieren.
+- **Python 3.11.** La laptop solo tiene 3.13 y 3.14; el backend usa `uv`, que descarga 3.11 y fija versiones en `uv.lock`.
