@@ -7,7 +7,7 @@ Regla 11 de `AGENTS.md`: Todo lo que requiera intervención humana (cuentas, lla
 | Prioridad | Acción humana | Responsable | Para cuándo | Qué bloquea | Estado |
 | --- | --- | --- | --- | --- | --- |
 | **P0 (Crítico)** | Crear/verificar cuentas del equipo: proyecto **Google Earth Engine** de uso no comercial, **Colab** y acceso a **OpenET** (Earthdata Login solo si se usa `earthaccess` fuera de GEE) | `@Checo-coder` + `@H0M10` | Sáb mañana | Tareas D-01 a D-05 (sin GEE/OpenET no hay datos reales ni modelos) | Pendiente |
-| **P0 (Crítico)** | Crear proyectos en **Railway** (**Completado**: `https://morristeamdfs-production.up.railway.app`), **Supabase** y **Vercel**, aplicar SQL y cargar variables en la nube (sin secretos en Git) | Hanniel (`@H0M10`) | Sáb 10:00 | Railway listo (G1); falta SQL de Supabase y Vercel | En curso (Railway listo) |
+| **P0 (Crítico)** | Crear proyectos en **Railway** (**Completado**: `https://morristeamdfs-production.up.railway.app`), **Vercel** (**Completado**: `https://morris-team-dfs.vercel.app/`) y **Supabase** (proyecto + llaves listos; falta ejecutar `20261114000000_init.sql` en SQL Editor) | Hanniel (`@H0M10`) | Sáb 12:00 | Enlaces compartibles (`/api/v1/share`) y RLS `/supabase` | En curso (solo falta `Run` SQL) |
 | **P1 (Alto)** | Elegir las **2 o 3 zonas de riego** similares a Diamond Valley en Nevada, Idaho y Utah (pivote, alfalfa, granos) para entrenamiento y validación por valle | `@Checo-coder` + `@H0M10` | Sáb mañana | D-02, D-05 y partición correcta por valle en Modelos 1-4 | Pendiente |
 | **P1 (Alto)** | Lanzar las **exportaciones de Earth Engine de Diamond Valley** (36 meses HLS, POWER, OpenET, CDL, SMAP, SSURGO, SRTM) en Colab | `@Checo-coder` | Sáb 11:00–13:30 | Compuerta Sábado 14:00 ("un dato real en pantalla") y 19:00 | Pendiente |
 | **P1 (Alto)** | Decidir si se **renta una máquina en la nube con mucha RAM/GPU** (solo si Colab gratuito de ~12 GB RAM no alcanza para las tablas) | `@H0M10` + `@Checo-coder` | Sáb mediodía | Entrenamiento de Modelos 1-4 fuera de laptops de 8 GB | Pendiente |
@@ -79,12 +79,12 @@ Resuelto en `contracts/CHANGELOG.md` v0.1.1: `diamond_valley.json` amplía `plan
 
 Desbloquea: enlaces compartibles (A-04) y revisión del técnico (T-04). (Extra #5 `/remote` quedó recortado preventivamente por equipo de 4).
 
-### H-07. Desplegar el frontend en Vercel (`@H0M10` o `@Gicarrillo`, sábado)
+### H-07. Desplegar el frontend en Vercel (`@H0M10` o `@Gicarrillo`, sábado) — **Completado**
 
-1. En vercel.com: **Add New → Project**, importa el repositorio `H0M10/MorrisTeamDfs`.
-2. **Root Directory** = `frontend`. El marco (Next.js) se detecta solo.
-3. **Environment Variables**: `NEXT_PUBLIC_API_URL` = dominio de Railway (H-02), y cuando existan, `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` (H-06).
-4. Despliega. Abre `/tool/retrato`: debe verse la tira y la etiqueta "Datos de ejemplo" **sin** el aviso de "No hay conexión con el servidor". Si aparece ese aviso, revisa `NEXT_PUBLIC_API_URL` y que `CORS_ORIGINS` en Railway incluya el dominio de producción (las vistas previas `*.vercel.app` ya están permitidas).
+Ya ejecutado:
+- URL pública en vivo: `https://morris-team-dfs.vercel.app/`
+- Framework Preset `Next.js`, `Root Directory = frontend`, variables `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` configuradas.
+- **Comprobación rápida:** añade `https://morris-team-dfs.vercel.app` en `CORS_ORIGINS` de Railway (separado por coma) y abre `https://morris-team-dfs.vercel.app/tool/retrato` para confirmar que muestra la tira y el aviso "Datos de ejemplo" sin error de conexión al servidor.
 
 ### H-08. Decisiones visuales, animaciones IA y pruebas con cámara de `/showcase` (`@alexishal8`)
 

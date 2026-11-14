@@ -12,6 +12,12 @@ dónde viene, de cuándo es, a qué escala y si es observada, modelada o supuest
 > `contracts/fixtures/` con `data_status: "fixture"`. Ninguna de esas cifras es
 > real.
 
+## Enlaces en vivo (Producción)
+
+- **Frontend (Vercel):** https://morris-team-dfs.vercel.app/
+- **API FastAPI + Swagger (Railway):** https://morristeamdfs-production.up.railway.app/docs
+- **Centro de Mando Visual (GitHub Pages):** https://h0m10.github.io/MorrisTeamDfs/
+
 ## Centro de Mando Visual (GitHub Pages)
 
 El seguimiento en tiempo real de qué falta por hacer, qué está haciendo cada integrante, cómo se conectan backend/datos con frontend y qué decisiones requiere `HUMANO.md` vive en [docs/index.html](docs/index.html) (alimentado por [docs/status.json](docs/status.json)):

@@ -592,8 +592,8 @@ python scripts/sync_board.py --check
   "project": "Field Shift",
   "team": "The CSC",
   "event": "NASA Space Apps Challenge 2026",
-  "updated_at": "2026-11-14T11:22:00-06:00",
-  "phase": "Compuerta G1 Completada (API en Railway en vivo) · Rumbo a G2 (14:00)",
+  "updated_at": "2026-11-14T11:49:00-06:00",
+  "phase": "Railway + Vercel en vivo · Rumbo a Compuerta G2 (14:00: Datos Reales + Orden #2)",
   "repo_url": "https://github.com/H0M10/MorrisTeamDfs",
   "git_remote": "https://github.com/H0M10/MorrisTeamDfs.git",
   "pages_url": "https://h0m10.github.io/MorrisTeamDfs/",
@@ -683,34 +683,25 @@ python scripts/sync_board.py --check
       ],
       "role": "Líder Técnico · Contrato, Motor FAO-56, API FastAPI e Infraestructura",
       "color": "#1247B8",
-      "progress_pct": 75,
-      "doing_now": "G1 y Railway en vivo (https://morristeamdfs-production.up.railway.app). Foco actual: ejecutar SQL en Supabase (H-06) y desplegar Vercel (H-07) con soporte sb_publishable_.",
+      "progress_pct": 80,
+      "doing_now": "Railway (https://morristeamdfs-production.up.railway.app) y Vercel (https://morris-team-dfs.vercel.app/) en vivo. Sigue confirmar SQL en Supabase (H-06) y arrancar Orden #2 rumbo a G2 (14:00).",
       "done": [
         "Estructura completa del repo y sincronización AGENTS.md == CLAUDE.md.",
         "Contrato JSON v0.1.1 y 3 fixtures de 36 meses (diamond_valley, queretaro, no_viable_options) verificados.",
         "Backend FastAPI (motor FAO-56, índices HLS sin NDRE/CAI, restricciones primero y /ask determinista).",
         "Migración SQL de Supabase (evaluations, reviews, RLS y 4 RPCs por token sin PII).",
         "H-01 Completado: repo H0M10/MorrisTeamDfs en vivo, invitaciones enviadas (201) y GitHub Pages activo en main -> /docs.",
-        "H-02 / G1 Completado: API FastAPI en vivo en Railway (https://morristeamdfs-production.up.railway.app/health y /docs) + soporte sb_publishable_ en backend y frontend."
+        "H-02 / G1 Completado: API FastAPI en vivo en Railway (https://morristeamdfs-production.up.railway.app/health y /docs) + soporte sb_publishable_ en backend y frontend.",
+        "H-07 Completado: frontend Next.js en vivo en Vercel (https://morris-team-dfs.vercel.app/)."
       ],
       "todo": [
         {
-          "id": "H-06 (Supabase)",
+          "id": "H-06 (cierre SQL)",
           "gate": "G2",
-          "title": "Correr 20261114000000_init.sql en SQL Editor y guardar sb_publishable_ en Railway",
-          "detail": "Verificar 4 RPCs + RLS sin políticas; cargar SUPABASE_URL y SUPABASE_ANON_KEY (sb_publishable_...) en Railway (nunca service_role).",
+          "title": "Confirmar Run de 20261114000000_init.sql en SQL Editor de Supabase y CORS en Railway",
+          "detail": "Verificar 4 RPCs + RLS sin políticas, revisar /health supabase_configured:true y sumar https://morris-team-dfs.vercel.app a CORS_ORIGINS.",
           "connects_to": [
             "Gicarrillo"
-          ]
-        },
-        {
-          "id": "H-07 (Vercel)",
-          "gate": "G1-G2",
-          "title": "Desplegar /frontend en Vercel con NEXT_PUBLIC_API_URL y actualizar CORS en Railway",
-          "detail": "Root Directory = frontend; comprobar /tool/retrato sin aviso de desconexión.",
-          "connects_to": [
-            "Gicarrillo",
-            "alexishal8"
           ]
         },
         {
@@ -1049,7 +1040,7 @@ python scripts/sync_board.py --check
       "due": "Sáb 11:30",
       "title": "Desplegar frontend en Vercel (Root: frontend, NEXT_PUBLIC_API_URL)",
       "blocks": "Demo pública compartible para equipo y jueces",
-      "status": "Pendiente"
+      "status": "Completado (https://morris-team-dfs.vercel.app/)"
     },
     {
       "id": "H-03 / H-09",
@@ -1123,6 +1114,11 @@ python scripts/sync_board.py --check
       "when": "2026-11-14 11:22",
       "decision": "Compuerta G1 / H-02 cumplida (Railway en vivo) y compatibilidad con llaves sb_publishable_ de Supabase.",
       "impact": "share.py solo envía Authorization Bearer con JWT clásico y frontend/src/lib/supabase.ts acepta NEXT_PUBLIC_SUPABASE_ANON_KEY o NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY."
+    },
+    {
+      "when": "2026-11-14 11:49",
+      "decision": "H-07 completado: frontend desplegado en Vercel (https://morris-team-dfs.vercel.app/).",
+      "impact": "Todo el stack en la nube quedó conectado (Pages + Railway + Vercel); resta confirmar Run SQL de Supabase (H-06) y arrancar Orden #2 hacia G2 (14:00)."
     }
   ]
 }
