@@ -1,0 +1,27 @@
+{
+  "type": "FeatureCollection",
+  "name": "queretaro",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "parcel_id": "qro-sjr-01",
+        "valley": "queretaro",
+        "region_mode": "unlabeled",
+        "name": "San Juan del Rio / Pedro Escobedo Parcela 1"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-100.1067857, 20.432284],
+            [-100.1074163, 20.4297335],
+            [-100.1050597, 20.4293602],
+            [-100.1051593, 20.4322529],
+            [-100.1067857, 20.432284]
+          ]
+        ]
+      }
+    }
+  ]
+}

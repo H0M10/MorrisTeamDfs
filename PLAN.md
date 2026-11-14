@@ -26,7 +26,7 @@
 | D-01 | Confirmar en catálogo GEE los años exactos cubiertos por HLS, OpenET, USDA CDL, SMAP, SSURGO, SoilGrids y SRTM antes de generar tablas | `@Checo-coder` | G1 (Sáb 10:00) | **Completado:** Todas las colecciones OK (2015-2024 en común; ventana 2022-2024 seleccionada) |
 | D-02 | Elegir 2-3 zonas de riego similares a Diamond Valley en NV, ID y UT (pivote, alfalfa, granos) y exportar muestra de verificación | `@Checo-coder` | G2 (Sáb 14:00) | **Completado** (18 parcelas reales verificadas en CDL: NV, ID, UT) |
 | D-03 | Script GEE/Colab para extraer serie de 36 meses de Diamond Valley (HLS RGB/índices, POWER, OpenET, CDL, SMAP 9 km, SSURGO, SRTM) y generar artefacto compacto en JSON/Parquet | `@Checo-coder` | G2 (Sáb 14:00) | **Completado** (`multi_valley.parquet`, 648 filas, 2022–2024) |
-| D-04 | Script de extracción para la parcela de Querétaro (sin CDL ni OpenET; SoilGrids 250 m + POWER + HLS + SMAP 9 km + SRTM) tras recibir polígono | `@Checo-coder` | G3 (Sáb 19:00) | Bloqueado por `HUMANO.md` (polígono Qro.) |
+| D-04 | Script de extracción para la parcela de Querétaro (sin CDL ni OpenET; SoilGrids 250 m + POWER + HLS + SMAP 9 km + SRTM) tras recibir polígono | `@Checo-coder` | G3 (Sáb 19:00) | Polígono real guardado (`parcels/queretaro.geojson`); listo para exportar en Colab con `--unlabeled` |
 | D-05 | Exportación completa multi-valle (NV, ID, UT) para entrenamiento de Modelos 1-4 en la nube | `@Checo-coder` | G3 (Sáb 19:00) | **Completado** (648 filas, 18 parcelas en 3 valles) |
 
 ---
