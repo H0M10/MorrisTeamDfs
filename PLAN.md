@@ -24,7 +24,7 @@
 | ID | Tarea | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
 | D-01 | Confirmar en catálogo GEE los años exactos cubiertos por HLS, OpenET, USDA CDL, SMAP, SSURGO, SoilGrids y SRTM antes de generar tablas | `@Checo-coder` | G1 (Sáb 10:00) | Bloqueado por `HUMANO.md` (cuentas GEE/OpenET) |
-| D-02 | Elegir 2-3 zonas de riego similares a Diamond Valley en NV, ID y UT (pivote, alfalfa, granos) y exportar muestra de verificación | `@Checo-coder` | G2 (Sáb 14:00) | Bloqueado por `HUMANO.md` |
+| D-02 | Elegir 2-3 zonas de riego similares a Diamond Valley en NV, ID y UT (pivote, alfalfa, granos) y exportar muestra de verificación | `@Checo-coder` | G2 (Sáb 14:00) | Parcelas trazadas y validadas (`parcels/diamond_valley.geojson`, `parcels/multi_valley.geojson`); listo para exportar en Colab |
 | D-03 | Script GEE/Colab para extraer serie de 36 meses de Diamond Valley (HLS RGB/índices, POWER, OpenET, CDL, SMAP 9 km, SSURGO, SRTM) y generar artefacto compacto en JSON/Parquet | `@Checo-coder` | G2 (Sáb 14:00) | Guiones listos (`ee_export.py`, `build_table.py`); falta ejecutarlos (`HUMANO.md` H-11) |
 | D-04 | Script de extracción para la parcela de Querétaro (sin CDL ni OpenET; SoilGrids 250 m + POWER + HLS + SMAP 9 km + SRTM) tras recibir polígono | `@Checo-coder` | G3 (Sáb 19:00) | Bloqueado por `HUMANO.md` (polígono Qro.) |
 | D-05 | Exportación completa multi-valle (NV, ID, UT) para entrenamiento de Modelos 1-4 en la nube | `@Checo-coder` | G3 (Sáb 19:00) | Pendiente |
@@ -37,7 +37,7 @@
 | ID | Tarea | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
 | M-01 | Definir esqueleto de `CARD.md` (datos, partición por valle, último año fuera, métrica vs línea base, límites) para los 4 modelos | `@Checo-coder` / Claude | G1 (Sáb 10:00) | Completado (`models/*/CARD.md` como plantilla por llenar) |
-| M-02 | **Prioridad 1 · Modelo 1:** entrenar y validar (XGBoost consumo de agua vs tabla FAO-56 en valle no visto; respaldo: tabla FAO-56 declarada tras llenar `kc_monthly.csv`) | `@Checo-coder` | G4 (Dom 08:00) | Bloqueado por D-05 / H-04 |
+| M-02 | **Prioridad 1 · Modelo 1:** entrenar y validar (XGBoost consumo de agua vs tabla FAO-56 en valle no visto; respaldo: tabla FAO-56 declarada tras llenar `kc_monthly.csv`) | `@Checo-coder` | G4 (Dom 08:00) | `kc_monthly.csv` listo (H-04 completado); pendiente tabla D-05 |
 | M-03 | **Prioridad 4 (solo si sobra tiempo) · Modelo 2:** entrenar y validar (XGBoost observacional efecto cultivo anterior vs modelo sin cultivo anterior; nunca causal ni ahorro de agua; respaldo: `"Sin evidencia local"`) | `@Checo-coder` | G4 (Dom 08:00) | Bloqueado por D-05 |
 | M-04 | **Prioridad 3 · Modelo 3:** entrenar, validar y exportar a ONNX (GRU ligera con atención temporal, Macro F1 por clase en valle no visto) | `@Checo-coder` | G4 (Dom 08:00) | Bloqueado por D-05 |
 | M-05 | **Prioridad 2 · Modelo 4:** calibrar y validar (Balance FAO-56 + residual + CQR 90% a escala SMAP 9 km; cobertura real reportada) | `@Checo-coder` | G4 (Dom 08:00) | Bloqueado por D-05 |

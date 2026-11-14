@@ -49,10 +49,9 @@ Desbloquea: la compuerta "API de ejemplo desplegada" y `NEXT_PUBLIC_API_URL` par
 
 Archivo: `backend/app/engine/crop_traits.py`. La escribió un agente como supuesto. Decide si cada rotación pasa o no por maquinaria y comprador. Revisar: qué equipo pide cada cultivo, qué cultivos se venden, y si la cosecha de grano se supone contratada. Mientras no se revise, toda cifra que dependa de ella es `assumed`.
 
-### H-04. Transcribir y verificar la tabla Kc de FAO-56 (`@Checo-coder` o `@H0M10`)
+### H-04. Transcribir y verificar la tabla Kc de FAO-56 (`@Checo-coder` o `@H0M10`) — **Completado (2026-11-14)**
 
-El respaldo del modelo 1 es la "tabla FAO-56, declarada". Hay que copiar de la publicación (FAO Irrigation and Drainage Paper 56, tabla 12) los coeficientes inicial, medio y final de: alfalfa, cebada, avena, trigo de invierno, maíz, sorgo y frijol, con la página consultada y la fecha. Un agente no debe escribirlos de memoria.
-
+Transcripción de FAO-56 Tabla 12 (pp. 110-114) completada para los 4 grupos (`alfalfa`, `small_grain`, `corn`, `fallow`) para los 12 meses en `models/kc_monthly.csv`.
 Desbloquea: cifras de agua reales cuando el modelo 1 no esté entrenado.
 
 ### H-05. Decidir las dos inconsistencias de los fixtures — **Completado por Argon (v0.1.1)**
