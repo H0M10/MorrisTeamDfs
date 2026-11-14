@@ -1,0 +1,57 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "parcel_id": "qro-sjr-01",
+    "valley": "qro_sjr_pedro_escobedo",
+    "region_mode": "unlabeled",
+    "note": "Propuesta derivada de datos: mancha de 15.6 ha (compacidad 0.97) con NDVI mediano de HLS > 0.5 en los meses 3-5 de 2025 y percentil 10 anual < 0.3 (probable riego; no dice qué cultivo). Envolvente convexa encogida 20 m. Puede abarcar más de un campo. Pendiente de confirmación visual por una persona."
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -100.178843,
+       20.582559
+      ],
+      [
+       -100.178606,
+       20.583744
+      ],
+      [
+       -100.178606,
+       20.586044
+      ],
+      [
+       -100.179001,
+       20.586242
+      ],
+      [
+       -100.181564,
+       20.586242
+      ],
+      [
+       -100.181725,
+       20.586081
+      ],
+      [
+       -100.181725,
+       20.58272
+      ],
+      [
+       -100.181564,
+       20.582559
+      ],
+      [
+       -100.178843,
+       20.582559
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,69 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "parcel_id": "gto-norte-01",
+    "valley": "gto_norte",
+    "region_mode": "unlabeled",
+    "note": "Propuesta derivada de datos: mancha de 29.1 ha (compacidad 0.90) con NDVI mediano de HLS > 0.5 en los meses 3-5 de 2025 y percentil 10 anual < 0.3 (probable riego; no dice qué cultivo). Envolvente convexa encogida 20 m. Puede abarcar más de un campo. Pendiente de confirmación visual por una persona."
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -100.626297,
+       21.11562
+      ],
+      [
+       -100.624781,
+       21.11562
+      ],
+      [
+       -100.624608,
+       21.115793
+      ],
+      [
+       -100.623542,
+       21.1218
+      ],
+      [
+       -100.62475,
+       21.122273
+      ],
+      [
+       -100.626065,
+       21.122536
+      ],
+      [
+       -100.62698,
+       21.122536
+      ],
+      [
+       -100.627204,
+       21.121866
+      ],
+      [
+       -100.628007,
+       21.117312
+      ],
+      [
+       -100.628007,
+       21.11605
+      ],
+      [
+       -100.627833,
+       21.115876
+      ],
+      [
+       -100.626297,
+       21.11562
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}

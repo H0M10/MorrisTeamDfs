@@ -114,11 +114,17 @@ pozos de NWIS contra SMAP; IMERG contra la lluvia de POWER.
 2. **Siguiente, barato y sin llave:** transiciones de CDL en el valle, IMERG, pozos de NWIS, SSURGO por API y GAEZ para México.
 3. **Si sobra tiempo:** PRISM, QuickStats y AMS (con llave), ECOSTRESS y MODIS.
 
-**Advertencia sobre la tabla real:** el polígono de `dv-nv-01` todavía es el
-rectángulo de ejemplo del fixture, no un pivote real. En julio de 2022 OpenET da
-149 mm y la ET de referencia 230 mm (Kc observado de alrededor de 0.65, frente
-a 0.95 de FAO-56). Antes de interpretarlo hay que trazar el pivote real: el
-rectángulo puede mezclar campo con terreno sin cultivar.
+**Tablas reales al 2026-11-14 14:40** (`backend/data/`, 36 meses cada una, las
+tres válidas contra el contrato en `DATA_MODE=real`):
+
+| Parcela | Cómo se eligió | Qué muestran los datos |
+| --- | --- | --- |
+| `dv-nv-01` (45 ha) | Pivote donde CDL dio alfalfa en 2022–2024 (`ee_pick_parcels.py pivot`) | OpenET en julio: 165 a 195 mm, con ET de referencia de 215 a 230 mm. El rectángulo anterior daba 149 mm porque incluía 17–22 % de matorral |
+| `qro-sjr-01` (13 ha) | Mancha más compacta de riego probable (`ee_pick_parcels.py scout`) | **Dos ciclos verdes por año** en el NDVI (uno de invierno con riego y otro de verano). No dice de qué cultivo |
+| `gto-norte-01` (28 ha) | Igual | Dos ciclos verdes por año, picos en marzo–abril y agosto–septiembre |
+
+Los polígonos son propuestas derivadas de datos; falta el visto bueno de una
+persona (`parcels/ver_parcelas.html`, HUMANO.md H-17).
 
 ## 1. La regla, bien leída
 

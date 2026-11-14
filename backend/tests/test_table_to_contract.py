@@ -304,6 +304,7 @@ def test_unlabeled_region(make_settings: Callable[..., Settings], tmp_path: Path
     assert evaluation["timeline"][0]["crop_code"] == "no_declarado"
     current = evaluation["strategies"][0]
     assert current["metrics"]["annual_water_mm"]["value"] is None
+    assert current["metrics"]["soil_cover_months_36m"]["value"] is None  # sin dato, no cero
     assert "ET de referencia" in evaluation["timeline"][6]["et_mm"]["source"]
     # Las alternativas sí son del sistema de grano de verano
     codes = {m["crop_code"] for m in evaluation["strategies"][1]["sequence_36m"]}

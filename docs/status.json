@@ -415,9 +415,9 @@
       "priority": "P0",
       "owner": "H0M10 / Checo-coder",
       "due": "Sáb 17:00",
-      "title": "Trazar polígonos reales: pivote de Diamond Valley (hoy es el rectángulo del fixture) y parcelas en Qro y Gto norte usando data-pipeline/parcels/mx_manchas_candidatas_2025.geojson",
-      "blocks": "Agua observada confiable en DV; extracción de Querétaro y Guanajuato (D-04)",
-      "status": "Pendiente"
+      "title": "Confirmar a ojo los 3 polígonos derivados de datos: abrir data-pipeline/parcels/ver_parcelas.html (pivote real de Diamond Valley, Querétaro y Guanajuato norte)",
+      "blocks": "Nada: las 3 tablas reales ya están en backend/data/. Solo falta el visto bueno humano",
+      "status": "Hecho por Claude con datos; falta confirmación visual (2 min)"
     },
     {
       "id": "H-18",

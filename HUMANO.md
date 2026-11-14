@@ -176,13 +176,17 @@ Sin llave funcionan: NASA POWER, CropScape (CDL), Soil Data Access (SSURGO) y la
 
 Ningún recurso de la lista del reto dice qué se cultiva en México. Opciones: (a) lo declara el agricultor, con FAO GAEZ como aptitud; (b) usar estadística oficial mexicana (SIAP), saliendo de la lista y declarándolo en la página del proyecto. Detalle en `data-pipeline/PLAN_DE_DATOS.md` §5.
 
-### H-17. Trazar los polígonos reales (Hanniel y Checo, antes de las 17:00)
+### H-17. Confirmar a ojo los tres polígonos (Hanniel, 2 minutos)
 
-1. **Diamond Valley:** `data-pipeline/parcels/diamond_valley.geojson` todavía es el rectángulo de ejemplo del fixture, no un pivote. Traza el círculo de un pivote real (geojson.io con la imagen de fondo) y vuelve a correr la extracción. Hasta entonces, el agua observada (OpenET) puede mezclar campo con terreno sin cultivar.
-2. **Querétaro y norte de Guanajuato:** abre `data-pipeline/parcels/mx_manchas_candidatas_2025.geojson` en geojson.io. Son las manchas verdes en la temporada seca que además se cosechan (probable riego), calculadas con HLS en Earth Engine. Elige una o dos parcelas en cada región y trázalas con `parcel_id` y `valley` (`qro_sjr_pedro_escobedo` o `gto_norte`).
-3. Corre `ee_export.py --unlabeled --start-year 2023 --end-year 2025` y `build_table.py` sobre esos polígonos (36 meses completos).
+Los polígonos ya no hay que dibujarlos: salieron de los datos con `data-pipeline/ee_pick_parcels.py` y ya se extrajeron sus 36 meses a `backend/data/`.
 
-Las manchas son una conjetura de ubicación, no parcelas ni cultivos. Elegir dónde está una parcela es una decisión de persona.
+- **Diamond Valley (`dv-nv-01`):** pivote de 50 ha donde CDL dio alfalfa en 2022, 2023 y 2024, a 3.8 km del centro del valle. Reemplaza al rectángulo de ejemplo, que mezclaba alfalfa con 17–22 % de matorral.
+- **Querétaro (`qro-sjr-01`) y norte de Guanajuato (`gto-norte-01`):** la mancha más compacta de riego probable (verde en la seca y con cosecha) de cada región.
+
+Qué hacer: abre con doble clic `data-pipeline/parcels/ver_parcelas.html`. Muestra cada contorno sobre imagen satelital. Si los tres caen sobre un campo, listo. Si quieres otra parcela:
+1. Abre https://geojson.io, arrastra el `.geojson` de la región y mueve o redibuja el polígono; guarda con el mismo `parcel_id` y `valley`.
+2. O pide otra candidata: `python ee_pick_parcels.py scout ... --rank 2` (la segunda más compacta).
+3. Vuelve a correr `ee_export.py --local-dir` y `build_table.py` (comandos en `data-pipeline/README.md`).
 
 ### H-18. Datos que solo sabe el agricultor (equipo, antes de las 18:00)
 

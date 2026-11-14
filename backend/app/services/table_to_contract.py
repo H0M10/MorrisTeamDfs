@@ -796,7 +796,9 @@ def _strategy(
     }
     mine, base = water[key], water["current"]
     delta = None if mine is None or base is None else mine - base
-    cover = sum(is_cover(c) for c in crops)
+    known = all(crop_bank.get_crop_spec(c) is not None for c in crops)
+    # Sin cultivo conocido no se sabe si el suelo estuvo cubierto: queda sin dato, no en cero.
+    cover = sum(is_cover(c) for c in crops) if known else None
     sequence_type = ("modeled" if labeled else "assumed") if is_current else "assumed"
     sequence_source = (
         ("USDA CDL, clase anual de cultivo" if labeled else "Historial declarado por el agricultor")
@@ -837,6 +839,12 @@ def _strategy(
         {
             "es": f"Suelo cubierto {cover} de 36 meses según la secuencia.",
             "en": f"Soil covered {cover} of 36 months according to the sequence.",
+        }
+        if known
+        else {
+            "es": "Sin historial de cultivos no se puede decir cuántos meses estuvo "
+            "cubierto el suelo.",
+            "en": "Without a crop history the months of soil cover cannot be stated.",
         }
     ]
     gaps = [
