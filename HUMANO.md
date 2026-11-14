@@ -88,3 +88,35 @@ Detalle en `PLAN.md`, sección "Notas para Argon y Hanniel". Son dos banderas `c
 7. Comprueba: `GET /health` de la API debe decir `"supabase_configured": true`, y `POST /api/v1/share` con un fixture debe devolver un token.
 
 Desbloquea: enlaces compartibles (A-04), revisión del técnico (T-04) y el teléfono como control (L-05). Realtime Broadcast viene activo por omisión; no requiere tabla.
+
+### H-07. Desplegar el frontend en Vercel (Hanniel o Persona 4, sábado en la mañana)
+
+1. En vercel.com: **Add New → Project**, importa el repositorio.
+2. **Root Directory** = `frontend`. El marco (Next.js) se detecta solo.
+3. **Environment Variables**: `NEXT_PUBLIC_API_URL` = dominio de Railway (H-02), y cuando existan, `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` (H-06).
+4. Despliega. Abre `/tool/retrato`: debe verse la tira y la etiqueta "Datos de ejemplo" **sin** el aviso de "No hay conexión con el servidor". Si aparece ese aviso, revisa `NEXT_PUBLIC_API_URL` y que `CORS_ORIGINS` en Railway incluya el dominio de producción (las vistas previas `*.vercel.app` ya están permitidas).
+
+### H-08. Decisiones visuales y pruebas con cámara de `/showcase` (Persona 5)
+
+El agente dejó un lienzo de prueba y un botón que solo pide permiso de cámara. Falta que una persona decida, mirando la pantalla:
+
+- **Dirección visual de la landing:** paleta oscura exacta, tipografía de títulos, cuánto texto lleva y la frase de apertura (la misma del pitch y el video).
+- **Globo:** textura (por ejemplo Blue Marble de la NASA, que hay que descargar), nivel de detalle, qué satélites y órbitas se dibujan y con qué datos.
+- **Terreno 3D:** exageración vertical de SRTM, cómo se representa el cultivo creciendo, cámara inicial y ritmo de las animaciones.
+- **Lluvia en partículas:** cantidad y estilo; solo con datos reales.
+- **Gestos:** umbral del pellizco, sensibilidad del giro, mano izquierda o derecha, y qué se ve en pantalla cuando la cámara está encendida.
+- **Descargar el modelo de manos:** `hand_landmarker.task` y los archivos WASM de `@mediapipe/tasks-vision` (están en `frontend/node_modules/@mediapipe/tasks-vision/wasm/`) deben copiarse a `frontend/public/mediapipe/`. El modelo se baja de la página de MediaPipe Hand Landmarker de Google. No está en el repositorio.
+- **Prueba con cámara real** en la laptop de la demo y con la luz de la sede. La prueba automática usa una cámara falsa: solo comprueba que el permiso se pide con el botón.
+- **Movimiento reducido:** revisar a ojo que nada gire ni se mueva con esa preferencia activa.
+
+### H-09. Decisiones visuales de `/tool` (Persona 4)
+
+- Cómo se dibuja el calendario de las tres rotaciones y qué trama lleva cada `palette_token`.
+- La etiqueta "Datos de ejemplo": hoy es una banda color Paja con borde rayado. Confirmar o cambiar.
+- Estilo del mapa base de MapLibre (hace falta una fuente de teselas; las gratuitas piden atribución y algunas, cuenta).
+- Redacción final en lenguaje llano, revisada por un agricultor o un agrónomo (ya anotado arriba).
+- Las unidades llegan del contrato en inglés (`mm/yr`, `days/yr`). Decidir si el contrato las trae traducidas o si la interfaz las traduce; hoy se muestran tal cual.
+
+### H-10. El puerto 8000 está ocupado en la laptop de Hanniel
+
+Un proceso del sistema llamado "Manager" escucha en el puerto 8000, así que la API no puede arrancar ahí (`error while attempting to bind`). El repositorio usa **8010** por omisión. Si alguien copió un `.env` viejo con 8000, que lo cambie.

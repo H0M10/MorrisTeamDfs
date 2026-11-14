@@ -64,7 +64,7 @@
 
 | ID | Tarea | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
-| T-01 | Esqueleto Next.js + Tailwind con paleta oficial (`#FFFFFF`, `#000000`, `#1247B8`, `#E9B824`, `#5A4632`, `#2F7D32`) y Atkinson Hyperlegible Next (>=18 px) + banner visible "Datos de ejemplo" cuando `data_status === "fixture"` | Persona 4 / Claude | G1 (Sáb 10:00) | Pendiente tras A-02 |
+| T-01 | Esqueleto Next.js + Tailwind con paleta oficial (`#FFFFFF`, `#000000`, `#1247B8`, `#E9B824`, `#5A4632`, `#2F7D32`) y Atkinson Hyperlegible Next (>=18 px) + banner visible "Datos de ejemplo" cuando `data_status === "fixture"` | Persona 4 / Claude | G1 (Sáb 10:00) | Completado (esqueleto); sigue Persona 4 con `tool/README.md` |
 | T-02 | Flujo completo conectado a API fixture: parcela, mapa MapLibre con tamaño real de píxel por fuente, tira HLS de 36 meses (+ tabla accesible alternativa), restricciones y caso `has_viable_options: false` | Persona 4 | G2 (Sáb 14:00) | Pendiente |
 | T-03 | Comparación de 3 rotaciones en calendario 36 meses con tramas además de color, ficha de evidencia completa (fuente/fecha/escala/tipo) y guardado en `localStorage` | Persona 4 | G3 (Sáb 19:00) | Pendiente |
 | T-04 | Flujo de revisión de técnico (`reviews` en Supabase), hoja compartible imprimible (PDF) + enlace por token, voz Web Speech API con alternativa en texto | Persona 4 | G5 (Dom 12:00) | Pendiente |
@@ -77,7 +77,7 @@
 
 | ID | Tarea | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
-| L-01 | Esqueleto `/showcase` y `/remote` leyendo fixtures de `/lib`, con banner "Datos de ejemplo", controles de teclado y respeto a `prefers-reduced-motion` | Persona 5 | G1 (Sáb 10:00) | Pendiente tras A-02 |
+| L-01 | Esqueleto `/showcase` y `/remote` leyendo fixtures de `/lib`, con banner "Datos de ejemplo", controles de teclado y respeto a `prefers-reduced-motion` | Persona 5 / Claude | G1 (Sáb 10:00) | Completado (esqueleto); sigue Persona 5 con `showcase/README.md` |
 | L-02 | Extra 1: Gestos con la mano (`@mediapipe/tasks-vision`, cámara activada solo con botón) + alternativa por teclado | Persona 5 | G3 (Sáb 19:00) | Pendiente |
 | L-03 | Extra 2: Zoom del globo a la parcela con órbitas de satélites | Persona 5 | G5 (Dom 12:00) | Pendiente |
 | L-04 | Extra 4: Terreno 3D con cultivo y partículas de lluvia (IMERG si disponible) | Persona 5 | G5 (Dom 12:00) | Pendiente |
@@ -89,7 +89,7 @@
 
 | ID | Tarea | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
-| E-01 | Esqueleto `/engineer` leyendo métricas de modelos y pesos de atención de la API | Persona 6 | G2 (Sáb 14:00) | Pendiente tras A-02 |
+| E-01 | Esqueleto `/engineer` leyendo métricas de modelos y pesos de atención de la API | Persona 6 / Claude | G2 (Sáb 14:00) | Completado (en crudo); sigue Persona 6 con `engineer/README.md` |
 | E-02 | Extra 3: Visualización de red en vivo con pesos reales del Modelo 3 (ocultar automáticamente si Modelo 3 no está entrenado) | Persona 6 | G5 (Dom 12:00) | Depende de M-04 / G4 |
 | E-03 | Borrador de `/docs/project_page.md` (en inglés, sin cifras fixture) y `/docs/video_script.md` (30 s, guion compartido) | Persona 6 | G3 (Sáb 19:00) | Pendiente |
 | E-04 | Grabar video de respaldo sábado 23:00 y video final domingo tras congelar funciones (con datos reales, cero `fixture`) | Persona 6 + Equipo | Dom 15:00 | Bloqueado por datos reales |
@@ -106,7 +106,7 @@ Estado de la orden de la madrugada del sábado. Cada bloque cierra con un commit
 | 0 | Base del repositorio: `.gitignore`, `.editorconfig`, `.env.example`, `README.md`, CI por carpeta (`.github/workflows/`), `contracts/sync.py` | Completado |
 | 1 | Motor y API (`/backend`): FastAPI, modelos Pydantic generados, restricciones, FAO-56, índices, clima, POWER, cargador de modelos, rutas `/api/v1`, `DATA_MODE`, CORS. 126 pruebas | Completado |
 | 2 | Base de datos (`/supabase`): migración con `evaluations`, `reviews`, RLS sin políticas y cuatro funciones por token. Analizada con `pglast`; falta ejecutarla en un proyecto real (`HUMANO.md` H-06) | Completado (sin ejecutar) |
-| 3 | Frontend, solo esqueleto (`/frontend`) | Pendiente |
+| 3 | Frontend, solo esqueleto (`/frontend`): Next.js 16, tipos generados, cliente de API con respaldo local, textos es/en, base de accesibilidad, seis pantallas de `/tool` navegables, primera tira con tabla, `/showcase` con lienzo diferido y botón de cámara, `/engineer`, `/remote`. 31 pruebas con axe | Completado |
 | 4 | Guiones de datos y modelos (`/data-pipeline`, `/models`) | Pendiente |
 
 ### Notas para Argon y Hanniel
@@ -119,3 +119,6 @@ Estado de la orden de la madrugada del sábado. Cada bloque cierra con un commit
 - **`/evaluate` en modo fixture ignora las restricciones** que mande el cliente (sirve el fixture tal cual). Para recalcular con restricciones se usa `/simulate`.
 - **Enlaces compartibles por RPC.** El backend no usa la llave `service_role`: llama a dos funciones de Postgres (`create_shared_evaluation`, `get_shared_evaluation`) con la llave anónima. Las define la migración del bloque 2.
 - **Respaldo del modelo 1 incompleto.** El cargador ya reporta `fallback`, pero la tabla de coeficientes de cultivo (Kc) de FAO-56 no está cargada: la debe transcribir y verificar una persona (ver `HUMANO.md`).
+- **Puerto local de la API: 8010.** En la laptop de Hanniel el 8000 lo ocupa un proceso del sistema.
+- **Unidades en inglés en el contrato.** Los fixtures traen `mm/yr` y `days/yr`; la interfaz en español las muestra tal cual. Decidir antes de congelar si el contrato las localiza o si lo hace la interfaz (`HUMANO.md` H-09).
+- **Estado compartido de `/tool`.** Hoy cada pantalla vuelve a pedir la evaluación de la parcela guardada. Cuando existan los controles de restricciones, la persona 4 debe decidir dónde vive el resultado de `/simulate` entre pantallas.

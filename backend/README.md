@@ -9,7 +9,7 @@ FAO-56, evaluador de restricciones e inferencia de modelos.
 ```bash
 cd backend
 uv sync                                   # Python 3.11 y versiones de uv.lock
-uv run uvicorn app.main:app --port 8000   # documentación en /docs
+uv run uvicorn app.main:app --port 8010   # documentación en /docs
 ```
 
 Si `uv` no está en el PATH (pasa en Windows tras `pip install uv`), usa
@@ -58,7 +58,7 @@ En la laptop de 8 GB, detén `npm run dev` antes de correrlas.
 Ejemplo:
 
 ```bash
-curl -X POST localhost:8000/api/v1/simulate -H "content-type: application/json" -d '{
+curl -X POST localhost:8010/api/v1/simulate -H "content-type: application/json" -d '{
   "parcel_id": "dv-nv-fixture-01",
   "constraints": {
     "max_water_mm_year": 600,

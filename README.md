@@ -51,7 +51,7 @@ Con los valores por omisión todo corre en modo de ejemplo, sin llaves.
 ```bash
 cd backend
 uv sync                                   # crea .venv con Python 3.11
-uv run uvicorn app.main:app --port 8000   # http://localhost:8000/docs
+uv run uvicorn app.main:app --port 8010   # http://localhost:8010/docs
 ```
 
 Pruebas (detén antes el servidor de Next.js):
