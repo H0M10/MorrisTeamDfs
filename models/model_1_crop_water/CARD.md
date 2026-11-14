@@ -36,8 +36,8 @@ Estima la evapotranspiración mensual de un cultivo en una parcela a partir del 
 
 - Solo vale donde hay OpenET y CDL para entrenar (EE. UU. contiguos; en México corre fuera de su dominio de entrenamiento o entra su respaldo FAO-56).
 - OpenET es a su vez un conjunto de modelos: el error se mide contra OpenET, no contra lisímetros ni torres de flujo en campo.
-- Muestra de `15` parcelas elegidas por USDA CDL en 3 valles (`NV`, `ID`, `UT`); en inferencia de rotaciones alternativas aún falta conectar el paso que sustituya al respaldo FAO-56 (`PLAN.md` C-04 / A-07).
-- `table_to_contract.py` todavía calcula el agua de cada rotación en `/evaluate` usando el respaldo FAO-56 hasta integrar `model.ubj` en `A-07`.
+- Muestra de `15` parcelas elegidas por USDA CDL en 3 valles (`NV`, `ID`, `UT`).
+- En `/evaluate` (`A-07` en `table_to_contract.py`), el modelo no se invoca directamente sobre rotaciones contrafactuales porque requiere `ndvi` y `ndmi` observados del dosel en pie (inyectar los de la rotación actual filtraría el vigor presente hacia rotaciones alternativas y perdería los 20 cultivos específicos del banco). Por ello, en regiones `labeled` (`dv-nv-01`) la rotación actual usa `OpenET` observado (`30 m`) y las alternativas usan `FAO-56` calibrado por parcela (`factor = observado / FAO-56`), mientras en `unlabeled` (`qro-sjr-01`) corre el balance `FAO-56` declarado.
 
 ## Cómo se reproduce
 
