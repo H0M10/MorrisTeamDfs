@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Field Shift (The CSC) — Kickoff 4 Integrantes</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-alt: #f1f5f9;
+      --ink: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --blue: #1247b8;
+      --blue-soft: #e8effd;
+      --green: #2f7d32;
+      --green-soft: #eaf5eb;
+      --straw: #b45309;
+      --straw-bg: #fef3c7;
+      --earth: #5a4632;
+      --earth-bg: #f5efe8;
+      --red: #b91c1c;
+      --red-bg: #fee2e2;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.45;
+      height: 100%;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header.topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+    .badge-blue { background: var(--blue-soft); color: var(--blue); border-color: #bfd3fb; }
+    .badge-green { background: var(--green-soft); color: var(--green); border-color: #b7dfb9; }
+    .badge-straw { background: var(--straw-bg); color: var(--straw); border-color: #fde68a; }
+    .badge-earth { background: var(--earth-bg); color: var(--earth); border-color: #d6c5b3; }
+    .badge-red { background: var(--red-bg); color: var(--red); border-color: #fecaca; }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button.btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 7px 14px;
+      min-height: 40px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button.btn:hover:not(:disabled) { background: var(--surface-alt); }
+    button.btn:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+    button.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    button.btn-primary {
+      background: var(--blue);
+      color: #ffffff;
+      border-color: var(--blue);
+    }
+    button.btn-primary:hover:not(:disabled) { background: #0e3a97; }
+
+    .slide-counter {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--muted);
+      padding: 0 6px;
+    }
+
+    .progress-track {
+      height: 4px;
+      background: var(--border);
+      width: 100%;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--blue);
+      transition: width 0.2s ease;
+    }
+
+    main.stage {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    section.slide {
+      display: none;
+      width: 100%;
+      max-width: 1140px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px 32px;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+    }
+    section.slide.active { display: block; }
+
+    .slide-kicker {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--blue);
+      margin-bottom: 6px;
+    }
+
+    h1, h2 {
+      margin: 0 0 12px 0;
+      line-height: 1.2;
+      color: var(--ink);
+    }
+    h1 { font-size: 30px; }
+    h2 { font-size: 25px; }
+    h3 { margin: 0 0 8px 0; font-size: 17px; }
+    p { margin: 0 0 12px 0; font-size: 15.5px; }
+
+    .lead {
+      font-size: 17px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 14px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .card {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 15px 17px;
+    }
+    .card-white {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 15px 17px;
+    }
+    .card-blue { border-left: 5px solid var(--blue); }
+    .card-green { border-left: 5px solid var(--green); }
+    .card-straw { border-left: 5px solid var(--straw); }
+    .card-earth { border-left: 5px solid var(--earth); }
+    .card-red { border-left: 5px solid var(--red); background: #fff7f7; }
+
+    ul, ol {
+      margin: 6px 0 0 0;
+      padding-left: 20px;
+      font-size: 14.5px;
+    }
+    li { margin-bottom: 6px; }
+
+    code, pre {
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+    code {
+      background: #e2e8f0;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+    pre {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 12px 14px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 8px 0 0 0;
+      line-height: 1.45;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    th, td {
+      text-align: left;
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    th {
+      background: var(--surface-alt);
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .callout {
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--blue-soft);
+      margin-top: 14px;
+      font-size: 14.5px;
+    }
+    .callout-warn {
+      background: var(--straw-bg);
+      border-color: #f59e0b;
+    }
+    .callout-cut {
+      background: var(--red-bg);
+      border-color: #f87171;
+    }
+
+    footer.dots {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 10px 16px 16px;
+    }
+    button.dot {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    button.dot.active {
+      background: var(--blue);
+      color: #ffffff;
+      border-color: var(--blue);
+    }
+    button.dot:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+    @media (max-width: 820px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      section.slide { padding: 20px; }
+      h1 { font-size: 24px; }
+      h2 { font-size: 21px; }
+    }
+
+    @media print {
+      header.topbar, footer.dots, .progress-track { display: none !important; }
+      section.slide {
+        display: block !important;
+        page-break-after: always;
+        box-shadow: none;
+        margin-bottom: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <span>Field Shift · Equipo The CSC</span>
+      <span class="badge badge-blue">MorrisTeamDfs · 4 Integrantes</span>
+      <span class="badge badge-straw">NASA Space Apps 2026</span>
+    </div>
+    <nav class="nav-controls" aria-label="Navegación de diapositivas">
+      <a class="btn" href="index.html" style="text-decoration:none;display:inline-flex;align-items:center;">← Centro de Mando</a>
+      <button class="btn" id="prevBtn" type="button">← Anterior</button>
+      <span class="slide-counter" id="counter" aria-live="polite">1 / 8</span>
+      <button class="btn btn-primary" id="nextBtn" type="button">Siguiente →</button>
+    </nav>
+  </header>
+
+  <div class="progress-track" aria-hidden="true">
+    <div class="progress-fill" id="progressFill" style="width: 12.5%"></div>
+  </div>
+
+  <main class="stage">
+    <!-- SLIDE 1 -->
+    <section class="slide active" data-title="1. Pivote a 4">
+      <div class="slide-kicker">Sábado 14 · Reorganización táctica</div>
+      <h1>De 6 a 4 integrantes: misma meta Global, recorte inmediato en extras</h1>
+      <p class="lead">El organizador confirmó que solo se evalúa el domingo (sábado libre para construir). Ajustamos ramas, dueños y alcance hoy para no perder ninguna compuerta.</p>
+
+      <div class="grid-2">
+        <div class="card card-green">
+          <h3>Por qué 4 personas sí llegan al MVP y a modelos reales</h3>
+          <ul>
+            <li><strong>Bloques 0–4 ya escritos:</strong> contrato JSON v0.1.1, 3 fixtures, motor FAO-56 en FastAPI, SQL de Supabase, esqueletos Next.js (<code>/tool</code>, <code>/showcase</code>, <code>/engineer</code>, <code>/remote</code>) y guiones de Earth Engine + ML ya viven en el repo.</li>
+            <li><strong>Ya no diseñamos desde cero:</strong> ahora cada quien ejecuta, conecta datos reales, valida y pule su pista.</li>
+            <li><strong>Regla de oro intacta:</strong> cero cifras inventadas; todo dato trae fuente, fecha, escala nativa y tipo.</li>
+          </ul>
+        </div>
+
+        <div class="card card-red">
+          <h3>Recorte preventivo aplicado desde ya (<code>AGENTS.md</code> §8)</h3>
+          <p>En <code>AGENTS.md</code> y <code>PISTAS_PARALELAS.md</code> los extras se cortan de abajo hacia arriba. Con 4 personas cortamos los 2 últimos hoy mismo:</p>
+          <ul>
+            <li><strong>Cortado #5:</strong> <code>/remote</code> (teléfono del juez por QR + Supabase Broadcast) queda congelado como esqueleto.</li>
+            <li><strong>Cortado #4:</strong> Terreno 3D complejo con crecimiento de cultivo y partículas de lluvia IMERG.</li>
+            <li><strong>Se mantiene:</strong> <code>/tool</code> completo (Global) + Extra #1 (Gestos MediaPipe), Extra #2 (Globo a parcela) y Extra #3 (Red en vivo solo si Modelo 3 logra métrica).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>Dos pistas paralelas, un solo producto:</strong> <strong>Global</strong> (<code>/tool</code>, motor físico/ML y página en inglés + video 30 s) manda sobre todo lo demás. Si el domingo a las 08:00 falta algo Global, toda la pista Local pausa extras y ayuda al núcleo.
+      </div>
+    </section>
+
+    <!-- SLIDE 2 -->
+    <section class="slide" data-title="2. Datos y Peso">
+      <div class="slide-kicker">Pista de Datos · Acceso, fuentes y límite de 8 GB RAM</div>
+      <h2>¿Pudimos acceder a los datos NASA? ¿Cuánto pesan y dónde corren?</h2>
+      <p class="lead">Ningún agente tiene tus llaves ni internet hacia GEE/Earthdata aún. Todo el cruce satelital está programado para correr en la nube (Earth Engine / Colab), nunca en las laptops de 8 GB.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Fuente (<code>AGENTS.md</code> §4)</th>
+            <th>Escala nativa</th>
+            <th>Cómo accedemos</th>
+            <th>Qué entra al repo / laptop</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>NASA POWER</strong></td>
+            <td>~50 km (diario desde 1981)</td>
+            <td>API HTTP directa <strong>sin llave</strong></td>
+            <td>Serie mensual compacta (lluvia, ET0, heladas, calor)</td>
+          </tr>
+          <tr>
+            <td><strong>Landsat / HLS</strong></td>
+            <td>30 m</td>
+            <td><strong>Google Earth Engine</strong> (cuenta no comercial)</td>
+            <td>Solo RGB medio + NDVI, NDMI, BSI, NDTI por mes y parcela</td>
+          </tr>
+          <tr>
+            <td><strong>OpenET</strong></td>
+            <td>30 m (oeste EE. UU.)</td>
+            <td>Earth Engine / acceso OpenET (<code>HUMANO.md</code>)</td>
+            <td>ET observada mensual por píxel/pivote para entrenar Modelo 1</td>
+          </tr>
+          <tr>
+            <td><strong>USDA CDL</strong></td>
+            <td>30 m (solo EE. UU.)</td>
+            <td>Google Earth Engine</td>
+            <td>Etiqueta histórica de cultivo y barbecho por año</td>
+          </tr>
+          <tr>
+            <td><strong>SMAP</strong></td>
+            <td>9 km (contexto regional)</td>
+            <td>Earth Engine (o Earthdata si se requiere)</td>
+            <td>Serie regional de humedad para contexto y validar Modelo 4</td>
+          </tr>
+          <tr>
+            <td><strong>SSURGO / SoilGrids + SRTM</strong></td>
+            <td>EE. UU. / 250 m global / 30 m</td>
+            <td>Google Earth Engine</td>
+            <td>Textura, MO, capacidad de agua, elevación y pendiente agregados</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid-2">
+        <div class="card card-straw">
+          <h3>Por qué no descargamos rasters crudos (Regla 7)</h3>
+          <ul>
+            <li>Bajar escenas GeoTIFF multi-banda de 36 meses en 3–4 valles satura las laptops de <strong>8 GB de RAM</strong> y la GPU de 6 GB.</li>
+            <li><code>data-pipeline/ee_export.py</code> reduce las imágenes en servidores de Earth Engine a tablas tabulares compactas (CSV / GeoParquet) por parcela/pivote (~25–30 pivotes por valle).</li>
+            <li>Solo esos artefactos compactos y los pesos entrenados (&lt; unos MB) llegan al backend en CPU.</li>
+          </ul>
+        </div>
+        <div class="card card-blue">
+          <h3>Regiones y prohibiciones científicas</h3>
+          <ul>
+            <li><strong>Modo <code>labeled</code>:</strong> Diamond Valley, NV (~39.68, -116.03) + 2–3 zonas similares (pivote, alfalfa, granos) en NV, ID y UT.</li>
+            <li><strong>Modo <code>unlabeled</code>:</strong> Parcela de Querétaro (San Juan del Río / Pedro Escobedo). Corre física + Modelo 3 como <em>experimental</em>.</li>
+            <li><strong>Prohibido:</strong> NDRE con Landsat (solo HLS S30 opcional), CAI (usar NDTI cualitativo), GEDI, o mostrar SMAP/GRACE/CONAGUA como dato de parcela.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3 -->
+    <section class="slide" data-title="3. Repo y 4 Ramas">
+      <div class="slide-kicker">Flujo Git para 4 personas · Cero conflictos</div>
+      <h2>Cómo crear el repositorio y repartirnos las 4 ramas oficiales</h2>
+      <p class="lead">Cada quien escribe solo en su carpeta (<code>AGENTS.md</code> regla 9). Si alguien necesita tocar otra carpeta, se pide en <code>PLAN.md</code> o vía PR revisado.</p>
+
+      <div class="grid-2">
+        <div class="card-white">
+          <h3>Paso 1 — Hanniel (<code>@H0M10</code>) conecta el repo hoy</h3>
+          <pre># NO usar `echo "# MorrisTeamDfs" >> README.md` (ya existe el nuestro)
+git status
+git remote add origin https://github.com/H0M10/MorrisTeamDfs.git
+git push -u origin main
+# Invitar: Checo-coder, Gicarrillo, alexishal8 y activar Pages (/docs)</pre>
+          <p style="margin-top:8px;font-size:13.5px;color:var(--muted);">Recuerda: ninguna llave va al repo. Mantener <code>.env.example</code> sin valores.</p>
+        </div>
+
+        <div class="card-white">
+          <h3>Paso 2 — Regla de trabajo en equipo</h3>
+          <ul>
+            <li>Cada integrante clona <code>https://github.com/H0M10/MorrisTeamDfs.git</code> y crea <strong>su rama única</strong>: <code>git checkout -b pista/&lt;nombre&gt;</code>.</li>
+            <li>Un proceso pesado a la vez en laptops de 8 GB (no levantar Next.js, FastAPI y pytest completos al mismo tiempo).</li>
+            <li>Antes de mergear a <code>main</code>, pasan pruebas locales y Hanniel aprueba si toca contrato o backend.</li>
+            <li>Cada sesión agrega 1 línea en <code>AI_USAGE.md</code> y actualiza el tablero con <code>docs/status.json</code> + <code>python scripts/sync_board.py</code>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Integrante</th>
+            <th>Rama Git</th>
+            <th>Carpetas exclusivas</th>
+            <th>Responsabilidad principal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Hanniel (<code>@H0M10</code>)</strong></td>
+            <td><code>pista/motor-api</code></td>
+            <td><code>/contracts</code>, <code>/backend</code>, <code>/supabase</code>, <code>/frontend/src/lib</code></td>
+            <td>Dupla Backend/Datos · Motor FAO-56, API, Contrato, Railway/Supabase y <code>HUMANO.md</code></td>
+          </tr>
+          <tr>
+            <td><strong>2. Checo (<code>@Checo-coder</code>)</strong></td>
+            <td><code>pista/datos-modelos</code></td>
+            <td><code>/data-pipeline</code>, <code>/models</code> (+ apoyo <code>/backend</code>)</td>
+            <td>Dupla Backend/Datos · GEE/Colab, <code>kc_monthly.csv</code>, Modelos 1→4→3→2 y <code>HUMANO.md</code></td>
+          </tr>
+          <tr>
+            <td><strong>3. <code>@Gicarrillo</code></strong></td>
+            <td><code>pista/tool</code></td>
+            <td><code>/frontend/src/app/tool</code>, <code>/frontend/tests</code></td>
+            <td>Dupla Frontend · Herramienta del agricultor (Global), Accesibilidad AA y micro-visuales</td>
+          </tr>
+          <tr>
+            <td><strong>4. Alexis (<code>@alexishal8</code>)</strong></td>
+            <td><code>pista/jueces-entrega</code></td>
+            <td><code>/frontend/src/app/showcase</code>, <code>/engineer</code>, <code>/docs</code></td>
+            <td>Dupla Frontend · Gestos, Globo, <code>/engineer</code>, Animaciones IA, Video 30 s y Página EN</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SLIDE 4 -->
+    <section class="slide" data-title="4. Hanniel (@H0M10)">
+      <div class="slide-kicker">Rama: <code>pista/motor-api</code> · Dupla Backend y Datos</div>
+      <h2>Hanniel (<code>@H0M10</code>): Contrato, Backend FastAPI y Supabase</h2>
+      <p class="lead">Eres el único que aprueba cambios a <code>/contracts/schema.json</code>. Trabajas en pareja con Checo en datos/backend y coordinas el tablero vivo de <code>HUMANO.md</code>.</p>
+
+      <div class="grid-2">
+        <div class="card card-blue">
+          <h3>Lo que ya quedó listo en tu pista</h3>
+          <ul>
+            <li>Contrato <code>schema.json</code> v0.1.1 y 3 fixtures (<code>diamond_valley</code>, <code>queretaro</code>, <code>no_viable_options</code>) sincronizados con <code>contracts/sync.py</code>.</li>
+            <li>Motor determinista FAO-56, índices NDVI/NDMI/BSI/NDTI, evaluación de restricciones primero (<code>has_viable_options: false</code>) y enrutador determinista <code>/ask</code>.</li>
+            <li>Migración <code>supabase/migrations/20261114000000_init.sql</code> con RLS activada y 4 RPCs sin PII.</li>
+          </ul>
+        </div>
+
+        <div class="card card-straw">
+          <h3>Tu trabajo hoy (Sábado)</h3>
+          <ol>
+            <li><strong>Repo y Pages (G1):</strong> subir <code>main</code> a <code>H0M10/MorrisTeamDfs</code>, invitar a <code>Checo-coder</code>, <code>Gicarrillo</code>, <code>alexishal8</code> y activar Pages.</li>
+            <li><strong>Railway y Supabase (<code>H-02</code>/<code>H-06</code>):</strong> desplegar API fixture (solo CPU; puerto local <code>8010</code>) y ejecutar SQL en Supabase.</li>
+            <li><strong>Ejecutar Orden #2 (Sáb 14:00):</strong> construir <code>table_to_contract.py</code> consumiendo las tablas <code>.parquet</code> de Checo y corregir <code>S-01</code>.</li>
+            <li><strong>Sáb 19:00 (G3):</strong> desplegar Vercel (<code>H-07</code>) y servir 3 rotaciones reales de Diamond Valley y Querétaro.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>Regla de degradación segura:</strong> Si Supabase no responde o tarda, la herramienta debe seguir evaluando y mostrando todo normalmente (solo desactiva guardar/compartir por token).
+      </div>
+    </section>
+
+    <!-- SLIDE 5 -->
+    <section class="slide" data-title="5. Checo (@Checo-coder)">
+      <div class="slide-kicker">Rama: <code>pista/datos-modelos</code> · Dupla Backend y Datos (GEE / Colab)</div>
+      <h2>Checo (<code>@Checo-coder</code>): Datos + Modelos + Apoyo Backend</h2>
+      <p class="lead">Llevas GEE/Colab y entrenamiento en coordinación directa con Hanniel (<code>@H0M10</code>) porque <code>ee_export.py</code>, <code>build_table.py</code> y <code>model_1..4/train.py</code> ya están escritos.</p>
+
+      <div class="grid-2">
+        <div class="card card-green">
+          <h3>Paso A — Datos reales en GEE / Colab (Hoy Sáb)</h3>
+          <ol>
+            <li><strong><code>H-04</code> primero:</strong> llenar <code>models/kc_monthly.csv</code> con Tabla 12 FAO-56 y su cita bibliográfica.</li>
+            <li><strong>Validar catálogo GEE (<code>D-01</code>):</strong> correr <code>ee_coverage.py</code> para confirmar años de HLS, OpenET, CDL y SMAP.</li>
+            <li><strong>Elegir 2–3 valles vecinos (<code>D-02</code>):</strong> trazar pivotes reales en NV, ID y UT (<code>diamond_valley_nv</code> + vecinos) y fijar polígono de Querétaro.</li>
+            <li><strong>Correr exportaciones (<code>D-03..D-05</code>):</strong> exportar <code>~25–30</code> pivotes/valle con <code>ee_export.py</code> + <code>build_table.py</code> para alimentar Orden #2.</li>
+          </ol>
+        </div>
+
+        <div class="card card-blue">
+          <h3>Paso B — Orden de entrenamiento (Corte: Dom 08:00)</h3>
+          <ol>
+            <li><strong>Prioridad 1 · Modelo 1 (XGBoost ET):</strong> error en mm en valle no visto vs tabla FAO-56. Respaldo: tabla FAO-56 declarada.</li>
+            <li><strong>Prioridad 2 · Modelo 4 (Humedad CQR 90%):</strong> balance FAO-56 + residual + cobertura conformal al 90% a escala SMAP 9 km. Respaldo: rango histórico.</li>
+            <li><strong>Prioridad 3 · Modelo 3 (GRU + atención → ONNX):</strong> F1 por clase en valle no visto. Activa Red en vivo en <code>/engineer</code>. Respaldo: historial declarado.</li>
+            <li><strong>Solo si sobra tiempo · Modelo 2:</strong> efecto observacional cultivo anterior. Si no sale a tiempo, entra respaldo <code>"Sin evidencia local"</code>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="callout callout-warn">
+        <strong>Auditoría obligatoria (ARGON):</strong> Validar <strong>por valle</strong> (nunca por píxel aleatorio) y dejando el último año fuera. Cada modelo que subas debe traer su <code>models/&lt;nombre&gt;/CARD.md</code> con métrica real vs línea base y registrarse en <code>HUMANO.md</code>.
+      </div>
+    </section>
+
+    <!-- SLIDE 6 -->
+    <section class="slide" data-title="6. @Gicarrillo (/tool)">
+      <div class="slide-kicker">Rama: <code>pista/tool</code> · Dupla Frontend (Pista Global)</div>
+      <h2><code>@Gicarrillo</code>: La Herramienta del Agricultor (<code>/tool</code>) y Accesibilidad</h2>
+      <p class="lead">Es el núcleo para jueces Globales. Diseño sobrio en fondo blanco, cero jerga técnica, micro-visuales claros y accesibilidad AA.</p>
+
+      <div class="grid-2">
+        <div class="card card-earth">
+          <h3>Reglas de diseño innegociables (<code>AGENTS.md</code> §8 y §9)</h3>
+          <ul>
+            <li><strong>Paleta única:</strong> Cal <code>#FFFFFF</code>, Tinta <code>#000000</code>, Azul compuerta <code>#1247B8</code>, Paja <code>#E9B824</code>, Tierra <code>#5A4632</code> (con trama), Hoja <code>#2F7D32</code> (sólido).</li>
+            <li><strong>Prohibido:</strong> fondos oscuros, neones, degradados morados, siglas técnicas sin explicar al agricultor, librerías 3D/MediaPipe dentro de <code>/tool</code>.</li>
+            <li><strong>Tipografía y tacto:</strong> Atkinson Hyperlegible Next <code>&gt;= 18 px</code>, zoom 200% sin romperse, botones <code>&gt;= 44 px</code>, <code>prefers-reduced-motion</code> y diseño mobile-first.</li>
+            <li><strong>Integridad de datos:</strong> si <code>data_status === "fixture"</code>, mostrar visiblemente <em>"Datos de ejemplo"</em>.</li>
+          </ul>
+        </div>
+
+        <div class="card card-blue">
+          <h3>Tu checklist (Orden #3 + Pruebas domingo)</h3>
+          <ol>
+            <li><strong>Flujo completo conectado al backend:</strong> estado compartido con <code>/api/v1/simulate</code>, controles de restricciones reales, calendario 36 meses con tramas y pantalla clara si <code>has_viable_options: false</code>.</li>
+            <li><strong>Tira de la parcela + Mapa + Micro-visuales:</strong> tira HLS de 36 meses + tabla alternativa equivalente + escala de píxel real (30 m, 250 m, 9 km, 50 km) en MapLibre.</li>
+            <li><strong>Voz y lectura:</strong> Web Speech API para preguntar (<code>/ask</code>) y escuchar resumen, con alternativa en texto + hoja imprimible/enlace en <code>/compartir</code>.</li>
+            <li><strong>Calidad AA:</strong> pruebas <code>axe</code> en Playwright + revisión con agrónomo (<code>H-03</code>/<code>H-09</code>) + prueba manual con lector de pantalla el domingo.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7 -->
+    <section class="slide" data-title="7. Alexis (@alexishal8)">
+      <div class="slide-kicker">Rama: <code>pista/jueces-entrega</code> · Dupla Frontend (Animaciones IA, Showcase y Entrega)</div>
+      <h2>Alexis (<code>@alexishal8</code>): <code>/showcase</code>, Animaciones IA, <code>/engineer</code>, Video 30 s y Docs</h2>
+      <p class="lead">Concentras la experiencia visual, animaciones/clips generados con IA y la entrega oficial en inglés, aplicando el recorte preventivo de Extras #4 y #5.</p>
+
+      <div class="grid-3">
+        <div class="card card-green">
+          <h3>Qué SÍ construyes en código y visuales</h3>
+          <ul>
+            <li><strong>Extra #1 · Gestos (<code>/showcase</code>):</strong> WASM/<code>hand_landmarker.task</code> en <code>public/mediapipe/</code> (<code>H-08</code>), cámara solo por botón + teclado.</li>
+            <li><strong>Extra #2 · Globo + Animaciones IA:</strong> transición del globo hacia Diamond Valley / Querétaro y loops visuales generados con IA (sin datos ficticios).</li>
+            <li><strong>Orden #4 · Modo Ingeniero (<code>/engineer</code>):</strong> métricas vs línea base, CQR + <strong>Extra #3 Red en vivo</strong> (<em>solo si Modelo 3 logra estado <code>trained</code></em>).</li>
+          </ul>
+        </div>
+
+        <div class="card card-red">
+          <h3>Qué queda CORTADO hoy</h3>
+          <ul>
+            <li><strong>NO hacer Extra #5:</strong> <code>/remote</code> (teléfono QR con Broadcast) se congela como archivo existente; no invertir horas ahí.</li>
+            <li><strong>NO hacer Extra #4:</strong> partículas de lluvia IMERG ni crecimiento 3D complejo del cultivo.</li>
+            <li><strong>Aislamiento y verdad:</strong> tus rutas solo leen la API; ninguna animación IA inventa cifras ni muestra datos <code>fixture</code> en entrega final.</li>
+          </ul>
+        </div>
+
+        <div class="card card-blue">
+          <h3>Entrega obligatoria (<code>/docs</code>)</h3>
+          <ul>
+            <li><strong>Página del proyecto en inglés (<code>/docs/project_page.md</code>):</strong> problema, datos NASA, arquitectura, métricas reales y límites.</li>
+            <li><strong>Video de 30 segundos (<code>/docs/video_script.md</code>):</strong> respaldo Sáb 23:00 y final Domingo con tomas de <code>/tool</code> real, animaciones IA, <code>/showcase</code> y <code>/engineer</code>.</li>
+            <li><strong>Sección de uso de IA:</strong> resumida desde <code>AI_USAGE.md</code>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout-warn">
+        <strong>Regla de rescate (Dom 08:00):</strong> Si al corte del domingo la pista Global (<code>/tool</code> o datos reales) no está cerrada, pausas <code>/showcase</code> de inmediato y apoyas pruebas de accesibilidad y documentación Global.
+      </div>
+    </section>
+
+    <!-- SLIDE 8 -->
+    <section class="slide" data-title="8. Compuertas y Ya">
+      <div class="slide-kicker">Compuertas oficiales (<code>AGENTS.md</code> §11) · Cierre Domingo 20:00</div>
+      <h2>Calendario de compuertas y qué hacemos en los próximos 20 minutos</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Compuerta</th>
+            <th>Cuándo</th>
+            <th>Condición de pase (sin excusas: si no pasa, se recorta alcance)</th>
+            <th>Responsables</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>G1</strong></td>
+            <td>Sáb 10:00</td>
+            <td>Contrato congelado v0.1.1 + API fixture en Railway + repo <code>H0M10/MorrisTeamDfs</code> + Pages</td>
+            <td><code>@H0M10</code></td>
+          </tr>
+          <tr>
+            <td><strong>G2</strong></td>
+            <td>Sáb 14:00</td>
+            <td>Un dato real de Earth Engine/POWER llega desde la API hasta <code>/tool</code> en pantalla</td>
+            <td><code>@H0M10</code> + <code>@Checo-coder</code> + <code>@Gicarrillo</code></td>
+          </tr>
+          <tr>
+            <td><strong>G3</strong></td>
+            <td>Sáb 19:00</td>
+            <td>3 rotaciones comparables reales (Diamond Valley + Querétaro) + Extra #1 Gestos listo</td>
+            <td><code>@H0M10</code> + <code>@Checo-coder</code> + <code>@alexishal8</code></td>
+          </tr>
+          <tr>
+            <td><strong>G4</strong></td>
+            <td>Dom 08:00</td>
+            <td><strong>Corte de modelos:</strong> entra solo lo que tenga métrica por valle; el resto va con respaldo declarado</td>
+            <td><code>@Checo-coder</code> + <code>@H0M10</code> + ARGON</td>
+          </tr>
+          <tr>
+            <td><strong>G5</strong></td>
+            <td>Dom 12:00</td>
+            <td>Freeze de funciones: accesibilidad AA/axe en verde, <code>/engineer</code> listo, globo/gestos/animaciones listos</td>
+            <td>Todo el equipo (4)</td>
+          </tr>
+          <tr>
+            <td><strong>G6</strong></td>
+            <td>Dom 20:00</td>
+            <td>Entregado: página en inglés, video 30 s, repo público limpio y pitch ensayado (límite oficial 23:59)</td>
+            <td><code>@alexishal8</code> + Todos</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid-4">
+        <div class="card card-blue">
+          <h3>Primeros 20 min · Hanniel (<code>@H0M10</code>)</h3>
+          <p>Subir <code>main</code> a GitHub, invitar a los 3, activar Pages, abrir Railway/Supabase/Vercel y seguir <code>HUMANO.md</code>.</p>
+        </div>
+        <div class="card card-green">
+          <h3>Primeros 20 min · Checo (<code>@Checo-coder</code>)</h3>
+          <p>Clonar en <code>pista/datos-modelos</code>, entrar a Earth Engine + Colab, llenar <code>kc_monthly.csv</code> y validar años/valles.</p>
+        </div>
+        <div class="card card-earth">
+          <h3>Primeros 20 min · <code>@Gicarrillo</code></h3>
+          <p>Clonar en <code>pista/tool</code>, levantar <code>frontend</code>, revisar Orden #3 y decisiones de paleta/mapa (<code>H-09</code>).</p>
+        </div>
+        <div class="card card-straw">
+          <h3>Primeros 20 min · Alexis (<code>@alexishal8</code>)</h3>
+          <p>Clonar en <code>pista/jueces-entrega</code>, preparar MediaPipe (<code>H-08</code>) + animaciones IA y abrir guion de video 30 s.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="dots" id="dots" aria-label="Índice rápido de diapositivas"></footer>
+</div>
+
+<script>
+  (function () {
+    const slides = Array.from(document.querySelectorAll("section.slide"));
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const counter = document.getElementById("counter");
+    const progressFill = document.getElementById("progressFill");
+    const dotsEl = document.getElementById("dots");
+    let current = 0;
+
+    function renderDots() {
+      dotsEl.innerHTML = "";
+      slides.forEach((slide, idx) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "dot" + (idx === current ? " active" : "");
+        btn.textContent = slide.dataset.title || String(idx + 1);
+        btn.addEventListener("click", () => goTo(idx));
+        dotsEl.appendChild(btn);
+      });
+    }
+
+    function goTo(index) {
+      current = Math.max(0, Math.min(slides.length - 1, index));
+      slides.forEach((s, i) => s.classList.toggle("active", i === current));
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === slides.length - 1;
+      counter.textContent = `${current + 1} / ${slides.length}`;
+      progressFill.style.width = `${((current + 1) / slides.length) * 100}%`;
+      Array.from(dotsEl.children).forEach((d, i) => d.classList.toggle("active", i === current));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    prevBtn.addEventListener("click", () => goTo(current - 1));
+    nextBtn.addEventListener("click", () => goTo(current + 1));
+
+    document.addEventListener("keydown", (e) => {
+      if (e.target && ["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName)) return;
+      if (e.key === "ArrowRight" || e.key === " ") {
+        e.preventDefault();
+        goTo(current + 1);
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        goTo(current - 1);
+      }
+    });
+
+    renderDots();
+    goTo(0);
+  })();
+</script>
+</body>
+</html>

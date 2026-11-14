@@ -2,22 +2,24 @@
 
 Regla 11 de `AGENTS.md`: Todo lo que requiera intervención humana (cuentas, llaves, pagos, decisiones, polígonos, pruebas con cámara o lector de pantalla) se registra aquí con responsable, fecha límite y qué bloquea. Los agentes no simulan estos pasos ni inventan datos.
 
+> **Seguimiento evolutivo en vivo:** Los cambios de estado y decisiones aquí anotados se reflejan también en `docs/status.json` (`python scripts/sync_board.py`) para verse en GitHub Pages (`https://h0m10.github.io/MorrisTeamDfs/`).
+
 | Prioridad | Acción humana | Responsable | Para cuándo | Qué bloquea | Estado |
 | --- | --- | --- | --- | --- | --- |
-| **P0 (Crítico)** | Confirmar por escrito con el organizador que no hay revisión el sábado y podemos avanzar desde ya (Gustavo Cruz Zarraga confirmó en WhatsApp oficial: *"nosotros sólo hacemos la evaluación del reto el día domingo, no se hace ninguna revisión el día sábado"*) | Hanniel / Capitán | Sáb madrugada | Luz verde para construir funciones completas desde el sábado | **Completado** |
-| **P0 (Crítico)** | Revisar el "stack" oficial si el organizador lo entrega a las 09:00 AM y validar compatibilidad antes del congelamiento | Hanniel + ARGON | Sáb 09:00 | Congelamiento del contrato (Sáb 10:00) | Pendiente (09:00 AM) |
-| **P0 (Crítico)** | Crear/verificar cuentas de los 6 integrantes: **Earthdata Login** (y generar token para HLS/SMAP), proyecto **Google Earth Engine** de uso no comercial, y acceso a **OpenET** | Los 6 (coordina Persona 1) | Madrugada / Sáb 08:30 | Tareas D-01 a D-05 (sin GEE/Earthdata no hay datos reales ni modelos) | Pendiente |
-| **P0 (Crítico)** | Crear proyectos en **Vercel**, **Railway** y **Supabase**, obtener URLs/llaves y cargar `.env` locales + variables de entorno en la nube (sin subir secretos a Git) | Hanniel | Sáb 09:30 | Despliegue API ejemplo (Sáb 10:00), RLS `/supabase`, Broadcast `/remote` | Pendiente |
-| **P1 (Alto)** | Elegir las **2 o 3 zonas de riego** similares a Diamond Valley en Nevada, Idaho y Utah (pivote, alfalfa, granos) para entrenamiento y validación por valle | Persona 1 + Persona 2 | Sáb 09:30 | D-02, D-05 y partición correcta por valle en Modelos 1-4 | Pendiente |
-| **P1 (Alto)** | Lanzar las **exportaciones de Earth Engine de Diamond Valley** (36 meses HLS, POWER, OpenET, CDL, SMAP, SSURGO, SRTM) y vigilar que terminen sin llenar la RAM local | Persona 1 | Sáb 10:30 | Compuerta Sábado 14:00 ("un dato real en pantalla") y 19:00 | Pendiente |
-| **P1 (Alto)** | Decidir si se **renta una máquina en la nube con mucha RAM/GPU** (ej. RTX 3090/A5000, >=64 GB RAM por unas horas) para el cruce pesado y entrenamiento | Hanniel / Persona 2 | Sáb 10:00 | Entrenamiento de Modelos 1-4 fuera de laptops de 8 GB | Pendiente |
-| **P1 (Alto)** | Definir el **nombre del proyecto** (confirmar si queda "Field Shift") y el **público principal** en inglés y español | Equipo completo | Sáb 10:00 | Textos de cabecera, `/docs/project_page.md`, pitch y guion | Pendiente |
-| **P1 (Alto)** | Definir el **polígono exacto de la parcela de Querétaro** (San Juan del Río / Pedro Escobedo) y verificar cualquier cifra de acuíferos **CONAGUA** contra publicación oficial (anotando fecha y fuente) | Persona 1 / Equipo | Sáb 13:00 | Caso real `unlabeled` de Querétaro (D-04) | Pendiente |
-| **P2 (Medio)** | Conseguir a un **agrónomo o agricultor** que revise la hoja de evidencia y el lenguaje llano de `/tool` | Persona 4 / Equipo | Sáb tarde - Dom mañana | Validación de utilidad real, riesgos locales y pitch | Pendiente |
-| **P2 (Medio)** | Dirección visual y ajuste fino de `/showcase`, terreno 3D y **prueba de gestos con cámara** bajo iluminación real (y verificar respaldo por teclado) | Persona 5 | Sáb 18:00 y Dom 11:00 | Pista local (`/showcase`) y tomas del video | Pendiente |
-| **P2 (Medio)** | Grabar **video de respaldo** (Sábado 23:00) y **video final de 30 s** + redactar la **página del proyecto en inglés** (`/docs/project_page.md`, cero cifras `fixture`) | Persona 6 + Equipo | Sáb 23:00 / Dom 15:00 | Entrega global oficial (Dom 20:00 / 23:59) | Pendiente |
-| **P2 (Medio)** | Ejecutar **prueba manual con lector de pantalla** (NVDA/VoiceOver) y teclado sobre `/tool` | Persona 4 | Dom 11:00 | Requisito obligatorio de accesibilidad (§9 de `AGENTS.md`) | Pendiente |
-| **P2 (Medio)** | Preparar logística de demo local: laptop a corriente con GPU dedicada, pestañas precargadas y **red propia desde teléfono** por si falla el Wi-Fi de la sede | Equipo | Dom 17:00 | Plan anti-fallos de demo en vivo (`PISTAS_PARALELAS.md`) | Pendiente |
+| **P0 (Crítico)** | Confirmar por escrito con el organizador que no hay revisión el sábado y podemos avanzar desde ya (Gustavo Cruz Zarraga confirmó en WhatsApp oficial: *"nosotros sólo hacemos la evaluación del reto el día domingo, no se hace ninguna revisión el día sábado"*) | Hanniel (`@H0M10`) | Sáb madrugada | Luz verde para construir funciones completas desde el sábado | **Completado** |
+| **P0 (Crítico)** | Revisar el "stack" oficial si el organizador lo entrega a las 09:00 AM y validar compatibilidad antes del congelamiento | Hanniel (`@H0M10`) + ARGON | Sáb 09:00 | Congelamiento del contrato (Sáb 10:00) | Pendiente |
+| **P0 (Crítico)** | Crear/verificar cuentas del equipo: proyecto **Google Earth Engine** de uso no comercial, **Colab** y acceso a **OpenET** (Earthdata Login solo si se usa `earthaccess` fuera de GEE) | `@Checo-coder` + `@H0M10` | Sáb mañana | Tareas D-01 a D-05 (sin GEE/OpenET no hay datos reales ni modelos) | Pendiente |
+| **P0 (Crítico)** | Crear proyectos en **Vercel**, **Railway** y **Supabase**, obtener URLs/llaves y cargar `.env` locales + variables de entorno en la nube (sin subir secretos a Git) | Hanniel (`@H0M10`) | Sáb 10:00 | Despliegue API ejemplo (Sáb 10:00) y RLS `/supabase` | Pendiente |
+| **P1 (Alto)** | Elegir las **2 o 3 zonas de riego** similares a Diamond Valley en Nevada, Idaho y Utah (pivote, alfalfa, granos) para entrenamiento y validación por valle | `@Checo-coder` + `@H0M10` | Sáb mañana | D-02, D-05 y partición correcta por valle en Modelos 1-4 | Pendiente |
+| **P1 (Alto)** | Lanzar las **exportaciones de Earth Engine de Diamond Valley** (36 meses HLS, POWER, OpenET, CDL, SMAP, SSURGO, SRTM) en Colab | `@Checo-coder` | Sáb 11:00–13:30 | Compuerta Sábado 14:00 ("un dato real en pantalla") y 19:00 | Pendiente |
+| **P1 (Alto)** | Decidir si se **renta una máquina en la nube con mucha RAM/GPU** (solo si Colab gratuito de ~12 GB RAM no alcanza para las tablas) | `@H0M10` + `@Checo-coder` | Sáb mediodía | Entrenamiento de Modelos 1-4 fuera de laptops de 8 GB | Pendiente |
+| **P1 (Alto)** | Definir el **nombre del proyecto** (confirmar si queda "Field Shift") y el **público principal** en inglés y español | Equipo (4) | Sáb 10:00 | Textos de cabecera, `/docs/project_page.md`, pitch y guion | Pendiente |
+| **P1 (Alto)** | Definir el **polígono exacto de la parcela de Querétaro** (San Juan del Río / Pedro Escobedo) y verificar cualquier cifra de acuíferos **CONAGUA** contra publicación oficial (anotando fecha y fuente) | `@Checo-coder` + `@H0M10` | Sáb 13:00 | Caso real `unlabeled` de Querétaro (D-04) | Pendiente |
+| **P2 (Medio)** | Conseguir a un **agrónomo o agricultor** que revise la hoja de evidencia y el lenguaje llano de `/tool` | `@Gicarrillo` + Equipo | Sáb tarde - Dom mañana | Validación de utilidad real, riesgos locales y pitch | Pendiente |
+| **P2 (Medio)** | Dirección visual de `/showcase`, animaciones con IA (cero cifras inventadas) y **prueba de gestos con cámara** bajo iluminación real (con respaldo por teclado) | Alexis (`@alexishal8`) | Sáb 18:00 y Dom 11:00 | Pista local (`/showcase`) y tomas del video | Pendiente |
+| **P2 (Medio)** | Grabar **video de respaldo** (Sábado 23:00) y **video final de 30 s** + redactar la **página del proyecto en inglés** (`/docs/project_page.md`, cero cifras `fixture`) | Alexis (`@alexishal8`) + `@Gicarrillo` | Sáb 23:00 / Dom 15:00 | Entrega global oficial (Dom 20:00 / 23:59) | Pendiente |
+| **P2 (Medio)** | Ejecutar **prueba manual con lector de pantalla** (NVDA/VoiceOver) y teclado sobre `/tool` | `@Gicarrillo` | Dom 11:00 | Requisito obligatorio de accesibilidad (§9 de `AGENTS.md`) | Pendiente |
+| **P2 (Medio)** | Preparar logística de demo local: laptop a corriente con GPU dedicada, pestañas precargadas y **red propia desde teléfono** por si falla el Wi-Fi de la sede | Equipo (4) | Dom 17:00 | Plan anti-fallos de demo en vivo (`PISTAS_PARALELAS.md`) | Pendiente |
 
 ---
 
@@ -25,19 +27,15 @@ Regla 11 de `AGENTS.md`: Todo lo que requiera intervención humana (cuentas, lla
 
 Cada paso dice qué hacer y qué desbloquea. Los agentes no los simulan.
 
-### H-01. Subir el repositorio a GitHub (Hanniel, antes de que el equipo clone)
+### H-01. Subir a `H0M10/MorrisTeamDfs`, invitar al equipo y activar GitHub Pages (`@H0M10`)
 
-El repositorio existe solo en la laptop (`git init` hecho, rama `main`, sin remoto).
+El remoto apunta a `https://github.com/H0M10/MorrisTeamDfs.git` con nuestro `README.md` completo (no ejecutar `echo "# MorrisTeamDfs" >> README.md`).
 
-1. Crea un repositorio **vacío** en GitHub (sin README ni licencia). Debe ser público para la entrega.
-2. En la raíz del proyecto:
-   ```bash
-   git remote add origin https://github.com/<usuario>/<repositorio>.git
-   git push -u origin main
-   ```
-3. Abre la pestaña **Actions** y confirma que `backend` termina en verde.
+1. Push de `main` a `origin` y abrir la pestaña **Actions** para confirmar que `backend`, `frontend` y `Deploy Team Command Center to GitHub Pages` terminen en verde.
+2. Invitar como colaboradores a `Checo-coder`, `Gicarrillo` y `alexishal8` en: `https://github.com/H0M10/MorrisTeamDfs/settings/access`.
+3. Activar GitHub Pages en `https://github.com/H0M10/MorrisTeamDfs/settings/pages`: en **Build and deployment → Source** elegir **GitHub Actions** (o branch `main`, carpeta `/docs`). El tablero queda en `https://h0m10.github.io/MorrisTeamDfs/`.
 
-Desbloquea: que los compañeros clonen y que corra la integración continua.
+Desbloquea: clonado por ramas (`pista/motor-api`, `pista/datos-modelos`, `pista/tool`, `pista/jueces-entrega`), CI y tablero visual compartido.
 
 ### H-02. Desplegar la API de ejemplo en Railway (Hanniel, compuerta del sábado 10:00)
 
@@ -54,7 +52,7 @@ Desbloquea: la compuerta "API de ejemplo desplegada" y `NEXT_PUBLIC_API_URL` par
 
 Archivo: `backend/app/engine/crop_traits.py`. La escribió un agente como supuesto. Decide si cada rotación pasa o no por maquinaria y comprador. Revisar: qué equipo pide cada cultivo, qué cultivos se venden, y si la cosecha de grano se supone contratada. Mientras no se revise, toda cifra que dependa de ella es `assumed`.
 
-### H-04. Transcribir y verificar la tabla Kc de FAO-56 (Persona 2 o Hanniel)
+### H-04. Transcribir y verificar la tabla Kc de FAO-56 (`@Checo-coder` o `@H0M10`)
 
 El respaldo del modelo 1 es la "tabla FAO-56, declarada". Hay que copiar de la publicación (FAO Irrigation and Drainage Paper 56, tabla 12) los coeficientes inicial, medio y final de: alfalfa, cebada, avena, trigo de invierno, maíz, sorgo y frijol, con la página consultada y la fecha. Un agente no debe escribirlos de memoria.
 
@@ -64,7 +62,7 @@ Desbloquea: cifras de agua reales cuando el modelo 1 no esté entrenado.
 
 Resuelto en `contracts/CHANGELOG.md` v0.1.1: `diamond_valley.json` amplía `planting_window` a octubre (`3..10`) para cubrir la siembra otoñal de trigo de invierno, `no_viable_options.json` corrige `current.constraint_evaluation.calendar_ok` a `true` (alfalfa ya establecida; sigue descartada por agua y maquinaria), y `KNOWN_FIXTURE_DIVERGENCES` en `backend/tests/test_constraints.py` quedó vacío.
 
-### H-06. Crear el proyecto de Supabase y aplicar la migración (Hanniel, sábado 09:30)
+### H-06. Crear el proyecto de Supabase y aplicar la migración (`@H0M10`, sábado)
 
 1. En supabase.com: **New project**. Región cercana (us-west o us-east). Guarda la contraseña de la base en tu gestor, no en el repositorio.
 2. **SQL Editor → New query**: pega completo `supabase/migrations/20261114000000_init.sql` y pulsa **Run**. Debe terminar sin errores.
@@ -87,29 +85,28 @@ Resuelto en `contracts/CHANGELOG.md` v0.1.1: `diamond_valley.json` amplía `plan
    - `frontend/.env.local` y variables de Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
 7. Comprueba: `GET /health` de la API debe decir `"supabase_configured": true`, y `POST /api/v1/share` con un fixture debe devolver un token.
 
-Desbloquea: enlaces compartibles (A-04), revisión del técnico (T-04) y el teléfono como control (L-05). Realtime Broadcast viene activo por omisión; no requiere tabla.
+Desbloquea: enlaces compartibles (A-04) y revisión del técnico (T-04). (Extra #5 `/remote` quedó recortado preventivamente por equipo de 4).
 
-### H-07. Desplegar el frontend en Vercel (Hanniel o Persona 4, sábado en la mañana)
+### H-07. Desplegar el frontend en Vercel (`@H0M10` o `@Gicarrillo`, sábado)
 
-1. En vercel.com: **Add New → Project**, importa el repositorio.
+1. En vercel.com: **Add New → Project**, importa el repositorio `H0M10/MorrisTeamDfs`.
 2. **Root Directory** = `frontend`. El marco (Next.js) se detecta solo.
 3. **Environment Variables**: `NEXT_PUBLIC_API_URL` = dominio de Railway (H-02), y cuando existan, `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` (H-06).
 4. Despliega. Abre `/tool/retrato`: debe verse la tira y la etiqueta "Datos de ejemplo" **sin** el aviso de "No hay conexión con el servidor". Si aparece ese aviso, revisa `NEXT_PUBLIC_API_URL` y que `CORS_ORIGINS` en Railway incluya el dominio de producción (las vistas previas `*.vercel.app` ya están permitidas).
 
-### H-08. Decisiones visuales y pruebas con cámara de `/showcase` (Persona 5)
+### H-08. Decisiones visuales, animaciones IA y pruebas con cámara de `/showcase` (`@alexishal8`)
 
-El agente dejó un lienzo de prueba y un botón que solo pide permiso de cámara. Falta que una persona decida, mirando la pantalla:
+El agente dejó un lienzo de prueba y un botón que solo pide permiso de cámara. Falta que `@alexishal8` decida, mirando la pantalla (recordando que Extras #4 cultivo/lluvia IMERG y #5 `/remote` QR quedaron recortados):
 
 - **Dirección visual de la landing:** paleta oscura exacta, tipografía de títulos, cuánto texto lleva y la frase de apertura (la misma del pitch y el video).
-- **Globo:** textura (por ejemplo Blue Marble de la NASA, que hay que descargar), nivel de detalle, qué satélites y órbitas se dibujan y con qué datos.
-- **Terreno 3D:** exageración vertical de SRTM, cómo se representa el cultivo creciendo, cámara inicial y ritmo de las animaciones.
-- **Lluvia en partículas:** cantidad y estilo; solo con datos reales.
-- **Gestos:** umbral del pellizco, sensibilidad del giro, mano izquierda o derecha, y qué se ve en pantalla cuando la cámara está encendida.
+- **Globo (Extra #2):** textura (por ejemplo Blue Marble de la NASA), nivel de detalle, órbitas y transición a Diamond Valley / Querétaro.
+- **Animaciones con IA y Video 30 s:** generar clips cortos de transición satelital / explicación visual sin superponer cifras inventadas ni usar datos `fixture`. Respetar `prefers-reduced-motion`.
+- **Gestos (Extra #1):** umbral del pellizco, sensibilidad del giro, mano izquierda o derecha, y qué se ve en pantalla cuando la cámara está encendida.
 - **Descargar el modelo de manos:** `hand_landmarker.task` y los archivos WASM de `@mediapipe/tasks-vision` (están en `frontend/node_modules/@mediapipe/tasks-vision/wasm/`) deben copiarse a `frontend/public/mediapipe/`. El modelo se baja de la página de MediaPipe Hand Landmarker de Google. No está en el repositorio.
 - **Prueba con cámara real** en la laptop de la demo y con la luz de la sede. La prueba automática usa una cámara falsa: solo comprueba que el permiso se pide con el botón.
 - **Movimiento reducido:** revisar a ojo que nada gire ni se mueva con esa preferencia activa.
 
-### H-09. Decisiones visuales de `/tool` (Persona 4)
+### H-09. Decisiones visuales de `/tool` (`@Gicarrillo`)
 
 - Cómo se dibuja el calendario de las tres rotaciones y qué trama lleva cada `palette_token`.
 - La etiqueta "Datos de ejemplo": hoy es una banda color Paja con borde rayado. Confirmar o cambiar.
@@ -117,15 +114,15 @@ El agente dejó un lienzo de prueba y un botón que solo pide permiso de cámara
 - Redacción final en lenguaje llano, revisada por un agricultor o un agrónomo (ya anotado arriba).
 - Las unidades llegan del contrato en inglés (`mm/yr`, `days/yr`). Decidir si el contrato las trae traducidas o si la interfaz las traduce; hoy se muestran tal cual.
 
-### H-10. El puerto 8000 está ocupado en la laptop de Hanniel
+### H-10. El puerto 8000 está ocupado en la laptop de Hanniel (`@H0M10`)
 
 Un proceso del sistema llamado "Manager" escucha en el puerto 8000, así que la API no puede arrancar ahí (`error while attempting to bind`). El repositorio usa **8010** por omisión. Si alguien copió un `.env` viejo con 8000, que lo cambie.
 
-### H-11. Datos: cuentas, parcelas y exportaciones (Persona 1, sábado en la mañana)
+### H-11. Datos: cuentas, parcelas y exportaciones (`@Checo-coder`, sábado en Colab)
 
 Nada de esto corre en la laptop. Usa Colab.
 
-**Cuentas (cada quien la suya):**
+**Cuentas:**
 - **Earth Engine:** en code.earthengine.google.com/register crea o elige un proyecto de Google Cloud y regístralo para uso no comercial. El id del proyecto es lo que piden los guiones (`--project` o `EE_PROJECT`).
 - **Google Drive:** las exportaciones caen en la carpeta `fieldshift_exports` del Drive de quien las lanza.
 - **NASA POWER:** no pide cuenta ni llave.
@@ -154,15 +151,17 @@ Querétaro: los mismos pasos con `--unlabeled` en 1 y 2, cuando exista su políg
 
 **Lo que no se pudo comprobar sin la cuenta:** los identificadores de colección de `data-pipeline/config.py` y los nombres de banda (HLS, OpenET `et_ensemble_mad`, SMAP `sm_surface` y `sm_rootzone`, SoilGrids). El paso 1 los imprime. Si algo sale `NO ENCONTRADA`, corrige `config.py` y anótalo en `PLAN.md`.
 
-### H-12. Modelos: entrenamiento fuera de la laptop (Persona 2, tras H-11)
+### H-12. Modelos: entrenamiento fuera de la laptop (`@Checo-coder`, tras H-11)
+
+Orden estricto por tiempo (`Modelo 1 → Modelo 4 → Modelo 3 → Modelo 2` solo si sobra tiempo antes del Dom 08:00):
 
 ```bash
 pip install -r models/requirements.txt      # con PyTorch: unos 3 GB de disco
 
 python models/model_1_crop_water/train.py        --table <tabla>.parquet --test-valley diamond_valley_nv   # CPU, < 2 GB RAM
-python models/model_2_prior_crop_effect/train.py --table <tabla>.parquet --test-valley diamond_valley_nv   # CPU, < 1 GB RAM
 python models/model_4_moisture_cqr/train.py      --table <tabla>.parquet --test-valley diamond_valley_nv   # CPU, < 1 GB RAM
 python models/model_3_crop_history_gru/train.py  --table <tabla>.parquet --test-valley diamond_valley_nv   # PyTorch, unos 3 GB RAM; GPU opcional
+python models/model_2_prior_crop_effect/train.py --table <tabla>.parquet --test-valley diamond_valley_nv   # CPU, < 1 GB RAM (solo si sobra tiempo)
 ```
 
 - No piden ninguna cuenta ni token: solo la tabla de H-11 con al menos dos valles.

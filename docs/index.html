@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MorrisTeamDfs · Centro de Mando — Field Shift (The CSC)</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --surface-alt: #f8fafc;
+      --ink: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --blue: #1247b8;
+      --blue-bg: #e8effd;
+      --green: #2f7d32;
+      --green-bg: #eaf5eb;
+      --earth: #5a4632;
+      --earth-bg: #f5efe8;
+      --amber: #b45309;
+      --amber-bg: #fef3c7;
+      --red: #b91c1c;
+      --red-bg: #fee2e2;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.45;
+    }
+
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+    }
+
+    .topbar {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 14px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 4px solid var(--blue);
+    }
+
+    .topbar-title {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .topbar-title h1 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -0.01em;
+    }
+    .topbar-meta {
+      font-size: 13px;
+      color: #cbd5e1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .topbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .btn-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #1e293b;
+      color: #ffffff;
+      border: 1px solid #334155;
+      padding: 8px 13px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      min-height: 38px;
+    }
+    .btn-link:hover { background: #334155; text-decoration: none; }
+    .btn-link.primary { background: var(--blue); border-color: var(--blue); }
+    .btn-link.primary:hover { background: #0e3a97; }
+
+    .container {
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 20px 20px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .banner-cuts {
+      background: var(--red-bg);
+      border: 1px solid #fca5a5;
+      border-left: 5px solid var(--red);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 14px;
+    }
+    .banner-cuts strong { color: var(--red); }
+    .banner-cuts ul { margin: 6px 0 0; padding-left: 20px; }
+
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 22px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    }
+
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .section-head h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+    .section-sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 2px 0 0;
+    }
+
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .pill-btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      min-height: 38px;
+    }
+    .pill-btn:hover { background: var(--surface-alt); }
+    .pill-btn.active {
+      background: var(--ink);
+      color: #ffffff;
+      border-color: var(--ink);
+    }
+
+    .gates-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .gate-box {
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+      border-radius: 10px;
+      padding: 11px 12px;
+      font-size: 13px;
+    }
+    .gate-box.in_progress {
+      border-color: var(--blue);
+      background: var(--blue-bg);
+    }
+    .gate-box.done {
+      border-color: var(--green);
+      background: var(--green-bg);
+    }
+    .gate-id {
+      font-weight: 800;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .tag-blue { background: var(--blue-bg); color: var(--blue); }
+    .tag-green { background: var(--green-bg); color: var(--green); }
+    .tag-amber { background: var(--amber-bg); color: var(--amber); }
+    .tag-earth { background: var(--earth-bg); color: var(--earth); }
+    .tag-gray { background: #e2e8f0; color: #334155; }
+
+    /* Graph & Connections */
+    .flow-layout {
+      display: grid;
+      grid-template-columns: 1.05fr 1.25fr;
+      gap: 18px;
+      align-items: start;
+    }
+    .svg-wrap {
+      background: #0f172a;
+      color: #f8fafc;
+      border-radius: 12px;
+      padding: 14px;
+      overflow-x: auto;
+    }
+    .conn-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .conn-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 14px;
+      background: var(--surface-alt);
+      font-size: 13.5px;
+      transition: opacity 0.15s ease, border-color 0.15s ease;
+    }
+    .conn-item.dim { opacity: 0.35; }
+    .conn-item.highlight {
+      border-color: var(--blue);
+      background: #f0f5ff;
+    }
+    .conn-route {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    /* Member cards */
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .member-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 6px solid var(--blue);
+      border-radius: 12px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .member-card.hidden { display: none; }
+
+    .member-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .member-top h3 {
+      margin: 0;
+      font-size: 19px;
+    }
+    .member-handle {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .progress-bar-bg {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .doing-box {
+      background: var(--blue-bg);
+      border-left: 4px solid var(--blue);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+    }
+
+    .sub-block h4 {
+      margin: 0 0 6px;
+      font-size: 13.5px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .done-list {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 13px;
+      color: #334155;
+    }
+    .done-list li { margin-bottom: 4px; }
+
+    .todo-item {
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+      border-radius: 8px;
+      padding: 9px 11px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .todo-item:last-child { margin-bottom: 0; }
+    .todo-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 6px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    code {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      background: #e2e8f0;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .media-card {
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+      border-left: 5px solid var(--amber);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 13.5px;
+    }
+    .media-card h3 { margin: 0 0 6px; font-size: 16px; }
+
+    .human-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .human-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      background: var(--surface-alt);
+      font-size: 13px;
+    }
+    .human-card.completed {
+      border-color: #86efac;
+      background: var(--green-bg);
+    }
+    .human-card.in_progress {
+      border-color: #93c5fd;
+      background: var(--blue-bg);
+    }
+
+    .decisions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .decision-row {
+      border-left: 4px solid var(--earth);
+      background: var(--earth-bg);
+      padding: 9px 13px;
+      border-radius: 8px;
+      font-size: 13.5px;
+    }
+
+    .cmd-box {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 980px) {
+      .gates-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .flow-layout, .members-grid, .media-grid { grid-template-columns: 1fr; }
+      .human-grid { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-title">
+      <h1 id="projectTitle">Field Shift · Centro de Mando (The CSC)</h1>
+      <div class="topbar-meta">
+        <span id="phaseBadge">Cargando fase...</span>
+        <span id="updatedAt"></span>
+        <span>Repo: <code>H0M10/MorrisTeamDfs</code></span>
+      </div>
+    </div>
+    <nav class="topbar-actions" aria-label="Accesos rápidos del proyecto">
+      <a class="btn-link primary" href="kickoff_equipo_the_csc.html">Ver Diapositivas (8)</a>
+      <a class="btn-link" href="https://github.com/H0M10/MorrisTeamDfs" target="_blank" rel="noopener">GitHub Repo</a>
+      <a class="btn-link" href="https://github.com/H0M10/MorrisTeamDfs/settings/access" target="_blank" rel="noopener">Invitar Equipo</a>
+      <a class="btn-link" href="https://github.com/H0M10/MorrisTeamDfs/settings/pages" target="_blank" rel="noopener">Configurar Pages</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="banner-cuts" id="cutsBanner" role="note"></div>
+
+    <!-- COMPUERTAS -->
+    <section class="section-card" aria-labelledby="gatesHeading">
+      <div class="section-head">
+        <div>
+          <h2 id="gatesHeading">Compuertas Oficiales (<code>AGENTS.md</code> §11)</h2>
+          <p class="section-sub">Si una compuerta no se cumple a su hora, se recorta alcance; no se alarga la fase.</p>
+        </div>
+        <div class="filter-bar" role="group" aria-label="Filtrar vista por integrante">
+          <span style="font-size:13px;font-weight:700;color:var(--muted);">Filtrar integrante:</span>
+          <button class="pill-btn active" type="button" data-member="ALL">Todos (4)</button>
+          <button class="pill-btn" type="button" data-member="H0M10">@H0M10 (Hanniel)</button>
+          <button class="pill-btn" type="button" data-member="Checo-coder">@Checo-coder</button>
+          <button class="pill-btn" type="button" data-member="Gicarrillo">@Gicarrillo</button>
+          <button class="pill-btn" type="button" data-member="alexishal8">@alexishal8</button>
+        </div>
+      </div>
+      <div class="gates-grid" id="gatesGrid"></div>
+    </section>
+
+    <!-- MAPA DE CONEXIONES -->
+    <section class="section-card" aria-labelledby="flowHeading">
+      <div class="section-head">
+        <div>
+          <h2 id="flowHeading">Cómo se conecta nuestro trabajo en tiempo real</h2>
+          <p class="section-sub">Dupla Backend/Datos (<code>@H0M10</code> + <code>@Checo-coder</code>) alimenta sin inventar cifras a la Dupla Frontend/Visuales (<code>@Gicarrillo</code> + <code>@alexishal8</code>).</p>
+        </div>
+      </div>
+      <div class="flow-layout">
+        <div class="svg-wrap">
+          <svg viewBox="0 0 560 320" width="100%" role="img" aria-label="Diagrama de dependencias entre los 4 integrantes de MorrisTeamDfs">
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#93c5fd" />
+              </marker>
+            </defs>
+            <!-- Arrows -->
+            <line x1="190" y1="75" x2="290" y2="75" stroke="#86efac" stroke-width="2.5" marker-end="url(#arrow)" />
+            <line x1="380" y1="120" x2="140" y2="195" stroke="#93c5fd" stroke-width="2.5" marker-end="url(#arrow)" />
+            <line x1="130" y1="120" x2="395" y2="195" stroke="#fcd34d" stroke-width="2.5" marker-end="url(#arrow)" />
+            <line x1="415" y1="120" x2="415" y2="195" stroke="#93c5fd" stroke-width="2.5" marker-end="url(#arrow)" />
+            <line x1="205" y1="245" x2="295" y2="245" stroke="#fdba74" stroke-width="2.5" marker-end="url(#arrow)" />
+
+            <!-- Checo-coder -->
+            <g class="svg-node" data-node="Checo-coder" style="cursor:pointer">
+              <rect x="20" y="25" width="170" height="95" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="2" />
+              <text x="34" y="50" fill="#ffffff" font-size="14" font-weight="700">@Checo-coder</text>
+              <text x="34" y="70" fill="#bbf7d0" font-size="11.5">pista/datos-modelos</text>
+              <text x="34" y="90" fill="#dcfce7" font-size="11">GEE / Colab -> .parquet</text>
+              <text x="34" y="106" fill="#dcfce7" font-size="11">Modelos 1 -> 4 -> 3 -> 2</text>
+            </g>
+
+            <!-- H0M10 -->
+            <g class="svg-node" data-node="H0M10" style="cursor:pointer">
+              <rect x="295" y="25" width="240" height="95" rx="10" fill="#1e3a8a" stroke="#60a5fa" stroke-width="2" />
+              <text x="310" y="50" fill="#ffffff" font-size="14" font-weight="700">@H0M10 (Hanniel)</text>
+              <text x="310" y="70" fill="#bfdbfe" font-size="11.5">pista/motor-api</text>
+              <text x="310" y="90" fill="#dbeafe" font-size="11">Contrato v0.1.1 + table_to_contract</text>
+              <text x="310" y="106" fill="#dbeafe" font-size="11">FastAPI Railway + Supabase RLS</text>
+            </g>
+
+            <!-- Gicarrillo -->
+            <g class="svg-node" data-node="Gicarrillo" style="cursor:pointer">
+              <rect x="20" y="200" width="185" height="95" rx="10" fill="#422006" stroke="#eab308" stroke-width="2" />
+              <text x="34" y="225" fill="#ffffff" font-size="14" font-weight="700">@Gicarrillo</text>
+              <text x="34" y="245" fill="#fef08a" font-size="11.5">pista/tool (Global)</text>
+              <text x="34" y="265" fill="#fef9c3" font-size="11">6 pantallas + Tira HLS 36m</text>
+              <text x="34" y="281" fill="#fef9c3" font-size="11">MapLibre + Voz + Axe AA</text>
+            </g>
+
+            <!-- alexishal8 -->
+            <g class="svg-node" data-node="alexishal8" style="cursor:pointer">
+              <rect x="295" y="200" width="240" height="95" rx="10" fill="#7c2d12" stroke="#fb923c" stroke-width="2" />
+              <text x="310" y="225" fill="#ffffff" font-size="14" font-weight="700">@alexishal8 (Alexis)</text>
+              <text x="310" y="245" fill="#fed7aa" font-size="11.5">pista/jueces-entrega</text>
+              <text x="310" y="265" fill="#ffedd5" font-size="11">/showcase (Gestos+Globo) + /engineer</text>
+              <text x="310" y="281" fill="#ffedd5" font-size="11">Animaciones IA + Video 30s + EN</text>
+            </g>
+          </svg>
+          <p style="margin:8px 0 0;font-size:12px;color:#94a3b8;">Tip: haz clic en un recuadro del diagrama o usa los filtros de arriba para ver sus dependencias exactas.</p>
+        </div>
+        <div class="conn-list" id="connectionsList"></div>
+      </div>
+    </section>
+
+    <!-- TARJETAS POR INTEGRANTE -->
+    <section class="section-card" aria-labelledby="membersHeading">
+      <div class="section-head">
+        <div>
+          <h2 id="membersHeading">Estado por Integrante: Qué estamos haciendo vs Qué falta</h2>
+          <p class="section-sub">Cada integrante trabaja en su propia rama para evitar conflictos de merge.</p>
+        </div>
+      </div>
+      <div class="members-grid" id="membersGrid"></div>
+    </section>
+
+    <!-- ESTUDIO CREATIVO FRONTEND (Gicarrillo + alexishal8) -->
+    <section class="section-card" aria-labelledby="mediaHeading">
+      <div class="section-head">
+        <div>
+          <h2 id="mediaHeading">Estudio Visual &amp; Animaciones IA (<code>@Gicarrillo</code> + <code>@alexishal8</code>)</h2>
+          <p class="section-sub">Piezas multimedia solicitadas para el video de 30 s, <code>/showcase</code> y soporte visual accesible en <code>/tool</code>.</p>
+        </div>
+      </div>
+      <div class="media-grid" id="mediaBriefGrid"></div>
+    </section>
+
+    <!-- HUMANO.MD EVOLUTIVO + BITACORA DE DECISIONES -->
+    <section class="section-card" aria-labelledby="humanHeading">
+      <div class="section-head">
+        <div>
+          <h2 id="humanHeading">Tablero Evolutivo de <code>HUMANO.md</code> y Decisiones (<code>@H0M10</code> + <code>@Checo-coder</code>)</h2>
+          <p class="section-sub">Evoluciona conforme aprobamos cuentas, polígonos, Kc de FAO-56, despliegues y cortes de modelos.</p>
+        </div>
+        <div class="filter-bar" role="group" aria-label="Filtrar estado de tareas humanas">
+          <button class="pill-btn active" type="button" data-human-filter="ALL">Todos</button>
+          <button class="pill-btn" type="button" data-human-filter="Pendiente">Pendientes</button>
+          <button class="pill-btn" type="button" data-human-filter="En curso">En curso</button>
+          <button class="pill-btn" type="button" data-human-filter="Completado">Completados</button>
+        </div>
+      </div>
+      <div class="human-grid" id="humanGrid"></div>
+
+      <h3 style="margin:20px 0 6px;font-size:16px;">Bitácora Cronológica de Decisiones del Equipo</h3>
+      <div class="decisions-list" id="decisionsList"></div>
+    </section>
+
+    <!-- FLUJO PARA CLAUDE Y ARGON -->
+    <section class="section-card" aria-labelledby="syncHeading">
+      <div class="section-head">
+        <div>
+          <h2 id="syncHeading">Cómo ARGON y Claude actualizan este tablero en cada rama</h2>
+          <p class="section-sub">Cada agente que cierre una tarea actualiza <code>docs/status.json</code> y sincroniza <code>docs/index.html</code> antes del push.</p>
+        </div>
+      </div>
+      <pre class="cmd-box"># 1. Clonar e ir a tu rama exclusiva
+git clone https://github.com/H0M10/MorrisTeamDfs.git
+cd MorrisTeamDfs
+git checkout -b pista/&lt;tu-pista&gt;
+
+# 2. Cuando un agente o integrante cambie una tarea/decisión:
+#    edita docs/status.json y sincroniza docs/index.html:
+python scripts/sync_board.py
+python scripts/sync_board.py --check
+
+# 3. Al hacer merge a main, GitHub Actions (.github/workflows/pages.yml) publica /docs en Pages.</pre>
+    </section>
+  </main>
+
+<!-- BOARD_STATUS_START -->
+<script id="board-data" type="application/json">
+{
+  "project": "Field Shift",
+  "team": "The CSC",
+  "event": "NASA Space Apps Challenge 2026",
+  "updated_at": "2026-11-14T09:50:00-06:00",
+  "phase": "Ejecución Sábado Mañana — Conexión Repo, Datos Reales y Frontend",
+  "repo_url": "https://github.com/H0M10/MorrisTeamDfs",
+  "git_remote": "https://github.com/H0M10/MorrisTeamDfs.git",
+  "pages_url": "https://h0m10.github.io/MorrisTeamDfs/",
+  "scope_cuts": [
+    "Extra #5 (/remote control por teléfono QR + Broadcast) recortado preventivamente por equipo de 4 (AGENTS.md §8).",
+    "Extra #4 (terreno 3D complejo con crecimiento de cultivo y partículas IMERG) recortado preventivamente por equipo de 4."
+  ],
+  "gates": [
+    {
+      "id": "G1",
+      "when": "Sábado 10:00",
+      "goal": "Contrato congelado v0.1.1; API fixture desplegada en Railway; repo público con 4 ramas",
+      "owners": [
+        "H0M10"
+      ],
+      "status": "in_progress"
+    },
+    {
+      "id": "G2",
+      "when": "Sábado 14:00",
+      "goal": "Un dato real en pantalla: tabla GEE/POWER -> table_to_contract.py -> /tool",
+      "owners": [
+        "H0M10",
+        "Checo-coder",
+        "Gicarrillo"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "G3",
+      "when": "Sábado 19:00",
+      "goal": "Tres rotaciones reales comparables (Diamond Valley + Querétaro) + Extra #1 Gestos",
+      "owners": [
+        "H0M10",
+        "Checo-coder",
+        "alexishal8"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "G4",
+      "when": "Domingo 08:00",
+      "goal": "Corte de modelos: entra solo lo que tenga métrica por valle; el resto usa respaldo declarado",
+      "owners": [
+        "Checo-coder",
+        "H0M10"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "G5",
+      "when": "Domingo 12:00",
+      "goal": "Freeze de funciones: accesibilidad AA (/tool), /engineer, globo/gestos y animaciones listos",
+      "owners": [
+        "Gicarrillo",
+        "alexishal8",
+        "H0M10",
+        "Checo-coder"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "G6",
+      "when": "Domingo 20:00",
+      "goal": "Entregado: página en inglés, video de 30 s, repo público limpio y AI_USAGE.md (límite 23:59)",
+      "owners": [
+        "alexishal8",
+        "H0M10",
+        "Checo-coder",
+        "Gicarrillo"
+      ],
+      "status": "pending"
+    }
+  ],
+  "members": [
+    {
+      "id": "H0M10",
+      "name": "Hanniel",
+      "github": "H0M10",
+      "pair": "Dupla Backend, Datos y Modelos",
+      "branch": "pista/motor-api",
+      "folders": [
+        "/contracts",
+        "/backend",
+        "/supabase",
+        "/frontend/src/lib"
+      ],
+      "role": "Líder Técnico · Contrato, Motor FAO-56, API FastAPI e Infraestructura",
+      "color": "#1247B8",
+      "progress_pct": 55,
+      "doing_now": "Subiendo main a GitHub, invitando a Checo-coder/Gicarrillo/alexishal8, activando GitHub Pages y preparando despliegues Railway + Supabase (H-02, H-06).",
+      "done": [
+        "Estructura completa del repo y sincronización AGENTS.md == CLAUDE.md.",
+        "Contrato JSON v0.1.1 y 3 fixtures de 36 meses (diamond_valley, queretaro, no_viable_options) verificados.",
+        "Backend FastAPI (motor FAO-56, índices HLS sin NDRE/CAI, restricciones primero y /ask determinista).",
+        "Migración SQL de Supabase (evaluations, reviews, RLS y 4 RPCs por token sin PII).",
+        "Confirmación oficial del organizador (evaluación solo el domingo)."
+      ],
+      "todo": [
+        {
+          "id": "H-01 / Pages",
+          "gate": "G1",
+          "title": "Invitar colaboradores en GitHub y activar GitHub Pages (/docs)",
+          "detail": "Confirmar Actions en verde para backend, frontend y pages.",
+          "connects_to": [
+            "Checo-coder",
+            "Gicarrillo",
+            "alexishal8"
+          ]
+        },
+        {
+          "id": "H-02 / H-06",
+          "gate": "G1",
+          "title": "Desplegar API en Railway (DATA_MODE=fixture) y crear proyecto Supabase",
+          "detail": "Aplicar 20261114000000_init.sql, verificar 4 RPCs y usar puerto local 8010 en tu laptop.",
+          "connects_to": [
+            "Gicarrillo",
+            "alexishal8"
+          ]
+        },
+        {
+          "id": "Orden #2 / H-07",
+          "gate": "G2",
+          "title": "Construir backend/app/services/table_to_contract.py y corregir S-01",
+          "detail": "Convertir Parquet de Checo-coder a JSON real (awc_mm_m y organic_matter_pct Van Bemmelen), marcar Modelo 3 experimental en unlabeled y desplegar Vercel.",
+          "connects_to": [
+            "Checo-coder",
+            "Gicarrillo"
+          ]
+        },
+        {
+          "id": "A-06 / A-07",
+          "gate": "G3-G4",
+          "title": "Servir 3 rotaciones reales y cargar artefactos validados en corte Dom 08:00",
+          "detail": "Activar respaldos explícitos donde falte métrica verificada por valle.",
+          "connects_to": [
+            "Checo-coder",
+            "Gicarrillo",
+            "alexishal8"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Checo-coder",
+      "name": "Checo",
+      "github": "Checo-coder",
+      "pair": "Dupla Backend, Datos y Modelos",
+      "branch": "pista/datos-modelos",
+      "folders": [
+        "/data-pipeline",
+        "/models",
+        "/backend (apoyo)"
+      ],
+      "role": "Datos Satelitales GEE/Colab, Modelos ML (1→4→3→2) y Apoyo Backend",
+      "color": "#2F7D32",
+      "progress_pct": 30,
+      "doing_now": "Clonando el repo en rama pista/datos-modelos, configurando Earth Engine / Colab (H-11) y transcribiendo tabla FAO-56 en models/kc_monthly.csv (H-04).",
+      "done": [
+        "Guiones base en /data-pipeline (ee_coverage.py, ee_export.py, build_table.py, notebook Colab).",
+        "Guiones de entrenamiento en /models (XGBoost 1/2/4, GRU->ONNX 3, partición por valle y último año fuera).",
+        "Plantillas CARD.md y salvaguarda contra métricas sintéticas (--sample)."
+      ],
+      "todo": [
+        {
+          "id": "H-04",
+          "gate": "G1",
+          "title": "Llenar models/kc_monthly.csv con Tabla 12 de FAO-56 + cita",
+          "detail": "Kc inicial/medio/final para alfalfa, cebada, avena, trigo de invierno, maíz, sorgo y frijol.",
+          "connects_to": [
+            "H0M10"
+          ]
+        },
+        {
+          "id": "D-01 / H-11",
+          "gate": "G2",
+          "title": "Validar catálogo GEE y definir pivotes reales (NV, ID, UT + Querétaro)",
+          "detail": "Dibujar ~25-30 pivotes/valle en geojson.io (Diamond Valley + 2-3 zonas vecinas) y fijar polígono de Querétaro.",
+          "connects_to": [
+            "H0M10"
+          ]
+        },
+        {
+          "id": "D-03 / D-05",
+          "gate": "G2-G3",
+          "title": "Correr ee_export.py + build_table.py en Colab -> tablas .parquet",
+          "detail": "Entregar tablas compactas (sin bajar rasters crudos a laptops de 8 GB) para alimentar Orden #2.",
+          "connects_to": [
+            "H0M10",
+            "Gicarrillo"
+          ]
+        },
+        {
+          "id": "H-12 / G4",
+          "gate": "G4",
+          "title": "Entrenar modelos en orden estricto 1 -> 4 -> 3 -> 2 y llenar CARD.md",
+          "detail": "Prioridad: Modelo 1 (ET), Modelo 4 (CQR 90% SMAP), Modelo 3 (GRU->ONNX), Modelo 2 solo si sobra tiempo.",
+          "connects_to": [
+            "H0M10",
+            "alexishal8"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Gicarrillo",
+      "name": "Gicarrillo",
+      "github": "Gicarrillo",
+      "pair": "Dupla Frontend, Visuales y Accesibilidad",
+      "branch": "pista/tool",
+      "folders": [
+        "/frontend/src/app/tool",
+        "/frontend/tests"
+      ],
+      "role": "La Herramienta del Agricultor (/tool), Accesibilidad AA y Micro-visuales",
+      "color": "#5A4632",
+      "progress_pct": 40,
+      "doing_now": "Clonando pista/tool, revisando Orden #3 en PLAN.md y validando decisiones visuales de H-09 (paleta Cal/Tinta/Azul/Paja/Tierra/Hoja, base >=18px).",
+      "done": [
+        "Esqueleto Next.js 16 de 6 pantallas en /tool (/retrato, /restricciones, /rotaciones, /evidencia, /compartir).",
+        "Paleta oficial, Atkinson Hyperlegible Next (>=18 px), objetivos >=44 px y tabla accesible en ParcelStrip.tsx.",
+        "Base de pruebas Playwright + axe en verde."
+      ],
+      "todo": [
+        {
+          "id": "Orden #3 / A11Y-01",
+          "gate": "G2",
+          "title": "Conectar simulación y controles reales en /restricciones y /rotaciones",
+          "detail": "Sustituir <Pending>: estado compartido de /api/v1/simulate, sliders/checkboxes y calendario 36m con tramas además de color.",
+          "connects_to": [
+            "H0M10"
+          ]
+        },
+        {
+          "id": "A11Y-02 / H-09",
+          "gate": "G2-G3",
+          "title": "Mapa MapLibre mostrando escalas reales por fuente (30 m, 250 m, 9 km, 50 km)",
+          "detail": "Configurar fuente de teselas con atribución, confirmar banner 'Datos de ejemplo' y revisar unidades en español.",
+          "connects_to": [
+            "H0M10",
+            "Checo-coder"
+          ]
+        },
+        {
+          "id": "A11Y-03 / A11Y-04",
+          "gate": "G3-G5",
+          "title": "Evidencia completa + Voz (Web Speech API) + Hoja compartible y revisión técnico",
+          "detail": "Integrar /api/v1/ask por voz y texto, impresión PDF y POST /api/v1/share con degradación elegante si Supabase falla.",
+          "connects_to": [
+            "H0M10"
+          ]
+        },
+        {
+          "id": "T-05 / IA UI",
+          "gate": "G5",
+          "title": "Micro-ilustraciones/transiciones respetando prefers-reduced-motion + Lector de pantalla",
+          "detail": "Validación con agrónomo (H-03/H-09), pruebas axe y recorrido manual con teclado y NVDA/VoiceOver el domingo.",
+          "connects_to": [
+            "alexishal8"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alexishal8",
+      "name": "Alexis",
+      "github": "alexishal8",
+      "pair": "Dupla Frontend, Visuales, Animaciones IA y Entrega",
+      "branch": "pista/jueces-entrega",
+      "folders": [
+        "/frontend/src/app/showcase",
+        "/frontend/src/app/engineer",
+        "/docs"
+      ],
+      "role": "Showcase, Modo Ingeniero, Animaciones IA, Video 30 s y Página en Inglés",
+      "color": "#B45309",
+      "progress_pct": 25,
+      "doing_now": "Clonando pista/jueces-entrega, descargando modelo MediaPipe Hand Landmarker (H-08) y diseñando clips/animaciones con IA para el video y showcase.",
+      "done": [
+        "Esqueletos crudos de /showcase (lienzo three diferido y botón de cámara), /engineer y /remote (congelado).",
+        "Base de presentación kickoff y tablero en /docs listos para desplegar en GitHub Pages."
+      ],
+      "todo": [
+        {
+          "id": "L-02 / H-08",
+          "gate": "G3",
+          "title": "Extra #1 Gestos con mano (@mediapipe/tasks-vision) + teclado completo",
+          "detail": "Copiar WASM y hand_landmarker.task a frontend/public/mediapipe/; cámara solo por botón y alternativa con flechas/teclado.",
+          "connects_to": [
+            "H0M10"
+          ]
+        },
+        {
+          "id": "Orden #4 / E-02",
+          "gate": "G4-G5",
+          "title": "Completar /engineer (métricas, CQR y Extra #3 Red en vivo si Modelo 3 entrenó)",
+          "detail": "Ocultar red en vivo automáticamente si model_3_crop_history_gru.status !== 'trained'.",
+          "connects_to": [
+            "Checo-coder",
+            "H0M10"
+          ]
+        },
+        {
+          "id": "L-03 + IA Clips",
+          "gate": "G5",
+          "title": "Extra #2 Zoom del globo a parcela + Animaciones generadas con IA",
+          "detail": "Generar loops cortos (satélite -> pivotes Diamond Valley, capas 50km->9km->30m) respetando prefers-reduced-motion y sin datos inventados.",
+          "connects_to": [
+            "Gicarrillo",
+            "Checo-coder"
+          ]
+        },
+        {
+          "id": "E-03..E-05",
+          "gate": "G5-G6",
+          "title": "Página del proyecto en inglés (/docs/project_page.md) y Video de 30 s (/docs/video_script.md)",
+          "detail": "Video de respaldo Sábado 23:00 y video final Domingo con datos reales (prohibido mostrar cifras fixture).",
+          "connects_to": [
+            "H0M10",
+            "Checo-coder",
+            "Gicarrillo"
+          ]
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "Checo-coder",
+      "from_label": "H-04 kc_monthly.csv + H-11 Tablas Parquet (GEE + POWER)",
+      "to": "H0M10",
+      "to_label": "Orden #2 table_to_contract.py (datos reales sin inventario)",
+      "gate": "G2 · Sáb 14:00",
+      "status": "pending"
+    },
+    {
+      "from": "H0M10",
+      "from_label": "API desplegada en Railway + RPCs Supabase + Contrato v0.1.1",
+      "to": "Gicarrillo",
+      "to_label": "Orden #3 /tool conectado a /simulate, /ask y /share",
+      "gate": "G1-G2 · Sáb 10:00–14:00",
+      "status": "in_progress"
+    },
+    {
+      "from": "Checo-coder",
+      "from_label": "H-12 Modelos 1, 4 y 3 (ONNX) con métricas por valle y CARD.md",
+      "to": "alexishal8",
+      "to_label": "Orden #4 /engineer + Extra #3 Red en vivo (solo si M3=trained)",
+      "gate": "G4 · Dom 08:00",
+      "status": "pending"
+    },
+    {
+      "from": "Gicarrillo",
+      "from_label": "Capturas reales de /tool (tira 36m, 3 rotaciones, caso inviable)",
+      "to": "alexishal8",
+      "to_label": "Video de 30 s y /docs/project_page.md (cero cifras fixture)",
+      "gate": "G5-G6 · Dom 12:00–20:00",
+      "status": "pending"
+    },
+    {
+      "from": "H0M10",
+      "from_label": "Métricas reales, restricciones e infraestructura lista",
+      "to": "alexishal8",
+      "to_label": "/showcase + video respaldo Sáb 23:00 + pitch",
+      "gate": "G3-G6",
+      "status": "pending"
+    }
+  ],
+  "frontend_media_brief": [
+    {
+      "owner": "alexishal8",
+      "asset": "Clip 1 (IA / Video): Zoom órbita → Diamond Valley (3–4 s)",
+      "goal": "Mostrar visualmente la escala satelital (NASA 50 km POWER → 9 km SMAP → 30 m Landsat/HLS) antes de pasar a la tira real de /tool.",
+      "rule": "Uso narrativo / transición; nunca superponer números ficticios ni reemplazar el mapa MapLibre real."
+    },
+    {
+      "owner": "alexishal8",
+      "asset": "Clip 2 (IA / Animación): Comparativa visual de cobertura del suelo (alfalfa vs grano + rastrojo vs barbecho)",
+      "goal": "Apoyar el guion de 30 s explicando qué ve el satélite en 36 meses sin leer bloques largos de texto.",
+      "rule": "Todas las cifras que se mencionen en voz o subtítulos deben salir de una evaluación real del backend (cero fixture)."
+    },
+    {
+      "owner": "Gicarrillo",
+      "asset": "Micro-visuales e iconografía con tramas para /tool",
+      "goal": "Iconos claros para agua disponible, comprador, maquinaria y calendario de 36 meses que acompañen color + patrón.",
+      "rule": "Paleta estricta (#FFFFFF, #000000, #1247B8, #E9B824, #5A4632, #2F7D32), texto >=18 px y cero animación automática con prefers-reduced-motion."
+    },
+    {
+      "owner": "alexishal8 + Gicarrillo",
+      "asset": "Video oficial de 30 segundos + Pitch en vivo",
+      "goal": "Grabación de respaldo el Sábado 23:00 y versión final el Domingo tras G5 mostrando /tool real + /showcase con gestos + /engineer.",
+      "rule": "Todo lo grabado para jueces globales va en inglés o español con subtítulos en inglés y cero cifras de ejemplo."
+    }
+  ],
+  "human_items": [
+    {
+      "id": "H-00-ORG",
+      "priority": "P0",
+      "owner": "H0M10",
+      "due": "Madrugada Sáb",
+      "title": "Confirmación por escrito del organizador (solo evaluación el domingo)",
+      "blocks": "Permiso oficial de construir todo el sábado",
+      "status": "Completado"
+    },
+    {
+      "id": "H-01",
+      "priority": "P0",
+      "owner": "H0M10",
+      "due": "Sáb 10:00",
+      "title": "Subir main a H0M10/MorrisTeamDfs, invitar al equipo y activar GitHub Pages",
+      "blocks": "Clonado de los 4 integrantes, CI y tablero vivo en Pages",
+      "status": "En curso"
+    },
+    {
+      "id": "H-02",
+      "priority": "P0",
+      "owner": "H0M10",
+      "due": "Sáb 10:00",
+      "title": "Desplegar API fixture en Railway (Root: backend, DATA_MODE=fixture)",
+      "blocks": "Compuerta G1 y pruebas integradas de frontend",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-06",
+      "priority": "P0",
+      "owner": "H0M10",
+      "due": "Sáb 10:30",
+      "title": "Crear proyecto Supabase, ejecutar migración SQL y guardar llaves en .env/Vercel/Railway",
+      "blocks": "Enlaces compartibles (/api/v1/share) y revisión de técnico",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-04",
+      "priority": "P0",
+      "owner": "Checo-coder",
+      "due": "Sáb 10:30",
+      "title": "Transcribir Tabla 12 FAO-56 en models/kc_monthly.csv con página y fecha",
+      "blocks": "Respaldo real del Modelo 1 y cálculo real de consumo por cultivo",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-11",
+      "priority": "P0",
+      "owner": "Checo-coder",
+      "due": "Sáb 11:00–13:30",
+      "title": "Cuentas Earth Engine no comercial, polígonos (NV/ID/UT + Querétaro) y corrida en Colab",
+      "blocks": "Tablas .parquet reales, G2 (un dato real) y entrenamiento de Modelos 1–4",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-05",
+      "priority": "P1",
+      "owner": "H0M10",
+      "due": "Madrugada Sáb",
+      "title": "Alineación de inconsistencias de fixtures v0.1.1 (Diamond Valley oct + calendar_ok)",
+      "blocks": "Consistencia contrato/fixtures y suite test_constraints.py",
+      "status": "Completado"
+    },
+    {
+      "id": "H-07",
+      "priority": "P1",
+      "owner": "H0M10",
+      "due": "Sáb 11:30",
+      "title": "Desplegar frontend en Vercel (Root: frontend, NEXT_PUBLIC_API_URL)",
+      "blocks": "Demo pública compartible para equipo y jueces",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-03 / H-09",
+      "priority": "P1",
+      "owner": "Checo-coder / Gicarrillo",
+      "due": "Sáb tarde",
+      "title": "Validar rasgos agronómicos (crop_traits.py), mapa base MapLibre y lenguaje llano con agrónomo",
+      "blocks": "Lenguaje realista en /tool y sustento de supuestos locales",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-08",
+      "priority": "P1",
+      "owner": "alexishal8",
+      "due": "Sáb tarde",
+      "title": "Bajar hand_landmarker.task + WASM a public/mediapipe/ y probar cámara con luz real",
+      "blocks": "Extra #1 Gestos funcionando sin errores en demo en vivo",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-10",
+      "priority": "P0",
+      "owner": "H0M10",
+      "due": "Continuo",
+      "title": "Usar puerto 8010 en laptop local de Hanniel (puerto 8000 ocupado por Manager)",
+      "blocks": "Arranque local de uvicorn sin error de puerto",
+      "status": "Activo (resuelto)"
+    },
+    {
+      "id": "H-12",
+      "priority": "P1",
+      "owner": "Checo-coder",
+      "due": "Dom 08:00",
+      "title": "Entrenamiento en Colab (1->4->3->2), llenado de CARD.md y subida de artefactos a backend",
+      "blocks": "Compuerta G4 (corte de modelos) y Extra #3 Red en vivo",
+      "status": "Pendiente"
+    }
+  ],
+  "decisions_log": [
+    {
+      "when": "2026-11-14 01:35",
+      "decision": "Contrato JSON v0.1.0 + separación estricta de pistas Global vs Local.",
+      "impact": "Ningún módulo inventa cifras; /tool nunca depende de Three.js ni MediaPipe."
+    },
+    {
+      "when": "2026-11-14 02:54",
+      "decision": "Actualización contrato a v0.1.1 (H-05 resuelto) y auditoría de Bloques 0–4.",
+      "impact": "Definidas Órdenes #2, #3 y #4 sin bloqueos externos."
+    },
+    {
+      "when": "2026-11-14 09:30",
+      "decision": "Pivote estratégico de 6 a 4 integrantes: recorte preventivo de Extras #4 y #5.",
+      "impact": "Se protegen /tool (Global), datos reales, Modelos 1/4/3, Gestos, Globo, /engineer y Video 30 s."
+    },
+    {
+      "when": "2026-11-14 09:50",
+      "decision": "Asignación nominal (@H0M10, @Checo-coder, @Gicarrillo, @alexishal8) y tablero evolutivo en GitHub Pages.",
+      "impact": "Cada commit/rama puede actualizar docs/status.json + scripts/sync_board.py para reflejar qué se está haciendo y qué decide HUMANO.md."
+    }
+  ]
+}
+</script>
+<!-- BOARD_STATUS_END -->
+
+  <script>
+    (function () {
+      let selectedMember = "ALL";
+      let humanFilter = "ALL";
+      let boardData = null;
+
+      function loadEmbeddedData() {
+        const el = document.getElementById("board-data");
+        if (!el) return null;
+        try {
+          return JSON.parse(el.textContent || "{}");
+        } catch (err) {
+          console.error("Error leyendo board-data embebido:", err);
+          return null;
+        }
+      }
+
+      function statusTagClass(status) {
+        const s = (status || "").toLowerCase();
+        if (s.includes("complet") || s === "done" || s.includes("resuelto")) return "tag-green";
+        if (s.includes("curso") || s === "in_progress" || s.includes("activo")) return "tag-blue";
+        return "tag-amber";
+      }
+
+      function statusLabel(status) {
+        if (status === "in_progress") return "En curso";
+        if (status === "done") return "Completado";
+        if (status === "pending") return "Pendiente";
+        return status;
+      }
+
+      function esc(str) {
+        return String(str ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function renderAll(data) {
+        if (!data || !data.members) return;
+        boardData = data;
+
+        document.getElementById("phaseBadge").innerHTML = `<span class="tag tag-blue">${esc(data.phase)}</span>`;
+        document.getElementById("updatedAt").textContent = `Actualizado: ${data.updated_at}`;
+
+        const cutsBanner = document.getElementById("cutsBanner");
+        if (Array.isArray(data.scope_cuts) && data.scope_cuts.length > 0) {
+          cutsBanner.innerHTML =
+            `<strong>Recortes preventivos activos (Equipo de 4 · AGENTS.md §8):</strong><ul>` +
+            data.scope_cuts.map((c) => `<li>${esc(c)}</li>`).join("") +
+            `</ul>`;
+        } else {
+          cutsBanner.style.display = "none";
+        }
+
+        // Gates
+        const gatesGrid = document.getElementById("gatesGrid");
+        gatesGrid.innerHTML = (data.gates || [])
+          .map((g) => {
+            const matchOwner = selectedMember === "ALL" || (g.owners || []).includes(selectedMember);
+            return `
+              <div class="gate-box ${esc(g.status)}" style="opacity:${matchOwner ? 1 : 0.4}">
+                <div class="gate-id">
+                  <span>${esc(g.id)} · ${esc(g.when)}</span>
+                  <span class="tag ${statusTagClass(g.status)}">${esc(statusLabel(g.status))}</span>
+                </div>
+                <div>${esc(g.goal)}</div>
+                <div style="margin-top:6px;font-size:11.5px;color:var(--muted);">
+                  ${(g.owners || []).map((o) => `<code>@${esc(o)}</code>`).join(" ")}
+                </div>
+              </div>`;
+          })
+          .join("");
+
+        // Connections
+        const connList = document.getElementById("connectionsList");
+        connList.innerHTML = (data.connections || [])
+          .map((c) => {
+            const match =
+              selectedMember === "ALL" || c.from === selectedMember || c.to === selectedMember;
+            const cls = selectedMember === "ALL" ? "" : match ? "highlight" : "dim";
+            return `
+              <div class="conn-item ${cls}">
+                <div class="conn-route">
+                  <code>@${esc(c.from)}</code>
+                  <span aria-hidden="true">→</span>
+                  <code>@${esc(c.to)}</code>
+                  <span class="tag ${statusTagClass(c.status)}">${esc(c.gate)}</span>
+                </div>
+                <div><strong>Entrega:</strong> ${esc(c.from_label)}</div>
+                <div><strong>Desbloquea:</strong> ${esc(c.to_label)}</div>
+              </div>`;
+          })
+          .join("");
+
+        // Members
+        const membersGrid = document.getElementById("membersGrid");
+        membersGrid.innerHTML = (data.members || [])
+          .map((m) => {
+            const visible = selectedMember === "ALL" || m.id === selectedMember;
+            return `
+              <article class="member-card ${visible ? "" : "hidden"}" style="border-top-color:${esc(m.color)}">
+                <div class="member-top">
+                  <div>
+                    <h3>${esc(m.name)} <span class="member-handle">@${esc(m.github)}</span></h3>
+                    <div style="font-size:13px;color:var(--muted);">${esc(m.role)}</div>
+                  </div>
+                  <span class="tag tag-gray">${esc(m.branch)}</span>
+                </div>
+
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:4px;">
+                    <span>${esc(m.pair)}</span>
+                    <span>${Number(m.progress_pct || 0)}% base lista</span>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width:${Number(m.progress_pct || 0)}%;background:${esc(m.color)}"></div>
+                  </div>
+                </div>
+
+                <div style="font-size:12.5px;">
+                  <strong>Carpetas:</strong> ${(m.folders || []).map((f) => `<code>${esc(f)}</code>`).join(" ")}
+                </div>
+
+                <div class="doing-box">
+                  <strong>En curso ahora:</strong> ${esc(m.doing_now)}
+                </div>
+
+                <div class="sub-block">
+                  <h4>Ya en el repo</h4>
+                  <ul class="done-list">
+                    ${(m.done || []).map((d) => `<li>${esc(d)}</li>`).join("")}
+                  </ul>
+                </div>
+
+                <div class="sub-block">
+                  <h4>Lo que falta por hacer</h4>
+                  ${(m.todo || [])
+                    .map(
+                      (t) => `
+                    <div class="todo-item">
+                      <div class="todo-head">
+                        <span>${esc(t.id)} · ${esc(t.title)}</span>
+                        <span class="tag tag-blue">${esc(t.gate)}</span>
+                      </div>
+                      <div style="color:#334155;">${esc(t.detail)}</div>
+                      <div style="margin-top:4px;font-size:11.5px;color:var(--muted);">
+                        Conecta con: ${(t.connects_to || []).map((x) => `<code>@${esc(x)}</code>`).join(" ")}
+                      </div>
+                    </div>`
+                    )
+                    .join("")}
+                </div>
+              </article>`;
+          })
+          .join("");
+
+        // Media brief
+        const mediaGrid = document.getElementById("mediaBriefGrid");
+        mediaGrid.innerHTML = (data.frontend_media_brief || [])
+          .filter(
+            (item) =>
+              selectedMember === "ALL" ||
+              item.owner.includes(selectedMember) ||
+              (selectedMember === "Gicarrillo" && item.owner.includes("Gicarrillo")) ||
+              (selectedMember === "alexishal8" && item.owner.includes("alexishal8"))
+          )
+          .map(
+            (item) => `
+            <div class="media-card">
+              <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:6px;">
+                <h3>${esc(item.asset)}</h3>
+                <span class="tag tag-amber">${esc(item.owner)}</span>
+              </div>
+              <p style="margin:0 0 6px;"><strong>Objetivo:</strong> ${esc(item.goal)}</p>
+              <p style="margin:0;color:var(--red);font-size:12.5px;"><strong>Regla científica:</strong> ${esc(item.rule)}</p>
+            </div>`
+          )
+          .join("");
+
+        // Human items
+        const humanGrid = document.getElementById("humanGrid");
+        humanGrid.innerHTML = (data.human_items || [])
+          .filter((h) => {
+            const matchM = selectedMember === "ALL" || h.owner.includes(selectedMember);
+            const st = (h.status || "").toLowerCase();
+            const matchS =
+              humanFilter === "ALL" ||
+              (humanFilter === "Completado" && (st.includes("complet") || st.includes("activo"))) ||
+              (humanFilter === "En curso" && st.includes("curso")) ||
+              (humanFilter === "Pendiente" && st.includes("pendiente"));
+            return matchM && matchS;
+          })
+          .map((h) => {
+            const st = (h.status || "").toLowerCase();
+            const boxCls = st.includes("complet") || st.includes("activo")
+              ? "completed"
+              : st.includes("curso")
+              ? "in_progress"
+              : "";
+            return `
+              <div class="human-card ${boxCls}">
+                <div style="display:flex;justify-content:space-between;gap:6px;align-items:center;margin-bottom:5px;">
+                  <strong>${esc(h.id)} (${esc(h.priority)})</strong>
+                  <span class="tag ${statusTagClass(h.status)}">${esc(h.status)}</span>
+                </div>
+                <div style="font-weight:700;margin-bottom:4px;">${esc(h.title)}</div>
+                <div style="font-size:12px;color:var(--muted);">
+                  <strong>Dueño:</strong> <code>${esc(h.owner)}</code> · <strong>Para:</strong> ${esc(h.due)}
+                </div>
+                <div style="font-size:12px;margin-top:4px;"><strong>Desbloquea:</strong> ${esc(h.blocks)}</div>
+              </div>`;
+          })
+          .join("");
+
+        // Decisions log
+        const decList = document.getElementById("decisionsList");
+        decList.innerHTML = (data.decisions_log || [])
+          .slice()
+          .reverse()
+          .map(
+            (d) => `
+            <div class="decision-row">
+              <strong>${esc(d.when)}</strong> — ${esc(d.decision)}
+              <div style="color:var(--muted);font-size:12.5px;margin-top:2px;">Impacto: ${esc(d.impact)}</div>
+            </div>`
+          )
+          .join("");
+      }
+
+      function bindControls() {
+        document.querySelectorAll("[data-member]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            selectedMember = btn.dataset.member;
+            document.querySelectorAll("[data-member]").forEach((b) =>
+              b.classList.toggle("active", b.dataset.member === selectedMember)
+            );
+            renderAll(boardData);
+          });
+        });
+
+        document.querySelectorAll(".svg-node").forEach((node) => {
+          node.addEventListener("click", () => {
+            const target = node.dataset.node;
+            selectedMember = selectedMember === target ? "ALL" : target;
+            document.querySelectorAll("[data-member]").forEach((b) =>
+              b.classList.toggle("active", b.dataset.member === selectedMember)
+            );
+            renderAll(boardData);
+          });
+        });
+
+        document.querySelectorAll("[data-human-filter]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            humanFilter = btn.dataset.humanFilter;
+            document.querySelectorAll("[data-human-filter]").forEach((b) =>
+              b.classList.toggle("active", b.dataset.humanFilter === humanFilter)
+            );
+            renderAll(boardData);
+          });
+        });
+      }
+
+      bindControls();
+      const embedded = loadEmbeddedData();
+      if (embedded && embedded.members) {
+        renderAll(embedded);
+      }
+
+      if (window.location.protocol.startsWith("http")) {
+        fetch("./status.json?ts=" + Date.now())
+          .then((r) => (r.ok ? r.json() : null))
+          .then((fresh) => {
+            if (fresh && fresh.members) renderAll(fresh);
+          })
+          .catch(() => {});
+      }
+    })();
+  </script>
+</body>
+</html>

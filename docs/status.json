@@ -1,0 +1,449 @@
+{
+  "project": "Field Shift",
+  "team": "The CSC",
+  "event": "NASA Space Apps Challenge 2026",
+  "updated_at": "2026-11-14T09:50:00-06:00",
+  "phase": "Ejecución Sábado Mañana — Conexión Repo, Datos Reales y Frontend",
+  "repo_url": "https://github.com/H0M10/MorrisTeamDfs",
+  "git_remote": "https://github.com/H0M10/MorrisTeamDfs.git",
+  "pages_url": "https://h0m10.github.io/MorrisTeamDfs/",
+  "scope_cuts": [
+    "Extra #5 (/remote control por teléfono QR + Broadcast) recortado preventivamente por equipo de 4 (AGENTS.md §8).",
+    "Extra #4 (terreno 3D complejo con crecimiento de cultivo y partículas IMERG) recortado preventivamente por equipo de 4."
+  ],
+  "gates": [
+    {
+      "id": "G1",
+      "when": "Sábado 10:00",
+      "goal": "Contrato congelado v0.1.1; API fixture desplegada en Railway; repo público con 4 ramas",
+      "owners": ["H0M10"],
+      "status": "in_progress"
+    },
+    {
+      "id": "G2",
+      "when": "Sábado 14:00",
+      "goal": "Un dato real en pantalla: tabla GEE/POWER -> table_to_contract.py -> /tool",
+      "owners": ["H0M10", "Checo-coder", "Gicarrillo"],
+      "status": "pending"
+    },
+    {
+      "id": "G3",
+      "when": "Sábado 19:00",
+      "goal": "Tres rotaciones reales comparables (Diamond Valley + Querétaro) + Extra #1 Gestos",
+      "owners": ["H0M10", "Checo-coder", "alexishal8"],
+      "status": "pending"
+    },
+    {
+      "id": "G4",
+      "when": "Domingo 08:00",
+      "goal": "Corte de modelos: entra solo lo que tenga métrica por valle; el resto usa respaldo declarado",
+      "owners": ["Checo-coder", "H0M10"],
+      "status": "pending"
+    },
+    {
+      "id": "G5",
+      "when": "Domingo 12:00",
+      "goal": "Freeze de funciones: accesibilidad AA (/tool), /engineer, globo/gestos y animaciones listos",
+      "owners": ["Gicarrillo", "alexishal8", "H0M10", "Checo-coder"],
+      "status": "pending"
+    },
+    {
+      "id": "G6",
+      "when": "Domingo 20:00",
+      "goal": "Entregado: página en inglés, video de 30 s, repo público limpio y AI_USAGE.md (límite 23:59)",
+      "owners": ["alexishal8", "H0M10", "Checo-coder", "Gicarrillo"],
+      "status": "pending"
+    }
+  ],
+  "members": [
+    {
+      "id": "H0M10",
+      "name": "Hanniel",
+      "github": "H0M10",
+      "pair": "Dupla Backend, Datos y Modelos",
+      "branch": "pista/motor-api",
+      "folders": ["/contracts", "/backend", "/supabase", "/frontend/src/lib"],
+      "role": "Líder Técnico · Contrato, Motor FAO-56, API FastAPI e Infraestructura",
+      "color": "#1247B8",
+      "progress_pct": 55,
+      "doing_now": "Subiendo main a GitHub, invitando a Checo-coder/Gicarrillo/alexishal8, activando GitHub Pages y preparando despliegues Railway + Supabase (H-02, H-06).",
+      "done": [
+        "Estructura completa del repo y sincronización AGENTS.md == CLAUDE.md.",
+        "Contrato JSON v0.1.1 y 3 fixtures de 36 meses (diamond_valley, queretaro, no_viable_options) verificados.",
+        "Backend FastAPI (motor FAO-56, índices HLS sin NDRE/CAI, restricciones primero y /ask determinista).",
+        "Migración SQL de Supabase (evaluations, reviews, RLS y 4 RPCs por token sin PII).",
+        "Confirmación oficial del organizador (evaluación solo el domingo)."
+      ],
+      "todo": [
+        {
+          "id": "H-01 / Pages",
+          "gate": "G1",
+          "title": "Invitar colaboradores en GitHub y activar GitHub Pages (/docs)",
+          "detail": "Confirmar Actions en verde para backend, frontend y pages.",
+          "connects_to": ["Checo-coder", "Gicarrillo", "alexishal8"]
+        },
+        {
+          "id": "H-02 / H-06",
+          "gate": "G1",
+          "title": "Desplegar API en Railway (DATA_MODE=fixture) y crear proyecto Supabase",
+          "detail": "Aplicar 20261114000000_init.sql, verificar 4 RPCs y usar puerto local 8010 en tu laptop.",
+          "connects_to": ["Gicarrillo", "alexishal8"]
+        },
+        {
+          "id": "Orden #2 / H-07",
+          "gate": "G2",
+          "title": "Construir backend/app/services/table_to_contract.py y corregir S-01",
+          "detail": "Convertir Parquet de Checo-coder a JSON real (awc_mm_m y organic_matter_pct Van Bemmelen), marcar Modelo 3 experimental en unlabeled y desplegar Vercel.",
+          "connects_to": ["Checo-coder", "Gicarrillo"]
+        },
+        {
+          "id": "A-06 / A-07",
+          "gate": "G3-G4",
+          "title": "Servir 3 rotaciones reales y cargar artefactos validados en corte Dom 08:00",
+          "detail": "Activar respaldos explícitos donde falte métrica verificada por valle.",
+          "connects_to": ["Checo-coder", "Gicarrillo", "alexishal8"]
+        }
+      ]
+    },
+    {
+      "id": "Checo-coder",
+      "name": "Checo",
+      "github": "Checo-coder",
+      "pair": "Dupla Backend, Datos y Modelos",
+      "branch": "pista/datos-modelos",
+      "folders": ["/data-pipeline", "/models", "/backend (apoyo)"],
+      "role": "Datos Satelitales GEE/Colab, Modelos ML (1→4→3→2) y Apoyo Backend",
+      "color": "#2F7D32",
+      "progress_pct": 30,
+      "doing_now": "Clonando el repo en rama pista/datos-modelos, configurando Earth Engine / Colab (H-11) y transcribiendo tabla FAO-56 en models/kc_monthly.csv (H-04).",
+      "done": [
+        "Guiones base en /data-pipeline (ee_coverage.py, ee_export.py, build_table.py, notebook Colab).",
+        "Guiones de entrenamiento en /models (XGBoost 1/2/4, GRU->ONNX 3, partición por valle y último año fuera).",
+        "Plantillas CARD.md y salvaguarda contra métricas sintéticas (--sample)."
+      ],
+      "todo": [
+        {
+          "id": "H-04",
+          "gate": "G1",
+          "title": "Llenar models/kc_monthly.csv con Tabla 12 de FAO-56 + cita",
+          "detail": "Kc inicial/medio/final para alfalfa, cebada, avena, trigo de invierno, maíz, sorgo y frijol.",
+          "connects_to": ["H0M10"]
+        },
+        {
+          "id": "D-01 / H-11",
+          "gate": "G2",
+          "title": "Validar catálogo GEE y definir pivotes reales (NV, ID, UT + Querétaro)",
+          "detail": "Dibujar ~25-30 pivotes/valle en geojson.io (Diamond Valley + 2-3 zonas vecinas) y fijar polígono de Querétaro.",
+          "connects_to": ["H0M10"]
+        },
+        {
+          "id": "D-03 / D-05",
+          "gate": "G2-G3",
+          "title": "Correr ee_export.py + build_table.py en Colab -> tablas .parquet",
+          "detail": "Entregar tablas compactas (sin bajar rasters crudos a laptops de 8 GB) para alimentar Orden #2.",
+          "connects_to": ["H0M10", "Gicarrillo"]
+        },
+        {
+          "id": "H-12 / G4",
+          "gate": "G4",
+          "title": "Entrenar modelos en orden estricto 1 -> 4 -> 3 -> 2 y llenar CARD.md",
+          "detail": "Prioridad: Modelo 1 (ET), Modelo 4 (CQR 90% SMAP), Modelo 3 (GRU->ONNX), Modelo 2 solo si sobra tiempo.",
+          "connects_to": ["H0M10", "alexishal8"]
+        }
+      ]
+    },
+    {
+      "id": "Gicarrillo",
+      "name": "Gicarrillo",
+      "github": "Gicarrillo",
+      "pair": "Dupla Frontend, Visuales y Accesibilidad",
+      "branch": "pista/tool",
+      "folders": ["/frontend/src/app/tool", "/frontend/tests"],
+      "role": "La Herramienta del Agricultor (/tool), Accesibilidad AA y Micro-visuales",
+      "color": "#5A4632",
+      "progress_pct": 40,
+      "doing_now": "Clonando pista/tool, revisando Orden #3 en PLAN.md y validando decisiones visuales de H-09 (paleta Cal/Tinta/Azul/Paja/Tierra/Hoja, base >=18px).",
+      "done": [
+        "Esqueleto Next.js 16 de 6 pantallas en /tool (/retrato, /restricciones, /rotaciones, /evidencia, /compartir).",
+        "Paleta oficial, Atkinson Hyperlegible Next (>=18 px), objetivos >=44 px y tabla accesible en ParcelStrip.tsx.",
+        "Base de pruebas Playwright + axe en verde."
+      ],
+      "todo": [
+        {
+          "id": "Orden #3 / A11Y-01",
+          "gate": "G2",
+          "title": "Conectar simulación y controles reales en /restricciones y /rotaciones",
+          "detail": "Sustituir <Pending>: estado compartido de /api/v1/simulate, sliders/checkboxes y calendario 36m con tramas además de color.",
+          "connects_to": ["H0M10"]
+        },
+        {
+          "id": "A11Y-02 / H-09",
+          "gate": "G2-G3",
+          "title": "Mapa MapLibre mostrando escalas reales por fuente (30 m, 250 m, 9 km, 50 km)",
+          "detail": "Configurar fuente de teselas con atribución, confirmar banner 'Datos de ejemplo' y revisar unidades en español.",
+          "connects_to": ["H0M10", "Checo-coder"]
+        },
+        {
+          "id": "A11Y-03 / A11Y-04",
+          "gate": "G3-G5",
+          "title": "Evidencia completa + Voz (Web Speech API) + Hoja compartible y revisión técnico",
+          "detail": "Integrar /api/v1/ask por voz y texto, impresión PDF y POST /api/v1/share con degradación elegante si Supabase falla.",
+          "connects_to": ["H0M10"]
+        },
+        {
+          "id": "T-05 / IA UI",
+          "gate": "G5",
+          "title": "Micro-ilustraciones/transiciones respetando prefers-reduced-motion + Lector de pantalla",
+          "detail": "Validación con agrónomo (H-03/H-09), pruebas axe y recorrido manual con teclado y NVDA/VoiceOver el domingo.",
+          "connects_to": ["alexishal8"]
+        }
+      ]
+    },
+    {
+      "id": "alexishal8",
+      "name": "Alexis",
+      "github": "alexishal8",
+      "pair": "Dupla Frontend, Visuales, Animaciones IA y Entrega",
+      "branch": "pista/jueces-entrega",
+      "folders": ["/frontend/src/app/showcase", "/frontend/src/app/engineer", "/docs"],
+      "role": "Showcase, Modo Ingeniero, Animaciones IA, Video 30 s y Página en Inglés",
+      "color": "#B45309",
+      "progress_pct": 25,
+      "doing_now": "Clonando pista/jueces-entrega, descargando modelo MediaPipe Hand Landmarker (H-08) y diseñando clips/animaciones con IA para el video y showcase.",
+      "done": [
+        "Esqueletos crudos de /showcase (lienzo three diferido y botón de cámara), /engineer y /remote (congelado).",
+        "Base de presentación kickoff y tablero en /docs listos para desplegar en GitHub Pages."
+      ],
+      "todo": [
+        {
+          "id": "L-02 / H-08",
+          "gate": "G3",
+          "title": "Extra #1 Gestos con mano (@mediapipe/tasks-vision) + teclado completo",
+          "detail": "Copiar WASM y hand_landmarker.task a frontend/public/mediapipe/; cámara solo por botón y alternativa con flechas/teclado.",
+          "connects_to": ["H0M10"]
+        },
+        {
+          "id": "Orden #4 / E-02",
+          "gate": "G4-G5",
+          "title": "Completar /engineer (métricas, CQR y Extra #3 Red en vivo si Modelo 3 entrenó)",
+          "detail": "Ocultar red en vivo automáticamente si model_3_crop_history_gru.status !== 'trained'.",
+          "connects_to": ["Checo-coder", "H0M10"]
+        },
+        {
+          "id": "L-03 + IA Clips",
+          "gate": "G5",
+          "title": "Extra #2 Zoom del globo a parcela + Animaciones generadas con IA",
+          "detail": "Generar loops cortos (satélite -> pivotes Diamond Valley, capas 50km->9km->30m) respetando prefers-reduced-motion y sin datos inventados.",
+          "connects_to": ["Gicarrillo", "Checo-coder"]
+        },
+        {
+          "id": "E-03..E-05",
+          "gate": "G5-G6",
+          "title": "Página del proyecto en inglés (/docs/project_page.md) y Video de 30 s (/docs/video_script.md)",
+          "detail": "Video de respaldo Sábado 23:00 y video final Domingo con datos reales (prohibido mostrar cifras fixture).",
+          "connects_to": ["H0M10", "Checo-coder", "Gicarrillo"]
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "Checo-coder",
+      "from_label": "H-04 kc_monthly.csv + H-11 Tablas Parquet (GEE + POWER)",
+      "to": "H0M10",
+      "to_label": "Orden #2 table_to_contract.py (datos reales sin inventario)",
+      "gate": "G2 · Sáb 14:00",
+      "status": "pending"
+    },
+    {
+      "from": "H0M10",
+      "from_label": "API desplegada en Railway + RPCs Supabase + Contrato v0.1.1",
+      "to": "Gicarrillo",
+      "to_label": "Orden #3 /tool conectado a /simulate, /ask y /share",
+      "gate": "G1-G2 · Sáb 10:00–14:00",
+      "status": "in_progress"
+    },
+    {
+      "from": "Checo-coder",
+      "from_label": "H-12 Modelos 1, 4 y 3 (ONNX) con métricas por valle y CARD.md",
+      "to": "alexishal8",
+      "to_label": "Orden #4 /engineer + Extra #3 Red en vivo (solo si M3=trained)",
+      "gate": "G4 · Dom 08:00",
+      "status": "pending"
+    },
+    {
+      "from": "Gicarrillo",
+      "from_label": "Capturas reales de /tool (tira 36m, 3 rotaciones, caso inviable)",
+      "to": "alexishal8",
+      "to_label": "Video de 30 s y /docs/project_page.md (cero cifras fixture)",
+      "gate": "G5-G6 · Dom 12:00–20:00",
+      "status": "pending"
+    },
+    {
+      "from": "H0M10",
+      "from_label": "Métricas reales, restricciones e infraestructura lista",
+      "to": "alexishal8",
+      "to_label": "/showcase + video respaldo Sáb 23:00 + pitch",
+      "gate": "G3-G6",
+      "status": "pending"
+    }
+  ],
+  "frontend_media_brief": [
+    {
+      "owner": "alexishal8",
+      "asset": "Clip 1 (IA / Video): Zoom órbita → Diamond Valley (3–4 s)",
+      "goal": "Mostrar visualmente la escala satelital (NASA 50 km POWER → 9 km SMAP → 30 m Landsat/HLS) antes de pasar a la tira real de /tool.",
+      "rule": "Uso narrativo / transición; nunca superponer números ficticios ni reemplazar el mapa MapLibre real."
+    },
+    {
+      "owner": "alexishal8",
+      "asset": "Clip 2 (IA / Animación): Comparativa visual de cobertura del suelo (alfalfa vs grano + rastrojo vs barbecho)",
+      "goal": "Apoyar el guion de 30 s explicando qué ve el satélite en 36 meses sin leer bloques largos de texto.",
+      "rule": "Todas las cifras que se mencionen en voz o subtítulos deben salir de una evaluación real del backend (cero fixture)."
+    },
+    {
+      "owner": "Gicarrillo",
+      "asset": "Micro-visuales e iconografía con tramas para /tool",
+      "goal": "Iconos claros para agua disponible, comprador, maquinaria y calendario de 36 meses que acompañen color + patrón.",
+      "rule": "Paleta estricta (#FFFFFF, #000000, #1247B8, #E9B824, #5A4632, #2F7D32), texto >=18 px y cero animación automática con prefers-reduced-motion."
+    },
+    {
+      "owner": "alexishal8 + Gicarrillo",
+      "asset": "Video oficial de 30 segundos + Pitch en vivo",
+      "goal": "Grabación de respaldo el Sábado 23:00 y versión final el Domingo tras G5 mostrando /tool real + /showcase con gestos + /engineer.",
+      "rule": "Todo lo grabado para jueces globales va en inglés o español con subtítulos en inglés y cero cifras de ejemplo."
+    }
+  ],
+  "human_items": [
+    {
+      "id": "H-00-ORG",
+      "priority": "P0",
+      "owner": "H0M10",
+      "due": "Madrugada Sáb",
+      "title": "Confirmación por escrito del organizador (solo evaluación el domingo)",
+      "blocks": "Permiso oficial de construir todo el sábado",
+      "status": "Completado"
+    },
+    {
+      "id": "H-01",
+      "priority": "P0",
+      "owner": "H0M10",
+      "due": "Sáb 10:00",
+      "title": "Subir main a H0M10/MorrisTeamDfs, invitar al equipo y activar GitHub Pages",
+      "blocks": "Clonado de los 4 integrantes, CI y tablero vivo en Pages",
+      "status": "En curso"
+    },
+    {
+      "id": "H-02",
+      "priority": "P0",
+      "owner": "H0M10",
+      "due": "Sáb 10:00",
+      "title": "Desplegar API fixture en Railway (Root: backend, DATA_MODE=fixture)",
+      "blocks": "Compuerta G1 y pruebas integradas de frontend",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-06",
+      "priority": "P0",
+      "owner": "H0M10",
+      "due": "Sáb 10:30",
+      "title": "Crear proyecto Supabase, ejecutar migración SQL y guardar llaves en .env/Vercel/Railway",
+      "blocks": "Enlaces compartibles (/api/v1/share) y revisión de técnico",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-04",
+      "priority": "P0",
+      "owner": "Checo-coder",
+      "due": "Sáb 10:30",
+      "title": "Transcribir Tabla 12 FAO-56 en models/kc_monthly.csv con página y fecha",
+      "blocks": "Respaldo real del Modelo 1 y cálculo real de consumo por cultivo",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-11",
+      "priority": "P0",
+      "owner": "Checo-coder",
+      "due": "Sáb 11:00–13:30",
+      "title": "Cuentas Earth Engine no comercial, polígonos (NV/ID/UT + Querétaro) y corrida en Colab",
+      "blocks": "Tablas .parquet reales, G2 (un dato real) y entrenamiento de Modelos 1–4",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-05",
+      "priority": "P1",
+      "owner": "H0M10",
+      "due": "Madrugada Sáb",
+      "title": "Alineación de inconsistencias de fixtures v0.1.1 (Diamond Valley oct + calendar_ok)",
+      "blocks": "Consistencia contrato/fixtures y suite test_constraints.py",
+      "status": "Completado"
+    },
+    {
+      "id": "H-07",
+      "priority": "P1",
+      "owner": "H0M10",
+      "due": "Sáb 11:30",
+      "title": "Desplegar frontend en Vercel (Root: frontend, NEXT_PUBLIC_API_URL)",
+      "blocks": "Demo pública compartible para equipo y jueces",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-03 / H-09",
+      "priority": "P1",
+      "owner": "Checo-coder / Gicarrillo",
+      "due": "Sáb tarde",
+      "title": "Validar rasgos agronómicos (crop_traits.py), mapa base MapLibre y lenguaje llano con agrónomo",
+      "blocks": "Lenguaje realista en /tool y sustento de supuestos locales",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-08",
+      "priority": "P1",
+      "owner": "alexishal8",
+      "due": "Sáb tarde",
+      "title": "Bajar hand_landmarker.task + WASM a public/mediapipe/ y probar cámara con luz real",
+      "blocks": "Extra #1 Gestos funcionando sin errores en demo en vivo",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-10",
+      "priority": "P0",
+      "owner": "H0M10",
+      "due": "Continuo",
+      "title": "Usar puerto 8010 en laptop local de Hanniel (puerto 8000 ocupado por Manager)",
+      "blocks": "Arranque local de uvicorn sin error de puerto",
+      "status": "Activo (resuelto)"
+    },
+    {
+      "id": "H-12",
+      "priority": "P1",
+      "owner": "Checo-coder",
+      "due": "Dom 08:00",
+      "title": "Entrenamiento en Colab (1->4->3->2), llenado de CARD.md y subida de artefactos a backend",
+      "blocks": "Compuerta G4 (corte de modelos) y Extra #3 Red en vivo",
+      "status": "Pendiente"
+    }
+  ],
+  "decisions_log": [
+    {
+      "when": "2026-11-14 01:35",
+      "decision": "Contrato JSON v0.1.0 + separación estricta de pistas Global vs Local.",
+      "impact": "Ningún módulo inventa cifras; /tool nunca depende de Three.js ni MediaPipe."
+    },
+    {
+      "when": "2026-11-14 02:54",
+      "decision": "Actualización contrato a v0.1.1 (H-05 resuelto) y auditoría de Bloques 0–4.",
+      "impact": "Definidas Órdenes #2, #3 y #4 sin bloqueos externos."
+    },
+    {
+      "when": "2026-11-14 09:30",
+      "decision": "Pivote estratégico de 6 a 4 integrantes: recorte preventivo de Extras #4 y #5.",
+      "impact": "Se protegen /tool (Global), datos reales, Modelos 1/4/3, Gestos, Globo, /engineer y Video 30 s."
+    },
+    {
+      "when": "2026-11-14 09:50",
+      "decision": "Asignación nominal (@H0M10, @Checo-coder, @Gicarrillo, @alexishal8) y tablero evolutivo en GitHub Pages.",
+      "impact": "Cada commit/rama puede actualizar docs/status.json + scripts/sync_board.py para reflejar qué se está haciendo y qué decide HUMANO.md."
+    }
+  ]
+}

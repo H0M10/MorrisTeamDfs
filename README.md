@@ -12,21 +12,29 @@ dónde viene, de cuándo es, a qué escala y si es observada, modelada o supuest
 > `contracts/fixtures/` con `data_status: "fixture"`. Ninguna de esas cifras es
 > real.
 
+## Centro de Mando Visual (GitHub Pages)
+
+El seguimiento en tiempo real de qué falta por hacer, qué está haciendo cada integrante, cómo se conectan backend/datos con frontend y qué decisiones requiere `HUMANO.md` vive en [docs/index.html](docs/index.html) (alimentado por [docs/status.json](docs/status.json)):
+
+- **Tablero en GitHub Pages:** `https://h0m10.github.io/MorrisTeamDfs/` (tras activar Pages en Settings).
+- **Presentación de arranque (8 diapositivas):** [docs/kickoff_equipo_the_csc.html](docs/kickoff_equipo_the_csc.html).
+- **Sincronizar tras editar `docs/status.json`:** `python scripts/sync_board.py` (y `python scripts/sync_board.py --check`).
+
 ## Antes de tocar nada
 
 Lee [AGENTS.md](AGENTS.md) (reglas), [PLAN.md](PLAN.md) (quién hace qué),
 [HUMANO.md](HUMANO.md) (lo que necesita a una persona) y
 [PISTAS_PARALELAS.md](PISTAS_PARALELAS.md). Cada carpeta tiene dueño.
 
-| Carpeta | Qué es | Dueño |
-| --- | --- | --- |
-| [contracts/](contracts/) | Esquema JSON, fixtures y bitácora de cambios | Hanniel |
-| [backend/](backend/) | API en FastAPI y motor físico | Hanniel |
-| [supabase/](supabase/) | Migraciones SQL | Hanniel |
-| [frontend/](frontend/) | Una sola app Next.js: `/tool`, `/showcase`, `/remote`, `/engineer` | Personas 4, 5 y 6 |
-| [data-pipeline/](data-pipeline/) | Guiones de Earth Engine (corren en Colab) | Persona 1 |
-| [models/](models/) | Entrenamiento y fichas de modelos (corren fuera de la laptop) | Persona 2 |
-| [docs/](docs/) | Página del proyecto y guion del video | Persona 6 |
+| Carpeta | Qué es | Dueño | Rama |
+| --- | --- | --- | --- |
+| [contracts/](contracts/) | Esquema JSON, fixtures y bitácora de cambios | Hanniel (`@H0M10`) | `pista/motor-api` |
+| [backend/](backend/) | API en FastAPI y motor físico | Hanniel (`@H0M10`) + apoyo `@Checo-coder` | `pista/motor-api` |
+| [supabase/](supabase/) | Migraciones SQL | Hanniel (`@H0M10`) | `pista/motor-api` |
+| [data-pipeline/](data-pipeline/) | Guiones de Earth Engine (corren en Colab) | Checo (`@Checo-coder`) | `pista/datos-modelos` |
+| [models/](models/) | Entrenamiento y fichas de modelos (corren fuera de la laptop) | Checo (`@Checo-coder`) | `pista/datos-modelos` |
+| [frontend/src/app/tool](frontend/src/app/tool/) | La herramienta del agricultor (`/tool`, Global) | `@Gicarrillo` | `pista/tool` |
+| [frontend/](frontend/) (`/showcase`, `/engineer`) + [docs/](docs/) | Gestos, globo, `/engineer`, animaciones IA, página en inglés y video 30 s (`/remote` congelado) | Alexis (`@alexishal8`) | `pista/jueces-entrega` |
 
 ## Arrancar en una laptop de 8 GB
 
