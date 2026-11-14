@@ -70,7 +70,7 @@ Acceso: **GEE** = Google Earth Engine (cuenta con proyecto registrado);
 | **SMAP** | Humedad superficial y de raíces (L4), cada 3 h | 9 km | GEE (`NASA/SMAP/SPL4SMGP/...`) | Por verificar | Contexto regional y etiqueta del modelo 4 |
 | **SRTM** | Elevación | 30 m | GEE (`USGS/SRTMGL1_003`) | Por verificar | Pendiente, presión para ET |
 | **CDL (CropScape)** | **Qué cultivo hubo cada año en cada píxel** | 30 m, EE. UU. | GEE (`USDA/NASS/CDL`) para polígonos; API GetCDLStat sin llave para condados | **Verificado hoy**: condado 32011, 2021–2024 | **Lista de cultivos y rotaciones observadas**; etiquetas de los modelos 1–3 |
-| **OpenET** | ET real por campo, mensual | 30 m, oeste de EE. UU. | GEE (colección del conjunto) o API con **llave** | **Verificado hoy**: la API sin llave responde 403 | Agua real por cultivo; etiqueta del modelo 1 |
+| **OpenET** | ET real por campo, mensual | 30 m, los 48 estados contiguos desde el 15 de diciembre de 2025 (antes 17 y luego 23 estados del oeste); la validación publicada en 2023 es del oeste | GEE (colección del conjunto) o API con **llave** | **Verificado hoy**: la API sin llave responde 403 | Agua real por cultivo; etiqueta del modelo 1 |
 | **SSURGO / STATSGO2** | Textura, materia orgánica, agua disponible, grupo hidrológico, capas limitantes | Polígono de suelo | API Soil Data Access, **sin llave** | **Verificado hoy**: el punto de Diamond Valley es "Hamacer loamy fine sand, 0 a 2 %" | Perfil de suelo real en EE. UU. (reemplaza la pedotransferencia) |
 
 ### Apoyo: suma valor sin bloquear nada
@@ -97,6 +97,28 @@ no sirven para cultivos anuales. Varios sí están en GEE (por ejemplo ERA5-Land
 mensual y NAIP), así que el motivo "es lento de descargar" no aplica a todos.
 Reabrir alguno es decisión de Hanniel.
 
+## 3b. Niveles por región: dónde hay mejores datos
+
+La cobertura de cada recurso ya decide cuánto puede decir la herramienta en
+cada lugar. No hace falta un análisis pesado para saberlo.
+
+| Nivel | Dónde | Qué hay | Qué puede decir la herramienta |
+| --- | --- | --- | --- |
+| **1** | Zonas de riego del oeste de EE. UU. (NV, ID, UT, CA, AZ, CO…) | Todo: los recursos globales más CDL, OpenET con validación publicada, SSURGO, NWIS, PRISM, QuickStats y AMS | Qué se siembra, qué rotaciones hicieron campos parecidos, agua real por cultivo, suelo medido. **Aquí se entrena y se mide** (`region_mode: labeled`) |
+| **2** | Resto de los 48 estados contiguos | Igual que el nivel 1, pero OpenET en el este es nuevo (desde dic. 2025) y sin la validación de 2023 | Casi lo mismo; la cifra de agua debe decir que OpenET no está validado ahí |
+| **3** | Resto del mundo entre ~52° N y ~52° S | Solo globales: POWER, HLS, Sentinel-2, SMAP, SRTM, IMERG, ECOSTRESS, MODIS, SoilGrids y FAO GAEZ | Clima, vigor, suelo estimado y aptitud de cultivos. **No sabe qué se siembra**: lo declara el agricultor y los modelos van como experimentales (`unlabeled`). Querétaro está aquí |
+| **4** | Latitudes altas (más de ~52° a 60°) | Pierde ECOSTRESS (52° N–S) y, más arriba, SRTM e IMERG | Muy poco; mejor no ofrecerlo |
+
+Coberturas que lo definen: ECOSTRESS, 52° N a 52° S (órbita de la estación
+espacial); CDL, SSURGO, QuickStats, AMS, NWIS y PRISM, solo EE. UU.; OpenET, 48
+estados contiguos. Las cifras de SRTM (60° N a 56° S) e IMERG (60° N a 60° S)
+hay que confirmarlas con `ee_coverage.py`.
+
+Consecuencia: la herramienta **no se limita a un estado**. Funciona en cualquier
+parcela del nivel 1 al 3, pero dice más o menos según el nivel, y la ficha de
+evidencia lo explica en "información que falta". Diamond Valley es el caso de
+demostración del nivel 1 y Querétaro el del nivel 3.
+
 ## 4. Cómo debe salir la lista de cultivos y las rotaciones
 
 1. **Censo** por condado (`crop_census.py`, ya funciona) y después por valle
@@ -117,7 +139,7 @@ Reabrir alguno es decisión de Hanniel.
 ## 5. Querétaro
 
 En la lista del reto **no hay ningún recurso que diga qué se siembra en
-México**: CDL, OpenET, SSURGO, QuickStats y AMS son solo de EE. UU.
+México**: CDL, OpenET, SSURGO, QuickStats, AMS, NWIS y PRISM son solo de EE. UU.
 
 Con la lista se puede:
 - clima (POWER, IMERG), satélite (HLS, Sentinel-2, SMAP), relieve (SRTM) y
