@@ -2,8 +2,8 @@
   "project": "Field Shift",
   "team": "The CSC",
   "event": "NASA Space Apps Challenge 2026",
-  "updated_at": "2026-11-14T11:49:00-06:00",
-  "phase": "Railway + Vercel en vivo · Rumbo a Compuerta G2 (14:00: Datos Reales + Orden #2)",
+  "updated_at": "2026-11-14T11:57:00-06:00",
+  "phase": "Infraestructura Nube 100% Verificada (Pages + Railway + Supabase RLS + Vercel) · Rumbo a G2 (14:00)",
   "repo_url": "https://github.com/H0M10/MorrisTeamDfs",
   "git_remote": "https://github.com/H0M10/MorrisTeamDfs.git",
   "pages_url": "https://h0m10.github.io/MorrisTeamDfs/",
@@ -65,25 +65,18 @@
       "folders": ["/contracts", "/backend", "/supabase", "/frontend/src/lib"],
       "role": "Líder Técnico · Contrato, Motor FAO-56, API FastAPI e Infraestructura",
       "color": "#1247B8",
-      "progress_pct": 80,
-      "doing_now": "Railway (https://morristeamdfs-production.up.railway.app) y Vercel (https://morris-team-dfs.vercel.app/) en vivo. Sigue confirmar SQL en Supabase (H-06) y arrancar Orden #2 rumbo a G2 (14:00).",
+      "progress_pct": 85,
+      "doing_now": "Infraestructura 100% cerrada (GitHub Pages + Railway + Supabase RLS + Vercel verificados punta a punta). Foco actual: Orden #2 (table_to_contract.py + S-01 + S-02) y dupla con @Checo-coder para G2 (14:00).",
       "done": [
         "Estructura completa del repo y sincronización AGENTS.md == CLAUDE.md.",
         "Contrato JSON v0.1.1 y 3 fixtures de 36 meses (diamond_valley, queretaro, no_viable_options) verificados.",
         "Backend FastAPI (motor FAO-56, índices HLS sin NDRE/CAI, restricciones primero y /ask determinista).",
-        "Migración SQL de Supabase (evaluations, reviews, RLS y 4 RPCs por token sin PII).",
         "H-01 Completado: repo H0M10/MorrisTeamDfs en vivo, invitaciones enviadas (201) y GitHub Pages activo en main -> /docs.",
-        "H-02 / G1 Completado: API FastAPI en vivo en Railway (https://morristeamdfs-production.up.railway.app/health y /docs) + soporte sb_publishable_ en backend y frontend.",
-        "H-07 Completado: frontend Next.js en vivo en Vercel (https://morris-team-dfs.vercel.app/)."
+        "H-02 / G1 Completado: API FastAPI en vivo en Railway (https://morristeamdfs-production.up.railway.app/health y /docs) + soporte sb_publishable_.",
+        "H-06 / A-04 Completado: migración SQL aplicada en Supabase (evaluations y reviews con RLS enabled sin políticas) y /health respondió supabase_configured: true.",
+        "H-07 Completado: Vercel en vivo (https://morris-team-dfs.vercel.app/tool/retrato mostrando tira de parcela sin error de conexión)."
       ],
       "todo": [
-        {
-          "id": "H-06 (cierre SQL)",
-          "gate": "G2",
-          "title": "Confirmar Run de 20261114000000_init.sql en SQL Editor de Supabase y CORS en Railway",
-          "detail": "Verificar 4 RPCs + RLS sin políticas, revisar /health supabase_configured:true y sumar https://morris-team-dfs.vercel.app a CORS_ORIGINS.",
-          "connects_to": ["Gicarrillo"]
-        },
         {
           "id": "Orden #2 / D-03",
           "gate": "G2",
@@ -335,7 +328,7 @@
       "due": "Sáb 10:30",
       "title": "Crear proyecto Supabase, ejecutar migración SQL y guardar llaves en .env/Vercel/Railway",
       "blocks": "Enlaces compartibles (/api/v1/share) y revisión de técnico",
-      "status": "Pendiente"
+      "status": "Completado (RLS activo + supabase_configured: true)"
     },
     {
       "id": "H-04",
@@ -450,6 +443,11 @@
       "when": "2026-11-14 11:49",
       "decision": "H-07 completado: frontend desplegado en Vercel (https://morris-team-dfs.vercel.app/).",
       "impact": "Todo el stack en la nube quedó conectado (Pages + Railway + Vercel); resta confirmar Run SQL de Supabase (H-06) y arrancar Orden #2 hacia G2 (14:00)."
+    },
+    {
+      "when": "2026-11-14 11:57",
+      "decision": "H-06 / A-04 completado: SQL de Supabase aplicado (RLS sin políticas), /health supabase_configured: true y /tool/retrato conectado en Vercel.",
+      "impact": "Toda la infraestructura en la nube quedó verificada punta a punta; el foco pasa 100% a Orden #2 (backend/data) y H-04/H-11 para G2 (14:00)."
     }
   ]
 }

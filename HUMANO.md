@@ -7,7 +7,7 @@ Regla 11 de `AGENTS.md`: Todo lo que requiera intervención humana (cuentas, lla
 | Prioridad | Acción humana | Responsable | Para cuándo | Qué bloquea | Estado |
 | --- | --- | --- | --- | --- | --- |
 | **P0 (Crítico)** | Crear/verificar cuentas del equipo: proyecto **Google Earth Engine** de uso no comercial, **Colab** y acceso a **OpenET** (Earthdata Login solo si se usa `earthaccess` fuera de GEE) | `@Checo-coder` + `@H0M10` | Sáb mañana | Tareas D-01 a D-05 (sin GEE/OpenET no hay datos reales ni modelos) | Pendiente |
-| **P0 (Crítico)** | Crear proyectos en **Railway** (**Completado**: `https://morristeamdfs-production.up.railway.app`), **Vercel** (**Completado**: `https://morris-team-dfs.vercel.app/`) y **Supabase** (proyecto + llaves listos; falta ejecutar `20261114000000_init.sql` en SQL Editor) | Hanniel (`@H0M10`) | Sáb 12:00 | Enlaces compartibles (`/api/v1/share`) y RLS `/supabase` | En curso (solo falta `Run` SQL) |
+| **P0 (Crítico)** | Crear proyectos en **Railway** (`https://morristeamdfs-production.up.railway.app`), **Vercel** (`https://morris-team-dfs.vercel.app/`) y **Supabase** (`evaluations`/`reviews` con RLS sin políticas, `supabase_configured: true`) | Hanniel (`@H0M10`) | Sáb 10:00 | Despliegue API, frontend en vivo y enlaces compartibles | **Completado** |
 | **P1 (Alto)** | Elegir las **2 o 3 zonas de riego** similares a Diamond Valley en Nevada, Idaho y Utah (pivote, alfalfa, granos) para entrenamiento y validación por valle | `@Checo-coder` + `@H0M10` | Sáb mañana | D-02, D-05 y partición correcta por valle en Modelos 1-4 | Pendiente |
 | **P1 (Alto)** | Lanzar las **exportaciones de Earth Engine de Diamond Valley** (36 meses HLS, POWER, OpenET, CDL, SMAP, SSURGO, SRTM) en Colab | `@Checo-coder` | Sáb 11:00–13:30 | Compuerta Sábado 14:00 ("un dato real en pantalla") y 19:00 | Pendiente |
 | **P1 (Alto)** | Decidir si se **renta una máquina en la nube con mucha RAM/GPU** (solo si Colab gratuito de ~12 GB RAM no alcanza para las tablas) | `@H0M10` + `@Checo-coder` | Sáb mediodía | Entrenamiento de Modelos 1-4 fuera de laptops de 8 GB | Pendiente |
@@ -54,30 +54,14 @@ Desbloquea: cifras de agua reales cuando el modelo 1 no esté entrenado.
 
 Resuelto en `contracts/CHANGELOG.md` v0.1.1: `diamond_valley.json` amplía `planting_window` a octubre (`3..10`) para cubrir la siembra otoñal de trigo de invierno, `no_viable_options.json` corrige `current.constraint_evaluation.calendar_ok` a `true` (alfalfa ya establecida; sigue descartada por agua y maquinaria), y `KNOWN_FIXTURE_DIVERGENCES` en `backend/tests/test_constraints.py` quedó vacío.
 
-### H-06. Crear el proyecto de Supabase y aplicar la migración (`@H0M10`, sábado)
+### H-06. Crear el proyecto de Supabase y aplicar la migración (`@H0M10`, sábado) — **Completado**
 
-1. En supabase.com: **New project**. Región cercana (us-west o us-east). Guarda la contraseña de la base en tu gestor, no en el repositorio.
-2. **SQL Editor → New query**: pega completo `supabase/migrations/20261114000000_init.sql` y pulsa **Run**. Debe terminar sin errores.
-   (Alternativa con la CLI: `npx supabase login`, `npx supabase link --project-ref <ref>`, `npx supabase db push`.)
-3. Comprueba en el mismo editor:
-   ```sql
-   select public.create_shared_evaluation(
-     'prueba-token-0123456789', '{}'::jsonb,
-     '{"contract_version":"0.1.0","data_status":"fixture","strategies":[]}'::jsonb);
-   select * from public.get_shared_evaluation('prueba-token-0123456789');
-   select public.submit_review('prueba-token-0123456789', 'approve', 'prueba', null);
-   select * from public.get_reviews('prueba-token-0123456789');
-   delete from public.evaluations where share_token = 'prueba-token-0123456789';
-   ```
-   Las cuatro primeras deben devolver una fila. Si alguna falla, copia el error en `PLAN.md`: la migración solo pasó un analizador sintáctico, no se ha corrido en una base real.
-4. **Table Editor**: `evaluations` y `reviews` deben decir "RLS enabled" y no tener políticas.
-5. **Project Settings → API Keys**: copia el **Project URL** y la llave pública **`Publishable`** (`sb_publishable_...`, o la `anon public` si usas Legacy API Keys). **Nunca** copies la llave JWT con `"role": "service_role"` ni `sb_secret_...` a ningún lado.
-6. Ponlas en:
-   - `backend/.env` y variables de Railway: `SUPABASE_URL`, `SUPABASE_ANON_KEY` (= la `sb_publishable_...`; el backend solo envía `Authorization: Bearer` si recibe un JWT clásico).
-   - `frontend/.env.local` y variables de Vercel: `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` (o `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, el cliente acepta ambas).
-7. Comprueba: `GET /health` de la API debe decir `"supabase_configured": true`, y `POST /api/v1/share` con un fixture debe devolver un token.
+Ya ejecutado y verificado:
+- Migración [supabase/migrations/20261114000000_init.sql](supabase/migrations/20261114000000_init.sql) aplicada; tablas `evaluations` y `reviews` con **RLS enabled** y sin políticas.
+- Variables cargadas en Railway y Vercel (`SUPABASE_URL`, `SUPABASE_ANON_KEY` con `sb_publishable_...`, nunca `service_role`).
+- `GET https://morristeamdfs-production.up.railway.app/health` respondió `"supabase_configured": true` y `https://morris-team-dfs.vercel.app/tool/retrato` cargó la tira de parcela con **"Datos de ejemplo"** sin error de conexión.
 
-Desbloquea: enlaces compartibles (A-04) y revisión del técnico (T-04). (Extra #5 `/remote` quedó recortado preventivamente por equipo de 4).
+*(Recordatorio de seguridad para el cierre del reto: rotar la contraseña de la base de datos y la llave `service_role` que quedaron pegadas en el chat de trabajo en Supabase → Project Settings → API Keys.)*
 
 ### H-07. Desplegar el frontend en Vercel (`@H0M10` o `@Gicarrillo`, sábado) — **Completado**
 
