@@ -8,9 +8,9 @@ Regla 11 de `AGENTS.md`: Todo lo que requiera intervención humana (cuentas, lla
 | --- | --- | --- | --- | --- | --- |
 | **P0 (Crítico)** | Crear/verificar cuentas del equipo: proyecto **Google Earth Engine (`luca-497507`)** habilitado de uso no comercial, **Colab** y acceso a **OpenET** | `@Checo-coder` + `@H0M10` | Sáb mañana | Tareas D-01 a D-05 | **Completado (`luca-497507` habilitado por `@H0M10`)** |
 | **P0 (Crítico)** | Crear proyectos en **Railway** (`https://morristeamdfs-production.up.railway.app`), **Vercel** (`https://morris-team-dfs.vercel.app/`) y **Supabase** (`evaluations`/`reviews` con RLS sin políticas, `supabase_configured: true`) | Hanniel (`@H0M10`) | Sáb 10:00 | Despliegue API, frontend en vivo y enlaces compartibles | **Completado** |
-| **P1 (Alto)** | Elegir y dibujar las **2 o 3 zonas de riego** similares a Diamond Valley en Nevada, Idaho y Utah (pivote, alfalfa, granos, papa, maíz) para entrenamiento por valle | `@Checo-coder` | Sáb 13:00 | D-02, D-05 y partición correcta por valle en Modelos 1-4 | Pendiente |
-| **P1 (Alto)** | Ejecutar extracción de **Diamond Valley** (`luca-497507`, 36 meses HLS, POWER, OpenET, CDL, SMAP, SSURGO, SRTM) → primer `.parquet` real (`D-03`) | `@H0M10` | Sáb 12:30–14:00 | Compuerta Sábado 14:00 ("un dato real en pantalla") | **Completado** (`backend/data/diamond_valley.parquet` extraído y validado; solo falta fijar `DATA_MODE=real` en Railway) |
-| **P1 (Alto)** | Decidir si se **renta una máquina en la nube con mucha RAM/GPU** (solo si Colab gratuito de ~12 GB RAM no alcanza para las tablas) | `@H0M10` + `@Checo-coder` | Sáb mediodía | Entrenamiento de Modelos 1-4 fuera de laptops de 8 GB | Pendiente |
+| **P1 (Alto)** | Elegir y dibujar las **2 o 3 zonas de riego** similares a Diamond Valley en Nevada, Idaho y Utah (pivote, alfalfa, granos, papa, maíz) para entrenamiento por valle | `@Checo-coder` + `@H0M10` | Sáb 13:00 | D-02, D-05 y partición correcta por valle en Modelos 1-4 | **Completado (`data-pipeline/parcels/multi_valley_us.geojson` -> `data-pipeline/exports/multi_valley_us.parquet`: 15 parcelas en `diamond_valley_nv`, `snake_river_id` y `millard_ut`, 720 filas 2021–2024)** |
+| **P1 (Alto)** | Ejecutar extracción de **Diamond Valley** (`luca-497507`, 36 meses HLS, POWER, OpenET, CDL, SMAP, SSURGO, SRTM) → primer `.parquet` real (`D-03`) | `@H0M10` | Sáb 12:30–14:00 | Compuerta Sábado 14:00 ("un dato real en pantalla") | **Completado (`DATA_MODE=real` activo en Railway sirviendo `dv-nv-01` y `qro-sjr-01`; norte de Guanajuato pospuesto)** |
+| **P1 (Alto)** | Decidir si se **renta una máquina en la nube con mucha RAM/GPU** (solo si Colab gratuito de ~12 GB RAM no alcanza para las tablas) | `@H0M10` + `@Checo-coder` | Sáb mediodía | Entrenamiento de Modelos 1-4 fuera de laptops de 8 GB | **Completado — No requerido (`$0`: GEE procesa los rásters en la nube gratis y los modelos 1, 2 y 4 entrenan en `< 3 s` en CPU local; el modelo 3 corre en Colab gratuito o CPU)** |
 | **P1 (Alto)** | Definir el **nombre del proyecto** (confirmar si queda "Field Shift") y el **público principal** en inglés y español | Equipo (4) | Sáb 10:00 | Textos de cabecera, `/docs/project_page.md`, pitch y guion | Pendiente |
 | **P1 (Alto)** | Definir el **polígono exacto de la parcela de Querétaro** (San Juan del Río / Pedro Escobedo, `--unlabeled`) y verificar cifra de acuíferos **CONAGUA** contra publicación oficial | `@Checo-coder` | Sáb 15:00 | Caso real `unlabeled` de Querétaro (D-04) | Pendiente |
 | **P2 (Medio)** | Conseguir a un **agrónomo o agricultor** que revise la hoja de evidencia y el lenguaje llano de `/tool` | `@Gicarrillo` + Equipo | Sáb tarde - Dom mañana | Validación de utilidad real, riesgos locales y pitch | Pendiente |
@@ -99,8 +99,8 @@ Un proceso del sistema llamado "Manager" escucha en el puerto 8000, así que la 
 ### H-11. Datos: reparto 50/50 de parcelas y exportaciones GEE (`@H0M10` y `@Checo-coder`, sábado)
 
 El proyecto de Google Earth Engine **`luca-497507`** quedó habilitado con autenticación `localhost`, fijado por omisión en `ee_common.py`, `.env.example` y el cuaderno de Colab, y verificado en producción contra todas las colecciones núcleo:
-- **`@H0M10` (Completado · `D-03`):** se ejecutaron `ee_coverage.py` (ventana común `2015–2024`), `ee_export.py --start-year 2022 --end-year 2024 --local-dir data-pipeline/exports/dv` y `build_table.py`, generando `backend/data/diamond_valley.parquet` (36 meses `2022-01` a `2024-12` para `dv-nv-01`, `59.95 ha`, validado contra `contracts/schema.json`).
-- **`@Checo-coder` (Prioridad G3 19:00):** autenticarse en GEE (o pedir acceso a `luca-497507`), dibujar los **2-3 valles vecinos (NV/ID/UT)** para entrenamiento multi-valle (`D-02`, `D-05`) y el **polígono de Querétaro (`--unlabeled`)** + verificar cifra CONAGUA (`D-04`).
+- **`@H0M10` (Completado · `D-03`, `D-02`, `D-05`):** se ejecutaron `ee_coverage.py` (ventana común `2015–2024`), `ee_export.py --local-dir` y `build_table.py`, generando `backend/data/diamond_valley.parquet` (`36` meses `2022-01` a `2024-12` para `dv-nv-01`) y la tabla multi-valle **`data-pipeline/parcels/multi_valley_us.geojson` → `data-pipeline/exports/multi_valley_us.parquet`** (`15` parcelas en 3 valles `diamond_valley_nv`, `snake_river_id` y `millard_ut`, `720` filas `2021-01` a `2024-12`).
+- **`@Checo-coder` (Prioridad G3 19:00):** la tabla de Querétaro (`qro-sjr-01`, refinada con Sentinel-2 10 m) ya está en `backend/data/` (norte de Guanajuato pospuesto en `C-13`); falta verificar la cifra oficial de acuíferos **CONAGUA** con PDF y fecha (`D-04`) y descargar el CSV SIAP (`H-20`).
 
 **Cuentas:**
 - **Earth Engine (Completado para `@H0M10`):** proyecto **`luca-497507`** habilitado y fijado por defecto en el repositorio.
@@ -133,8 +133,11 @@ Querétaro: los mismos pasos con `--unlabeled` en 1 y 2, cuando exista su políg
 
 ### H-12. Modelos: entrenamiento 50/50 fuera de la laptop (`@H0M10` + `@Checo-coder`, tras H-11)
 
-- **`@H0M10`:** entrena en Colab **Modelo 1** (`model_1_crop_water`, XGBoost ET vs FAO-56) y **Modelo 4** (`model_4_moisture_cqr`, CQR 90% vs SMAP).
-- **`@Checo-coder`:** entrena en Colab **Modelo 3** (`model_3_crop_history_gru`, GRU PyTorch -> ONNX) y, solo si sobra tiempo antes del Dom 08:00, **Modelo 2** (`model_2_prior_crop_effect`).
+- **`@H0M10` (Completado en CPU local, `< 3 s` por modelo, sin rentar GPU):** entrenados y medidos sobre `data-pipeline/exports/multi_valley_us.parquet` (partición estricta por valle, prueba en `diamond_valley_nv` no visto):
+  - **Modelo 1 (`model_1_crop_water`):** `9.25 mm` MAE vs `29.05 mm` FAO-56 (**gana**; `backend/artifacts/model_1_crop_water/` + `models/model_1_crop_water/CARD.md`).
+  - **Modelo 4 (`model_4_moisture_cqr`):** cobertura `58.3 %` vs `22.9 %` rango histórico (**gana** a la línea base, con aviso declarado de brecha frente al objetivo de `90 %`; `backend/artifacts/model_4_moisture_cqr/` + `models/model_4_moisture_cqr/CARD.md`).
+  - **Modelo 2 (`model_2_prior_crop_effect`):** `-6.3 %` vs línea base sin cultivo anterior (**pierde**; reportado íntegro en `backend/artifacts/model_2_prior_crop_effect/` + `models/model_2_prior_crop_effect/CARD.md`, sin evidencia local de mejora).
+- **`@Checo-coder` (Pendiente para G4):** entrenar en Colab gratuito (o CPU) el **Modelo 3** (`model_3_crop_history_gru`, GRU PyTorch -> ONNX) sobre `data-pipeline/exports/multi_valley_us.parquet`, validar Macro F1 por clase en valle no visto y llenar `models/model_3_crop_history_gru/CARD.md`.
 
 ```bash
 pip install -r models/requirements.txt      # con PyTorch: unos 3 GB de disco
@@ -151,11 +154,11 @@ python models/model_2_prior_crop_effect/train.py --table <tabla>.parquet --test-
 - El guion del modelo 3 **no se ha ejecutado nunca** (PyTorch no se instala en la laptop). Pruébalo primero con `--sample`.
 - Al terminar: llena `models/<modelo>/CARD.md` y sube `backend/artifacts/<modelo>/` (`model.ubj` u `.onnx` más `metrics.json`).
 
-### H-13. Poner datos reales en la API (`@H0M10`, tras D-03)
+### H-13. Poner datos reales en la API (`@H0M10`, tras D-03) — **Completado**
 
-1. `backend/data/diamond_valley.parquet` (36 meses consecutivos `2022-01` a `2024-12` para `dv-nv-01`) ya fue depositado, validado contra `contracts/schema.json` y probado con `DATA_MODE=real`.
-2. *(Opcional cuando un humano confirme las restricciones reales del agricultor)*: copiar `backend/data/dv-nv-01.meta.json.example` a `backend/data/dv-nv-01.meta.json` con límites confirmados (para Querétaro `D-04` agregar `declared_history`). Mientras no exista `.meta.json`, `/evaluate` devuelve los datos reales sin descartar estrategias (y `/simulate` evalúa restricciones en vivo).
-3. En Railway, cambiar la variable de entorno **`DATA_MODE=real`** para que `https://morristeamdfs-production.up.railway.app` y `https://morris-team-dfs.vercel.app/tool/retrato` sirvan inmediatamente los datos satelitales reales de Diamond Valley (`dv-nv-fixture-01` redirige automáticamente a `dv-nv-01` en modo real).
+1. `backend/data/diamond_valley.parquet` y `backend/data/queretaro.parquet` validados contra `contracts/schema.json` en `DATA_MODE=real` (norte de Guanajuato pospuesto).
+2. *(Opcional cuando un humano confirme las restricciones reales del agricultor)*: completar/revisar `backend/data/<parcel_id>.meta.json` con límites confirmados.
+3. En Railway, la variable **`DATA_MODE=real`** ya quedó activa en vivo en `https://morristeamdfs-production.up.railway.app` (`/api/v1/pilots` sirviendo `dv-nv-01` y `qro-sjr-01` en modo `real`).
 
 ### H-14. Verificación humana visual de la tabla FAO-56 (Hanniel)
 

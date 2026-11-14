@@ -592,8 +592,8 @@ python scripts/sync_board.py --check
   "project": "Field Shift",
   "team": "The CSC",
   "event": "NASA Space Apps Challenge 2026",
-  "updated_at": "2026-11-14T14:18:00-06:00",
-  "phase": "D-03 Completado · diamond_valley.parquet real (2022–2024) validado · Fijar DATA_MODE=real en Railway para cerrar G2",
+  "updated_at": "2026-11-14T15:50:00-06:00",
+  "phase": "G2 Completado · DATA_MODE=real en Railway · D-02/D-05 multi-valle extraído · Modelos 1, 4 y 2 entrenados en CPU ($0 GPU)",
   "repo_url": "https://github.com/H0M10/MorrisTeamDfs",
   "git_remote": "https://github.com/H0M10/MorrisTeamDfs.git",
   "pages_url": "https://h0m10.github.io/MorrisTeamDfs/",
@@ -620,7 +620,7 @@ python scripts/sync_board.py --check
         "Checo-coder",
         "Gicarrillo"
       ],
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "G3",
@@ -683,8 +683,8 @@ python scripts/sync_board.py --check
       ],
       "role": "Líder Técnico · Contrato, Motor FAO-56, API FastAPI e Infraestructura",
       "color": "#1247B8",
-      "progress_pct": 96,
-      "doing_now": "D-03 completado sobre GEE luca-497507: backend/data/diamond_valley.parquet (36 meses 2022–2024) validado contra contracts/schema.json y con alias dv-nv-fixture-01 -> dv-nv-01 listo para activar DATA_MODE=real en Railway.",
+      "progress_pct": 98,
+      "doing_now": "G2 cerrado (DATA_MODE=real activo en Railway sirviendo dv-nv-01 y qro-sjr-01, Guanajuato pospuesto); tabla multi-valle US (15 parcelas NV/ID/UT, 720 filas) extraída y Modelos 1 (9.25 vs 29.05 mm), 4 (58.3% vs 22.9%) y 2 (-6.3%) entrenados en CPU; loader.py corregido para marcar model_2 absent en regiones sin etiquetas.",
       "done": [
         "Estructura completa del repo y sincronización AGENTS.md == CLAUDE.md.",
         "Contrato JSON v0.1.1 y 3 fixtures de 36 meses (diamond_valley, queretaro, no_viable_options) verificados.",
@@ -695,14 +695,15 @@ python scripts/sync_board.py --check
         "H-07 Completado: Vercel en vivo (https://morris-team-dfs.vercel.app/tool/retrato mostrando tira de parcela sin error de conexión).",
         "H-04 + C-01 Completado: models/kc_monthly.csv (132 filas) + models/fao56_crop_bank.csv (24 cultivos + 8 alias) corregidos vs Tabla 12 FAO-56 y sincronizados.",
         "Orden #2 / A-06 Completado: S-01 resuelto, GET /api/v1/crops, table_to_contract.py (S-02 + DATA_MODE=real) y plantilla dv-nv-01.meta.json.example listos.",
-        "D-01 / D-03 Completado (GEE luca-497507): 14 colecciones verificadas (2015–2024) y tabla real backend/data/diamond_valley.parquet (36 meses 2022-01 a 2024-12 para dv-nv-01) validada en DATA_MODE=real."
+        "G2 / D-01..D-05 Completado (GEE luca-497507): DATA_MODE=real activo en Railway para dv-nv-01 y qro-sjr-01 (Guanajuato pospuesto); extraída tabla multi-valle (15 parcelas NV/ID/UT, 720 filas 2021–2024).",
+        "M-02 / M-05 / M-03 Completado en CPU ($0 GPU): Modelo 1 gana (9.25 mm vs 29.05 mm FAO-56), Modelo 4 gana con aviso de brecha vs meta 90% (58.3% vs 22.9%) y Modelo 2 pierde (-6.3%) y se reporta íntegro; loader.py marca model_2 absent en unlabeled."
       ],
       "todo": [
         {
-          "id": "M-02 / M-05",
+          "id": "M-06 / A-07",
           "gate": "G4",
-          "title": "Entrenar Modelos principales 1 (XGBoost ET) y 4 (Humedad CQR 90% vs SMAP)",
-          "detail": "Partición estricta por valle + último año fuera sobre tabla multi-valle de Checo.",
+          "title": "Corte final de modelos (Domingo 08:00) e integración de Model 3 ONNX si entrena",
+          "detail": "Verificar corte M-06 tras entrenamiento de Model 3 por Checo-coder y decidir inferencia alternativa en table_to_contract.py.",
           "connects_to": [
             "Checo-coder",
             "alexishal8"
@@ -723,39 +724,31 @@ python scripts/sync_board.py --check
       ],
       "role": "Datos Multi-Valle (NV/ID/UT), Querétaro (unlabeled) y Modelo 3 (GRU->ONNX)",
       "color": "#2F7D32",
-      "progress_pct": 35,
-      "doing_now": "Reparto 50/50 con Hanniel (H-04 ya resuelto): Checo arma polígonos de 2-3 valles vecinos (NV/ID/UT) + Querétaro (D-01/D-02/D-04/D-05) y entrena Modelo 3 (ONNX).",
+      "progress_pct": 70,
+      "doing_now": "Tablas multi-valle NV/ID/UT (D-02/D-05) y de Querétaro (Sentinel-2 10 m) listas en disco; foco ahora en entrenar Modelo 3 (GRU->ONNX) sobre multi_valley_us.parquet, verificar CONAGUA y cargar SIAP (H-20).",
       "done": [
         "Guiones base en /data-pipeline (ee_coverage.py, ee_export.py, build_table.py, notebook Colab).",
         "Guiones de entrenamiento en /models (XGBoost 1/2/4, GRU->ONNX 3, partición por valle y último año fuera).",
         "Plantillas CARD.md y salvaguarda contra métricas sintéticas (--sample).",
-        "Desbloqueo H-04: kc_monthly.csv y fao56_crop_bank.csv ya listos en /models."
+        "Desbloqueo H-04: kc_monthly.csv y fao56_crop_bank.csv ya listos en /models.",
+        "D-02 / D-05 + M-03 resueltos: tabla multi_valley_us.parquet (15 parcelas NV/ID/UT, 720 filas) extraída y Modelo 2 evaluado (-6.3 %, reportado transparente)."
       ],
       "todo": [
         {
-          "id": "D-01 / D-02",
-          "gate": "G2",
-          "title": "Confirmar catálogo GEE y dibujar 25-30 pivotes en 2-3 zonas (NV, ID, UT)",
-          "detail": "Exportar tabla multi-valle limpia sin duplicar Diamond Valley (que corre Hanniel).",
-          "connects_to": [
-            "H0M10"
-          ]
-        },
-        {
-          "id": "D-04 (Querétaro)",
+          "id": "D-04 (CONAGUA)",
           "gate": "G3",
-          "title": "Definir polígono real de San Juan del Río / Pedro Escobedo (--unlabeled) + CONAGUA",
-          "detail": "Verificar cifra de acuífero CONAGUA con PDF y fecha oficial; exportar .parquet.",
+          "title": "Verificar cifra de acuífero CONAGUA e integrar CSV SIAP para Querétaro (H-20)",
+          "detail": "Tabla qro-sjr-01 ya refinada con Sentinel-2 (2.8 ha, Guanajuato pospuesto); falta cifra oficial CONAGUA con PDF y fecha.",
           "connects_to": [
             "H0M10",
             "Gicarrillo"
           ]
         },
         {
-          "id": "M-04 (+ M-03 opc.)",
+          "id": "M-04",
           "gate": "G4",
           "title": "Entrenar Modelo 3 (GRU atención temporal -> ONNX) y llenar CARD.md",
-          "detail": "Reportar Macro F1 por clase en valle no visto; Modelo 2 solo si sobra tiempo antes Dom 08:00.",
+          "detail": "Correr train.py en Colab gratuito o CPU sobre data-pipeline/exports/multi_valley_us.parquet y reportar Macro F1 por clase en valle no visto.",
           "connects_to": [
             "H0M10",
             "alexishal8"
@@ -892,7 +885,7 @@ python scripts/sync_board.py --check
       "to": "H0M10",
       "to_label": "Orden #2 table_to_contract.py (datos reales sin inventario)",
       "gate": "G2 · Sáb 14:00",
-      "status": "pending"
+      "status": "completed"
     },
     {
       "from": "H0M10",
@@ -995,9 +988,9 @@ python scripts/sync_board.py --check
       "priority": "P0",
       "owner": "H0M10 / Checo-coder",
       "due": "Sáb 12:30–15:00",
-      "title": "GEE luca-497507: Diamond Valley (H0M10) extraído; falta NV/ID/UT + Querétaro (Checo-coder) y activar DATA_MODE=real en Railway",
-      "blocks": "Tablas multi-valle .parquet (M-02..M-05) y datos reales en producción (G2)",
-      "status": "En curso (D-03 COMPLETADO por H0M10; falta D-02/D-04 por Checo-coder)"
+      "title": "GEE luca-497507: Diamond Valley, Querétaro (1 campo 2.8 ha Sentinel-2) y 15 parcelas multi-valle NV/ID/UT extraídos; DATA_MODE=real activo en Railway",
+      "blocks": "Solo resta cifra oficial CONAGUA (D-04) y descarga manual SIAP (H-20)",
+      "status": "Completado D-01..D-05 y DATA_MODE=real; Guanajuato pospuesto; pendiente CONAGUA + H-20"
     },
     {
       "id": "H-05",
@@ -1049,9 +1042,9 @@ python scripts/sync_board.py --check
       "priority": "P1",
       "owner": "H0M10 / Checo-coder",
       "due": "Dom 08:00",
-      "title": "Entrenamiento 50/50 en Colab: Modelos 1+4 (H0M10) y Modelo 3 ONNX + opc. 2 (Checo-coder)",
-      "blocks": "Compuerta G4 (corte de modelos) y Extra #3 Red en vivo",
-      "status": "Pendiente"
+      "title": "Entrenamiento en CPU sin GPU rentada ($0): Modelos 1 (9.25 vs 29.05 mm), 4 (58.3% vs 22.9%) y 2 (-6.3%) completados; falta Modelo 3 ONNX",
+      "blocks": "Compuerta G4 (corte de modelos) y Extra #3 Red en vivo (solo si M-3 entrena)",
+      "status": "En curso (Modelos 1, 4 y 2 completados en CPU; falta M-04 Modelo 3 ONNX)"
     },
     {
       "id": "H-15",
@@ -1178,6 +1171,11 @@ python scripts/sync_board.py --check
       "when": "2026-11-14 14:25",
       "decision": "AGENTS.md actualizado: OpenET cubre 48 estados (dic. 2025), el norte de Guanajuato entra como región sin etiquetas y SoilGrids se usa declarado solo donde no hay SSURGO.",
       "impact": "Análisis de recursos por pregunta en data-pipeline/PLAN_DE_DATOS.md; Earth Engine confirma datos globales en Qro y Gto norte; riego probable ubicado con HLS (conjetura). Pendientes H-15 a H-19."
+    },
+    {
+      "when": "2026-11-14 15:50",
+      "decision": "G2 cerrada en vivo (DATA_MODE=real en Railway), tabla multi-valle NV/ID/UT extraída en GEE luca-497507 (720 filas) y Modelos 1, 4 y 2 entrenados en CPU (<3 s c/u, sin rentar GPU).",
+      "impact": "Modelo 1 gana (9.25 vs 29.05 mm FAO-56), Modelo 4 gana con aviso de brecha vs meta 90% (58.3% vs 22.9%) y Modelo 2 pierde (-6.3%, reportado transparente). loader.py marca model_2 absent en unlabeled."
     },
     {
       "when": "2026-11-14 15:51",

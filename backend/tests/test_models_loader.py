@@ -143,6 +143,25 @@ def test_artifact_with_metrics_is_trained_and_predicts(tmp_path: Path) -> None:
     assert unlabeled["model_1_crop_water"]["experimental"] is True
 
 
+def test_trained_model_2_stays_absent_in_unlabeled_region(tmp_path: Path) -> None:
+    folder = tmp_path / "model_2_prior_crop_effect"
+    write_tiny_xgboost(folder)
+    (folder / "metrics.json").write_text(json.dumps(METRICS_FILE), encoding="utf-8")
+
+    registry = ModelRegistry(tmp_path)
+    assert registry.get("model_2_prior_crop_effect").status == "trained"
+
+    labeled = registry.report("labeled")
+    Models.model_validate(labeled)
+    assert labeled["model_2_prior_crop_effect"]["status"] == "trained"
+    assert labeled["model_2_prior_crop_effect"]["experimental"] is False
+
+    unlabeled = registry.report("unlabeled")
+    Models.model_validate(unlabeled)
+    assert unlabeled["model_2_prior_crop_effect"]["status"] == "absent"
+    assert unlabeled["model_2_prior_crop_effect"]["experimental"] is False
+
+
 def test_corrupt_onnx_artifact_falls_back(tmp_path: Path) -> None:
     # Con poca memoria libre la DLL de onnxruntime puede no cargar: se omite, no falla.
     pytest.importorskip("onnxruntime", exc_type=ImportError)

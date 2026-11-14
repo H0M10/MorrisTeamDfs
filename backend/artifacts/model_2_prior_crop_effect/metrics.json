@@ -1,0 +1,94 @@
+{
+  "model": "model_2_prior_crop_effect",
+  "metric": {
+    "value": -6.3,
+    "unit": "%",
+    "type": "modeled",
+    "source": "Reducción del MAE de vigor máximo al agregar el cultivo anterior, en 'diamond_valley_nv'",
+    "date": "2026-11",
+    "native_scale": "30 m"
+  },
+  "baseline_metric": {
+    "value": 0.145,
+    "unit": "NDVI",
+    "type": "modeled",
+    "source": "MAE del mismo modelo sin el cultivo anterior, en 'diamond_valley_nv'",
+    "date": "2026-11",
+    "native_scale": "30 m"
+  },
+  "partition_method": {
+    "es": "Partición por valle: se mide en 'diamond_valley_nv', que no se usó para entrenar. El último año de los valles de entrenamiento queda como segunda prueba.",
+    "en": "Split by valley: measured on 'diamond_valley_nv', never used for training. The last year of the training valleys is held out as a second test."
+  },
+  "test_valley": "diamond_valley_nv",
+  "sample_run": false,
+  "extra": {
+    "features": [
+      "crop_code",
+      "et0_season_mm",
+      "rain_year_mm",
+      "elevation_m",
+      "clay_pct",
+      "prev_crop_code"
+    ],
+    "mae_with_prior": 0.15409,
+    "n_test": 9,
+    "observational_only": true,
+    "observed_peak_ndvi_by_sequence": [
+      {
+        "crop_group": "alfalfa",
+        "prev_crop_group": "alfalfa",
+        "mean": 0.8459,
+        "count": 9
+      },
+      {
+        "crop_group": "alfalfa",
+        "prev_crop_group": "corn",
+        "mean": 0.839,
+        "count": 1
+      },
+      {
+        "crop_group": "corn",
+        "prev_crop_group": "alfalfa",
+        "mean": 0.7724,
+        "count": 1
+      },
+      {
+        "crop_group": "corn",
+        "prev_crop_group": "corn",
+        "mean": 0.8482,
+        "count": 2
+      },
+      {
+        "crop_group": "corn",
+        "prev_crop_group": "small_grain",
+        "mean": 0.773,
+        "count": 6
+      },
+      {
+        "crop_group": "fallow",
+        "prev_crop_group": "fallow",
+        "mean": 0.1731,
+        "count": 3
+      },
+      {
+        "crop_group": "small_grain",
+        "prev_crop_group": "corn",
+        "mean": 0.7869,
+        "count": 5
+      },
+      {
+        "crop_group": "small_grain",
+        "prev_crop_group": "fallow",
+        "mean": 0.8473,
+        "count": 1
+      },
+      {
+        "crop_group": "small_grain",
+        "prev_crop_group": "small_grain",
+        "mean": 0.5908,
+        "count": 2
+      }
+    ]
+  }
+}

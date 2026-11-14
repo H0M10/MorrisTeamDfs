@@ -215,8 +215,9 @@ class ModelRegistry:
     def _report(self, model: LoadedModel, region_mode: RegionMode) -> dict[str, Any]:
         spec = model.spec
         unlabeled = region_mode == "unlabeled"
+        absent = spec.needs_labels and unlabeled
         card_path = f"models/{spec.name}/CARD.md"
-        if model.status == "trained" and model.metrics is not None:
+        if model.status == "trained" and model.metrics is not None and not absent:
             note = _t(
                 "Modelo entrenado y medido; ver su ficha.", "Model trained and measured; see card."
             )
@@ -243,7 +244,6 @@ class ModelRegistry:
                 "card_path": card_path,
             }
 
-        absent = spec.needs_labels and unlabeled
         today = date.today().strftime("%Y-%m")
         empty = {
             "value": None,
