@@ -186,7 +186,8 @@ class ModelRegistry:
             return LoadedModel(
                 spec,
                 "fallback",
-                "hay artefacto pero falta un metrics.json con métrica medida (o es de una corrida de prueba)",
+                "hay artefacto pero falta un metrics.json con métrica medida "
+                "(o es de una corrida de prueba)",
             )
         try:
             predictor = _load_onnx(artifact) if spec.kind == "onnx" else _load_xgboost(artifact)
