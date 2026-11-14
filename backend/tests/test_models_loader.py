@@ -89,6 +89,21 @@ def test_metrics_without_measured_value_stay_in_fallback(tmp_path: Path) -> None
     assert ModelRegistry(tmp_path).get("model_1_crop_water").status == "fallback"
 
 
+@pytest.mark.parametrize(
+    "tainted",
+    [
+        {**METRICS_FILE, "sample_run": True},
+        {"metric": {**METRIC, "type": "fixture"}, "baseline_metric": METRIC},
+    ],
+)
+def test_synthetic_smoke_run_metrics_never_count_as_trained(tmp_path: Path, tainted: dict) -> None:
+    """Las pruebas de flujo de /models (--sample) no pueden llegar al agricultor."""
+    folder = tmp_path / "model_1_crop_water"
+    write_tiny_xgboost(folder)
+    (folder / "metrics.json").write_text(json.dumps(tainted), encoding="utf-8")
+    assert ModelRegistry(tmp_path).get("model_1_crop_water").status == "fallback"
+
+
 def test_artifact_with_metrics_is_trained_and_predicts(tmp_path: Path) -> None:
     folder = tmp_path / "model_1_crop_water"
     write_tiny_xgboost(folder)

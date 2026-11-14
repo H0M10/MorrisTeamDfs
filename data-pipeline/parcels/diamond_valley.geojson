@@ -1,0 +1,27 @@
+{
+  "type": "FeatureCollection",
+  "name": "diamond_valley",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "parcel_id": "dv-nv-01",
+        "valley": "diamond_valley_nv",
+        "region_mode": "labeled",
+        "note": "RECTANGULO DE EJEMPLO tomado del fixture. Una persona debe reemplazarlo por el poligono de un pivote real (HUMANO.md H-11)."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-116.0345, 39.6835],
+            [-116.0255, 39.6835],
+            [-116.0255, 39.6765],
+            [-116.0345, 39.6765],
+            [-116.0345, 39.6835]
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -25,7 +25,7 @@
 | --- | --- | --- | --- | --- |
 | D-01 | Confirmar en catálogo GEE los años exactos cubiertos por HLS, OpenET, USDA CDL, SMAP, SSURGO, SoilGrids y SRTM antes de generar tablas | Persona 1 | G1 (Sáb 10:00) | Bloqueado por `HUMANO.md` (cuentas GEE/OpenET) |
 | D-02 | Elegir 2-3 zonas de riego similares a Diamond Valley en NV, ID y UT (pivote, alfalfa, granos) y exportar muestra de verificación | Persona 1 | G2 (Sáb 14:00) | Bloqueado por `HUMANO.md` |
-| D-03 | Script GEE/Colab para extraer serie de 36 meses de Diamond Valley (HLS RGB/índices, POWER, OpenET, CDL, SMAP 9 km, SSURGO, SRTM) y generar artefacto compacto en JSON/Parquet | Persona 1 | G2 (Sáb 14:00) | Pendiente |
+| D-03 | Script GEE/Colab para extraer serie de 36 meses de Diamond Valley (HLS RGB/índices, POWER, OpenET, CDL, SMAP 9 km, SSURGO, SRTM) y generar artefacto compacto en JSON/Parquet | Persona 1 | G2 (Sáb 14:00) | Guiones listos (`ee_export.py`, `build_table.py`); falta ejecutarlos (`HUMANO.md` H-11) |
 | D-04 | Script de extracción para la parcela de Querétaro (sin CDL ni OpenET; SoilGrids 250 m + POWER + HLS + SMAP 9 km + SRTM) tras recibir polígono | Persona 1 | G3 (Sáb 19:00) | Bloqueado por `HUMANO.md` (polígono Qro.) |
 | D-05 | Exportación completa multi-valle (NV, ID, UT) para entrenamiento de Modelos 1-4 en la nube | Persona 1 | G3 (Sáb 19:00) | Pendiente |
 
@@ -36,7 +36,7 @@
 
 | ID | Tarea | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
-| M-01 | Definir esqueleto de `CARD.md` (datos, partición por valle, último año fuera, métrica vs línea base, límites) para los 4 modelos | Persona 2 | G1 (Sáb 10:00) | Pendiente |
+| M-01 | Definir esqueleto de `CARD.md` (datos, partición por valle, último año fuera, métrica vs línea base, límites) para los 4 modelos | Persona 2 / Claude | G1 (Sáb 10:00) | Completado (`models/*/CARD.md` como plantilla por llenar) |
 | M-02 | Entrenar y validar **Modelo 1** (XGBoost consumo de agua vs tabla FAO-56 en valle no visto; respaldo: tabla FAO-56 declarada) | Persona 2 | G4 (Dom 08:00) | Bloqueado por D-05 |
 | M-03 | Entrenar y validar **Modelo 2** (XGBoost observacional efecto cultivo anterior vs modelo sin cultivo anterior; nunca causal ni ahorro de agua) | Persona 2 | G4 (Dom 08:00) | Bloqueado por D-05 |
 | M-04 | Entrenar, validar y exportar a ONNX **Modelo 3** (GRU ligera con atención temporal, Macro F1 por clase en valle no visto) | Persona 2 | G4 (Dom 08:00) | Bloqueado por D-05 |
@@ -107,7 +107,7 @@ Estado de la orden de la madrugada del sábado. Cada bloque cierra con un commit
 | 1 | Motor y API (`/backend`): FastAPI, modelos Pydantic generados, restricciones, FAO-56, índices, clima, POWER, cargador de modelos, rutas `/api/v1`, `DATA_MODE`, CORS. 126 pruebas | Completado |
 | 2 | Base de datos (`/supabase`): migración con `evaluations`, `reviews`, RLS sin políticas y cuatro funciones por token. Analizada con `pglast`; falta ejecutarla en un proyecto real (`HUMANO.md` H-06) | Completado (sin ejecutar) |
 | 3 | Frontend, solo esqueleto (`/frontend`): Next.js 16, tipos generados, cliente de API con respaldo local, textos es/en, base de accesibilidad, seis pantallas de `/tool` navegables, primera tira con tabla, `/showcase` con lienzo diferido y botón de cámara, `/engineer`, `/remote`. 31 pruebas con axe | Completado |
-| 4 | Guiones de datos y modelos (`/data-pipeline`, `/models`) | Pendiente |
+| 4 | Guiones de datos y modelos (`/data-pipeline`, `/models`): cobertura, exportación y tabla GeoParquet; cuaderno de Colab; un guion de entrenamiento por modelo con partición por valle y línea base; fichas `CARD.md`. Earth Engine y el modelo 3 sin ejecutar | Completado (sin ejecutar en la nube) |
 
 ### Notas para Argon y Hanniel
 
@@ -122,3 +122,6 @@ Estado de la orden de la madrugada del sábado. Cada bloque cierra con un commit
 - **Puerto local de la API: 8010.** En la laptop de Hanniel el 8000 lo ocupa un proceso del sistema.
 - **Unidades en inglés en el contrato.** Los fixtures traen `mm/yr` y `days/yr`; la interfaz en español las muestra tal cual. Decidir antes de congelar si el contrato las localiza o si lo hace la interfaz (`HUMANO.md` H-09).
 - **Estado compartido de `/tool`.** Hoy cada pantalla vuelve a pedir la evaluación de la parcela guardada. Cuando existan los controles de restricciones, la persona 4 debe decidir dónde vive el resultado de `/simulate` entre pantallas.
+- **Convertidor tabla → contrato.** Falta el paso que toma la tabla de una parcela (`build_table.py`) y arma la evaluación real para la API. Es la tarea A-06 y el primer trabajo tras el stack de las 9:00.
+- **`awc_mm_m` no sale de la tabla de datos.** El contrato lo exige en `soil_profile`; hay que decidir si viene de SSURGO o de una función de pedotransferencia sobre SoilGrids, y declararlo.
+- **Métricas sintéticas bloqueadas.** Los guiones de `/models` con `--sample` marcan su `metrics.json`; la API se niega a tratarlo como modelo entrenado (prueba en `backend/tests/test_models_loader.py`).

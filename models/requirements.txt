@@ -1,0 +1,11 @@
+# Para Colab o una máquina rentada. No se instala en las laptops de 8 GB
+# (PyTorch solo pesa más de 2 GB).
+numpy>=2.0
+pandas>=2.2
+pyarrow>=17
+xgboost>=3.0
+scikit-learn>=1.5
+# Solo para el modelo 3:
+torch>=2.4
+onnx>=1.16
+onnxruntime>=1.19

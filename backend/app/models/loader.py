@@ -156,6 +156,9 @@ def _read_metrics(path: Path) -> dict[str, Any] | None:
             return None
     if not isinstance(data["metric"]["value"], int | float):
         return None
+    # Una corrida de prueba con datos sintéticos no es una métrica medida.
+    if data.get("sample_run") or data["metric"]["type"] not in ("modeled", "observed"):
+        return None
     return data
 
 
@@ -181,7 +184,9 @@ class ModelRegistry:
         metrics = _read_metrics(folder / "metrics.json")
         if metrics is None:
             return LoadedModel(
-                spec, "fallback", "hay artefacto pero falta metrics.json con la métrica medida"
+                spec,
+                "fallback",
+                "hay artefacto pero falta un metrics.json con métrica medida (o es de una corrida de prueba)",
             )
         try:
             predictor = _load_onnx(artifact) if spec.kind == "onnx" else _load_xgboost(artifact)

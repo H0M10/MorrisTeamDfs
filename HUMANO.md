@@ -120,3 +120,53 @@ El agente dejó un lienzo de prueba y un botón que solo pide permiso de cámara
 ### H-10. El puerto 8000 está ocupado en la laptop de Hanniel
 
 Un proceso del sistema llamado "Manager" escucha en el puerto 8000, así que la API no puede arrancar ahí (`error while attempting to bind`). El repositorio usa **8010** por omisión. Si alguien copió un `.env` viejo con 8000, que lo cambie.
+
+### H-11. Datos: cuentas, parcelas y exportaciones (Persona 1, sábado en la mañana)
+
+Nada de esto corre en la laptop. Usa Colab.
+
+**Cuentas (cada quien la suya):**
+- **Earth Engine:** en code.earthengine.google.com/register crea o elige un proyecto de Google Cloud y regístralo para uso no comercial. El id del proyecto es lo que piden los guiones (`--project` o `EE_PROJECT`).
+- **Google Drive:** las exportaciones caen en la carpeta `fieldshift_exports` del Drive de quien las lanza.
+- **NASA POWER:** no pide cuenta ni llave.
+- **Earthdata Login** solo hace falta si se usa `earthaccess` para algo fuera de Earth Engine (hoy no).
+
+**Parcelas reales (decisión de una persona):** `data-pipeline/parcels/diamond_valley.geojson` trae un rectángulo de ejemplo. Hay que dibujar los pivotes reales de Diamond Valley (por ejemplo en geojson.io, mirando la imagen), cada uno con `parcel_id` y `valley: "diamond_valley_nv"`. Lo mismo para las dos o tres zonas de Nevada, Idaho y Utah, con su propio `valley`. Sin al menos dos valles no se puede entrenar.
+
+**Comandos, en orden (cuaderno `data-pipeline/notebooks/field_shift_pipeline.ipynb` en Colab, o a mano):**
+
+```bash
+pip install -r data-pipeline/requirements.txt          # 1 a 2 GB de disco en Colab
+earthengine authenticate                               # en Colab: ee.Authenticate()
+cd data-pipeline
+
+# 1. Cobertura. RAM: < 1 GB. Lee la salida antes de fijar años.
+python ee_coverage.py --parcels parcels/diamond_valley.geojson --project <proyecto-ee>
+
+# 2. Exportación a Drive. RAM: < 1 GB (el cruce corre en Earth Engine). De minutos a una hora.
+python ee_export.py --parcels parcels/diamond_valley.geojson --start-year <A> --end-year <B> --project <proyecto-ee> --wait
+
+# 3. Tabla final. RAM: < 1 GB con decenas de parcelas. Pide POWER por internet.
+python build_table.py --parcels parcels/diamond_valley.geojson --exports <carpeta-de-drive> --out <salida>.parquet
+```
+
+Querétaro: los mismos pasos con `--unlabeled` en 1 y 2, cuando exista su polígono.
+
+**Lo que no se pudo comprobar sin la cuenta:** los identificadores de colección de `data-pipeline/config.py` y los nombres de banda (HLS, OpenET `et_ensemble_mad`, SMAP `sm_surface` y `sm_rootzone`, SoilGrids). El paso 1 los imprime. Si algo sale `NO ENCONTRADA`, corrige `config.py` y anótalo en `PLAN.md`.
+
+### H-12. Modelos: entrenamiento fuera de la laptop (Persona 2, tras H-11)
+
+```bash
+pip install -r models/requirements.txt      # con PyTorch: unos 3 GB de disco
+
+python models/model_1_crop_water/train.py        --table <tabla>.parquet --test-valley diamond_valley_nv   # CPU, < 2 GB RAM
+python models/model_2_prior_crop_effect/train.py --table <tabla>.parquet --test-valley diamond_valley_nv   # CPU, < 1 GB RAM
+python models/model_4_moisture_cqr/train.py      --table <tabla>.parquet --test-valley diamond_valley_nv   # CPU, < 1 GB RAM
+python models/model_3_crop_history_gru/train.py  --table <tabla>.parquet --test-valley diamond_valley_nv   # PyTorch, unos 3 GB RAM; GPU opcional
+```
+
+- No piden ninguna cuenta ni token: solo la tabla de H-11 con al menos dos valles.
+- Colab gratuito (unos 12 GB de RAM) alcanza para los cuatro con decenas de miles de filas. La máquina rentada solo hace falta si la tabla pasa de unos millones de filas: es la decisión de pago ya anotada arriba.
+- El modelo 1 se detiene si `models/kc_monthly.csv` está vacío (H-04).
+- El guion del modelo 3 **no se ha ejecutado nunca** (PyTorch no se instala en la laptop). Pruébalo primero con `--sample`.
+- Al terminar: llena `models/<modelo>/CARD.md` y sube `backend/artifacts/<modelo>/` (`model.ubj` u `.onnx` más `metrics.json`).
