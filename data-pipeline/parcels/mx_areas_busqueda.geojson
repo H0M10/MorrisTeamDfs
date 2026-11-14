@@ -1,0 +1,32 @@
+{
+  "type": "FeatureCollection",
+  "name": "mx_areas_busqueda",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "parcel_id": "mx-qro-sjr-area",
+        "valley": "qro_sjr_pedro_escobedo",
+        "region_mode": "unlabeled",
+        "note": "AREA DE BUSQUEDA, no parcela. Rectangulo aproximado trazado por un agente alrededor de San Juan del Rio y Pedro Escobedo, Qro. Sirve para consultar cobertura y ubicar zonas de riego. Las parcelas las define una persona (HUMANO.md)."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[-100.25, 20.30], [-99.90, 20.30], [-99.90, 20.62], [-100.25, 20.62], [-100.25, 20.30]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "parcel_id": "mx-gto-norte-area",
+        "valley": "gto_norte",
+        "region_mode": "unlabeled",
+        "note": "AREA DE BUSQUEDA, no parcela. Rectangulo aproximado trazado por un agente sobre el norte de Guanajuato (San Felipe, San Diego de la Union, Dolores Hidalgo, San Luis de la Paz). Las parcelas las define una persona (HUMANO.md)."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[-101.45, 21.00], [-100.30, 21.00], [-100.30, 21.75], [-101.45, 21.75], [-101.45, 21.00]]]
+      }
+    }
+  ]
+}

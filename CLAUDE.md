@@ -60,8 +60,8 @@ Datos y Modelos trabajan en pareja el sábado por la mañana: sin tablas no hay 
 | Landsat / HLS | 30 m | NDVI, NDMI, BSI, NDTI y la tira de color de la parcela |
 | SMAP | 9 km | Humedad regional y validación del modelo 4 |
 | USDA CDL | 30 m, solo EE. UU. | Etiquetas de cultivo y barbecho por año |
-| OpenET | 30 m, oeste de EE. UU. | Evapotranspiración observada |
-| SSURGO (EE. UU.) / SoilGrids (global, 250 m) | | Textura, materia orgánica, capacidad de agua |
+| OpenET | 30 m, los 48 estados contiguos de EE. UU. desde el 15 de diciembre de 2025 (validación publicada solo del oeste) | Evapotranspiración observada |
+| SSURGO (EE. UU.) / SoilGrids (global, 250 m) | | Textura, materia orgánica, capacidad de agua. SoilGrids no está en la lista del reto: se usa declarado, solo donde no hay SSURGO |
 | SRTM | 30 m | Elevación y pendiente |
 
 **Si sobra tiempo:** ECOSTRESS (70 m, cola asíncrona en AppEEARS), GPM IMERG (lluvia para las partículas del 3D), GRACE como contexto de cuenca, QuickStats y precios de AMS, Sentinel-2.
@@ -78,7 +78,8 @@ Correcciones que ya se decidieron y no se reabren:
 **Regiones:**
 
 - **Con etiquetas:** Diamond Valley, Nevada (el caso del reto; centro aproximado 39.68, -116.03) y dos o tres zonas de riego parecidas de Nevada, Idaho y Utah, elegidas por similitud: pivote, alfalfa y granos. Aquí se entrena y se mide.
-- **Sin etiquetas:** una parcela de Querétaro, en la zona de riego de San Juan del Río y Pedro Escobedo. El polígono lo define una persona del equipo. No hay CDL ni OpenET: corre la física y el modelo 3 aparece como experimental.
+- **Sin etiquetas:** parcelas de Querétaro (zona de riego de San Juan del Río y Pedro Escobedo) y del norte de Guanajuato (San Felipe, San Diego de la Unión, Dolores Hidalgo, San Luis de la Paz). Los polígonos los define una persona del equipo. No hay CDL ni OpenET: corre la física y el modelo 3 aparece como experimental. Las zonas probables de riego salen de `data-pipeline/ee_irrigated_scout.py`; son una conjetura de ubicación, no una etiqueta.
+- Qué datos hay en cada región y qué responde cada recurso: `data-pipeline/PLAN_DE_DATOS.md`.
 - Las cifras de disponibilidad de acuíferos de CONAGUA solo se muestran si una persona las verificó contra la publicación oficial y anotó la fecha. Van como contexto de cuenca.
 
 ## 5. Modelos

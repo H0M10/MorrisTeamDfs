@@ -391,6 +391,51 @@
       "title": "Entrenamiento 50/50 en Colab: Modelos 1+4 (H0M10) y Modelo 3 ONNX + opc. 2 (Checo-coder)",
       "blocks": "Compuerta G4 (corte de modelos) y Extra #3 Red en vivo",
       "status": "Pendiente"
+    },
+    {
+      "id": "H-15",
+      "priority": "P1",
+      "owner": "H0M10",
+      "due": "Sáb 16:00",
+      "title": "Pedir llaves gratuitas: NASS QuickStats, OpenET API y AMS MyMarketNews (y Earthdata si se usa ECOSTRESS)",
+      "blocks": "Rendimientos y superficie por condado, precios reales para la restricción de comprador",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-16",
+      "priority": "P1",
+      "owner": "Equipo",
+      "due": "Sáb 17:00",
+      "title": "Decidir de dónde sale el cultivo en México: agricultor + FAO GAEZ, o SIAP (fuera de la lista del reto, declarado)",
+      "blocks": "Rotación actual y alternativas en Querétaro y Guanajuato",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-17",
+      "priority": "P0",
+      "owner": "H0M10 / Checo-coder",
+      "due": "Sáb 17:00",
+      "title": "Trazar polígonos reales: pivote de Diamond Valley (hoy es el rectángulo del fixture) y parcelas en Qro y Gto norte usando data-pipeline/parcels/mx_manchas_candidatas_2025.geojson",
+      "blocks": "Agua observada confiable en DV; extracción de Querétaro y Guanajuato (D-04)",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-18",
+      "priority": "P1",
+      "owner": "Equipo",
+      "due": "Sáb 18:00",
+      "title": "Datos del agricultor por parcela: agua máxima, maquinaria, cultivos sin comprador, ventana de siembra y, en México, historial de cultivos",
+      "blocks": "Restricciones reales (backend/data/<parcel_id>.meta.json); has_viable_options real",
+      "status": "Pendiente"
+    },
+    {
+      "id": "H-19",
+      "priority": "P2",
+      "owner": "H0M10",
+      "due": "Sáb 19:00",
+      "title": "Decidir si se mantiene SoilGrids (no está en la lista del reto) declarado, o solo SSURGO en EE. UU.",
+      "blocks": "Perfil de suelo en México",
+      "status": "Pendiente"
     }
   ],
   "decisions_log": [
@@ -458,6 +503,11 @@
       "when": "2026-11-14 14:18",
       "decision": "D-03 completado con luca-497507 (backend/data/diamond_valley.parquet, 2022–2024) y alias fixture->real (dv-nv-fixture-01 -> dv-nv-01) en evaluation.py.",
       "impact": "Validado 100% contra contracts/schema.json y 161 pruebas pytest en verde; activar DATA_MODE=real en Railway sirve al instante datos satelitales reales en /tool."
+    },
+    {
+      "when": "2026-11-14 14:25",
+      "decision": "AGENTS.md actualizado: OpenET cubre 48 estados (dic. 2025), el norte de Guanajuato entra como región sin etiquetas y SoilGrids se usa declarado solo donde no hay SSURGO.",
+      "impact": "Análisis de recursos por pregunta en data-pipeline/PLAN_DE_DATOS.md; Earth Engine confirma datos globales en Qro y Gto norte; riego probable ubicado con HLS (conjetura). Pendientes H-15 a H-19."
     }
   ]
 }

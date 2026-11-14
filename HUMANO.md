@@ -175,3 +175,26 @@ Sin llave funcionan: NASA POWER, CropScape (CDL), Soil Data Access (SSURGO) y la
 ### H-16. Decidir cómo se sabe qué se siembra en Querétaro (equipo)
 
 Ningún recurso de la lista del reto dice qué se cultiva en México. Opciones: (a) lo declara el agricultor, con FAO GAEZ como aptitud; (b) usar estadística oficial mexicana (SIAP), saliendo de la lista y declarándolo en la página del proyecto. Detalle en `data-pipeline/PLAN_DE_DATOS.md` §5.
+
+### H-17. Trazar los polígonos reales (Hanniel y Checo, antes de las 17:00)
+
+1. **Diamond Valley:** `data-pipeline/parcels/diamond_valley.geojson` todavía es el rectángulo de ejemplo del fixture, no un pivote. Traza el círculo de un pivote real (geojson.io con la imagen de fondo) y vuelve a correr la extracción. Hasta entonces, el agua observada (OpenET) puede mezclar campo con terreno sin cultivar.
+2. **Querétaro y norte de Guanajuato:** abre `data-pipeline/parcels/mx_manchas_candidatas_2025.geojson` en geojson.io. Son las manchas verdes en la temporada seca que además se cosechan (probable riego), calculadas con HLS en Earth Engine. Elige una o dos parcelas en cada región y trázalas con `parcel_id` y `valley` (`qro_sjr_pedro_escobedo` o `gto_norte`).
+3. Corre `ee_export.py --unlabeled --start-year 2023 --end-year 2025` y `build_table.py` sobre esos polígonos (36 meses completos).
+
+Las manchas son una conjetura de ubicación, no parcelas ni cultivos. Elegir dónde está una parcela es una decisión de persona.
+
+### H-18. Datos que solo sabe el agricultor (equipo, antes de las 18:00)
+
+Por cada parcela (Diamond Valley, Querétaro y Guanajuato), con un agricultor o técnico real si se puede, o declarado como supuesto si no:
+- agua máxima por año (mm, o volumen del pozo o la concesión),
+- maquinaria disponible,
+- cultivos sin comprador,
+- ventana de siembra,
+- en México, qué sembró cada mes de los últimos tres años (no hay CDL).
+
+Va en `backend/data/<parcel_id>.meta.json` (formato en `backend/README.md`). Sin esto, ninguna rotación se descarta y la ficha lo dice.
+
+### H-19. Decidir si se mantiene SoilGrids (Hanniel)
+
+SoilGrids (ISRIC) da el suelo en la tabla real y es la única fuente de suelo para México, pero **no está en la lista de recursos del reto**. Opciones: (a) mantenerlo y declararlo en la página del proyecto; (b) usar solo SSURGO en EE. UU. y dejar el suelo de México como "información que falta". `AGENTS.md` ya dice que se usa declarado y solo donde no hay SSURGO.

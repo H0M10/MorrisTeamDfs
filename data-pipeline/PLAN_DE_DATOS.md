@@ -5,6 +5,121 @@ Las marcas **Verificado hoy** son llamadas reales hechas ese día desde la lapto
 lo demás sale de la documentación de cada servicio y hay que comprobarlo con
 `ee_coverage.py` o con una llamada real antes de depender de ello.
 
+## 0. Qué sacamos de cada recurso, pregunta por pregunta
+
+El reto pide comparar al menos tres rotaciones (incluida la actual) y decir para
+cada una por qué se sugiere, qué evidencia la apoya, qué beneficios tiene, qué
+información falta y qué riesgos debe revisar alguien local. Eso se traduce en
+ocho preguntas del agricultor. Cada recurso vale por la pregunta que contesta;
+si no contesta ninguna, sobra.
+
+Columnas: **DV** = Diamond Valley (nivel 1); **MX** = Querétaro y norte de
+Guanajuato (nivel 3). "Tabla real" = ya viene en
+`backend/data/diamond_valley.parquet` (36 meses, 2022–2024).
+
+### 1. ¿Qué tengo sembrado y qué hubo antes?
+
+| Recurso | Qué se saca | Dónde termina | DV | MX |
+| --- | --- | --- | --- | --- |
+| CDL | Clase de cultivo por año y píxel | `timeline.crop_code`, rotación `current` | Tabla real | No existe |
+| HLS (Landsat + Sentinel-2) | NDVI mensual: cuántos ciclos verdes hay al año y cuándo se siembra y cosecha; color medio | La tira de la parcela, `indices` | Tabla real | Verificado en GEE |
+| MODIS / VIIRS | Fenología y cobertura regional a 250–1000 m | Solo contexto: "en la región el ciclo empieza en…" | Opcional | Verificado (cobertura 2024) |
+| El agricultor | Historial declarado | Rotación `current` donde no hay CDL | — | Obligatorio |
+
+### 2. ¿Cuánta agua usa cada cultivo?
+
+| Recurso | Qué se saca | Dónde termina | DV | MX |
+| --- | --- | --- | --- | --- |
+| OpenET | ET real mensual por campo (mm) | `et_mm`; etiqueta del modelo 1 | Tabla real | No existe |
+| NASA POWER | Tmax, Tmin, rocío, viento y radiación → ET de referencia (Penman-Monteith) | `et0`; agua de cada rotación con FAO-56 | Tabla real | Verificado |
+| ECOSTRESS | ET instantánea a 70 m, pocas pasadas | Validación puntual del agua estimada | Pendiente | Pendiente |
+
+### 3. ¿Cuánta agua tengo y cuánta cae?
+
+| Recurso | Qué se saca | Dónde termina | DV | MX |
+| --- | --- | --- | --- | --- |
+| NASA POWER | Lluvia diaria a ~50 km | `rain_mm` | Tabla real | Verificado |
+| GPM IMERG | Lluvia satelital a ~10 km; capta mejor las tormentas de verano del Bajío | Comparar con POWER; riesgo de lluvias intensas | Pendiente | Verificado en GEE (1998–2025) |
+| PRISM | Lluvia y temperatura a ~4 km con relieve | Clima más fino en valles de montaña | Pendiente | No existe |
+| SMAP | Humedad del suelo a 9 km | `soil_moisture` (regional); modelo 4 | Tabla real | Verificado en GEE (2015–2026) |
+| USGS NWIS | Niveles medidos de pozos | `basin_context`: tendencia del acuífero | Pendiente (falta elegir pozos con registro reciente) | No existe |
+| El agricultor | Agua que puede usar (pozo, concesión) | `constraints.max_water_mm_year` | Pendiente (H-13) | Pendiente |
+
+### 4. ¿Qué aguanta el clima de mi zona?
+
+| Recurso | Qué se saca | Dónde termina | DV | MX |
+| --- | --- | --- | --- | --- |
+| NASA POWER | Días con helada y con calor por mes, desde 1981 | `frost_days`, `heat_days`, riesgos de cada rotación | Tabla real | Verificado |
+| PRISM | Fechas de primera y última helada; normales de 30 años | Ventana de siembra con dato, no declarada | Pendiente | No existe |
+| ECOSTRESS | Temperatura de la superficie por la tarde | Puntos calientes de estrés | Pendiente | Pendiente |
+| FAO GAEZ | Aptitud climática por cultivo | Filtro de cultivos candidatos | Opcional | **Principal**: es lo único de la lista que dice qué cultivos caben |
+
+### 5. ¿Cómo es mi suelo y mi terreno?
+
+| Recurso | Qué se saca | Dónde termina | DV | MX |
+| --- | --- | --- | --- | --- |
+| SSURGO / STATSGO2 (Web Soil Survey es la misma base en web) | Textura, materia orgánica, agua disponible, grupo hidrológico, factor K, capa limitante | `soil_profile` (observado) | Verificado (API sin llave); **falta integrarlo** | No existe |
+| SoilGrids | Textura y carbono a 250 m | `soil_profile` (modelado) | Tabla real | Verificado en GEE |
+| SRTM | Elevación y pendiente | `slope_pct`; ET de referencia; riesgo de escurrimiento | Tabla real | Verificado en GEE |
+| FAO GAEZ | Restricciones de suelo por cultivo | Riesgos en la ficha | Opcional | Pendiente |
+
+**Ojo con SoilGrids:** está en `AGENTS.md`, pero **no aparece en la lista del
+reto** (es de ISRIC). En México es la única fuente de propiedades de suelo que
+tenemos. Se puede seguir usando si se declara; si el equipo quiere apegarse
+solo a la lista, en México el suelo quedaría como "información que falta".
+
+### 6. ¿Mi suelo queda desnudo y se erosiona?
+
+| Recurso | Qué se saca | Dónde termina | DV | MX |
+| --- | --- | --- | --- | --- |
+| HLS | BSI (suelo desnudo) y NDTI (rastrojo) por mes | `soil_cover_months_36m`; beneficio de "más suelo" | Tabla real | Verificado |
+| Sentinel-2 | 10–20 m y borde rojo | Ya entra dentro de HLS S30; NDRE opcional | — | — |
+| IMERG + SRTM | Lluvias intensas sobre pendiente | Riesgo cualitativo de erosión (RUSLE opcional) | Pendiente | Pendiente |
+
+### 7. ¿Qué siembran campos parecidos y qué pasó después?
+
+De aquí deben salir las rotaciones alternativas, en lugar de plantillas.
+
+| Recurso | Qué se saca | Dónde termina | DV | MX |
+| --- | --- | --- | --- | --- |
+| CDL | Censo de cultivos y transiciones año con año dentro del valle | Cultivos candidatos y rotaciones observadas | Censo del condado hecho; **falta el del valle** | No existe |
+| QuickStats | Superficie y rendimiento por condado | Confirma el censo; rendimientos reales | Necesita llave | No existe |
+| Ag Data Commons | Ensayos de rotación publicados | Evidencia citada en la ficha | Consulta puntual | Consulta puntual |
+| FAO GAEZ | Rendimiento potencial por cultivo | Comparar alternativas | Opcional | Principal |
+
+### 8. ¿Lo puedo vender?
+
+| Recurso | Qué se saca | Dónde termina | DV | MX |
+| --- | --- | --- | --- | --- |
+| AMS Market News | Precios de heno y granos | Restricción de comprador con dato | Necesita llave | No existe |
+| QuickStats | Producción del condado | Contexto | Necesita llave | No existe |
+| El agricultor | Cultivos sin comprador | `constraints.crops_without_buyer` | Pendiente | **Única fuente** |
+
+### ¿Qué tan confiable es cada cifra?
+
+Pares para validar: OpenET contra FAO-56 (modelo 1); SMAP para el modelo 4;
+pozos de NWIS contra SMAP; IMERG contra la lluvia de POWER.
+
+### Lo que no contesta ninguna pregunta nueva
+
+- **NAIP:** no sirve para series mensuales. Solo podría ayudar a trazar a ojo los linderos de parcelas en EE. UU.
+- **NLCD:** CDL dice lo mismo, pero por cultivo.
+- **NLDAS / GLDAS y ERA5:** repiten lo que ya dan POWER y SMAP.
+- **GEDI y LANDFIRE:** son para bosque.
+- **CoCoRaHS:** no hay estaciones útiles en Diamond Valley ni en México.
+
+### Orden de trabajo hasta la compuerta de las 19:00
+
+1. **Ya está en la tabla real:** POWER, HLS, CDL, OpenET, SMAP, SRTM y SoilGrids.
+2. **Siguiente, barato y sin llave:** transiciones de CDL en el valle, IMERG, pozos de NWIS, SSURGO por API y GAEZ para México.
+3. **Si sobra tiempo:** PRISM, QuickStats y AMS (con llave), ECOSTRESS y MODIS.
+
+**Advertencia sobre la tabla real:** el polígono de `dv-nv-01` todavía es el
+rectángulo de ejemplo del fixture, no un pivote real. En julio de 2022 OpenET da
+149 mm y la ET de referencia 230 mm (Kc observado de alrededor de 0.65, frente
+a 0.95 de FAO-56). Antes de interpretarlo hay que trazar el pivote real: el
+rectángulo puede mezclar campo con terreno sin cultivar.
+
 ## 1. La regla, bien leída
 
 `AGENTS.md` regla 1 no dice "solo datos de la NASA". Dice: **nada inventado se
@@ -136,16 +251,45 @@ demostración del nivel 1 y Querétaro el del nivel 3.
 5. **Comprador**: QuickStats (se siembra y se vende en el condado) y AMS
    (precio). Mientras no haya llave, lo declara el agricultor.
 
-## 5. Querétaro
+## 5. Querétaro y norte de Guanajuato
+
+**Verificado en Earth Engine el 2026-11-14** con el proyecto `luca-497507` y
+dos áreas de búsqueda (`parcels/mx_areas_busqueda.geojson`; son rectángulos
+aproximados trazados por un agente, no parcelas):
+
+- Hay HLS L30 (2013–2026), HLS S30 (2015–2026), Landsat 8 y 9, SMAP L4
+  (2015–2026), IMERG mensual (1998–2025), SRTM y SoilGrids.
+- No aplican CDL, OpenET ni PRISM.
+- Para 36 meses completos conviene **2023–2025**; 2026 está incompleto.
+
+**¿Dónde hay riego?** `ee_irrigated_scout.py` busca píxeles verdes en la
+temporada seca (NDVI mediano de HLS mayor que 0.5 de marzo a mayo de 2025) que
+además quedan casi sin vegetación en algún momento del año (percentil 10 anual
+menor que 0.3), para descartar bosque. Los dos umbrales son supuestos.
+
+| Área | Superficie | Verde en la seca | Verde en la seca y se cosecha (probable riego) | Cultivo según MODIS 2024 (500 m) |
+| --- | ---: | ---: | ---: | ---: |
+| San Juan del Río – Pedro Escobedo | 129 745 ha | 10 134 ha | 3 248 ha | 46 339 ha |
+| Norte de Guanajuato | 993 083 ha | 37 495 ha | 5 160 ha | 144 185 ha |
+
+- Sin el filtro de cosecha, las manchas más grandes del norte de Guanajuato
+  caían en las sierras (bosque siempre verde). Con el filtro desaparecen.
+- La cifra de riego es **un mínimo**. Un trigo o una cebada de invierno que ya
+  se secó en abril queda por debajo del umbral de la mediana de marzo a mayo.
+- La imagen de MODIS de 2025 existe en el catálogo pero viene vacía; por eso se
+  usa 2024.
+- Las 16 manchas candidatas más grandes están en
+  `parcels/mx_manchas_candidatas_2025.geojson`. Sirven para que una persona
+  elija dónde trazar parcelas. **No son parcelas ni etiquetas de cultivo.**
 
 En la lista del reto **no hay ningún recurso que diga qué se siembra en
 México**: CDL, OpenET, SSURGO, QuickStats, AMS, NWIS y PRISM son solo de EE. UU.
 
 Con la lista se puede:
-- clima (POWER, IMERG), satélite (HLS, Sentinel-2, SMAP), relieve (SRTM) y
-  suelo global (SoilGrids);
+- clima (POWER, IMERG), satélite (HLS, Sentinel-2, SMAP) y relieve (SRTM);
 - aptitud de cultivos con **FAO GAEZ**;
-- ver con HLS cuántos ciclos verdes tiene la parcela al año, sin saber de qué cultivo.
+- con HLS, cuántos ciclos verdes tiene la parcela al año y si hay riego en la
+  seca, sin saber de qué cultivo.
 
 El cultivo lo **declara el agricultor**, como ya prevé el respaldo del modelo 3.
 Usar estadística oficial mexicana (SIAP) sería salir de la lista: es decisión
