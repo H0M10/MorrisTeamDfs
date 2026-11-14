@@ -44,7 +44,7 @@ def test_health(client: TestClient) -> None:
     body = client.get("/health").json()
     assert body["status"] == "ok"
     assert body["data_mode"] == "fixture"
-    assert body["contract_version"] == "0.1.0"
+    assert body["contract_version"] == load_fixture("diamond_valley")["contract_version"]
     assert body["supabase_configured"] is False
     assert body["models"]["model_1_crop_water"] == {
         "status": "fallback",

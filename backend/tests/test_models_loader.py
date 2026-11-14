@@ -68,6 +68,22 @@ def test_unlabeled_region_marks_model_2_absent(tmp_path: Path) -> None:
     assert report["model_1_crop_water"]["status"] == "fallback"
 
 
+def test_model_3_is_experimental_in_unlabeled_regions_even_in_fallback(tmp_path: Path) -> None:
+    """S-01: en Querétaro el modelo 3 es experimental aunque esté en respaldo."""
+    registry = ModelRegistry(tmp_path)
+    unlabeled = registry.report("unlabeled")
+    Models.model_validate(unlabeled)
+    assert unlabeled["model_3_crop_history_gru"]["status"] == "fallback"
+    assert unlabeled["model_3_crop_history_gru"]["experimental"] is True
+    for name in NAMES:
+        if name != "model_3_crop_history_gru":
+            assert unlabeled[name]["experimental"] is False
+
+    labeled = registry.report("labeled")
+    Models.model_validate(labeled)
+    assert all(report["experimental"] is False for report in labeled.values())
+
+
 def test_fallback_model_refuses_to_predict(tmp_path: Path) -> None:
     with pytest.raises(RuntimeError, match="respaldo"):
         ModelRegistry(tmp_path).get("model_1_crop_water").predict(np.zeros((1, 3)))
@@ -128,7 +144,8 @@ def test_artifact_with_metrics_is_trained_and_predicts(tmp_path: Path) -> None:
 
 
 def test_corrupt_onnx_artifact_falls_back(tmp_path: Path) -> None:
-    pytest.importorskip("onnxruntime")
+    # Con poca memoria libre la DLL de onnxruntime puede no cargar: se omite, no falla.
+    pytest.importorskip("onnxruntime", exc_type=ImportError)
     folder = tmp_path / "model_3_crop_history_gru"
     folder.mkdir(parents=True)
     (folder / "model.onnx").write_bytes(b"esto no es un modelo")

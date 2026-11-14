@@ -18,6 +18,7 @@ import json
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import date
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Literal
 
@@ -162,6 +163,12 @@ def _read_metrics(path: Path) -> dict[str, Any] | None:
     return data
 
 
+@lru_cache
+def get_registry(models_dir: Path) -> ModelRegistry:
+    """Un registro por carpeta de artefactos, compartido por rutas y servicios."""
+    return ModelRegistry(models_dir)
+
+
 class ModelRegistry:
     def __init__(self, models_dir: Path) -> None:
         self.models_dir = models_dir
@@ -248,7 +255,9 @@ class ModelRegistry:
         }
         return {
             "status": "absent" if absent else "fallback",
-            "experimental": False,
+            # Fuera de EE. UU. la lectura del historial es experimental aunque
+            # esté en respaldo: no hay etiquetas locales para medirla.
+            "experimental": unlabeled and spec.name == "model_3_crop_history_gru",
             "algorithm": spec.algorithm,
             "partition_method": _t(
                 "No aplica: modelo no disponible.", "Not applicable: model unavailable."
