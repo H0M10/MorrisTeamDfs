@@ -133,11 +133,11 @@ Querétaro: los mismos pasos con `--unlabeled` en 1 y 2, cuando exista su políg
 
 ### H-12. Modelos: entrenamiento 50/50 fuera de la laptop (`@H0M10` + `@Checo-coder`, tras H-11)
 
-- **`@H0M10` (Completado en CPU local, `< 3 s` por modelo, sin rentar GPU):** entrenados y medidos sobre `data-pipeline/exports/multi_valley_us.parquet` (partición estricta por valle, prueba en `diamond_valley_nv` no visto):
+- **`@H0M10` / `@Checo-coder` (4/4 modelos entrenados y medidos en CPU local, sin rentar GPU):** entrenados sobre `data-pipeline/exports/multi_valley_us.parquet` (partición estricta por valle, prueba en `diamond_valley_nv` no visto):
   - **Modelo 1 (`model_1_crop_water`):** `9.25 mm` MAE vs `29.05 mm` FAO-56 (**gana**; `backend/artifacts/model_1_crop_water/` + `models/model_1_crop_water/CARD.md`).
+  - **Modelo 3 (`model_3_crop_history_gru`):** `0.4143` F1 macro vs `0.2222` línea base `'alfalfa'` (`0.581` en último año; **gana** · ONNX verificado en CPU + `attention_weight` activo en `timeline`; `backend/artifacts/model_3_crop_history_gru/` + `models/model_3_crop_history_gru/CARD.md`).
   - **Modelo 4 (`model_4_moisture_cqr`):** cobertura `58.3 %` vs `22.9 %` rango histórico (**gana** a la línea base, con aviso declarado de brecha frente al objetivo de `90 %`; `backend/artifacts/model_4_moisture_cqr/` + `models/model_4_moisture_cqr/CARD.md`).
   - **Modelo 2 (`model_2_prior_crop_effect`):** `-6.3 %` vs línea base sin cultivo anterior (**pierde**; reportado íntegro en `backend/artifacts/model_2_prior_crop_effect/` + `models/model_2_prior_crop_effect/CARD.md`, sin evidencia local de mejora).
-- **`@Checo-coder` (Pendiente para G4):** entrenar en Colab gratuito (o CPU) el **Modelo 3** (`model_3_crop_history_gru`, GRU PyTorch -> ONNX) sobre `data-pipeline/exports/multi_valley_us.parquet`, validar Macro F1 por clase en valle no visto y llenar `models/model_3_crop_history_gru/CARD.md`.
 
 ```bash
 pip install -r models/requirements.txt      # con PyTorch: unos 3 GB de disco
@@ -215,6 +215,8 @@ Decidiste usar también estadística oficial mexicana. El dominio de datos abier
 3. Guárdalo en `data-pipeline/exports/siap/` (esa carpeta no se sube al repositorio) y avísame.
 
 Con eso reemplazo el historial supuesto de Querétaro por lo que de verdad se siembra con riego en el municipio, y agrego precios.
+
+> **Avance 2026-11-14 (`@H0M10`):** ya quedó registrado en `backend/data/qro-sjr-01.meta.json` (`context_notes`) el agregado estatal oficial de SIAP 2025 para Querétaro (`117,320.01 ha` sembradas, `110,271.76 ha` cosechadas, `5,608,171.22` miles de pesos; ciclos cíclicos + perennes, riego + temporal), declarado explícitamente como contexto estatal sin extrapolar cultivos ni precios por municipio. El CSV municipal por cultivo sigue opcional/pendiente.
 
 ### Estado de H-15 a H-19 (actualizado por Claude)
 

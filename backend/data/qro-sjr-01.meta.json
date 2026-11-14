@@ -33,8 +33,12 @@
   "constraints_source": "Supuesto del equipo, no declarado por un agricultor ni tomado de SIAP. Historial: meses verdes en HLS (enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, noviembre, diciembre); verde 10 meses o más al año: se supone un forraje perenne (alfalfa), común bajo riego en el Bajío. Falta confirmarlo con SIAP o el agricultor. Agua: FAO-56 para ese historial (836 mm/año; no se asigna agua extra). Ventana: NASA POWER, todos los meses tienen temperatura media de 5 °C o más. Maquinaria: la que pide ese historial (riego_compuerta, sembradora_convencional, empacadora), con riego por gravedad (supuesto). Sin comprador: sin dato.",
   "context_notes": [
     {
-      "es": "Qué se siembra y a qué precio en el municipio debe salir del cierre agrícola municipal de SIAP (riego, ciclos otoño-invierno y primavera-verano). Aún no se integra: pendiente de descarga.",
-      "en": "What is grown and at what price in the municipality should come from SIAP's municipal crop closure. Not integrated yet: pending download."
+      "es": "SIAP 2025, resumen estatal de Querétaro (Cíclicos + Perennes, Riego + Temporal): 117,320.01 ha sembradas, 110,271.76 ha cosechadas y valor de producción de 5,608,171.22 miles de pesos (MXN). Es un agregado estatal (contexto de entidad, no de la parcela ni del municipio) sin desglose por cultivo ni precios.",
+      "en": "SIAP 2025, state summary for Querétaro (Annual + Perennial, Irrigated + Rainfed): 117,320.01 ha planted, 110,271.76 ha harvested, production value 5,608,171.22 thousand MXN. State-level aggregate (not field or municipality scale) without per-crop or price breakdown."
+    },
+    {
+      "es": "Qué se siembra y a qué precio en el municipio debe salir del cierre agrícola municipal de SIAP (riego, ciclos otoño-invierno y primavera-verano). El desglose municipal por cultivo sigue pendiente.",
+      "en": "What is grown and at what price in the municipality should come from SIAP's municipal crop closure. Per-crop municipal breakdown is still pending."
     }
   ]
 }

@@ -39,9 +39,9 @@
 | M-01 | Definir esqueleto de `CARD.md` y poblar Banco FAO-56 (`kc_monthly.csv` + `fao56_crop_bank.csv`) | `@H0M10` / ARGON | G1 (Sáb 10:00) | **Completado** (32 códigos / 132 filas Kc; pendiente revisión agronómica H-03) |
 | M-02 | **Prioridad 1 · Modelo 1:** entrenar y validar en CPU/Colab (XGBoost consumo de agua vs tabla FAO-56 en valle no visto) | `@H0M10` | G4 (Dom 08:00) | **Completado** (`9.25 mm` MAE en `diamond_valley_nv` vs `29.05 mm` FAO-56 — **gana** · `backend/artifacts/model_1_crop_water/` + `CARD.md`) |
 | M-05 | **Prioridad 2 · Modelo 4:** calibrar y validar en CPU/Colab (Balance FAO-56 + residual + CQR 90% a escala SMAP 9 km) | `@H0M10` | G4 (Dom 08:00) | **Completado** (`58.3 %` cobertura CQR vs `22.9 %` rango histórico en `diamond_valley_nv` — **gana** a la línea base con aviso de brecha vs objetivo `90 %` · `backend/artifacts/model_4_moisture_cqr/` + `CARD.md`) |
-| M-04 | **Prioridad 3 · Modelo 3:** entrenar en Colab/CPU, validar Macro F1 y exportar a ONNX (GRU ligera con atención temporal) | `@Checo-coder` | G4 (Dom 08:00) | Pendiente (listo para entrenar sobre `data-pipeline/exports/multi_valley_us.parquet`) |
+| M-04 | **Prioridad 3 · Modelo 3:** entrenar en Colab/CPU, validar Macro F1 y exportar a ONNX (GRU ligera con atención temporal) | `@Checo-coder` + `@H0M10` | G4 (Dom 08:00) | **Completado** (`0.4143` F1 macro en `diamond_valley_nv` vs `0.2222` línea base `'alfalfa'`, último año `0.581` F1 macro — **gana** · ONNX verificado en CPU · `backend/artifacts/model_3_crop_history_gru/` + `CARD.md`) |
 | M-03 | **Prioridad 4 (solo si sobra tiempo) · Modelo 2:** entrenar XGBoost observacional efecto cultivo anterior (respaldo: `"Sin evidencia local"`) | `@Checo-coder` + `@H0M10` | G4 (Dom 08:00) | **Completado** (`-6.3 %` frente a línea base sin cultivo anterior en `diamond_valley_nv` — **pierde**, reportado íntegro como "sin evidencia local" · `backend/artifacts/model_2_prior_crop_effect/` + `CARD.md`) |
-| M-06 | Corte de modelos (Domingo 08:00): empaquetar solo artefactos con métrica validada y activar respaldos en los demás | `@H0M10` + `@Checo-coder` + ARGON | G4 (Dom 08:00) | Pendiente |
+| M-06 | Corte de modelos (Domingo 08:00): empaquetar solo artefactos con métrica validada y activar respaldos en los demás | `@H0M10` + `@Checo-coder` + ARGON | G4 (Dom 08:00) | **Listo para corte G4** (4/4 modelos entrenados y medidos en CPU; `model_1`, `model_3` y `model_4` ganan a su línea base — `model_4` con aviso de brecha vs meta 90 % — y `model_2` queda marcado `absent` en `unlabeled` / sin mejora en `labeled`) |
 
 ---
 
@@ -55,7 +55,7 @@
 | A-04 | Migraciones SQL y políticas RLS por token en `/supabase/migrations/` (`evaluations` y `reviews` sin PII) + degradación elegante si Supabase falla | `@H0M10` / Claude | G2 (Sáb 14:00) | **Completado** (SQL aplicado, RLS activo sin políticas y `/health` con `supabase_configured: true`) |
 | A-05 | Motor físico determinista `/backend/app/engine/`: evaluador de restricciones **primero** (`has_viable_options: false` si aplica), FAO-56 mensual, heladas/calor POWER, índices HLS (sin NDRE en Landsat, sin CAI) y filtro exponencial raíz | `@H0M10` / Claude | G2 (Sáb 14:00) | **Completado** — funciones probadas y conectadas a `backend/data/diamond_valley.parquet` vía `table_to_contract.py` |
 | A-06 | Integración de datos reales de Diamond Valley + 3 rotaciones comparables (actual, menos agua, más suelo) y soporte modo `unlabeled` (Querétaro) | `@H0M10` + `@Checo-coder` / Claude | G3 (Sáb 19:00) | **Completado (`DATA_MODE=real` activo en Railway)** — sirviendo `dv-nv-01` y `qro-sjr-01` validados contra `contracts/schema.json` (norte de Guanajuato pospuesto) |
-| A-07 | Integración de artefactos ONNX/XGBoost aprobados en corte de modelos (o activación explícita de respaldos) | `@H0M10` + `@Checo-coder` / Claude | G4 (Dom 08:00) | En curso (`model_1`, `model_2` y `model_4` cargados y validados con `loader.py` corrigiendo `absent` en `unlabeled`; falta `model_3` ONNX + inferencia en rotaciones alternativas) |
+| A-07 | Integración de artefactos ONNX/XGBoost aprobados en corte de modelos (o activación explícita de respaldos) | `@H0M10` + `@Checo-coder` / Claude | G4 (Dom 08:00) | En curso (`4/4` modelos cargados y validados contra `schema.json` incluyendo `model_3` ONNX con `attention_weight` sumando `1.0` y experimental en Querétaro; falta solo decidir/conectar inferencia de `model_1` en rotaciones alternativas vs FAO-56 calibrado) |
 
 ---
 
@@ -90,7 +90,7 @@
 | ID | Tarea | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
 | E-01 | Esqueleto `/engineer` leyendo métricas de modelos y pesos de atención de la API | `@alexishal8` / Claude | G2 (Sáb 14:00) | Completado (en crudo); sigue `@alexishal8` con `engineer/README.md` |
-| E-02 | Extra 3: Visualización de red en vivo con pesos reales del Modelo 3 (ocultar automáticamente si Modelo 3 no está entrenado) | `@alexishal8` | G5 (Dom 12:00) | Depende de M-04 / G4 |
+| E-02 | Extra 3: Visualización de red en vivo con pesos reales del Modelo 3 (ocultar automáticamente si Modelo 3 no está entrenado) | `@alexishal8` | G5 (Dom 12:00) | **Desbloqueado por modelos** (`model_3_crop_history_gru` en `status: "trained"` + `attention_weight` mensual activo en `timeline`) |
 | E-03 | Borrador de `/docs/project_page.md` (en inglés, sin cifras fixture) y `/docs/video_script.md` (30 s, guion compartido) | `@alexishal8` | G3 (Sáb 19:00) | Pendiente |
 | E-04 | Generar animaciones IA de apoyo, grabar video de respaldo sábado 23:00 y video final domingo tras congelar funciones (con datos reales, cero `fixture`) | `@alexishal8` + `@Gicarrillo` | Dom 15:00 | Bloqueado por datos reales |
 | E-05 | Revisión final de `AI_USAGE.md`, `README.md` raíz, enlace público del repo y ensayo del pitch | `@alexishal8` + Equipo | G6 (Dom 20:00) | Pendiente |

@@ -592,8 +592,8 @@ python scripts/sync_board.py --check
   "project": "Field Shift",
   "team": "The CSC",
   "event": "NASA Space Apps Challenge 2026",
-  "updated_at": "2026-11-14T15:50:00-06:00",
-  "phase": "G2 Completado · DATA_MODE=real en Railway · D-02/D-05 multi-valle extraído · Modelos 1, 4 y 2 entrenados en CPU ($0 GPU)",
+  "updated_at": "2026-11-14T16:20:00-06:00",
+  "phase": "4/4 Modelos entrenados en CPU ($0 GPU) · Modelo 3 ONNX + pesos de atención activos · SIAP 2025 estatal en Querétaro",
   "repo_url": "https://github.com/H0M10/MorrisTeamDfs",
   "git_remote": "https://github.com/H0M10/MorrisTeamDfs.git",
   "pages_url": "https://h0m10.github.io/MorrisTeamDfs/",
@@ -684,7 +684,7 @@ python scripts/sync_board.py --check
       "role": "Líder Técnico · Contrato, Motor FAO-56, API FastAPI e Infraestructura",
       "color": "#1247B8",
       "progress_pct": 98,
-      "doing_now": "G2 cerrado (DATA_MODE=real activo en Railway sirviendo dv-nv-01 y qro-sjr-01, Guanajuato pospuesto); tabla multi-valle US (15 parcelas NV/ID/UT, 720 filas) extraída y Modelos 1 (9.25 vs 29.05 mm), 4 (58.3% vs 22.9%) y 2 (-6.3%) entrenados en CPU; loader.py corregido para marcar model_2 absent en regiones sin etiquetas.",
+      "doing_now": "G2 cerrado (DATA_MODE=real activo en Railway sirviendo dv-nv-01 y qro-sjr-01, Guanajuato pospuesto); los 4 modelos (1, 2, 3 ONNX y 4) entrenados y medidos en CPU sobre multi_valley_us.parquet; loader.py marca model_2 absent y model_3 experimental en regiones sin etiquetas.",
       "done": [
         "Estructura completa del repo y sincronización AGENTS.md == CLAUDE.md.",
         "Contrato JSON v0.1.1 y 3 fixtures de 36 meses (diamond_valley, queretaro, no_viable_options) verificados.",
@@ -696,14 +696,15 @@ python scripts/sync_board.py --check
         "H-04 + C-01 Completado: models/kc_monthly.csv (132 filas) + models/fao56_crop_bank.csv (24 cultivos + 8 alias) corregidos vs Tabla 12 FAO-56 y sincronizados.",
         "Orden #2 / A-06 Completado: S-01 resuelto, GET /api/v1/crops, table_to_contract.py (S-02 + DATA_MODE=real) y plantilla dv-nv-01.meta.json.example listos.",
         "G2 / D-01..D-05 Completado (GEE luca-497507): DATA_MODE=real activo en Railway para dv-nv-01 y qro-sjr-01 (Guanajuato pospuesto); extraída tabla multi-valle (15 parcelas NV/ID/UT, 720 filas 2021–2024).",
-        "M-02 / M-05 / M-03 Completado en CPU ($0 GPU): Modelo 1 gana (9.25 mm vs 29.05 mm FAO-56), Modelo 4 gana con aviso de brecha vs meta 90% (58.3% vs 22.9%) y Modelo 2 pierde (-6.3%) y se reporta íntegro; loader.py marca model_2 absent en unlabeled."
+        "M-01..M-05 (4/4 modelos) completados en CPU ($0 GPU): Modelo 1 gana (9.25 mm vs 29.05 mm FAO-56), Modelo 3 GRU ONNX gana (0.4143 vs 0.2222 F1 macro; attention_weight sumando 1.0 activo en timeline), Modelo 4 gana con aviso de brecha vs meta 90% (58.3% vs 22.9%) y Modelo 2 pierde (-6.3%, absent en unlabeled).",
+        "H-20 parcial: agregado estatal oficial SIAP 2025 para Querétaro registrado en qro-sjr-01.meta.json sin extrapolar municipio/precio."
       ],
       "todo": [
         {
           "id": "M-06 / A-07",
           "gate": "G4",
-          "title": "Corte final de modelos (Domingo 08:00) e integración de Model 3 ONNX si entrena",
-          "detail": "Verificar corte M-06 tras entrenamiento de Model 3 por Checo-coder y decidir inferencia alternativa en table_to_contract.py.",
+          "title": "Corte final de modelos (Domingo 08:00) e inferencia en rotaciones alternativas",
+          "detail": "Los 4 modelos (incluido Model 3 ONNX) ya cargan y validan contra schema.json; solo falta decidir/conectar inferencia de Model 1 en rotaciones alternativas vs FAO-56 calibrado.",
           "connects_to": [
             "Checo-coder",
             "alexishal8"
@@ -724,34 +725,25 @@ python scripts/sync_board.py --check
       ],
       "role": "Datos Multi-Valle (NV/ID/UT), Querétaro (unlabeled) y Modelo 3 (GRU->ONNX)",
       "color": "#2F7D32",
-      "progress_pct": 70,
-      "doing_now": "Tablas multi-valle NV/ID/UT (D-02/D-05) y de Querétaro (Sentinel-2 10 m) listas en disco; foco ahora en entrenar Modelo 3 (GRU->ONNX) sobre multi_valley_us.parquet, verificar CONAGUA y cargar SIAP (H-20).",
+      "progress_pct": 85,
+      "doing_now": "Tablas multi-valle NV/ID/UT (D-02/D-05), Querétaro (Sentinel-2 10 m) y los 4 modelos (1, 2, 3 ONNX y 4) entrenados y medidos en CPU; foco en verificar CONAGUA (D-04) y opcionalmente CSV municipal SIAP (H-20).",
       "done": [
         "Guiones base en /data-pipeline (ee_coverage.py, ee_export.py, build_table.py, notebook Colab).",
         "Guiones de entrenamiento en /models (XGBoost 1/2/4, GRU->ONNX 3, partición por valle y último año fuera).",
         "Plantillas CARD.md y salvaguarda contra métricas sintéticas (--sample).",
         "Desbloqueo H-04: kc_monthly.csv y fao56_crop_bank.csv ya listos en /models.",
-        "D-02 / D-05 + M-03 resueltos: tabla multi_valley_us.parquet (15 parcelas NV/ID/UT, 720 filas) extraída y Modelo 2 evaluado (-6.3 %, reportado transparente)."
+        "D-02 / D-05 + M-03 resueltos: tabla multi_valley_us.parquet (15 parcelas NV/ID/UT, 720 filas) extraída y Modelo 2 evaluado (-6.3 %, reportado transparente).",
+        "M-04 Completado: Modelo 3 CropHistoryGRU exportado a ONNX en CPU (0.4143 vs 0.2222 F1 macro en diamond_valley_nv, 0.581 último año), weights de atención activos en /evaluate y CARD.md lleno."
       ],
       "todo": [
         {
           "id": "D-04 (CONAGUA)",
           "gate": "G3",
-          "title": "Verificar cifra de acuífero CONAGUA e integrar CSV SIAP para Querétaro (H-20)",
-          "detail": "Tabla qro-sjr-01 ya refinada con Sentinel-2 (2.8 ha, Guanajuato pospuesto); falta cifra oficial CONAGUA con PDF y fecha.",
+          "title": "Verificar cifra de acuífero CONAGUA y (opcional) CSV municipal SIAP para Querétaro (H-20)",
+          "detail": "Agregado estatal SIAP 2025 ya en qro-sjr-01.meta.json; falta cifra oficial CONAGUA con PDF y fecha (o cierre municipal SIAP por cultivo).",
           "connects_to": [
             "H0M10",
             "Gicarrillo"
-          ]
-        },
-        {
-          "id": "M-04",
-          "gate": "G4",
-          "title": "Entrenar Modelo 3 (GRU atención temporal -> ONNX) y llenar CARD.md",
-          "detail": "Correr train.py en Colab gratuito o CPU sobre data-pipeline/exports/multi_valley_us.parquet y reportar Macro F1 por clase en valle no visto.",
-          "connects_to": [
-            "H0M10",
-            "alexishal8"
           ]
         }
       ]
@@ -897,11 +889,11 @@ python scripts/sync_board.py --check
     },
     {
       "from": "Checo-coder",
-      "from_label": "H-12 Modelos 1, 4 y 3 (ONNX) con métricas por valle y CARD.md",
+      "from_label": "4/4 Modelos (1, 2, 3 ONNX y 4) con métricas por valle, attention_weight y CARD.md",
       "to": "alexishal8",
-      "to_label": "Orden #4 /engineer + Extra #3 Red en vivo (solo si M3=trained)",
+      "to_label": "Orden #4 /engineer + Extra #3 Red en vivo (desbloqueado: M3=trained)",
       "gate": "G4 · Dom 08:00",
-      "status": "pending"
+      "status": "completed"
     },
     {
       "from": "Gicarrillo",
@@ -1042,9 +1034,9 @@ python scripts/sync_board.py --check
       "priority": "P1",
       "owner": "H0M10 / Checo-coder",
       "due": "Dom 08:00",
-      "title": "Entrenamiento en CPU sin GPU rentada ($0): Modelos 1 (9.25 vs 29.05 mm), 4 (58.3% vs 22.9%) y 2 (-6.3%) completados; falta Modelo 3 ONNX",
-      "blocks": "Compuerta G4 (corte de modelos) y Extra #3 Red en vivo (solo si M-3 entrena)",
-      "status": "En curso (Modelos 1, 4 y 2 completados en CPU; falta M-04 Modelo 3 ONNX)"
+      "title": "Entrenamiento de los 4 modelos en CPU sin GPU rentada ($0): M1 (9.25 vs 29.05 mm), M3 ONNX (0.4143 vs 0.2222 F1), M4 (58.3% vs 22.9%) y M2 (-6.3%)",
+      "blocks": "Compuerta G4 (corte de modelos) y Extra #3 Red en vivo (desbloqueado)",
+      "status": "Completado (los 4 modelos entrenados y medidos en CPU sin rentar GPU)"
     },
     {
       "id": "H-15",
@@ -1097,8 +1089,8 @@ python scripts/sync_board.py --check
       "owner": "H0M10",
       "due": "Sáb 18:00",
       "title": "Descargar a mano el cierre agrícola municipal de SIAP 2024 (CSV) y guardarlo en data-pipeline/exports/siap/ (el dominio de datos abiertos no responde desde la laptop)",
-      "blocks": "Historial real y precios de Querétaro (hoy son supuestos)",
-      "status": "Pendiente"
+      "blocks": "Desglose municipal por cultivo y precio en Querétaro (agregado estatal SIAP 2025 ya registrado en qro-sjr-01.meta.json)",
+      "status": "Parcial (agregado estatal SIAP 2025 en qro-sjr-01.meta.json; desglose municipal pendiente)"
     }
   ],
   "decisions_log": [
@@ -1181,6 +1173,11 @@ python scripts/sync_board.py --check
       "when": "2026-11-14 15:51",
       "decision": "Foco en Diamond Valley; Guanajuato pospuesto. Restricciones del agricultor derivadas de datos (OpenET, NASA POWER, QuickStats) y declaradas como supuesto.",
       "impact": "DV: la rotación actual usa 697 mm/año observados por OpenET; 'menos agua' se descarta porque nadie vende avena en el condado. Querétaro: un solo campo con Sentinel-2. SIAP pendiente de descarga manual (H-20)."
+    },
+    {
+      "when": "2026-11-14 16:20",
+      "decision": "Modelo 3 (GRU -> ONNX) entrenado en CPU sin rentar GPU y agregado estatal SIAP 2025 registrado en Querétaro sin extrapolar municipio ni precios.",
+      "impact": "4/4 modelos entrenados y medidos en CPU ($0 GPU): Model 3 logra 0.4143 F1 macro vs 0.2222 línea base en diamond_valley_nv (0.581 último año), activa attention_weight en el timeline y desbloquea Extra #3 (/engineer). Querétaro incorpora el total estatal SIAP 2025 (117,320.01 ha sembradas) declarado explícitamente sin desglose municipal."
     }
   ]
 }
