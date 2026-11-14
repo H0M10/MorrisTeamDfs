@@ -4,41 +4,85 @@
     "en": "Irrigated field — San Juan del Río and Pedro Escobedo area, Qro."
   },
   "declared_history": {
-    "1": "alfalfa",
-    "2": "alfalfa",
-    "3": "alfalfa",
-    "4": "alfalfa",
-    "5": "alfalfa",
-    "6": "alfalfa",
-    "7": "alfalfa",
-    "8": "alfalfa",
-    "9": "alfalfa",
-    "10": "alfalfa",
-    "11": "alfalfa",
-    "12": "alfalfa"
+    "2023-01": "avena_forrajera",
+    "2023-02": "avena_forrajera",
+    "2023-03": "avena_forrajera",
+    "2023-04": "descanso_rastrojo",
+    "2023-05": "descanso_rastrojo",
+    "2023-06": "maiz",
+    "2023-07": "maiz",
+    "2023-08": "maiz",
+    "2023-09": "maiz",
+    "2023-10": "rastrojo_maiz",
+    "2023-11": "rastrojo_maiz",
+    "2023-12": "avena_forrajera",
+    "2024-01": "avena_forrajera",
+    "2024-02": "avena_forrajera",
+    "2024-03": "descanso_rastrojo",
+    "2024-04": "descanso_rastrojo",
+    "2024-05": "maiz",
+    "2024-06": "maiz",
+    "2024-07": "maiz",
+    "2024-08": "maiz",
+    "2024-09": "rastrojo_maiz",
+    "2024-10": "maiz",
+    "2024-11": "avena_forrajera",
+    "2024-12": "avena_forrajera",
+    "2025-01": "descanso_rastrojo",
+    "2025-02": "descanso_rastrojo",
+    "2025-03": "avena_forrajera",
+    "2025-04": "avena_forrajera",
+    "2025-05": "descanso_rastrojo",
+    "2025-06": "descanso_rastrojo",
+    "2025-07": "descanso_rastrojo",
+    "2025-08": "maiz",
+    "2025-09": "rastrojo_maiz",
+    "2025-10": "rastrojo_maiz",
+    "2025-11": "rastrojo_maiz",
+    "2025-12": "avena_forrajera"
   },
   "constraints": {
-    "max_water_mm_year": 836,
+    "max_water_mm_year": 651,
     "available_machinery": [
       "riego_compuerta",
-      "sembradora_convencional",
-      "empacadora"
+      "sembradora_convencional"
     ],
-    "crops_without_buyer": [],
+    "crops_without_buyer": [
+      "ajo",
+      "algodon",
+      "canola",
+      "garbanzo",
+      "girasol",
+      "lenteja",
+      "papa",
+      "soya"
+    ],
     "planting_window": {
       "start_month": 1,
       "end_month": 12
     }
   },
-  "constraints_source": "Supuesto del equipo, no declarado por un agricultor ni tomado de SIAP. Historial: meses verdes en HLS (enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, noviembre, diciembre); verde 10 meses o más al año: se supone un forraje perenne (alfalfa), común bajo riego en el Bajío. Falta confirmarlo con SIAP o el agricultor. Agua: FAO-56 para ese historial (836 mm/año; no se asigna agua extra). Ventana: NASA POWER, todos los meses tienen temperatura media de 5 °C o más. Maquinaria: la que pide ese historial (riego_compuerta, sembradora_convencional, empacadora), con riego por gravedad (supuesto). Sin comprador: sin dato.",
+  "constraints_source": "Supuesto con datos, no declarado por un agricultor. Historial: los meses verdes de esta parcela en HLS (21 de 36) se asignan al cultivo de riego con más superficie en SIAP para su ciclo en los municipios de la zona (OI: Avena forrajera en verde (2,958 ha/año); PV: Maíz grano (12,750 ha/año)); los meses sin verdor, a rastrojo o descanso. Agua: FAO-56 para ese historial (651 mm/año; no se asigna agua extra). Ventana: NASA POWER, todos los meses tienen temperatura media de 5 °C o más. Maquinaria: la que pide ese historial (riego_compuerta, sembradora_convencional), con riego por gravedad (supuesto). Sin comprador: cultivos sin al menos 100 ha de riego al año en SIAP en esos municipios (últimos 3 años).",
   "context_notes": [
     {
-      "es": "SIAP 2025, resumen estatal de Querétaro (Cíclicos + Perennes, Riego + Temporal): 117,320.01 ha sembradas, 110,271.76 ha cosechadas y valor de producción de 5,608,171.22 miles de pesos (MXN). Es un agregado estatal (contexto de entidad, no de la parcela ni del municipio) sin desglose por cultivo ni precios.",
-      "en": "SIAP 2025, state summary for Querétaro (Annual + Perennial, Irrigated + Rainfed): 117,320.01 ha planted, 110,271.76 ha harvested, production value 5,608,171.22 thousand MXN. State-level aggregate (not field or municipality scale) without per-crop or price breakdown."
+      "es": "Maíz grano, con riego en los municipios de la zona: superficie sembrada (ha) — 2020: 13,708, 2021: 13,358, 2022: 12,213, 2023: 12,234, 2024: 11,934, 2025: 14,185; precio medio rural (pesos por tonelada) — 2020: 4,020, 2021: 5,508, 2022: 6,759, 2023: 6,765, 2024: 5,219, 2025: 4,956. Fuente: SIAP, cierre agrícola municipal.",
+      "en": "Maíz grano, irrigated, in the area's municipalities: planted area (ha) — 2020: 13,708, 2021: 13,358, 2022: 12,213, 2023: 12,234, 2024: 11,934, 2025: 14,185; average farm-gate price (MXN per tonelada) — 2020: 4,020, 2021: 5,508, 2022: 6,759, 2023: 6,765, 2024: 5,219, 2025: 4,956. Source: SIAP municipal crop closure."
     },
     {
-      "es": "Qué se siembra y a qué precio en el municipio debe salir del cierre agrícola municipal de SIAP (riego, ciclos otoño-invierno y primavera-verano). El desglose municipal por cultivo sigue pendiente.",
-      "en": "What is grown and at what price in the municipality should come from SIAP's municipal crop closure. Per-crop municipal breakdown is still pending."
+      "es": "Maíz forrajero en verde, con riego en los municipios de la zona: superficie sembrada (ha) — 2020: 8,271, 2021: 8,301, 2022: 7,591, 2023: 7,751, 2024: 10,315, 2025: 8,405; precio medio rural (pesos por tonelada) — 2020: 634, 2021: 685, 2022: 816, 2023: 923, 2024: 937, 2025: 808. Fuente: SIAP, cierre agrícola municipal.",
+      "en": "Maíz forrajero en verde, irrigated, in the area's municipalities: planted area (ha) — 2020: 8,271, 2021: 8,301, 2022: 7,591, 2023: 7,751, 2024: 10,315, 2025: 8,405; average farm-gate price (MXN per tonelada) — 2020: 634, 2021: 685, 2022: 816, 2023: 923, 2024: 937, 2025: 808. Source: SIAP municipal crop closure."
+    },
+    {
+      "es": "Alfalfa verde, con riego en los municipios de la zona: superficie sembrada (ha) — 2020: 4,465, 2021: 4,440, 2022: 4,423, 2023: 4,426, 2024: 4,458, 2025: 4,534; precio medio rural (pesos por tonelada) — 2020: 682, 2021: 710, 2022: 772, 2023: 790, 2024: 917, 2025: 643. Fuente: SIAP, cierre agrícola municipal.",
+      "en": "Alfalfa verde, irrigated, in the area's municipalities: planted area (ha) — 2020: 4,465, 2021: 4,440, 2022: 4,423, 2023: 4,426, 2024: 4,458, 2025: 4,534; average farm-gate price (MXN per tonelada) — 2020: 682, 2021: 710, 2022: 772, 2023: 790, 2024: 917, 2025: 643. Source: SIAP municipal crop closure."
+    },
+    {
+      "es": "Avena forrajera en verde, con riego en los municipios de la zona: superficie sembrada (ha) — 2020: 3,845, 2021: 3,218, 2022: 2,992, 2023: 2,935, 2024: 2,955, 2025: 2,985; precio medio rural (pesos por tonelada) — 2020: 492, 2021: 551, 2022: 573, 2023: 590, 2024: 644, 2025: 632. Fuente: SIAP, cierre agrícola municipal.",
+      "en": "Avena forrajera en verde, irrigated, in the area's municipalities: planted area (ha) — 2020: 3,845, 2021: 3,218, 2022: 2,992, 2023: 2,935, 2024: 2,955, 2025: 2,985; average farm-gate price (MXN per tonelada) — 2020: 492, 2021: 551, 2022: 573, 2023: 590, 2024: 644, 2025: 632. Source: SIAP municipal crop closure."
+    },
+    {
+      "es": "Cebada grano, con riego en los municipios de la zona: superficie sembrada (ha) — 2020: 3,966, 2021: 3,764, 2022: 3,074, 2023: 2,779, 2024: 2,120, 2025: 2,302; precio medio rural (pesos por tonelada) — 2020: 4,992, 2021: 5,715, 2022: 5,735, 2023: 5,823, 2024: 6,075, 2025: 7,074. Fuente: SIAP, cierre agrícola municipal.",
+      "en": "Cebada grano, irrigated, in the area's municipalities: planted area (ha) — 2020: 3,966, 2021: 3,764, 2022: 3,074, 2023: 2,779, 2024: 2,120, 2025: 2,302; average farm-gate price (MXN per tonelada) — 2020: 4,992, 2021: 5,715, 2022: 5,735, 2023: 5,823, 2024: 6,075, 2025: 7,074. Source: SIAP municipal crop closure."
     }
   ]
 }

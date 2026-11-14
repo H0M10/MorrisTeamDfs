@@ -162,7 +162,8 @@ class ParcelMeta(BaseModel):
 
     name: LocalizedText | None = None
     constraints: ConstraintsIn | None = None
-    declared_history: dict[int, str] | None = None  # mes del calendario -> crop_code
+    # crop_code por mes concreto ("2023-05") o por mes del calendario ("5").
+    declared_history: dict[str, str] | None = None
     aquifer_name: LocalizedText | None = None
     aquifer_status_note: LocalizedText | None = None
     # De dónde salen las restricciones si no las dijo el agricultor (supuesto con dato).
@@ -455,7 +456,8 @@ def current_sequence(rows: list[Row], meta: ParcelMeta, labeled: bool) -> list[s
             if code == "alfalfa" and month_num in ALFALFA_DORMANT_MONTHS:
                 code = "alfalfa_dormant"
         else:
-            code = (meta.declared_history or {}).get(month_num, "no_declarado")
+            history = meta.declared_history or {}
+            code = history.get(row["month"]) or history.get(str(month_num), "no_declarado")
         codes.append(code)
     return codes
 

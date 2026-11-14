@@ -503,3 +503,17 @@ def test_meta_constraint_source_and_context_notes(
     for strategy in evaluation["strategies"]:
         assert note in strategy["evidence_card"]["supporting_evidence"]
     assert evaluation["strategies"][0]["viable"] is True  # usa exactamente lo observado
+
+
+def test_history_by_specific_month_wins_over_calendar_month(
+    make_settings: Callable[..., Settings], tmp_path: Path
+) -> None:
+    history = {str(m): "barbecho" for m in range(1, 13)} | {"2023-07": "maiz"}
+    folder = write_table(
+        tmp_path / "data", make_table(labeled=False), {"declared_history": history}
+    )
+    timeline = evaluation_service.evaluate(PARCEL, real_settings(make_settings, folder))["timeline"]
+    by_month = {m["month"]: m["crop_code"] for m in timeline}
+    assert by_month["2023-07"] == "maiz"
+    assert by_month["2022-07"] == "barbecho"
+    assert by_month["2024-07"] == "barbecho"

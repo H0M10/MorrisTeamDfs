@@ -434,7 +434,7 @@
       "due": "Sáb 18:00",
       "title": "Descargar a mano el cierre agrícola municipal de SIAP 2024 (CSV) y guardarlo en data-pipeline/exports/siap/ (el dominio de datos abiertos no responde desde la laptop)",
       "blocks": "Desglose municipal por cultivo y precio en Querétaro (agregado estatal SIAP 2025 ya registrado en qro-sjr-01.meta.json)",
-      "status": "Parcial (agregado estatal SIAP 2025 en qro-sjr-01.meta.json; desglose municipal pendiente)"
+      "status": "Hecho: SIAP 2020-2025 integrado (historial, mercado y precios de Querétaro)"
     }
   ],
   "decisions_log": [
@@ -522,6 +522,11 @@
       "when": "2026-11-14 16:20",
       "decision": "Modelo 3 (GRU -> ONNX) entrenado en CPU sin rentar GPU y agregado estatal SIAP 2025 registrado en Querétaro sin extrapolar municipio ni precios.",
       "impact": "4/4 modelos entrenados y medidos en CPU ($0 GPU): Model 3 logra 0.4143 F1 macro vs 0.2222 línea base en diamond_valley_nv (0.581 último año), activa attention_weight en el timeline y desbloquea Extra #3 (/engineer). Querétaro incorpora el total estatal SIAP 2025 (117,320.01 ha sembradas) declarado explícitamente sin desglose municipal."
+    },
+    {
+      "when": "2026-11-14 16:41",
+      "decision": "SIAP integrado para Querétaro: historial mes a mes (HLS) con el cultivo principal de riego por ciclo, mercado y precios.",
+      "impact": "La parcela de Querétaro es doble ciclo (avena en invierno, maíz en verano), no alfalfa. Cifras y supuestos con fuente SIAP declarada."
     }
   ]
 }

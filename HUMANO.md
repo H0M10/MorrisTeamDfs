@@ -206,7 +206,7 @@ Va en `backend/data/<parcel_id>.meta.json` (formato en `backend/README.md`). Sin
 
 SoilGrids (ISRIC) da el suelo en la tabla real y es la única fuente de suelo para México, pero **no está en la lista de recursos del reto**. Opciones: (a) mantenerlo y declararlo en la página del proyecto; (b) usar solo SSURGO en EE. UU. y dejar el suelo de México como "información que falta". `AGENTS.md` ya dice que se usa declarado y solo donde no hay SSURGO.
 
-### H-20. Descargar el cierre agrícola municipal de SIAP (Hanniel, cuando puedas)
+### H-20. Descargar el cierre agrícola municipal de SIAP (Hanniel) — HECHO, 2020–2025 integrado
 
 Decidiste usar también estadística oficial mexicana. El dominio de datos abiertos de SIAP (`nube.siap.gob.mx`) no resuelve desde la laptop (DNS: dominio inexistente), así que la descarga es manual:
 

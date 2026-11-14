@@ -197,7 +197,67 @@ def labeled_context(args: argparse.Namespace, table: pd.DataFrame) -> dict:
     }
 
 
+def _plain(text: str) -> str:
+    import unicodedata  # noqa: PLC0415
+
+    return "".join(c for c in unicodedata.normalize("NFKD", text.lower()) if not unicodedata.combining(c))
+
+
+# Nombre de cultivo en SIAP (inicio, sin acentos) -> códigos del banco que cubre.
+SIAP_TO_BANK = {
+    "maiz grano": ["maiz", "maiz_frijol"], "maiz forrajero": ["maiz"], "alfalfa": ["alfalfa"],
+    "avena forrajera": ["avena_forrajera"], "avena grano": ["avena_forrajera"],
+    "cebada": ["cebada_forrajera"], "trigo": ["trigo_invierno", "trigo_primavera"],
+    "sorgo": ["sorgo_grano"], "frijol": ["frijol_seco", "maiz_frijol"], "garbanzo": ["garbanzo"],
+    "lenteja": ["lenteja"], "soya": ["soya"], "girasol": ["girasol"], "canola": ["canola"],
+    "algodon": ["algodon"], "papa": ["papa"], "cebolla": ["cebolla"], "tomate rojo": ["tomate"],
+    "chile": ["chile"], "ajo": ["ajo"], "brocoli": ["brocoli"],
+}
+GREEN_MONTH_NDVI = 0.45
+
+
+def bank_codes_for(siap_name: str) -> list[str]:
+    plain = _plain(siap_name)
+    return next((codes for prefix, codes in SIAP_TO_BANK.items() if plain.startswith(prefix)), [])
+
+
+def siap_context(siap: pd.DataFrame) -> tuple[dict[str, str], set[str], list[dict], str]:
+    """Cultivo principal por ciclo, cultivos con mercado y notas de precios, desde SIAP."""
+    last = int(siap["anio"].max())
+    recent = siap[siap["anio"] >= last - 2]
+    main_crop: dict[str, str] = {}
+    for ciclo, key in (("Otoño-Invierno", "oi"), ("Primavera-Verano", "pv")):
+        ranked = recent[recent["ciclo"] == ciclo].groupby("cultivo")["sembrada_ha"].sum().sort_values(ascending=False)
+        for name in ranked.index:
+            codes = bank_codes_for(name)
+            if codes:
+                main_crop[key] = codes[0]
+                main_crop[key + "_name"] = f"{name} ({ranked[name] / 3:,.0f} ha/año)"
+                break
+    area = recent.groupby("cultivo")["sembrada_ha"].sum() / 3
+    market = {code for name, ha in area.items() if ha >= 100 for code in bank_codes_for(name)}
+    notes = []
+    top = area.sort_values(ascending=False).head(5).index
+    for name in top:
+        rows = siap[siap["cultivo"] == name].groupby("anio")
+        prices = rows.apply(lambda g: (g["precio_medio_rural_mxn"] * g["produccion"]).sum() / g["produccion"].sum()
+                            if g["produccion"].sum() else float("nan"), include_groups=False)
+        series = ", ".join(f"{y}: {p:,.0f}" for y, p in prices.items() if p == p)
+        hectares = ", ".join(f"{y}: {h:,.0f}" for y, h in rows["sembrada_ha"].sum().items())
+        unit = siap[siap["cultivo"] == name]["unidad"].iloc[0].lower()
+        notes.append({
+            "es": f"{name}, con riego en los municipios de la zona: superficie sembrada (ha) — {hectares}; "
+                  f"precio medio rural (pesos por {unit}) — {series}. Fuente: SIAP, cierre agrícola municipal.",
+            "en": f"{name}, irrigated, in the area's municipalities: planted area (ha) — {hectares}; "
+                  f"average farm-gate price (MXN per {unit}) — {series}. Source: SIAP municipal crop closure.",
+        })
+    summary = f"OI: {main_crop.get('oi_name', 'sin dato')}; PV: {main_crop.get('pv_name', 'sin dato')}"
+    return main_crop, market, notes, summary
+
+
 def unlabeled_context(args: argparse.Namespace, table: pd.DataFrame) -> dict:
+    if args.siap:
+        return unlabeled_with_siap(args, table)
     ndvi = table.groupby("month_num")["ndvi"].mean()
     green = {m: ndvi.get(m, 0) >= GREEN_NDVI for m in range(1, 13)}
     perennial = sum(green.values()) >= 10
@@ -257,6 +317,59 @@ def unlabeled_context(args: argparse.Namespace, table: pd.DataFrame) -> dict:
     }
 
 
+def unlabeled_with_siap(args: argparse.Namespace, table: pd.DataFrame) -> dict:
+    siap = pd.read_csv(args.siap)
+    main_crop, market, notes, summary = siap_context(siap)
+    series = table.sort_values("month")
+    history: dict[str, str] = {}
+    previous = "descanso_rastrojo"
+    for _, row in series.iterrows():
+        month, month_num = row["month"], int(row["month_num"])
+        green = row["ndvi"] == row["ndvi"] and row["ndvi"] >= GREEN_MONTH_NDVI
+        if green:
+            crop = main_crop["oi"] if month_num in (11, 12, 1, 2, 3, 4) else main_crop["pv"]
+            previous = crop
+        else:
+            crop = "rastrojo_maiz" if previous.startswith("maiz") else "descanso_rastrojo"
+        history[month] = crop
+    rows = rows_of(table)
+    months = [r["month"] for r in rows]
+    crops = [history[m] for m in months]
+    water = annual_water_mm(months, crops, [r["et0_mm"] for r in rows], [r["rain_mm"] for r in rows])
+    names = {"IRRIGATION": "riego_compuerta", "SEEDER": "sembradora_convencional", "BALER": "empacadora"}
+    machinery: list[str] = []
+    for code in dict.fromkeys(crops):
+        for requirement in crop_bank.get_crop_spec(code).machinery:  # type: ignore[union-attr]
+            if names[requirement] not in machinery:
+                machinery.append(names[requirement])
+    no_market = sorted(
+        s.crop_code for s in crop_bank.list_crops()
+        if s.sold and s.crop_code not in market and not s.crop_code.endswith("_dormant")
+    )
+    first, last, window_text = planting_window(table)
+    green_count = sum(1 for c in crops if not c.startswith(("rastrojo", "descanso")))
+    source = (
+        "Supuesto con datos, no declarado por un agricultor. Historial: los meses verdes de esta "
+        f"parcela en HLS ({green_count} de 36) se asignan al cultivo de riego con más superficie en "
+        f"SIAP para su ciclo en los municipios de la zona ({summary}); los meses sin verdor, a "
+        f"rastrojo o descanso. Agua: FAO-56 para ese historial ({water:.0f} mm/año; no se asigna "
+        f"agua extra). Ventana: NASA POWER, {window_text}. Maquinaria: la que pide ese historial "
+        f"({', '.join(machinery)}), con riego por gravedad (supuesto). Sin comprador: cultivos sin "
+        "al menos 100 ha de riego al año en SIAP en esos municipios (últimos 3 años)."
+    )
+    return {
+        "declared_history": history,
+        "constraints": {
+            "max_water_mm_year": round(water) if water else 0,
+            "available_machinery": machinery,
+            "crops_without_buyer": no_market,
+            "planting_window": {"start_month": first, "end_month": last},
+        },
+        "constraints_source": source,
+        "context_notes": notes,
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--table", required=True)
@@ -268,6 +381,7 @@ def main() -> None:
     parser.add_argument("--county-fips")
     parser.add_argument("--cdl-years", nargs="+", type=int, default=[2022, 2023, 2024])
     parser.add_argument("--price-from", type=int, default=2023)
+    parser.add_argument("--siap", help="resumen de siap_summary.py (México)")
     parser.add_argument("--out", help="por omisión, junto a la tabla: <parcel_id>.meta.json")
     args = parser.parse_args()
 

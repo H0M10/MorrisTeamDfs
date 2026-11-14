@@ -1,0 +1,574 @@
+anio,municipio,ciclo,cultivo,unidad,sembrada_ha,cosechada_ha,siniestrada_ha,produccion,valor_miles_mxn,rendimiento_por_ha,precio_medio_rural_mxn,fuente,modalidad
+2020,Colón,Otoño-Invierno,Avena forrajera en verde,Tonelada,432.0,432.0,0.0,9687.0,5977.8,22.42,617.09,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Otoño-Invierno,Cebada grano,Tonelada,216.0,216.0,0.0,1180.75,5434.7,5.47,4602.78,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Otoño-Invierno,Tomate rojo (jitomate),Tonelada,127.0,127.0,0.0,65354.83,755917.5,514.6,11566.36,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Otoño-Invierno,Cebolla,Tonelada,49.0,49.0,0.0,360.0,2373.0,7.35,6591.67,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Otoño-Invierno,Chile verde,Tonelada,37.0,37.0,0.0,7616.82,99057.7,205.86,13005.12,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Otoño-Invierno,Ajo,Tonelada,35.0,35.0,0.0,257.96,6657.4,7.37,25807.86,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Otoño-Invierno,Trigo grano,Tonelada,32.0,32.0,0.0,125.4,615.1,3.92,4904.9,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Otoño-Invierno,Maíz grano,Tonelada,28.0,28.0,0.0,21.8,77.7,0.78,3564.22,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Otoño-Invierno,Pepino,Tonelada,13.0,13.0,0.0,3417.1,42964.3,262.85,12573.33,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Otoño-Invierno,Zanahoria,Tonelada,9.0,9.0,0.0,126.0,384.3,14.0,3050.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Perennes,Alfalfa verde,Tonelada,1455.0,1452.0,0.0,100551.0,75409.2,69.25,749.96,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Perennes,Espárrago,Tonelada,207.0,185.0,0.0,740.0,45880.0,4.0,62000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Perennes,Uva,Tonelada,62.0,30.0,0.0,150.0,2895.0,5.0,19300.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Primavera-Verano,Maíz grano,Tonelada,2755.06,2755.06,0.0,27660.8,90150.7,10.04,3259.15,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Primavera-Verano,Maíz forrajero en verde,Tonelada,970.59,970.59,0.0,61884.82,42081.7,63.76,680.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Primavera-Verano,Sorgo grano,Tonelada,99.59,99.59,0.0,866.43,3287.4,8.7,3794.23,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Primavera-Verano,Tomate verde,Tonelada,98.09,98.09,0.0,2413.27,14826.2,24.6,6143.63,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Primavera-Verano,Sorgo forrajero en verde,Tonelada,75.78,75.78,0.0,3402.52,2684.6,44.9,789.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Primavera-Verano,Chile verde,Tonelada,32.19,32.19,0.0,428.19,2843.6,13.3,6640.91,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Primavera-Verano,Cebolla,Tonelada,29.17,29.17,0.0,397.88,3523.8,13.64,8856.42,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Colón,Primavera-Verano,Frijol,Tonelada,25.66,25.66,0.0,49.58,569.1,1.93,11479.38,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Otoño-Invierno,Avena forrajera en verde,Tonelada,1510.0,1510.0,0.0,43518.2,21300.4,28.82,489.46,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Otoño-Invierno,Brócoli,Tonelada,85.0,85.0,0.0,1014.9,4030.6,11.94,3971.42,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Otoño-Invierno,Lechuga,Tonelada,50.0,50.0,0.0,1260.0,5288.3,25.2,4197.03,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Otoño-Invierno,Cebolla,Tonelada,40.0,40.0,0.0,928.8,4647.7,23.22,5004.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Perennes,Alfalfa verde,Tonelada,910.0,910.0,0.0,61152.0,41439.0,67.2,677.64,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Perennes,Espárrago,Tonelada,312.0,312.0,0.0,1444.56,55862.3,4.63,38670.84,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Perennes,Uva,Tonelada,60.0,57.0,0.0,312.99,6885.8,5.49,22000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Perennes,Nopalitos,Tonelada,19.0,19.0,0.0,798.0,3707.1,42.0,4645.45,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Primavera-Verano,Maíz forrajero en verde,Tonelada,5250.0,5250.0,0.0,376582.5,234057.3,71.73,621.53,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Primavera-Verano,Maíz grano,Tonelada,2900.0,2900.0,0.0,26071.0,108194.6,8.99,4150.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Primavera-Verano,Brócoli,Tonelada,124.0,124.0,0.0,1972.0,6953.7,15.9,3526.24,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Primavera-Verano,Lechuga,Tonelada,115.0,115.0,0.0,2937.1,10648.0,25.54,3625.35,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Primavera-Verano,Elote,Tonelada,95.0,95.0,0.0,1415.5,5095.8,14.9,3600.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Primavera-Verano,Sorgo forrajero en verde,Tonelada,70.0,70.0,0.0,2622.9,1525.0,37.47,581.43,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Primavera-Verano,Cebolla,Tonelada,68.0,68.0,0.0,2209.32,15421.1,32.49,6980.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Primavera-Verano,Sorgo grano,Tonelada,65.0,65.0,0.0,460.7,1816.9,7.09,3943.85,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Primavera-Verano,Coliflor,Tonelada,44.0,44.0,0.0,836.0,4499.2,19.0,5381.82,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Primavera-Verano,Frijol,Tonelada,40.0,40.0,0.0,106.0,1303.8,2.65,12300.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Primavera-Verano,Tomate verde,Tonelada,35.0,35.0,0.0,969.85,4655.3,27.71,4800.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,El Marqués,Primavera-Verano,Tomate rojo (jitomate),Tonelada,0.98,0.98,0.0,198.0,2574.0,202.04,13000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Otoño-Invierno,Cebada grano,Tonelada,2850.0,2850.0,0.0,15675.0,80835.0,5.5,5156.94,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Otoño-Invierno,Avena forrajera en verde,Tonelada,860.0,860.0,0.0,27657.6,12647.5,32.16,457.29,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Otoño-Invierno,Zanahoria,Tonelada,530.0,530.0,0.0,16000.7,46402.0,30.19,2900.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Otoño-Invierno,Trigo grano,Tonelada,300.0,300.0,0.0,1500.0,5250.0,5.0,3500.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Otoño-Invierno,Brócoli,Tonelada,115.0,115.0,0.0,1265.0,3571.8,11.0,2823.52,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Otoño-Invierno,Cebolla,Tonelada,90.0,90.0,0.0,2700.0,16200.0,30.0,6000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Otoño-Invierno,Lechuga,Tonelada,70.0,70.0,0.0,2030.0,8120.0,29.0,4000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Otoño-Invierno,Ajo,Tonelada,6.0,6.0,0.0,53.0,1473.4,8.83,27800.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Perennes,Alfalfa verde,Tonelada,800.0,800.0,0.0,73440.0,48206.8,91.8,656.41,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Perennes,Espárrago,Tonelada,580.0,570.0,0.0,2850.0,125830.0,5.0,44150.87,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Perennes,Rosa,Gruesa,27.0,27.0,0.0,95600.0,22884.1,3540.74,239.37,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Primavera-Verano,Maíz grano,Tonelada,5980.0,5730.0,250.0,64347.9,272245.7,11.23,4230.84,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Primavera-Verano,Maíz forrajero en verde,Tonelada,1450.0,1100.0,350.0,80905.0,52475.8,73.55,648.61,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Primavera-Verano,Frijol,Tonelada,110.0,45.0,65.0,95.85,1180.8,2.13,12319.46,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Primavera-Verano,Brócoli,Tonelada,70.0,70.0,0.0,916.3,3705.4,13.09,4043.86,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Primavera-Verano,Tomate rojo (jitomate),Tonelada,64.0,64.0,0.0,44571.84,358469.0,696.44,8042.5,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Primavera-Verano,Chile verde,Tonelada,62.5,62.5,0.0,6909.93,125732.9,110.56,18195.97,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Primavera-Verano,Lechuga,Tonelada,45.0,45.0,0.0,1273.95,4725.9,28.31,3709.64,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Primavera-Verano,Zanahoria,Tonelada,38.0,38.0,0.0,1293.9,8618.1,34.05,6660.53,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Primavera-Verano,Sorgo grano,Tonelada,35.0,20.0,15.0,160.0,700.7,8.0,4379.38,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Primavera-Verano,Cebolla,Tonelada,18.0,18.0,0.0,601.56,4756.5,33.42,7907.01,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Primavera-Verano,Chile seco,Tonelada,15.0,15.0,0.0,26.7,1117.7,1.78,41860.08,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Primavera-Verano,Avena forrajera en verde,Tonelada,9.0,9.0,0.0,102.3,49.7,11.37,486.09,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Primavera-Verano,Tomate verde,Tonelada,8.0,8.0,0.0,166.4,1611.5,20.8,9684.33,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,Pedro Escobedo,Primavera-Verano,Pepino,Tonelada,6.0,6.0,0.0,2034.62,16277.0,339.1,8000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Otoño-Invierno,Avena forrajera en verde,Tonelada,1034.0,1034.0,0.0,32891.54,15995.5,31.81,486.31,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Otoño-Invierno,Cebada grano,Tonelada,900.0,900.0,0.0,4896.0,22321.7,5.44,4559.18,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Otoño-Invierno,Trigo grano,Tonelada,600.0,600.0,0.0,3600.0,14400.0,6.0,4000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Otoño-Invierno,Brócoli,Tonelada,50.0,50.0,0.0,568.0,3019.6,11.36,5316.2,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Otoño-Invierno,Tomate verde,Tonelada,50.0,50.0,0.0,1320.0,12763.5,26.4,9669.31,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Otoño-Invierno,Cebolla,Tonelada,6.0,6.0,0.0,176.4,1058.4,29.4,6000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Otoño-Invierno,Ajo,Tonelada,5.0,5.0,0.0,34.4,964.2,6.88,28030.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Perennes,Alfalfa verde,Tonelada,1300.0,1300.0,0.0,125710.0,81153.3,96.7,645.56,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Perennes,Espárrago,Tonelada,135.0,45.0,0.0,180.0,7344.0,4.0,40800.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Perennes,Rosa,Gruesa,98.0,98.0,0.0,476443.0,120575.2,4861.66,253.07,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Perennes,Uva,Tonelada,27.0,27.0,0.0,297.0,5462.8,11.0,18393.1,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Perennes,Zarzamora,Tonelada,2.5,2.5,0.0,18.0,407.2,7.2,22619.45,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Primavera-Verano,Maíz grano,Tonelada,2045.0,2044.0,1.0,22504.44,94518.6,11.01,4200.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Primavera-Verano,Maíz forrajero en verde,Tonelada,600.0,490.0,110.0,32359.6,21128.6,66.04,652.93,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Primavera-Verano,Chile verde,Tonelada,104.0,104.0,0.0,6471.44,113521.0,62.23,17541.85,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Primavera-Verano,Frijol,Tonelada,70.0,70.0,0.0,149.8,1855.8,2.14,12388.22,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Primavera-Verano,Chile seco,Tonelada,60.0,60.0,0.0,145.2,5674.1,2.42,39078.15,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Primavera-Verano,Tomate verde,Tonelada,43.0,43.0,0.0,1363.96,12976.7,31.72,9513.96,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Primavera-Verano,Tomate rojo (jitomate),Tonelada,27.0,27.0,0.0,13307.02,103818.9,492.85,7801.81,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Primavera-Verano,Sorgo grano,Tonelada,10.0,10.0,0.0,102.0,423.3,10.2,4150.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2020,San Juan del Río,Primavera-Verano,Pepino,Tonelada,3.0,3.0,0.0,660.93,6308.6,220.31,9545.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Otoño-Invierno,Avena forrajera en verde,Tonelada,432.0,432.0,0.0,9417.6,7219.8,21.8,766.63,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Otoño-Invierno,Cebada grano,Tonelada,216.0,216.0,0.0,1177.2,5429.6,5.45,4612.27,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Otoño-Invierno,Tomate rojo (jitomate),Tonelada,99.0,99.0,0.0,50995.89,568539.4,515.11,11148.73,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Otoño-Invierno,Cebolla,Tonelada,49.0,49.0,0.0,680.61,4203.2,13.89,6175.71,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Otoño-Invierno,Chile verde,Tonelada,37.0,37.0,0.0,7616.82,126711.9,205.86,16635.8,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Otoño-Invierno,Ajo,Tonelada,35.0,35.0,0.0,251.3,4221.8,7.18,16800.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Otoño-Invierno,Trigo grano,Tonelada,32.0,32.0,0.0,211.2,777.2,6.6,3680.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Otoño-Invierno,Maíz grano,Tonelada,28.0,28.0,0.0,61.04,308.0,2.18,5045.52,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Otoño-Invierno,Pepino,Tonelada,13.0,13.0,0.0,3963.31,41531.3,304.87,10478.94,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Otoño-Invierno,Zanahoria,Tonelada,9.0,9.0,0.0,126.45,398.3,14.05,3150.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Perennes,Alfalfa verde,Tonelada,1468.0,1468.0,0.0,101893.88,77864.2,69.41,764.17,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Perennes,Espárrago,Tonelada,207.0,195.0,0.0,739.05,42864.9,3.79,58000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Perennes,Uva,Tonelada,62.0,34.0,0.0,149.94,2228.1,4.41,14860.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Primavera-Verano,Maíz grano,Tonelada,2755.05,2655.05,100.0,27692.17,162258.7,10.43,5859.37,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Primavera-Verano,Maíz forrajero en verde,Tonelada,970.6,970.6,0.0,61895.16,63899.3,63.77,1032.38,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Primavera-Verano,Sorgo grano,Tonelada,99.57,99.57,0.0,867.25,4205.1,8.71,4848.81,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Primavera-Verano,Tomate verde,Tonelada,98.06,98.06,0.0,2137.71,20035.9,21.8,9372.62,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Primavera-Verano,Sorgo forrajero en verde,Tonelada,75.8,75.8,0.0,3752.1,3373.1,49.5,899.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Primavera-Verano,Chile verde,Tonelada,32.21,32.21,0.0,429.36,4655.6,13.33,10843.02,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Primavera-Verano,Cebolla,Tonelada,29.15,29.15,0.0,397.9,4854.4,13.65,12200.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Colón,Primavera-Verano,Frijol,Tonelada,25.66,25.66,0.0,51.49,633.3,2.01,12300.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Otoño-Invierno,Avena forrajera en verde,Tonelada,1526.0,1526.0,0.0,40667.9,19754.8,26.65,485.76,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Otoño-Invierno,Brócoli,Tonelada,80.0,80.0,0.0,1249.6,4732.5,15.62,3787.18,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Otoño-Invierno,Cebada grano,Tonelada,68.0,68.0,0.0,374.0,1589.5,5.5,4250.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Otoño-Invierno,Lechuga,Tonelada,45.0,45.0,0.0,1260.0,4516.1,28.0,3584.22,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Otoño-Invierno,Cebolla,Tonelada,37.0,37.0,0.0,981.98,3535.1,26.54,3600.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Otoño-Invierno,Ajo,Tonelada,20.0,20.0,0.0,182.0,6916.0,9.1,38000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Otoño-Invierno,Coliflor,Tonelada,10.0,10.0,0.0,165.0,701.2,16.5,4250.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Otoño-Invierno,Zanahoria,Tonelada,10.0,10.0,0.0,370.0,436.6,37.0,1180.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Perennes,Alfalfa verde,Tonelada,890.0,890.0,0.0,65085.7,45269.7,73.13,695.54,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Perennes,Espárrago,Tonelada,312.0,312.0,0.0,1528.8,62258.5,4.9,40723.78,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Perennes,Uva,Tonelada,60.0,60.0,0.0,295.8,6670.3,4.93,22550.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Perennes,Nopalitos,Tonelada,19.0,19.0,0.0,725.04,3050.2,38.16,4206.95,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Primavera-Verano,Maíz forrajero en verde,Tonelada,5230.0,5230.0,0.0,364426.4,234555.8,69.68,643.63,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Primavera-Verano,Maíz grano,Tonelada,2935.0,2935.0,0.0,26913.95,143215.3,9.17,5321.23,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Primavera-Verano,Brócoli,Tonelada,128.0,128.0,0.0,2512.64,9517.3,19.63,3787.78,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Primavera-Verano,Lechuga,Tonelada,115.0,115.0,0.0,2429.95,14504.5,21.13,5969.05,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Primavera-Verano,Elote,Tonelada,90.0,90.0,0.0,1665.0,6686.3,18.5,4015.77,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Primavera-Verano,Frijol,Tonelada,60.5,60.5,0.0,124.63,1747.9,2.06,14025.06,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Primavera-Verano,Cebolla,Tonelada,60.0,60.0,0.0,2124.0,14825.5,35.4,6980.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Primavera-Verano,Sorgo forrajero en verde,Tonelada,45.0,45.0,0.0,1602.0,940.4,35.6,587.01,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Primavera-Verano,Coliflor,Tonelada,40.0,40.0,0.0,768.0,4371.5,19.2,5692.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,El Marqués,Primavera-Verano,Sorgo grano,Tonelada,40.0,40.0,0.0,276.8,1343.9,6.92,4855.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Otoño-Invierno,Cebada grano,Tonelada,2700.0,2700.0,0.0,13230.0,77121.0,4.9,5829.25,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Otoño-Invierno,Avena forrajera en verde,Tonelada,800.0,800.0,0.0,25200.0,14392.2,31.5,571.12,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Otoño-Invierno,Zanahoria,Tonelada,350.0,350.0,0.0,10150.0,34669.5,29.0,3415.71,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Otoño-Invierno,Trigo grano,Tonelada,180.0,180.0,0.0,774.0,4794.5,4.3,6194.44,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Otoño-Invierno,Brócoli,Tonelada,70.0,70.0,0.0,770.0,3234.7,11.0,4200.94,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Otoño-Invierno,Cebolla,Tonelada,70.0,70.0,0.0,2030.0,8975.6,29.0,4421.5,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Otoño-Invierno,Lechuga,Tonelada,50.0,50.0,0.0,1438.0,5961.9,28.76,4146.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Otoño-Invierno,Ajo,Tonelada,6.0,6.0,0.0,52.2,2227.2,8.7,42666.67,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Perennes,Alfalfa verde,Tonelada,796.0,796.0,0.0,81988.0,56723.4,103.0,691.85,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Perennes,Espárrago,Tonelada,580.0,580.0,0.0,2668.0,110913.4,4.6,41571.74,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Perennes,Rosa (gruesa),Gruesa,27.0,27.0,0.0,96800.02,29910.6,3585.19,308.99,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Perennes,Uva,Tonelada,2.0,0.0,0.0,0.0,0.0,,,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Primavera-Verano,Maíz grano,Tonelada,6150.0,5500.0,650.0,54450.0,295823.6,9.9,5432.94,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Primavera-Verano,Maíz forrajero en verde,Tonelada,1490.0,1290.0,200.0,96750.0,60821.9,75.0,628.65,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Primavera-Verano,Sorgo grano,Tonelada,260.0,260.0,0.0,2652.0,13820.0,10.2,5211.18,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Primavera-Verano,Frijol,Tonelada,122.0,107.0,15.0,139.1,1707.0,1.3,12271.7,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Primavera-Verano,Brócoli,Tonelada,115.0,115.0,0.0,1495.0,6021.9,13.0,4028.01,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Primavera-Verano,Chile verde,Tonelada,84.73,84.73,0.0,7783.51,129411.3,91.86,16626.35,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Primavera-Verano,Cebolla,Tonelada,76.5,76.5,0.0,2448.0,18631.1,32.0,7610.74,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Primavera-Verano,Lechuga,Tonelada,61.0,61.0,0.0,1647.0,6365.3,27.0,3864.81,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Primavera-Verano,Tomate rojo (jitomate),Tonelada,55.0,55.0,0.0,14560.15,125261.3,264.73,8603.02,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Primavera-Verano,Zanahoria,Tonelada,40.0,40.0,0.0,1280.0,5432.2,32.0,4243.91,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Primavera-Verano,Chile seco,Tonelada,21.0,21.0,0.0,36.54,1653.0,1.74,45239.04,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Primavera-Verano,Tomate verde,Tonelada,10.1,10.1,0.0,207.05,2018.7,20.5,9750.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Primavera-Verano,Avena forrajera en verde,Tonelada,10.0,10.0,0.0,100.0,50.5,10.0,505.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,Pedro Escobedo,Primavera-Verano,Pepino,Tonelada,6.0,6.0,0.0,1980.0,16137.0,330.0,8150.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Otoño-Invierno,Cebada grano,Tonelada,780.0,780.0,0.0,4212.0,24412.2,5.4,5795.87,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Otoño-Invierno,Avena forrajera en verde,Tonelada,450.0,450.0,0.0,13801.5,7693.2,30.67,557.42,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Otoño-Invierno,Trigo grano,Tonelada,250.0,250.0,0.0,1450.0,8917.5,5.8,6150.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Otoño-Invierno,Brócoli,Tonelada,50.0,50.0,0.0,560.0,2248.1,11.2,4014.38,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Otoño-Invierno,Tomate verde,Tonelada,40.0,40.0,0.0,1040.0,5148.0,26.0,4950.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Otoño-Invierno,Ajo,Tonelada,5.0,5.0,0.0,33.5,1375.5,6.7,41060.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Otoño-Invierno,Cebolla,Tonelada,5.0,5.0,0.0,140.0,620.2,28.0,4430.07,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Perennes,Alfalfa verde,Tonelada,1286.0,1286.0,0.0,124099.0,84969.3,96.5,684.69,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Perennes,Espárrago,Tonelada,140.0,140.0,0.0,546.0,21807.9,3.9,39941.21,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Perennes,Rosa (gruesa),Gruesa,98.0,98.0,0.0,476842.08,160373.9,4865.74,336.32,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Perennes,Uva,Tonelada,27.0,27.0,0.0,283.5,4810.0,10.5,16966.56,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Perennes,Zarzamora,Tonelada,2.5,2.5,0.0,18.0,481.0,7.2,26722.22,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Primavera-Verano,Maíz grano,Tonelada,1490.0,1040.0,450.0,9869.6,53785.2,9.49,5449.58,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Primavera-Verano,Maíz forrajero en verde,Tonelada,610.0,510.0,100.0,33150.0,21979.8,65.0,663.04,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Primavera-Verano,Frijol,Tonelada,72.0,72.0,0.0,129.6,1575.2,1.8,12154.63,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Primavera-Verano,Chile verde,Tonelada,63.5,63.5,0.0,3621.25,61861.8,57.03,17083.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Primavera-Verano,Chile seco,Tonelada,59.0,59.0,0.0,129.8,4613.0,2.2,35539.15,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Primavera-Verano,Tomate verde,Tonelada,35.0,35.0,0.0,1085.0,10618.0,31.0,9786.17,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Primavera-Verano,Sorgo grano,Tonelada,29.0,29.0,0.0,203.0,1050.5,7.0,5175.12,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Primavera-Verano,Tomate rojo (jitomate),Tonelada,20.6,20.6,0.0,9579.0,76822.5,465.0,8019.89,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2021,San Juan del Río,Primavera-Verano,Pepino,Tonelada,3.02,3.02,0.0,613.75,6751.2,203.23,11000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Otoño-Invierno,Trigo grano,Tonelada,420.5,420.5,0.0,2378.74,14769.7,5.66,6209.05,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Otoño-Invierno,Triticale forrajero en verde,Tonelada,401.0,401.0,0.0,12431.0,9696.2,31.0,780.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Otoño-Invierno,Avena forrajera en verde,Tonelada,316.0,316.0,0.0,6923.56,6274.8,21.91,906.29,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Otoño-Invierno,Cebada grano,Tonelada,210.0,210.0,0.0,1159.2,6820.8,5.52,5884.03,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Otoño-Invierno,Tomate rojo (jitomate),Tonelada,135.1,135.1,0.0,47231.4,485422.3,349.6,10277.53,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Otoño-Invierno,Cebolla,Tonelada,48.5,48.5,0.0,674.15,4584.2,13.9,6800.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Otoño-Invierno,Chile verde,Tonelada,41.0,41.0,0.0,8442.72,157101.8,205.92,18607.96,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Otoño-Invierno,Ajo,Tonelada,35.5,35.5,0.0,255.95,4607.1,7.21,18000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Otoño-Invierno,Maíz grano,Tonelada,28.0,28.0,0.0,61.6,371.5,2.2,6031.43,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Otoño-Invierno,Pepino,Tonelada,15.0,15.0,0.0,4029.45,71231.6,268.63,17677.75,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Otoño-Invierno,Zanahoria,Tonelada,10.0,10.0,0.0,143.3,630.5,14.33,4400.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Perennes,Alfalfa verde,Tonelada,1473.0,1473.0,0.0,101761.84,92499.5,69.08,908.98,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Perennes,Espárrago,Tonelada,210.0,195.0,0.0,1144.65,70968.3,5.87,62000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Perennes,Pastos y praderas,Tonelada,189.0,189.0,0.0,13173.32,10561.2,69.7,801.71,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Perennes,Uva,Tonelada,130.25,114.0,0.0,826.5,12604.1,7.25,15250.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Primavera-Verano,Maíz grano,Tonelada,2755.05,2755.05,0.0,27412.75,169191.2,9.95,6171.99,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Primavera-Verano,Maíz forrajero en verde,Tonelada,970.6,970.6,0.0,61875.75,61425.3,63.75,992.72,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Primavera-Verano,Sorgo grano,Tonelada,99.57,99.57,0.0,866.25,3991.0,8.7,4607.16,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Primavera-Verano,Tomate verde,Tonelada,98.06,98.06,0.0,2132.58,19178.9,21.75,8993.27,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Primavera-Verano,Sorgo forrajero en verde,Tonelada,75.8,75.8,0.0,3752.85,3651.5,49.51,973.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Primavera-Verano,Chile verde,Tonelada,32.21,32.21,0.0,428.39,4118.8,13.3,9614.52,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Primavera-Verano,Cebolla,Tonelada,29.15,29.15,0.0,398.18,4862.5,13.66,12211.91,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Colón,Primavera-Verano,Frijol,Tonelada,25.66,25.66,0.0,49.58,610.1,1.93,12305.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Otoño-Invierno,Avena forrajera en verde,Tonelada,1526.0,1526.0,0.0,40683.16,22346.4,26.66,549.28,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Otoño-Invierno,Triticale forrajero en verde,Tonelada,690.0,690.0,0.0,21045.0,12584.9,30.5,598.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Otoño-Invierno,Cebada grano,Tonelada,154.0,154.0,0.0,847.0,3599.8,5.5,4250.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Otoño-Invierno,Brócoli,Tonelada,80.0,80.0,0.0,1584.0,6027.8,19.8,3805.46,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Otoño-Invierno,Lechuga,Tonelada,45.0,45.0,0.0,1260.0,4506.5,28.0,3576.62,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Otoño-Invierno,Cebolla,Tonelada,36.0,36.0,0.0,955.44,5370.7,26.54,5621.22,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Otoño-Invierno,Espinaca,Tonelada,36.0,36.0,0.0,918.0,8078.4,25.5,8800.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Otoño-Invierno,Coliflor,Tonelada,30.0,30.0,0.0,540.0,2365.2,18.0,4380.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Otoño-Invierno,Ajo,Tonelada,20.0,20.0,0.0,182.0,7098.0,9.1,39000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Otoño-Invierno,Pastos y praderas,Tonelada,20.0,20.0,0.0,810.0,540.7,40.5,667.58,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Perennes,Alfalfa verde,Tonelada,925.0,925.0,0.0,67543.5,48927.8,73.02,724.39,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Perennes,Espárrago,Tonelada,300.0,300.0,0.0,1971.0,95902.5,6.57,48656.75,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Perennes,Uva,Tonelada,60.0,60.0,0.0,297.0,6736.0,4.95,22680.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Perennes,Nopalitos,Tonelada,17.0,17.0,0.0,636.6,2697.9,37.45,4238.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Primavera-Verano,Maíz forrajero en verde,Tonelada,5250.0,5250.0,0.0,372487.5,309164.6,70.95,830.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Primavera-Verano,Maíz grano,Tonelada,2900.0,2900.0,0.0,26535.0,180438.0,9.15,6800.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Primavera-Verano,Lechuga,Tonelada,110.0,110.0,0.0,2475.0,14812.9,22.5,5985.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Primavera-Verano,Brócoli,Tonelada,105.0,105.0,0.0,2052.75,8748.0,19.55,4261.61,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Primavera-Verano,Elote,Tonelada,85.0,85.0,0.0,1572.5,6302.7,18.5,4008.08,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Primavera-Verano,Cebolla,Tonelada,72.0,72.0,0.0,2548.8,17177.4,35.4,6739.41,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Primavera-Verano,Coliflor,Tonelada,45.0,45.0,0.0,864.0,5074.1,19.2,5872.78,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Primavera-Verano,Sorgo forrajero en verde,Tonelada,45.0,45.0,0.0,1602.0,998.7,35.6,623.41,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Primavera-Verano,Frijol,Tonelada,42.0,42.0,0.0,108.36,1787.9,2.58,16500.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Primavera-Verano,Sorgo grano,Tonelada,30.0,30.0,0.0,207.6,1370.2,6.92,6600.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Primavera-Verano,Tomate verde,Tonelada,30.0,30.0,0.0,804.0,3376.8,26.8,4200.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,El Marqués,Primavera-Verano,Tomate rojo (jitomate),Tonelada,0.98,0.98,0.0,202.0,2018.8,206.12,9993.86,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Otoño-Invierno,Cebada grano,Tonelada,2000.0,2000.0,0.0,13060.0,75225.6,6.53,5760.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Otoño-Invierno,Triticale grano,Tonelada,900.0,900.0,0.0,4995.0,18007.0,5.55,3605.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Otoño-Invierno,Avena forrajera en verde,Tonelada,700.0,700.0,0.0,21910.0,11822.4,31.3,539.59,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Otoño-Invierno,Zanahoria,Tonelada,300.0,300.0,0.0,8850.0,12549.5,29.5,1418.02,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Otoño-Invierno,Trigo grano,Tonelada,190.0,190.0,0.0,1045.0,5005.4,5.5,4789.83,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Otoño-Invierno,Pastos y praderas,Tonelada,106.5,106.5,0.0,3775.28,2293.2,35.45,607.41,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Otoño-Invierno,Brócoli,Tonelada,90.0,90.0,0.0,995.4,4248.4,11.06,4268.07,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Otoño-Invierno,Cebolla,Tonelada,60.0,60.0,0.0,1770.0,7780.4,29.5,4395.69,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Otoño-Invierno,Lechuga,Tonelada,50.0,50.0,0.0,1442.5,6068.7,28.85,4207.09,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Otoño-Invierno,Ajo,Tonelada,6.0,6.0,0.0,52.98,2596.0,8.83,49000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Perennes,Alfalfa verde,Tonelada,785.0,785.0,0.0,79285.0,56527.0,101.0,712.96,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Perennes,Espárrago,Tonelada,580.0,580.0,0.0,4935.8,209510.7,8.51,42447.16,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Perennes,Rosa (gruesa),Gruesa,27.0,27.0,0.0,96990.0,29967.2,3592.22,308.97,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Perennes,Uva,Tonelada,2.0,0.0,0.0,0.0,0.0,,,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Primavera-Verano,Maíz grano,Tonelada,4800.0,4800.0,0.0,51840.0,361700.1,10.8,6977.24,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Primavera-Verano,Maíz forrajero en verde,Tonelada,790.0,790.0,0.0,55300.0,34489.0,70.0,623.67,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Primavera-Verano,Frijol,Tonelada,90.0,90.0,0.0,243.0,3004.2,2.7,12362.88,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Primavera-Verano,Chile verde,Tonelada,61.23,61.23,0.0,6749.59,123813.5,110.23,18343.86,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Primavera-Verano,Brócoli,Tonelada,60.0,60.0,0.0,789.0,3290.2,13.15,4170.06,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Primavera-Verano,Tomate rojo (jitomate),Tonelada,50.0,50.0,0.0,25000.0,225000.0,500.0,9000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Primavera-Verano,Cebolla,Tonelada,45.0,45.0,0.0,1440.0,11012.8,32.0,7647.78,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Primavera-Verano,Lechuga,Tonelada,40.0,40.0,0.0,1080.0,4158.0,27.0,3850.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Primavera-Verano,Jícama,Tonelada,25.0,25.0,0.0,560.0,1400.0,22.4,2500.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Primavera-Verano,Sorgo grano,Tonelada,22.0,22.0,0.0,226.6,1271.5,10.3,5611.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Primavera-Verano,Zanahoria,Tonelada,15.0,15.0,0.0,495.0,2126.8,33.0,4296.55,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Primavera-Verano,Chile seco,Tonelada,12.0,12.0,0.0,21.0,949.9,1.75,45233.81,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Primavera-Verano,Pepino,Tonelada,6.0,6.0,0.0,1980.0,16077.6,330.0,8120.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,Pedro Escobedo,Primavera-Verano,Tomate verde,Tonelada,5.0,5.0,0.0,102.5,1004.5,20.5,9800.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Otoño-Invierno,Cebada grano,Tonelada,710.0,710.0,0.0,4260.0,25198.5,6.0,5915.15,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Otoño-Invierno,Avena forrajera en verde,Tonelada,450.0,450.0,0.0,13747.5,7301.4,30.55,531.11,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Otoño-Invierno,Trigo grano,Tonelada,295.0,295.0,0.0,1711.0,10686.9,5.8,6245.97,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Otoño-Invierno,Triticale forrajero en verde,Tonelada,80.0,80.0,0.0,2656.0,1646.7,33.2,620.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Otoño-Invierno,Brócoli,Tonelada,35.0,35.0,0.0,399.0,1639.4,11.4,4108.72,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Otoño-Invierno,Tomate verde,Tonelada,26.0,26.0,0.0,668.2,2174.6,25.7,3254.39,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Otoño-Invierno,Cebolla,Tonelada,6.0,6.0,0.0,170.4,766.8,28.4,4500.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Otoño-Invierno,Ajo,Tonelada,5.0,5.0,0.0,33.5,1613.8,6.7,48172.39,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Perennes,Alfalfa verde,Tonelada,1240.0,1240.0,0.0,119164.0,85957.8,96.1,721.34,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Perennes,Espárrago,Tonelada,140.0,140.0,0.0,705.6,32632.6,5.04,46248.01,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Perennes,Rosa (gruesa),Gruesa,98.0,98.0,0.0,477087.0,152905.7,4868.23,320.5,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Perennes,Uva,Tonelada,27.0,27.0,0.0,284.85,4358.2,10.55,15300.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Perennes,Zarzamora,Tonelada,2.5,2.5,0.0,18.13,407.4,7.25,22472.26,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Primavera-Verano,Maíz grano,Tonelada,1730.0,1730.0,0.0,17992.0,125283.2,10.4,6963.27,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Primavera-Verano,Maíz forrajero en verde,Tonelada,580.0,580.0,0.0,38570.0,25798.7,66.5,668.88,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Primavera-Verano,Frijol,Tonelada,75.0,75.0,0.0,159.0,1942.4,2.12,12216.6,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Primavera-Verano,Chile verde,Tonelada,56.0,56.0,0.0,2077.6,29598.9,37.1,14246.66,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Primavera-Verano,Chile seco,Tonelada,55.0,55.0,0.0,123.75,4389.4,2.25,35470.1,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Primavera-Verano,Tomate verde,Tonelada,32.0,32.0,0.0,1014.4,9034.5,31.7,8906.23,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Primavera-Verano,Tomate rojo (jitomate),Tonelada,14.58,14.58,0.0,6824.52,51646.7,468.07,7567.81,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Primavera-Verano,Sorgo grano,Tonelada,8.0,8.0,0.0,81.6,481.4,10.2,5900.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2022,San Juan del Río,Primavera-Verano,Pepino,Tonelada,3.02,3.02,0.0,443.94,4883.3,147.0,11000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Otoño-Invierno,Avena forrajera en verde,Tonelada,435.0,435.0,0.0,9526.5,9385.1,21.9,985.16,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Otoño-Invierno,Triticale forrajero en verde,Tonelada,401.0,401.0,0.0,13549.79,11097.3,33.79,819.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Otoño-Invierno,Cebada grano,Tonelada,214.0,214.0,0.0,1177.0,6945.3,5.5,5900.84,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Otoño-Invierno,Tomate rojo (jitomate),Tonelada,115.0,115.0,0.0,55306.5,571511.2,480.93,10333.53,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Otoño-Invierno,Chile verde,Tonelada,105.3,105.3,0.0,9207.07,164580.4,87.44,17875.44,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Otoño-Invierno,Trigo grano,Tonelada,64.0,64.0,0.0,347.52,2036.5,5.43,5860.03,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Otoño-Invierno,Cebolla,Tonelada,45.0,45.0,0.0,607.5,5881.9,13.5,9682.11,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Otoño-Invierno,Pepino,Tonelada,41.0,41.0,0.0,11013.42,194822.6,268.62,17689.56,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Otoño-Invierno,Maíz grano,Tonelada,34.0,34.0,0.0,75.14,514.5,2.21,6847.38,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Otoño-Invierno,Ajo,Tonelada,10.0,10.0,0.0,71.0,1288.6,7.1,18150.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Otoño-Invierno,Zanahoria,Tonelada,3.0,3.0,0.0,42.9,195.2,14.3,4550.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Perennes,Alfalfa verde,Tonelada,1497.0,1497.0,0.0,102125.34,94335.2,68.22,923.72,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Perennes,Espárrago,Tonelada,210.0,195.0,0.0,1168.05,76040.1,5.99,65100.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Perennes,Pastos y praderas,Tonelada,189.0,189.0,0.0,13436.01,11310.4,71.09,841.8,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Perennes,Uva,Tonelada,130.25,114.0,0.0,843.6,13508.1,7.4,16012.5,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Primavera-Verano,Maíz grano,Tonelada,2755.0,2755.0,0.0,27274.5,161055.9,9.9,5905.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Primavera-Verano,Maíz forrajero en verde,Tonelada,970.6,970.6,0.0,61856.34,61831.6,63.73,999.6,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Primavera-Verano,Sorgo grano,Tonelada,99.57,99.57,0.0,867.25,4058.7,8.71,4680.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Primavera-Verano,Tomate verde,Tonelada,98.1,98.1,0.0,2132.69,19172.9,21.74,8990.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Primavera-Verano,Sorgo forrajero en verde,Tonelada,75.8,75.8,0.0,3752.1,3714.6,49.5,990.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Primavera-Verano,Chile verde,Tonelada,32.21,32.21,0.0,428.72,4124.3,13.31,9620.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Primavera-Verano,Cebolla,Tonelada,29.15,29.15,0.0,397.9,4289.4,13.65,10780.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Colón,Primavera-Verano,Frijol,Tonelada,25.66,25.66,0.0,51.84,651.1,2.02,12560.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Otoño-Invierno,Avena forrajera en verde,Tonelada,1550.0,1550.0,0.0,41075.0,21851.9,26.5,532.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Otoño-Invierno,Triticale forrajero en verde,Tonelada,690.0,690.0,0.0,22942.5,14405.6,33.25,627.9,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Otoño-Invierno,Maíz forrajero en verde,Tonelada,90.0,90.0,0.0,5400.0,5119.2,60.0,948.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Otoño-Invierno,Brócoli,Tonelada,80.0,80.0,0.0,1609.6,6543.1,20.12,4065.07,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Otoño-Invierno,Cebada grano,Tonelada,65.0,65.0,0.0,351.0,1807.6,5.4,5150.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Otoño-Invierno,Lechuga,Tonelada,48.0,48.0,0.0,1344.0,7155.1,28.0,5323.75,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Otoño-Invierno,Cebolla,Tonelada,36.5,36.5,0.0,996.45,5080.5,27.3,5098.63,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Otoño-Invierno,Espinaca,Tonelada,36.0,36.0,0.0,1000.8,9247.4,27.8,9240.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Otoño-Invierno,Coliflor,Tonelada,30.0,30.0,0.0,600.0,2256.3,20.0,3760.5,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Otoño-Invierno,Ajo,Tonelada,22.0,22.0,0.0,201.3,8474.7,9.15,42100.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Otoño-Invierno,Pastos y praderas,Tonelada,20.0,20.0,0.0,883.0,618.9,44.15,700.96,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Otoño-Invierno,Zanahoria,Tonelada,11.0,11.0,0.0,605.0,865.2,55.0,1430.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Otoño-Invierno,Calabacita,Tonelada,6.5,6.5,0.0,177.45,550.1,27.3,3100.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Perennes,Alfalfa verde,Tonelada,905.0,905.0,0.0,70372.8,51854.2,77.76,736.85,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Perennes,Espárrago,Tonelada,300.0,300.0,0.0,1464.0,60621.3,4.88,41407.99,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Perennes,Uva,Tonelada,60.0,60.0,0.0,296.4,6734.5,4.94,22721.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Perennes,Nopalitos,Tonelada,10.0,10.0,0.0,406.8,1728.4,40.68,4248.71,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Primavera-Verano,Maíz forrajero en verde,Tonelada,5300.0,5300.0,0.0,358280.0,351114.4,67.6,980.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Primavera-Verano,Maíz grano,Tonelada,2945.0,2945.0,0.0,26357.75,188194.3,8.95,7140.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Primavera-Verano,Lechuga,Tonelada,118.0,118.0,0.0,2572.4,15314.3,21.8,5953.31,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Primavera-Verano,Brócoli,Tonelada,95.0,95.0,0.0,2042.5,8582.8,21.5,4202.11,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Primavera-Verano,Elote,Tonelada,80.0,80.0,0.0,1616.0,6754.9,20.2,4180.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Primavera-Verano,Frijol,Tonelada,78.0,78.0,0.0,193.62,3319.2,2.48,17142.62,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Primavera-Verano,Cebolla,Tonelada,52.0,52.0,0.0,1848.6,12919.8,35.55,6988.94,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Primavera-Verano,Sorgo forrajero en verde,Tonelada,43.0,43.0,0.0,1548.0,911.7,36.0,588.93,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Primavera-Verano,Coliflor,Tonelada,40.0,40.0,0.0,794.0,4660.8,19.85,5870.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Primavera-Verano,Sorgo grano,Tonelada,37.0,37.0,0.0,247.9,1717.9,6.7,6930.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Primavera-Verano,Tomate verde,Tonelada,32.0,32.0,0.0,816.0,4732.8,25.5,5800.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,El Marqués,Primavera-Verano,Tomate rojo (jitomate),Tonelada,1.96,1.96,0.0,388.69,5651.9,198.31,14540.88,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Otoño-Invierno,Cebada grano,Tonelada,2000.0,2000.0,0.0,13060.0,75763.4,6.53,5801.18,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Otoño-Invierno,Triticale grano,Tonelada,900.0,900.0,0.0,5445.0,20610.7,6.05,3785.25,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Otoño-Invierno,Avena forrajera en verde,Tonelada,500.0,500.0,0.0,15750.0,8712.3,31.5,553.16,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Otoño-Invierno,Pastos y praderas,Tonelada,106.5,106.5,0.0,4115.21,2624.6,38.64,637.79,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Otoño-Invierno,Zanahoria,Tonelada,100.0,100.0,0.0,2950.0,3982.5,29.5,1350.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Otoño-Invierno,Brócoli,Tonelada,90.0,90.0,0.0,990.0,4251.0,11.0,4293.89,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Otoño-Invierno,Trigo grano,Tonelada,70.0,70.0,0.0,385.0,2502.5,5.5,6500.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Otoño-Invierno,Cebolla,Tonelada,60.0,60.0,0.0,1776.0,7903.2,29.6,4450.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Otoño-Invierno,Lechuga,Tonelada,50.0,50.0,0.0,1450.0,6167.6,29.0,4253.55,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Otoño-Invierno,Ajo,Tonelada,6.0,6.0,0.0,53.52,2621.4,8.92,48980.42,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Perennes,Alfalfa verde,Tonelada,789.0,789.0,0.0,80478.0,59429.8,102.0,738.46,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Perennes,Espárrago,Tonelada,580.0,580.0,0.0,5034.4,224380.8,8.68,44569.52,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Primavera-Verano,Maíz grano,Tonelada,4950.0,4950.0,0.0,52222.5,363726.6,10.55,6964.94,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Primavera-Verano,Maíz forrajero en verde,Tonelada,800.0,800.0,0.0,55600.0,36453.0,69.5,655.63,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Primavera-Verano,Chile verde,Tonelada,71.23,71.23,0.0,7172.53,127889.1,100.7,17830.4,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Primavera-Verano,Brócoli,Tonelada,60.0,60.0,0.0,792.0,3310.6,13.2,4180.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Primavera-Verano,Tomate rojo (jitomate),Tonelada,50.0,50.0,0.0,24750.0,223980.1,495.0,9049.7,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Primavera-Verano,Cebolla,Tonelada,45.0,45.0,0.0,1449.0,11197.6,32.2,7727.78,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Primavera-Verano,Frijol,Tonelada,45.0,45.0,0.0,117.0,1446.3,2.6,12361.8,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Primavera-Verano,Lechuga,Tonelada,40.0,40.0,0.0,1088.0,4154.5,27.2,3818.5,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Primavera-Verano,Jícama,Tonelada,15.0,15.0,0.0,336.0,851.2,22.4,2533.33,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Primavera-Verano,Sorgo grano,Tonelada,15.0,15.0,0.0,151.5,864.5,10.1,5706.4,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Primavera-Verano,Zanahoria,Tonelada,15.0,15.0,0.0,487.5,2158.0,32.5,4426.67,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Primavera-Verano,Chile seco,Tonelada,12.0,12.0,0.0,21.6,975.7,1.8,45173.38,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Primavera-Verano,Pepino,Tonelada,6.0,6.0,0.0,1982.52,16157.2,330.42,8149.85,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,Pedro Escobedo,Primavera-Verano,Tomate verde,Tonelada,5.0,5.0,0.0,101.0,999.9,20.2,9900.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Otoño-Invierno,Cebada grano,Tonelada,500.0,500.0,0.0,3000.0,17896.7,6.0,5965.58,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Otoño-Invierno,Avena forrajera en verde,Tonelada,450.0,450.0,0.0,13725.0,7289.8,30.5,531.13,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Otoño-Invierno,Trigo grano,Tonelada,100.0,100.0,0.0,560.0,3505.6,5.6,6260.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Otoño-Invierno,Triticale forrajero en verde,Tonelada,80.0,80.0,0.0,2895.2,1884.8,36.19,651.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Otoño-Invierno,Brócoli,Tonelada,30.0,30.0,0.0,339.0,1403.1,11.3,4138.8,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Otoño-Invierno,Tomate verde,Tonelada,26.0,26.0,0.0,673.4,2851.3,25.9,4234.22,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Otoño-Invierno,Cebolla,Tonelada,6.0,6.0,0.0,171.0,776.4,28.5,4540.35,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Otoño-Invierno,Ajo,Tonelada,5.0,5.0,0.0,33.25,1604.6,6.65,48260.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Perennes,Alfalfa verde,Tonelada,1235.0,1235.0,0.0,120042.0,89027.9,97.2,741.64,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Perennes,Espárrago,Tonelada,140.0,140.0,0.0,719.6,34944.1,5.14,48560.41,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Perennes,Uva,Tonelada,27.0,27.0,0.0,290.52,4667.2,10.76,16065.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Perennes,Zarzamora,Tonelada,2.5,2.5,0.0,18.5,436.5,7.4,23595.87,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Primavera-Verano,Maíz grano,Tonelada,1550.0,1550.0,0.0,15810.0,110124.2,10.2,6965.48,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Primavera-Verano,Maíz forrajero en verde,Tonelada,590.0,590.0,0.0,39530.0,26218.3,67.0,663.25,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Primavera-Verano,Frijol,Tonelada,60.0,5.0,55.0,11.0,134.5,2.2,12230.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Primavera-Verano,Chile verde,Tonelada,56.0,56.0,0.0,2075.0,29871.2,37.05,14395.77,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Primavera-Verano,Chile seco,Tonelada,55.0,55.0,0.0,115.5,4030.7,2.1,34897.56,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Primavera-Verano,Tomate verde,Tonelada,25.0,25.0,0.0,775.0,6923.7,31.0,8933.83,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Primavera-Verano,Tomate rojo (jitomate),Tonelada,14.58,14.58,0.0,6809.46,51518.4,467.04,7565.72,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Primavera-Verano,Sorgo grano,Tonelada,8.0,8.0,0.0,77.52,461.4,9.69,5951.68,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2023,San Juan del Río,Primavera-Verano,Pepino,Tonelada,3.02,3.02,0.0,437.9,4816.9,145.0,11000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Otoño-Invierno,Avena forrajera en verde,Tonelada,435.0,435.0,0.0,9483.0,9400.5,21.8,991.3,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Otoño-Invierno,Trigo grano,Tonelada,332.0,332.0,0.0,2188.0,14920.2,6.59,6819.08,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Otoño-Invierno,Cebada grano,Tonelada,214.0,214.0,0.0,1155.6,6806.5,5.4,5890.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Otoño-Invierno,Tomate rojo (jitomate),Tonelada,134.79,134.79,0.0,64650.55,686544.2,479.64,10619.31,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Otoño-Invierno,Triticale forrajero en verde,Tonelada,88.0,88.0,0.0,2728.0,2237.0,31.0,820.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Otoño-Invierno,Chile verde,Tonelada,64.3,64.3,0.0,8683.34,159058.2,135.04,18317.63,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Otoño-Invierno,Cebolla,Tonelada,45.0,45.0,0.0,603.0,6005.9,13.4,9960.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Otoño-Invierno,Pepino,Tonelada,41.0,41.0,0.0,11462.6,151091.2,279.58,13181.23,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Otoño-Invierno,Maíz grano,Tonelada,34.0,34.0,0.0,74.8,422.3,2.2,5645.32,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Otoño-Invierno,Ajo,Tonelada,10.0,10.0,0.0,71.5,1323.5,7.15,18510.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Otoño-Invierno,Zanahoria,Tonelada,3.0,3.0,0.0,42.75,194.9,14.25,4560.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Perennes,Alfalfa verde,Tonelada,1495.0,1495.0,0.0,103155.0,98964.8,69.0,959.38,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Perennes,Espárrago,Tonelada,165.0,165.0,0.0,709.5,42570.0,4.3,60000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Perennes,Uva,Tonelada,137.25,132.0,0.0,1056.0,16251.8,8.0,15390.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Perennes,Pastos y praderas,Tonelada,40.0,40.0,0.0,2642.0,2396.2,66.05,906.95,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Primavera-Verano,Maíz grano,Tonelada,2755.0,2755.0,0.0,26172.5,130862.5,9.5,5000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Primavera-Verano,Maíz forrajero en verde,Tonelada,970.6,970.6,0.0,61827.22,62136.4,63.7,1005.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Primavera-Verano,Sorgo grano,Tonelada,99.57,99.57,0.0,861.28,4230.7,8.65,4912.05,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Primavera-Verano,Tomate verde,Tonelada,98.1,98.1,0.0,2128.77,19137.6,21.7,8990.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Primavera-Verano,Sorgo forrajero en verde,Tonelada,75.8,75.8,0.0,3748.31,3692.1,49.45,985.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Primavera-Verano,Chile verde,Tonelada,32.21,32.21,0.0,426.78,4235.8,13.25,9925.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Primavera-Verano,Cebolla,Tonelada,29.15,29.15,0.0,396.44,3123.8,13.6,7879.66,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Colón,Primavera-Verano,Frijol,Tonelada,25.06,25.06,0.0,29.32,425.9,1.17,14525.18,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Otoño-Invierno,Avena forrajera en verde,Tonelada,1580.0,1580.0,0.0,43639.6,23312.7,27.62,534.21,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Otoño-Invierno,Triticale forrajero en verde,Tonelada,650.0,650.0,0.0,17940.0,13006.5,27.6,725.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Otoño-Invierno,Cebada grano,Tonelada,120.0,120.0,0.0,654.0,3255.3,5.45,4977.5,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Otoño-Invierno,Brócoli,Tonelada,75.0,75.0,0.0,1510.5,6034.4,20.14,3995.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Otoño-Invierno,Lechuga,Tonelada,50.0,50.0,0.0,1383.0,6812.8,27.66,4926.08,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Otoño-Invierno,Cebolla,Tonelada,38.0,38.0,0.0,1045.0,5753.0,27.5,5505.26,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Otoño-Invierno,Coliflor,Tonelada,32.0,32.0,0.0,659.2,2277.5,20.6,3455.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Otoño-Invierno,Ajo,Tonelada,20.0,20.0,0.0,183.0,7686.0,9.15,42000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Otoño-Invierno,Pastos y praderas,Tonelada,18.0,18.0,0.0,803.7,567.6,44.65,706.26,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Otoño-Invierno,Zanahoria,Tonelada,8.0,8.0,0.0,440.0,653.4,55.0,1485.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Otoño-Invierno,Calabacita,Tonelada,5.0,5.0,0.0,40.0,127.4,8.0,3185.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Perennes,Alfalfa verde,Tonelada,915.0,915.0,0.0,69960.9,53709.0,76.46,767.7,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Perennes,Espárrago,Tonelada,300.0,300.0,0.0,1470.0,67032.0,4.9,45600.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Perennes,Uva,Tonelada,60.0,60.0,0.0,306.0,6941.0,5.1,22683.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Perennes,Nopalitos,Tonelada,10.0,10.0,0.0,380.0,1590.2,38.0,4184.61,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Primavera-Verano,Maíz forrajero en verde,Tonelada,5300.0,5300.0,0.0,363739.0,358650.3,68.63,986.01,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Primavera-Verano,Maíz grano,Tonelada,2945.0,2945.0,0.0,26357.75,129383.3,8.95,4908.74,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Primavera-Verano,Lechuga,Tonelada,118.0,118.0,0.0,2572.4,15383.7,21.8,5980.29,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Primavera-Verano,Brócoli,Tonelada,95.0,95.0,0.0,2042.5,8056.5,21.5,3944.44,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Primavera-Verano,Elote,Tonelada,80.0,80.0,0.0,1616.0,6706.4,20.2,4150.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Primavera-Verano,Coliflor,Tonelada,78.0,78.0,0.0,1548.3,9088.5,19.85,5870.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Primavera-Verano,Cebolla,Tonelada,46.0,46.0,0.0,1635.3,11414.4,35.55,6980.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Primavera-Verano,Sorgo forrajero en verde,Tonelada,43.0,43.0,0.0,1548.0,963.0,36.0,622.09,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Primavera-Verano,Frijol,Tonelada,42.0,30.0,12.0,73.5,906.3,2.45,12330.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Primavera-Verano,Sorgo grano,Tonelada,37.0,37.0,0.0,247.9,1724.8,6.7,6957.72,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Primavera-Verano,Tomate verde,Tonelada,25.0,25.0,0.0,637.5,3145.0,25.5,4933.33,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,El Marqués,Primavera-Verano,Zanahoria,Tonelada,20.0,20.0,0.0,1216.0,5350.4,60.8,4400.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Otoño-Invierno,Cebada grano,Tonelada,1300.0,1300.0,0.0,8580.0,52695.5,6.6,6141.67,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Otoño-Invierno,Triticale forrajero en verde,Tonelada,600.0,600.0,0.0,18900.0,13797.0,31.5,730.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Otoño-Invierno,Avena forrajera en verde,Tonelada,490.0,490.0,0.0,15141.0,10767.5,30.9,711.15,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Otoño-Invierno,Pastos y praderas,Tonelada,101.0,101.0,0.0,3753.53,2283.0,37.16,608.24,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Otoño-Invierno,Brócoli,Tonelada,90.0,90.0,0.0,999.0,4267.9,11.1,4272.22,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Otoño-Invierno,Zanahoria,Tonelada,90.0,90.0,0.0,2556.0,3256.1,28.4,1273.89,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Otoño-Invierno,Lechuga,Tonelada,50.0,50.0,0.0,1450.0,6019.9,29.0,4151.66,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Otoño-Invierno,Cebolla,Tonelada,45.0,45.0,0.0,1296.0,5736.1,28.8,4425.98,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Otoño-Invierno,Trigo grano,Tonelada,30.0,30.0,0.0,162.9,1067.0,5.43,6550.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Otoño-Invierno,Ajo,Tonelada,5.0,5.0,0.0,42.5,2078.7,8.5,48910.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Perennes,Alfalfa verde,Tonelada,795.0,795.0,0.0,73617.0,69847.8,92.6,948.8,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Perennes,Espárrago,Tonelada,560.0,560.0,0.0,2660.0,128235.2,4.75,48208.74,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Perennes,Rosa (gruesa),Gruesa,27.0,27.0,0.0,98801.7,28952.2,3659.32,293.03,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Perennes,Uva,Tonelada,2.0,2.0,0.0,20.4,305.3,10.2,14965.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Primavera-Verano,Maíz grano,Tonelada,4450.0,4450.0,0.0,46369.0,243774.4,10.42,5257.27,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Primavera-Verano,Maíz forrajero en verde,Tonelada,2092.0,2092.0,0.0,147276.8,151895.4,70.4,1031.36,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Primavera-Verano,Frijol,Tonelada,150.0,150.0,0.0,322.5,5321.2,2.15,16500.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Primavera-Verano,Zanahoria,Tonelada,50.0,50.0,0.0,1625.0,7973.7,32.5,4906.91,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Primavera-Verano,Chile verde,Tonelada,42.7,42.7,0.0,6013.6,118874.5,140.83,19767.61,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Primavera-Verano,Lechuga,Tonelada,38.0,38.0,0.0,1045.0,4163.6,27.5,3984.26,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Primavera-Verano,Brócoli,Tonelada,36.0,36.0,0.0,444.96,1859.9,12.36,4180.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Primavera-Verano,Cebolla,Tonelada,34.0,34.0,0.0,1094.8,8455.5,32.2,7723.33,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Primavera-Verano,Sorgo grano,Tonelada,30.0,30.0,0.0,303.0,1583.8,10.1,5226.99,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Primavera-Verano,Jícama,Tonelada,16.0,16.0,0.0,358.4,1863.7,22.4,5200.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Primavera-Verano,Chile seco,Tonelada,13.0,13.0,0.0,23.4,1038.4,1.8,44376.58,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Primavera-Verano,Pepino,Tonelada,6.0,6.0,0.0,2400.0,20280.0,400.0,8450.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,Pedro Escobedo,Primavera-Verano,Tomate verde,Tonelada,5.0,5.0,0.0,101.0,988.1,20.2,9783.58,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Otoño-Invierno,Cebada grano,Tonelada,486.0,486.0,0.0,2916.0,18079.2,6.0,6200.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Otoño-Invierno,Avena forrajera en verde,Tonelada,450.0,450.0,0.0,13612.5,9264.1,30.25,680.56,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Otoño-Invierno,Trigo grano,Tonelada,220.0,220.0,0.0,1205.6,7896.7,5.48,6550.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Otoño-Invierno,Brócoli,Tonelada,30.0,30.0,0.0,346.5,1458.2,11.55,4208.23,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Otoño-Invierno,Tomate verde,Tonelada,25.0,25.0,0.0,627.5,2160.4,25.1,3442.8,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Otoño-Invierno,Cebolla,Tonelada,6.0,6.0,0.0,168.0,757.7,28.0,4510.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Otoño-Invierno,Ajo,Tonelada,5.0,5.0,0.0,32.5,1566.8,6.5,48208.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Perennes,Alfalfa verde,Tonelada,1253.0,1253.0,0.0,108384.5,103165.8,86.5,951.85,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Perennes,Espárrago,Tonelada,130.0,130.0,0.0,598.0,28704.0,4.6,48000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Perennes,Rosa (gruesa),Gruesa,98.0,98.0,0.0,478260.0,146138.9,4880.2,305.56,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Perennes,Uva,Tonelada,27.0,27.0,0.0,288.9,4665.7,10.7,16150.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Perennes,Zarzamora,Tonelada,2.5,2.5,0.0,14.8,378.1,5.92,25550.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Primavera-Verano,Maíz forrajero en verde,Tonelada,1952.0,1952.0,0.0,130784.0,86581.6,67.0,662.02,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Primavera-Verano,Maíz grano,Tonelada,1750.0,1750.0,0.0,17850.0,105218.3,10.2,5894.58,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Primavera-Verano,Frijol,Tonelada,70.0,70.0,0.0,140.0,2310.0,2.0,16500.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Primavera-Verano,Chile verde,Tonelada,69.0,69.0,0.0,2046.4,30346.1,29.66,14829.02,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Primavera-Verano,Chile seco,Tonelada,55.0,55.0,0.0,115.5,4186.4,2.1,36246.24,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Primavera-Verano,Tomate verde,Tonelada,40.0,40.0,0.0,1240.0,11513.5,31.0,9285.05,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Primavera-Verano,Sorgo grano,Tonelada,25.0,25.0,0.0,242.25,1282.5,9.69,5294.2,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Primavera-Verano,Tomate rojo (jitomate),Tonelada,17.47,17.47,0.0,8250.74,61820.5,472.28,7492.72,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2024,San Juan del Río,Primavera-Verano,Pepino,Tonelada,3.02,3.02,0.0,457.26,4863.5,151.41,10636.25,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Otoño-Invierno,Avena forrajera en verde,Tonelada,435.0,435.0,0.0,8562.9,5180.6,19.68,605.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Otoño-Invierno,Trigo grano,Tonelada,332.0,332.0,0.0,1853.49,13067.1,5.58,7050.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Otoño-Invierno,Cebada grano,Tonelada,214.0,214.0,0.0,1152.92,8185.7,5.39,7100.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Otoño-Invierno,Tomate rojo (jitomate),Tonelada,115.0,115.0,0.0,27429.86,454373.6,238.52,16564.93,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Otoño-Invierno,Chile verde,Tonelada,91.0,91.0,0.0,4889.0,77600.8,53.73,15872.53,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Otoño-Invierno,Triticale forrajero en verde,Tonelada,88.0,88.0,0.0,2655.84,2123.3,30.18,799.5,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Otoño-Invierno,Cebolla,Tonelada,45.0,45.0,0.0,600.58,3839.3,13.35,6392.73,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Otoño-Invierno,Pepino,Tonelada,41.0,41.0,0.0,11237.79,65556.9,274.09,5833.61,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Otoño-Invierno,Maíz grano,Tonelada,34.0,34.0,0.0,58.65,309.6,1.72,5278.32,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Otoño-Invierno,Ajo,Tonelada,10.0,10.0,0.0,65.78,2960.1,6.58,45000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Otoño-Invierno,Zanahoria,Tonelada,3.0,3.0,0.0,42.25,211.2,14.08,5000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Perennes,Alfalfa verde,Tonelada,1497.0,1495.0,0.0,103304.5,66860.7,69.1,647.22,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Perennes,Espárrago,Tonelada,165.0,165.0,0.0,1359.6,70280.0,8.24,51691.64,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Perennes,Uva,Tonelada,137.25,137.0,0.0,1100.0,15422.0,8.03,14020.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Perennes,Pastos y praderas,Tonelada,40.0,40.0,0.0,2394.0,1945.7,59.85,812.76,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Primavera-Verano,Maíz grano,Tonelada,2765.0,2765.0,0.0,26775.16,135678.5,9.68,5067.33,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Primavera-Verano,Maíz forrajero en verde,Tonelada,981.0,981.0,0.0,62636.85,50109.5,63.85,800.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Primavera-Verano,Tomate verde,Tonelada,96.0,96.0,0.0,2094.72,9426.2,21.82,4500.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Primavera-Verano,Sorgo grano,Tonelada,91.0,91.0,0.0,764.4,3898.4,8.4,5100.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Primavera-Verano,Sorgo forrajero en verde,Tonelada,73.0,73.0,0.0,3533.2,1766.6,48.4,500.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Primavera-Verano,Chile verde,Tonelada,30.0,30.0,0.0,399.9,2399.4,13.33,6000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Primavera-Verano,Cebolla,Tonelada,26.0,26.0,0.0,356.98,1354.2,13.73,3793.46,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Colón,Primavera-Verano,Frijol,Tonelada,23.0,23.0,0.0,22.73,375.0,0.99,16500.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Otoño-Invierno,Avena forrajera en verde,Tonelada,1580.0,1580.0,0.0,41633.0,25188.0,26.35,605.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Otoño-Invierno,Triticale forrajero en verde,Tonelada,650.0,650.0,0.0,17938.0,14341.4,27.6,799.5,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Otoño-Invierno,Cebada grano,Tonelada,128.0,128.0,0.0,695.56,4902.5,5.43,7048.29,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Otoño-Invierno,Brócoli,Tonelada,75.0,75.0,0.0,1509.21,8238.7,20.12,5458.92,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Otoño-Invierno,Lechuga,Tonelada,50.0,50.0,0.0,1383.0,6903.9,27.66,4992.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Otoño-Invierno,Cebolla,Tonelada,38.0,38.0,0.0,1041.83,4803.7,27.42,4610.84,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Otoño-Invierno,Coliflor,Tonelada,32.0,32.0,0.0,656.92,3393.0,20.53,5165.02,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Otoño-Invierno,Ajo,Tonelada,20.0,20.0,0.0,183.0,8235.0,9.15,45000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Otoño-Invierno,Calabacita,Tonelada,6.5,6.5,0.0,48.88,286.3,7.52,5857.37,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Perennes,Alfalfa verde,Tonelada,940.0,940.0,0.0,68751.6,38761.5,73.14,563.79,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Perennes,Espárrago,Tonelada,300.0,300.0,0.0,2472.0,145348.9,8.24,58798.1,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Perennes,Uva,Tonelada,60.0,60.0,0.0,331.35,4908.3,5.52,14812.95,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Perennes,Nopalitos,Tonelada,10.0,10.0,0.0,395.0,1232.1,39.5,3119.15,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Primavera-Verano,Maíz forrajero en verde,Tonelada,5294.0,5294.0,0.0,362973.0,286846.7,68.56,790.27,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Primavera-Verano,Maíz grano,Tonelada,2950.0,2950.0,0.0,30100.62,150503.1,10.2,5000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Primavera-Verano,Lechuga,Tonelada,109.0,109.0,0.0,2518.5,19270.3,23.11,7651.5,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Primavera-Verano,Chile verde,Tonelada,94.0,94.0,0.0,1250.0,13877.8,13.3,11102.24,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Primavera-Verano,Frijol,Tonelada,90.0,90.0,0.0,203.5,3357.8,2.26,16500.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Primavera-Verano,Brócoli,Tonelada,80.0,80.0,0.0,2016.0,13305.6,25.2,6600.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Primavera-Verano,Elote,Tonelada,80.0,41.0,39.0,865.1,2142.0,21.1,2476.02,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Primavera-Verano,Cebolla,Tonelada,48.0,48.0,0.0,1840.8,11044.8,38.35,6000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Primavera-Verano,Sorgo forrajero en verde,Tonelada,43.0,43.0,0.0,1710.0,971.3,39.77,568.01,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Primavera-Verano,Sorgo grano,Tonelada,38.0,38.0,0.0,265.5,1217.9,6.99,4587.02,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Primavera-Verano,Coliflor,Tonelada,37.0,37.0,0.0,765.7,6355.3,20.69,8300.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Primavera-Verano,Tomate verde,Tonelada,30.0,30.0,0.0,763.5,2672.2,25.45,3500.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Primavera-Verano,Zanahoria,Tonelada,15.0,15.0,0.0,980.8,3432.8,65.39,3500.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,El Marqués,Primavera-Verano,Tomate rojo (jitomate),Tonelada,0.98,0.98,0.0,196.78,2021.7,200.8,10274.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Otoño-Invierno,Cebada grano,Tonelada,1500.0,335.0,1165.0,2010.0,14170.5,6.0,7050.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Otoño-Invierno,Triticale forrajero en verde,Tonelada,640.0,640.0,0.0,19968.0,15964.4,31.2,799.5,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Otoño-Invierno,Avena forrajera en verde,Tonelada,550.0,550.0,0.0,17152.3,11779.7,31.19,686.77,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Otoño-Invierno,Zanahoria,Tonelada,105.0,105.0,0.0,2625.0,10236.9,25.0,3899.78,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Otoño-Invierno,Brócoli,Tonelada,85.0,85.0,0.0,1358.1,5825.2,15.98,4289.23,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Otoño-Invierno,Pastos y praderas,Tonelada,63.0,63.0,0.0,2206.76,1316.7,35.03,596.67,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Otoño-Invierno,Lechuga,Tonelada,50.0,50.0,0.0,1451.16,8373.1,29.02,5769.92,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Otoño-Invierno,Trigo grano,Tonelada,40.0,40.0,0.0,208.0,1452.4,5.2,6982.69,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Otoño-Invierno,Cebolla,Tonelada,30.0,30.0,0.0,870.7,4894.1,29.02,5620.91,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Otoño-Invierno,Ajo,Tonelada,5.0,5.0,0.0,45.0,2089.6,9.0,46435.78,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Perennes,Alfalfa verde,Tonelada,805.0,805.0,0.0,82512.5,54210.7,102.5,657.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Perennes,Espárrago,Tonelada,560.0,560.0,0.0,4614.4,203449.6,8.24,44090.16,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Perennes,Rosa (gruesa),Gruesa,27.0,27.0,0.0,84864.6,28669.5,3143.13,337.83,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Perennes,Uva,Tonelada,2.0,2.0,0.0,20.6,309.0,10.3,15000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Primavera-Verano,Maíz grano,Tonelada,4975.0,4975.0,0.0,55638.42,273792.2,11.18,4920.92,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Primavera-Verano,Maíz forrajero en verde,Tonelada,1180.0,1180.0,0.0,82364.0,69014.4,69.8,837.92,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Primavera-Verano,Chile verde,Tonelada,82.0,82.0,0.0,7230.79,122887.8,88.18,16995.08,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Primavera-Verano,Tomate rojo (jitomate),Tonelada,50.0,50.0,0.0,2500.0,16500.0,50.0,6600.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Primavera-Verano,Frijol,Tonelada,37.0,37.0,0.0,55.0,907.5,1.49,16500.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Primavera-Verano,Zanahoria,Tonelada,25.0,25.0,0.0,825.0,3300.0,33.0,4000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Primavera-Verano,Lechuga,Tonelada,20.0,20.0,0.0,549.0,4392.0,27.45,8000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Primavera-Verano,Sorgo grano,Tonelada,18.0,18.0,0.0,180.0,850.8,10.0,4726.72,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Primavera-Verano,Jícama,Tonelada,15.0,15.0,0.0,330.0,1732.5,22.0,5250.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Primavera-Verano,Chile seco,Tonelada,13.0,13.0,0.0,23.27,932.4,1.79,40068.3,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Primavera-Verano,Brócoli,Tonelada,8.0,8.0,0.0,148.0,976.8,18.5,6600.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Primavera-Verano,Cebolla,Tonelada,7.0,7.0,0.0,228.0,1368.0,32.57,6000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Primavera-Verano,Pepino,Tonelada,6.0,6.0,0.0,1950.0,11139.6,325.0,5712.62,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,Pedro Escobedo,Primavera-Verano,Tomate verde,Tonelada,4.0,4.0,0.0,82.0,399.8,20.5,4875.82,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Otoño-Invierno,Cebada grano,Tonelada,460.0,232.0,228.0,1392.0,9883.2,6.0,7100.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Otoño-Invierno,Avena forrajera en verde,Tonelada,420.0,384.0,36.0,9156.88,6174.6,23.85,674.31,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Otoño-Invierno,Trigo grano,Tonelada,200.0,47.0,153.0,294.46,1928.7,6.27,6549.89,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Otoño-Invierno,Triticale forrajero en verde,Tonelada,75.0,75.0,0.0,2400.0,1843.2,32.0,768.02,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Otoño-Invierno,Brócoli,Tonelada,34.0,34.0,0.0,513.06,3533.8,15.09,6887.78,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Otoño-Invierno,Tomate verde,Tonelada,23.0,18.0,5.0,457.2,2568.6,25.4,5618.04,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Otoño-Invierno,Cebolla,Tonelada,8.0,8.0,0.0,225.34,1211.2,28.17,5375.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Otoño-Invierno,Ajo,Tonelada,5.0,5.0,0.0,37.5,1805.0,7.5,48132.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Perennes,Alfalfa verde,Tonelada,1292.0,1292.0,0.0,125065.6,84290.5,96.8,673.97,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Perennes,Espárrago,Tonelada,130.0,130.0,0.0,1071.2,52863.5,8.24,49349.78,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Perennes,Rosa (gruesa),Gruesa,98.0,98.0,0.0,419144.36,161101.7,4276.98,384.36,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Perennes,Uva,Tonelada,27.0,27.0,0.0,275.4,4131.0,10.2,15000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Perennes,Zarzamora,Tonelada,2.5,2.5,0.0,16.25,373.8,6.5,23000.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Primavera-Verano,Maíz grano,Tonelada,3461.0,3461.0,0.0,35475.25,173417.6,10.25,4888.41,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Primavera-Verano,Maíz forrajero en verde,Tonelada,950.0,950.0,0.0,63165.5,55633.0,66.49,880.75,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Primavera-Verano,Chile verde,Tonelada,104.0,104.0,0.0,2640.02,28330.2,25.38,10731.04,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Primavera-Verano,Frijol,Tonelada,62.0,62.0,0.0,139.5,2301.8,2.25,16500.0,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Primavera-Verano,Chile seco,Tonelada,60.0,60.0,0.0,127.2,5096.7,2.12,40068.3,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Primavera-Verano,Tomate rojo (jitomate),Tonelada,47.0,43.0,4.0,18098.7,269807.3,420.9,14907.55,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Primavera-Verano,Tomate verde,Tonelada,43.0,43.0,0.0,1281.4,5676.0,29.8,4429.53,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Primavera-Verano,Sorgo grano,Tonelada,26.0,26.0,0.0,251.94,1233.6,9.69,4896.29,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
+2025,San Juan del Río,Primavera-Verano,Pepino,Tonelada,3.0,3.0,0.0,444.0,2614.7,148.0,5889.06,"SIAP, cierre de la producción agrícola municipal (SADER)",Riego
