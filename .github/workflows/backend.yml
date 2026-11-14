@@ -6,11 +6,13 @@ on:
     paths:
       - "backend/**"
       - "contracts/**"
+      - "models/*.csv"
       - ".github/workflows/backend.yml"
   pull_request:
     paths:
       - "backend/**"
       - "contracts/**"
+      - "models/*.csv"
       - ".github/workflows/backend.yml"
 
 concurrency:

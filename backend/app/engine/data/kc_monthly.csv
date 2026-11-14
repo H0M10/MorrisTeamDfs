@@ -1,0 +1,133 @@
+crop_group,month_num,kc,source,verified_by,verified_on
+alfalfa,1,0.40,"FAO-56 Tabla 12 pp. 110-114 (alfalfa henificada promedio ciclos; reposo invernal hemisferio norte)",ARGON (FAO-56 ref),2026-11-14
+alfalfa,2,0.40,"FAO-56 Tabla 12 pp. 110-114 (alfalfa henificada; rebrote inicial)",ARGON (FAO-56 ref),2026-11-14
+alfalfa,3,0.65,"FAO-56 Tabla 12 pp. 110-114 (transicion Kc_ini 0.40 -> Kc_mid 0.95)",ARGON (FAO-56 ref),2026-11-14
+alfalfa,4,0.85,"FAO-56 Tabla 12 pp. 110-114 (primer corte primaveral)",ARGON (FAO-56 ref),2026-11-14
+alfalfa,5,0.95,"FAO-56 Tabla 12 pp. 110-114 (Kc_mid promedio cortes = 0.95)",ARGON (FAO-56 ref),2026-11-14
+alfalfa,6,0.95,"FAO-56 Tabla 12 pp. 110-114 (Kc_mid promedio cortes = 0.95)",ARGON (FAO-56 ref),2026-11-14
+alfalfa,7,0.95,"FAO-56 Tabla 12 pp. 110-114 (Kc_mid promedio cortes = 0.95)",ARGON (FAO-56 ref),2026-11-14
+alfalfa,8,0.95,"FAO-56 Tabla 12 pp. 110-114 (Kc_mid promedio cortes = 0.95)",ARGON (FAO-56 ref),2026-11-14
+alfalfa,9,0.90,"FAO-56 Tabla 12 pp. 110-114 (Kc_end promedio cortes = 0.90)",ARGON (FAO-56 ref),2026-11-14
+alfalfa,10,0.75,"FAO-56 Tabla 12 pp. 110-114 (ultimo corte otonal)",ARGON (FAO-56 ref),2026-11-14
+alfalfa,11,0.40,"FAO-56 Tabla 12 pp. 110-114 (entrada a dormancia)",ARGON (FAO-56 ref),2026-11-14
+alfalfa,12,0.40,"FAO-56 Tabla 12 pp. 110-114 (reposo invernal)",ARGON (FAO-56 ref),2026-11-14
+small_grain,1,0.40,"FAO-56 Tabla 12 pp. 110-114 (trigo/cebada invierno suelo no helado Kc_ini = 0.40)",ARGON (FAO-56 ref),2026-11-14
+small_grain,2,0.55,"FAO-56 Tabla 12 pp. 110-114 (desarrollo vegetativo temprano)",ARGON (FAO-56 ref),2026-11-14
+small_grain,3,0.85,"FAO-56 Tabla 12 pp. 110-114 (encañe cereal grano pequeño)",ARGON (FAO-56 ref),2026-11-14
+small_grain,4,1.15,"FAO-56 Tabla 12 pp. 110-114 (Kc_mid cebada/avena/trigo = 1.15)",ARGON (FAO-56 ref),2026-11-14
+small_grain,5,1.15,"FAO-56 Tabla 12 pp. 110-114 (Kc_mid = 1.15)",ARGON (FAO-56 ref),2026-11-14
+small_grain,6,0.75,"FAO-56 Tabla 12 pp. 110-114 (maduracion hacia Kc_end)",ARGON (FAO-56 ref),2026-11-14
+small_grain,7,0.25,"FAO-56 Tabla 12 pp. 110-114 (Kc_end = 0.25 cosecha seca)",ARGON (FAO-56 ref),2026-11-14
+small_grain,8,0.20,"FAO-56 Cap. 11 (rastrojo/suelo seco postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+small_grain,9,0.20,"FAO-56 Cap. 11 (rastrojo antes de siembra otoñal)",ARGON (FAO-56 ref),2026-11-14
+small_grain,10,0.40,"FAO-56 Tabla 12 pp. 110-114 (siembra otoñal Kc_ini = 0.40)",ARGON (FAO-56 ref),2026-11-14
+small_grain,11,0.40,"FAO-56 Tabla 12 pp. 110-114 (establecimiento otoñal Kc_ini = 0.40)",ARGON (FAO-56 ref),2026-11-14
+small_grain,12,0.40,"FAO-56 Tabla 12 pp. 110-114 (reposo invernal Kc_ini = 0.40)",ARGON (FAO-56 ref),2026-11-14
+corn,1,0.20,"FAO-56 Cap. 11 (fuera de ciclo/barbecho Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+corn,2,0.20,"FAO-56 Cap. 11 (fuera de ciclo/barbecho Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+corn,3,0.20,"FAO-56 Cap. 11 (preparacion cama de siembra Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+corn,4,0.30,"FAO-56 Tabla 12 pp. 110-114 (maiz grano Kc_ini = 0.30)",ARGON (FAO-56 ref),2026-11-14
+corn,5,0.55,"FAO-56 Tabla 12 pp. 110-114 (desarrollo vegetativo temprano)",ARGON (FAO-56 ref),2026-11-14
+corn,6,0.95,"FAO-56 Tabla 12 pp. 110-114 (desarrollo hacia floracion)",ARGON (FAO-56 ref),2026-11-14
+corn,7,1.20,"FAO-56 Tabla 12 pp. 110-114 (maiz grano Kc_mid = 1.20)",ARGON (FAO-56 ref),2026-11-14
+corn,8,1.20,"FAO-56 Tabla 12 pp. 110-114 (maiz grano Kc_mid = 1.20)",ARGON (FAO-56 ref),2026-11-14
+corn,9,0.75,"FAO-56 Tabla 12 pp. 110-114 (senescencia hacia Kc_end)",ARGON (FAO-56 ref),2026-11-14
+corn,10,0.35,"FAO-56 Tabla 12 pp. 110-114 (Kc_end grano seco = 0.35)",ARGON (FAO-56 ref),2026-11-14
+corn,11,0.20,"FAO-56 Cap. 11 (rastrojo postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+corn,12,0.20,"FAO-56 Cap. 11 (rastrojo invernal Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+fallow,1,0.20,"FAO-56 Cap. 11 (suelo desnudo o rastrojo seco Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+fallow,2,0.20,"FAO-56 Cap. 11 (suelo desnudo o rastrojo seco Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+fallow,3,0.20,"FAO-56 Cap. 11 (suelo desnudo o rastrojo seco Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+fallow,4,0.20,"FAO-56 Cap. 11 (suelo desnudo o rastrojo seco Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+fallow,5,0.20,"FAO-56 Cap. 11 (suelo desnudo o rastrojo seco Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+fallow,6,0.20,"FAO-56 Cap. 11 (suelo desnudo o rastrojo seco Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+fallow,7,0.20,"FAO-56 Cap. 11 (suelo desnudo o rastrojo seco Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+fallow,8,0.20,"FAO-56 Cap. 11 (suelo desnudo o rastrojo seco Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+fallow,9,0.20,"FAO-56 Cap. 11 (suelo desnudo o rastrojo seco Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+fallow,10,0.20,"FAO-56 Cap. 11 (suelo desnudo o rastrojo seco Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+fallow,11,0.20,"FAO-56 Cap. 11 (suelo desnudo o rastrojo seco Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+fallow,12,0.20,"FAO-56 Cap. 11 (suelo desnudo o rastrojo seco Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+sorghum,1,0.20,"FAO-56 Cap. 11 (fuera de ciclo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+sorghum,2,0.20,"FAO-56 Cap. 11 (fuera de ciclo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+sorghum,3,0.20,"FAO-56 Cap. 11 (fuera de ciclo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+sorghum,4,0.20,"FAO-56 Cap. 11 (preparacion suelo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+sorghum,5,0.30,"FAO-56 Tabla 12 pp. 110-114 (sorgo grano Kc_ini = 0.30)",ARGON (FAO-56 ref),2026-11-14
+sorghum,6,0.70,"FAO-56 Tabla 12 pp. 110-114 (desarrollo vegetativo sorgo)",ARGON (FAO-56 ref),2026-11-14
+sorghum,7,1.05,"FAO-56 Tabla 12 pp. 110-114 (sorgo grano Kc_mid = 1.00-1.10)",ARGON (FAO-56 ref),2026-11-14
+sorghum,8,1.05,"FAO-56 Tabla 12 pp. 110-114 (sorgo grano Kc_mid = 1.00-1.10)",ARGON (FAO-56 ref),2026-11-14
+sorghum,9,0.75,"FAO-56 Tabla 12 pp. 110-114 (maduracion sorgo)",ARGON (FAO-56 ref),2026-11-14
+sorghum,10,0.55,"FAO-56 Tabla 12 pp. 110-114 (sorgo grano Kc_end = 0.55)",ARGON (FAO-56 ref),2026-11-14
+sorghum,11,0.20,"FAO-56 Cap. 11 (rastrojo sorgo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+sorghum,12,0.20,"FAO-56 Cap. 11 (rastrojo sorgo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+beans_legumes,1,0.20,"FAO-56 Cap. 11 (fuera de ciclo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+beans_legumes,2,0.20,"FAO-56 Cap. 11 (fuera de ciclo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+beans_legumes,3,0.20,"FAO-56 Cap. 11 (fuera de ciclo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+beans_legumes,4,0.40,"FAO-56 Tabla 12 pp. 110-114 (leguminosas grano Kc_ini = 0.40)",ARGON (FAO-56 ref),2026-11-14
+beans_legumes,5,0.75,"FAO-56 Tabla 12 pp. 110-114 (desarrollo vegetativo leguminosas)",ARGON (FAO-56 ref),2026-11-14
+beans_legumes,6,1.15,"FAO-56 Tabla 12 pp. 110-114 (frijol/garbanzo/soya Kc_mid = 1.15)",ARGON (FAO-56 ref),2026-11-14
+beans_legumes,7,1.15,"FAO-56 Tabla 12 pp. 110-114 (Kc_mid = 1.15)",ARGON (FAO-56 ref),2026-11-14
+beans_legumes,8,0.65,"FAO-56 Tabla 12 pp. 110-114 (llenado a madurez)",ARGON (FAO-56 ref),2026-11-14
+beans_legumes,9,0.35,"FAO-56 Tabla 12 pp. 110-114 (frijol seco/pulso Kc_end = 0.35)",ARGON (FAO-56 ref),2026-11-14
+beans_legumes,10,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+beans_legumes,11,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+beans_legumes,12,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+oilseeds,1,0.20,"FAO-56 Cap. 11 (fuera de ciclo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+oilseeds,2,0.20,"FAO-56 Cap. 11 (fuera de ciclo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+oilseeds,3,0.20,"FAO-56 Cap. 11 (fuera de ciclo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+oilseeds,4,0.35,"FAO-56 Tabla 12 pp. 110-114 (girasol/canola Kc_ini = 0.30-0.35)",ARGON (FAO-56 ref),2026-11-14
+oilseeds,5,0.75,"FAO-56 Tabla 12 pp. 110-114 (desarrollo foliar oleaginosas)",ARGON (FAO-56 ref),2026-11-14
+oilseeds,6,1.15,"FAO-56 Tabla 12 pp. 110-114 (girasol/canola Kc_mid = 1.15)",ARGON (FAO-56 ref),2026-11-14
+oilseeds,7,1.15,"FAO-56 Tabla 12 pp. 110-114 (Kc_mid = 1.15)",ARGON (FAO-56 ref),2026-11-14
+oilseeds,8,0.65,"FAO-56 Tabla 12 pp. 110-114 (maduracion oleaginosas)",ARGON (FAO-56 ref),2026-11-14
+oilseeds,9,0.35,"FAO-56 Tabla 12 pp. 110-114 (Kc_end = 0.35)",ARGON (FAO-56 ref),2026-11-14
+oilseeds,10,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+oilseeds,11,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+oilseeds,12,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+cotton,1,0.20,"FAO-56 Cap. 11 (fuera de ciclo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+cotton,2,0.20,"FAO-56 Cap. 11 (fuera de ciclo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+cotton,3,0.20,"FAO-56 Cap. 11 (fuera de ciclo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+cotton,4,0.35,"FAO-56 Tabla 12 pp. 110-114 (algodon Kc_ini = 0.35)",ARGON (FAO-56 ref),2026-11-14
+cotton,5,0.65,"FAO-56 Tabla 12 pp. 110-114 (desarrollo vegetativo algodon)",ARGON (FAO-56 ref),2026-11-14
+cotton,6,1.15,"FAO-56 Tabla 12 pp. 110-114 (floracion temprana algodon)",ARGON (FAO-56 ref),2026-11-14
+cotton,7,1.18,"FAO-56 Tabla 12 pp. 110-114 (algodon Kc_mid = 1.15-1.20)",ARGON (FAO-56 ref),2026-11-14
+cotton,8,1.18,"FAO-56 Tabla 12 pp. 110-114 (algodon Kc_mid = 1.15-1.20)",ARGON (FAO-56 ref),2026-11-14
+cotton,9,0.85,"FAO-56 Tabla 12 pp. 110-114 (apertura de bellotas)",ARGON (FAO-56 ref),2026-11-14
+cotton,10,0.60,"FAO-56 Tabla 12 pp. 110-114 (algodon Kc_end = 0.50-0.70)",ARGON (FAO-56 ref),2026-11-14
+cotton,11,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+cotton,12,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+root_tuber,1,0.20,"FAO-56 Cap. 11 (fuera de ciclo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+root_tuber,2,0.20,"FAO-56 Cap. 11 (fuera de ciclo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+root_tuber,3,0.45,"FAO-56 Tabla 12 pp. 110-114 (papa Kc_ini = 0.40-0.50)",ARGON (FAO-56 ref),2026-11-14
+root_tuber,4,0.80,"FAO-56 Tabla 12 pp. 110-114 (desarrollo papa)",ARGON (FAO-56 ref),2026-11-14
+root_tuber,5,1.15,"FAO-56 Tabla 12 pp. 110-114 (papa Kc_mid = 1.15)",ARGON (FAO-56 ref),2026-11-14
+root_tuber,6,1.15,"FAO-56 Tabla 12 pp. 110-114 (papa Kc_mid = 1.15)",ARGON (FAO-56 ref),2026-11-14
+root_tuber,7,0.75,"FAO-56 Tabla 12 pp. 110-114 (papa Kc_end = 0.75)",ARGON (FAO-56 ref),2026-11-14
+root_tuber,8,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+root_tuber,9,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+root_tuber,10,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+root_tuber,11,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+root_tuber,12,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+vegetables,1,0.20,"FAO-56 Cap. 11 (fuera de ciclo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+vegetables,2,0.20,"FAO-56 Cap. 11 (fuera de ciclo Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+vegetables,3,0.65,"FAO-56 Tabla 12 pp. 110-114 (hortalizas Kc_ini = 0.60-0.70)",ARGON (FAO-56 ref),2026-11-14
+vegetables,4,0.85,"FAO-56 Tabla 12 pp. 110-114 (desarrollo hortalizas)",ARGON (FAO-56 ref),2026-11-14
+vegetables,5,1.05,"FAO-56 Tabla 12 pp. 110-114 (cebolla/chile/brocoli Kc_mid = 1.05)",ARGON (FAO-56 ref),2026-11-14
+vegetables,6,1.05,"FAO-56 Tabla 12 pp. 110-114 (Kc_mid hortalizas = 1.05)",ARGON (FAO-56 ref),2026-11-14
+vegetables,7,0.80,"FAO-56 Tabla 12 pp. 110-114 (Kc_end hortalizas = 0.75-0.90)",ARGON (FAO-56 ref),2026-11-14
+vegetables,8,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+vegetables,9,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+vegetables,10,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+vegetables,11,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+vegetables,12,0.20,"FAO-56 Cap. 11 (postcosecha Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+cover_crop,1,0.40,"FAO-56 Tabla 12 pp. 110-114 (cobertura invernal establecida Kc_ini = 0.40)",ARGON (FAO-56 ref),2026-11-14
+cover_crop,2,0.55,"FAO-56 Tabla 12 pp. 110-114 (rebrote cobertura invernal)",ARGON (FAO-56 ref),2026-11-14
+cover_crop,3,0.90,"FAO-56 Tabla 12 pp. 110-114 (cobertura vegetativa densa)",ARGON (FAO-56 ref),2026-11-14
+cover_crop,4,1.05,"FAO-56 Tabla 12 pp. 110-114 (trebol/avena-veza Kc_mid = 1.05)",ARGON (FAO-56 ref),2026-11-14
+cover_crop,5,0.30,"FAO-56 Tabla 12 / Cap. 11 (terminacion como acolchado)",ARGON (FAO-56 ref),2026-11-14
+cover_crop,6,0.20,"FAO-56 Cap. 11 (rastrojo cobertura terminado Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+cover_crop,7,0.20,"FAO-56 Cap. 11 (rastrojo cobertura Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+cover_crop,8,0.20,"FAO-56 Cap. 11 (rastrojo cobertura Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+cover_crop,9,0.20,"FAO-56 Cap. 11 (antes de siembra otonal Kc_min = 0.20)",ARGON (FAO-56 ref),2026-11-14
+cover_crop,10,0.40,"FAO-56 Tabla 12 pp. 110-114 (siembra otonal cobertura Kc_ini = 0.40)",ARGON (FAO-56 ref),2026-11-14
+cover_crop,11,0.40,"FAO-56 Tabla 12 pp. 110-114 (establecimiento otonal Kc_ini = 0.40)",ARGON (FAO-56 ref),2026-11-14
+cover_crop,12,0.40,"FAO-56 Tabla 12 pp. 110-114 (cobertura invernal Kc_ini = 0.40)",ARGON (FAO-56 ref),2026-11-14

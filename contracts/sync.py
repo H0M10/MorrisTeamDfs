@@ -1,4 +1,4 @@
-"""Copia el contrato a las carpetas que se despliegan por separado.
+"""Copia el contrato y el banco de cultivos a las carpetas que se despliegan por separado.
 
 Railway despliega solo /backend y Vercel solo /frontend, así que ninguno ve
 /contracts en producción. Este guion mantiene una copia idéntica en cada uno.
@@ -30,28 +30,34 @@ TARGETS = [
 ]
 
 
+# El banco agronómico vive en /models; el backend guarda copia por la misma
+# razón que el contrato: Railway despliega solo /backend.
+EXTRA_COPIES = [
+    (ROOT / "models" / name, ROOT / "backend" / "app" / "engine" / "data" / name)
+    for name in ("fao56_crop_bank.csv", "kc_monthly.csv")
+]
+
+
 def main(argv: list[str]) -> int:
     check = "--check" in argv
     stale: list[str] = []
-    for target in TARGETS:
-        for name in FILES:
-            src, dst = SOURCE / name, target / name
-            same = dst.exists() and filecmp.cmp(src, dst, shallow=False)
-            if same:
-                continue
-            if check:
-                stale.append(str(dst.relative_to(ROOT)))
-            else:
-                dst.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copyfile(src, dst)
-                print(f"copiado {dst.relative_to(ROOT)}")
+    pairs = [(SOURCE / name, target / name) for target in TARGETS for name in FILES]
+    for src, dst in [*pairs, *EXTRA_COPIES]:
+        if dst.exists() and filecmp.cmp(src, dst, shallow=False):
+            continue
+        if check:
+            stale.append(str(dst.relative_to(ROOT)))
+        else:
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(src, dst)
+            print(f"copiado {dst.relative_to(ROOT)}")
     if stale:
-        print("Copias del contrato desactualizadas:")
+        print("Copias desactualizadas:")
         for item in stale:
             print(f"  {item}")
         print("Corre: python contracts/sync.py")
         return 1
-    print("Contrato sincronizado.")
+    print("Contrato y banco de cultivos sincronizados.")
     return 0
 
 

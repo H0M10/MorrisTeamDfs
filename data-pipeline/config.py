@@ -45,6 +45,19 @@ SOURCES: tuple[Source, ...] = (
         ("NASA/SMAP/SPL4SMGP/008", "NASA/SMAP/SPL4SMGP/007"),
         "9 km (contexto regional)",
     ),
+    # Grupo B (enriquecimiento opcional, no bloquea nada): lluvia satelital y
+    # clima fino de EE. UU. Aún no se exportan columnas con ellas; aparecen en
+    # ee_coverage.py para saber si existen y qué años cubren.
+    Source(
+        "gpm_imerg", ("NASA/GPM_L3/IMERG_MONTHLY_V07",), "~10 km (0.1°)", required=False
+    ),
+    Source(
+        "prism",
+        ("OREGONSTATE/PRISM/AN81m",),
+        "~4 km (EE. UU.)",
+        labeled_only=True,
+        required=False,
+    ),
     Source("srtm", ("USGS/SRTMGL1_003",), "30 m", kind="image"),
     Source("soil_clay", ("projects/soilgrids-isric/clay_mean",), "250 m", kind="image"),
     Source("soil_sand", ("projects/soilgrids-isric/sand_mean",), "250 m", kind="image"),
@@ -76,6 +89,34 @@ CDL_GROUPS: dict[str, tuple[int, ...]] = {
     "corn": (1, 12, 13),
     "fallow": (61,),
 }
+
+
+# Clases de CDL de los 24 cultivos del banco (models/fao56_crop_bank.csv), por
+# grupo agronómico. Lo usa el convertidor de tabla a contrato. Va SEPARADO de
+# CDL_GROUPS a propósito: el modelo 3 conserva sus cuatro clases originales.
+EXTENDED_CDL_GROUPS: dict[str, tuple[int, ...]] = {
+    "alfalfa": (36,),
+    "small_grain": (21, 23, 24, 28),
+    "corn": (1, 12, 13, 42),
+    "sorghum": (4,),
+    "beans_legumes": (5, 42, 51, 52),
+    "oilseeds": (6, 31),
+    "cotton": (2,),
+    "root_tuber": (43,),
+    "vegetables": (49, 54, 208, 214, 216),
+    "cover_crop": (28, 58, 205, 224),
+    "fallow": (61,),
+}
+
+
+def extended_cdl_group(code: int | None) -> str:
+    """Grupo del banco para una clase de CDL. Si varias coinciden gana la primera."""
+    if code is None:
+        return "unknown"
+    for group, codes in EXTENDED_CDL_GROUPS.items():
+        if int(code) in codes:
+            return group
+    return "other"
 
 
 def cdl_group(code: int | None) -> str:

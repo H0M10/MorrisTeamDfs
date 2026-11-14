@@ -7,15 +7,16 @@ contrato no admite como nulos. El modelo solo se declara para la documentación.
 
 from __future__ import annotations
 
-from functools import lru_cache
-from pathlib import Path
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 
 from app.config import Settings, get_settings
+from app.engine import crop_bank
+from app.engine.crop_traits import TRAITS_SOURCE, TRAITS_TYPE
 from app.models.loader import ModelRegistry
+from app.models.loader import get_registry as cached_registry
 from app.schemas.api import (
     AskRequest,
     AskResponse,
@@ -37,13 +38,8 @@ router = APIRouter(prefix="/api/v1")
 SettingsDep = Annotated[Settings, Depends(get_settings)]
 
 
-@lru_cache
-def _registry(models_dir: Path) -> ModelRegistry:
-    return ModelRegistry(models_dir)
-
-
 def get_registry(settings: SettingsDep) -> ModelRegistry:
-    return _registry(settings.resolve(settings.models_dir))
+    return cached_registry(settings.resolve(settings.models_dir))
 
 
 def get_share_store(settings: SettingsDep) -> ShareStore:
@@ -67,6 +63,41 @@ SHARE_RESPONSES: dict[int | str, dict[str, Any]] = {
 def pilots(settings: SettingsDep) -> JSONResponse:
     """Parcelas piloto disponibles."""
     return JSONResponse(evaluation_service.list_pilots(settings))
+
+
+@router.get("/crops", response_model=None)
+def crops() -> JSONResponse:
+    """Banco de cultivos: coeficientes FAO-56 y rasgos. Todo es supuesto declarado."""
+    return JSONResponse(
+        {
+            "type": crop_bank.BANK_TYPE,
+            "source": crop_bank.BANK_SOURCE,
+            "date": crop_bank.BANK_DATE,
+            "native_scale": crop_bank.BANK_SCALE,
+            "reference_note": crop_bank.fao56_reference_note(),
+            "traits_type": TRAITS_TYPE,
+            "traits_source": TRAITS_SOURCE,
+            "crops": [
+                {
+                    "crop_code": spec.crop_code,
+                    "crop_group": spec.crop_group,
+                    "name": spec.name,
+                    "cdl_codes": list(spec.cdl_codes),
+                    "kc": {"ini": spec.kc_ini, "mid": spec.kc_mid, "end": spec.kc_end},
+                    "kc_monthly": [
+                        crop_bank.kc_for_month(spec.crop_code, month) for month in range(1, 13)
+                    ],
+                    "root_depth_m": spec.root_depth_m,
+                    "depletion_fraction_p": spec.depletion_fraction_p,
+                    "sown": spec.sown,
+                    "sold": spec.sold,
+                    "machinery": list(spec.machinery),
+                    "source": spec.source,
+                }
+                for spec in crop_bank.list_crops()
+            ],
+        }
+    )
 
 
 @router.post("/evaluate", response_model=None, responses=EVALUATION_RESPONSES)
