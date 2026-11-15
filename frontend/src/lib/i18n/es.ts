@@ -80,6 +80,29 @@ export const es = {
       noneViableShort: "ninguna rotación viable",
       mapTitle: "Mapa",
       mapHelp: "Los puntos amarillos son otras parcelas: toca uno para evaluarlo. Toca cualquier otro lugar para analizarlo en vivo.",
+      viewLabel: "Vista del mapa",
+      views: {
+        default: "Predeterminado",
+        relief: "Relieve 3D",
+        satellite: "Satélite",
+      },
+      relief3dHint:
+        "En Relieve 3D puedes inclinar y girar el terreno arrastrando con clic derecho (o Ctrl + clic). Un clic normal sigue capturando las coordenadas del punto.",
+      pickedBanner: (lat: string, lon: string) =>
+        `Punto capturado: Lat ${lat}, Lon ${lon} · radio de 250 m listo para analizar con Earth Engine.`,
+      footprintsTitle: "Escala real del píxel sobre la parcela",
+      footprintsUnavailable: "Información de resolución espacial no disponible para esta parcela.",
+      metersPerPixel: "metros por píxel",
+      sourceNames: {
+        hls_landsat: "Color del campo (satélites Landsat y Sentinel)",
+        openet: "Agua evaporada del campo (OpenET)",
+        usda_cdl: "Cultivos sembrados por año",
+        srtm: "Altura y pendiente del terreno",
+        soilgrids: "Textura y materia orgánica del suelo",
+        smap: "Humedad de la región por satélite",
+        nasa_power: "Lluvia, temperatura y heladas de la región",
+      } as Record<string, string>,
+      coordinatesLabel: "Coordenadas del centro",
     },
     constraints: {
       intro: "Primero revisamos lo que tienes. Si una rotación no cabe aquí, se descarta antes de calcular lo demás.",

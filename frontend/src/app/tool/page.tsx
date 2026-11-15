@@ -21,6 +21,7 @@ const isDetected = (pilot: PilotSummary) => /^dv-f\d+$/.test(pilot.id);
 
 export default function ParcelPage() {
   const { t, pick, value } = useI18n();
+  const p = t.tool.parcel;
   const pilots = usePilots();
   const [parcelId, setParcelId] = useParcelId();
 
@@ -49,7 +50,7 @@ export default function ParcelPage() {
   const option = (pilot: PilotSummary) => (
     <option key={pilot.id} value={pilot.id}>
       {pick(pilot.name)} · {value(pilot.area_ha)}
-      {pilot.has_viable_options ? "" : ` · ${t.tool.parcel.noneViableShort}`}
+      {pilot.has_viable_options ? "" : ` · ${p.noneViableShort}`}
     </option>
   );
 
@@ -58,39 +59,85 @@ export default function ParcelPage() {
       <title>{`${t.tool.steps.parcel.name} · Field Shift`}</title>
       <h1>{t.tool.steps.parcel.title}</h1>
 
-      {pilots.status === "loading" && <p role="status">{t.common.loading}</p>}
-      {pilots.status === "error" && <p role="alert">{t.common.loadError}</p>}
+      <section className="parcel-card" aria-label={p.legend}>
+        {pilots.status === "loading" && <p role="status">{t.common.loading}</p>}
+        {pilots.status === "error" && <p role="alert">{t.common.loadError}</p>}
 
-      {pilots.status === "ready" && (
-        <>
-          <p>
-            <label htmlFor="parcel-select" className="field-label">
-              {t.tool.parcel.legend}
-            </label>
-            <select
-              id="parcel-select"
-              className="field field-wide"
-              value={parcelId}
-              onChange={(event) => setParcelId(event.target.value)}
-            >
-              {cases.length > 0 && (
-                <optgroup label={t.tool.parcel.cases}>
-                  {cases.map(option)}
-                </optgroup>
-              )}
-              {detected.length > 0 && (
-                <optgroup label={t.tool.parcel.detected(detected.length)}>
-                  {detected.map(option)}
-                </optgroup>
-              )}
-            </select>
-          </p>
-          {detected.length > 0 && (
-            <p>{t.tool.parcel.detectedNote(detected.length)}</p>
-          )}
-          <p>{t.tool.parcel.saved}</p>
-        </>
-      )}
+        {pilots.status === "ready" && (
+          <>
+            <p>
+              <label
+                id="parcel-select-label"
+                htmlFor="parcel-select"
+                className="field-label"
+              >
+                {p.legend}
+              </label>
+              <select
+                id="parcel-select"
+                className="field field-wide"
+                value={parcelId}
+                onChange={(event) => setParcelId(event.target.value)}
+              >
+                {cases.length > 0 && (
+                  <optgroup label={p.cases}>{cases.map(option)}</optgroup>
+                )}
+                {detected.length > 0 && (
+                  <optgroup label={p.detected(detected.length)}>
+                    {detected.map(option)}
+                  </optgroup>
+                )}
+              </select>
+            </p>
+            {detected.length > 0 && (
+              <p className="parcel-note">{p.detectedNote(detected.length)}</p>
+            )}
+            <p>{p.saved}</p>
+          </>
+        )}
+
+        {evaluationState.status === "ready" && (
+          <div className="parcel-summary">
+            <h2 className="parcel-summary-title">
+              {pick(evaluationState.data.parcel.name)}
+            </h2>
+            <dl className="parcel-summary-grid">
+              <div className="parcel-summary-item">
+                <dt>{p.area}</dt>
+                <dd>{value(evaluationState.data.parcel.area_ha)}</dd>
+              </div>
+              <div className="parcel-summary-item">
+                <dt>{p.coordinatesLabel}</dt>
+                <dd>
+                  {evaluationState.data.parcel.center.lat.toFixed(4)},{" "}
+                  {evaluationState.data.parcel.center.lon.toFixed(4)}
+                </dd>
+              </div>
+              <div className="parcel-summary-item">
+                <dt>{t.strip.crop}</dt>
+                <dd>
+                  {evaluationState.data.parcel.region_mode === "labeled"
+                    ? p.labeled
+                    : p.unlabeled}
+                </dd>
+              </div>
+            </dl>
+          </div>
+        )}
+      </section>
+
+      <EvaluationGate state={evaluationState}>
+        {(evaluation) => (
+          <ParcelMap
+            key={evaluation.parcel.id}
+            parcel={evaluation.parcel}
+            pilots={all}
+            onSelect={setParcelId}
+            onPickPoint={(lat, lon) => setPicked({ lat, lon })}
+            picked={picked}
+          />
+        )}
+      </EvaluationGate>
 
       <LiveAnalyze
         point={picked}
@@ -100,29 +147,6 @@ export default function ParcelPage() {
           setParcelId(id);
         }}
       />
-
-      <EvaluationGate state={evaluationState}>
-        {(evaluation) => (
-          <>
-            <p>
-              <strong>{pick(evaluation.parcel.name)}</strong>:{" "}
-              {t.tool.parcel.area} {value(evaluation.parcel.area_ha)}.{" "}
-              {evaluation.parcel.region_mode === "labeled"
-                ? t.tool.parcel.labeled
-                : t.tool.parcel.unlabeled}
-              .
-            </p>
-            <ParcelMap
-              key={evaluation.parcel.id}
-              parcel={evaluation.parcel}
-              pilots={all}
-              onSelect={setParcelId}
-              onPickPoint={(lat, lon) => setPicked({ lat, lon })}
-              picked={picked}
-            />
-          </>
-        )}
-      </EvaluationGate>
     </>
   );
 }

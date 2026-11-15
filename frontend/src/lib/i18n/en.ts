@@ -81,6 +81,29 @@ export const en: Dictionary = {
       noneViableShort: "no viable rotation",
       mapTitle: "Map",
       mapHelp: "The yellow dots are other fields: tap one to evaluate it. Tap anywhere else to analyze it live.",
+      viewLabel: "Map view",
+      views: {
+        default: "Default",
+        relief: "3D Relief",
+        satellite: "Satellite",
+      },
+      relief3dHint:
+        "In 3D Relief you can tilt and rotate the terrain by dragging with right-click (or Ctrl + click). A normal click still captures the point's coordinates.",
+      pickedBanner: (lat: string, lon: string) =>
+        `Captured point: Lat ${lat}, Lon ${lon} · 250 m radius ready for Earth Engine analysis.`,
+      footprintsTitle: "Real pixel footprint over the field",
+      footprintsUnavailable: "Spatial resolution information is not available for this field.",
+      metersPerPixel: "meters per pixel",
+      sourceNames: {
+        hls_landsat: "Field color imagery (Landsat & Sentinel)",
+        openet: "Observed field evapotranspiration (OpenET)",
+        usda_cdl: "Annual crop records",
+        srtm: "Elevation and terrain slope",
+        soilgrids: "Soil texture and organic matter",
+        smap: "Regional satellite soil moisture",
+        nasa_power: "Regional daily rain, temperature and frost",
+      } as Record<string, string>,
+      coordinatesLabel: "Center coordinates",
     },
     constraints: {
       intro: "First we check what you have. If a rotation does not fit here, it is ruled out before anything else is calculated.",
