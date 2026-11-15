@@ -256,3 +256,12 @@ El código ya está en `main` (`POST /api/v1/analyze`). Sin estos pasos, la ruta
 7. Borra el JSON de Descargas. **Nunca lo subas al repositorio** (AGENTS.md regla 8).
 
 Cada análisis hace unas 37 consultas pequeñas a Earth Engine; el resultado se guarda y el mismo punto no se vuelve a pedir hasta el siguiente despliegue.
+
+### H-23 (opcional). Que los puntos analizados en vivo sobrevivan a los despliegues
+
+Cada despliegue de Railway borra el disco, y con él los puntos analizados en vivo. La página ya los vuelve a analizar sola (unos 35 s), pero para la demo conviene que no se borren:
+
+1. Railway → servicio del backend → **Settings → Volumes → New Volume**, montado en `/app/.cache` (si el servicio corre en otra carpeta, la que tenga `.cache` junto a `app/`).
+2. No hay que cambiar variables: `LIVE_CACHE_DIR` ya apunta a `.cache/live`.
+
+Sin esto, analiza de nuevo los 2 o 3 puntos de la demo después del último despliegue del domingo.

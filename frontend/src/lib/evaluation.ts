@@ -41,12 +41,31 @@ const REAL_ID_ALIAS: Record<string, string> = {
   "dv-nv-fixture-01": "dv-nv-01",
 };
 
+/** "live-39.7170n-115.8931w" -> {lat: 39.717, lon: -115.8931}. null si no es un punto en vivo. */
+export function liveCoordinates(
+  parcelId: string,
+): { lat: number; lon: number } | null {
+  const match = /^live-(\d+(?:\.\d+)?)([ns])-(\d+(?:\.\d+)?)([ew])$/.exec(
+    parcelId,
+  );
+  if (!match) return null;
+  const lat = Number(match[1]) * (match[2] === "s" ? -1 : 1);
+  const lon = Number(match[3]) * (match[4] === "w" ? -1 : 1);
+  return { lat, lon };
+}
+
 export async function loadEvaluation(
   parcelId: string,
 ): Promise<Loaded<Evaluation>> {
   try {
     return { data: await api.evaluate(parcelId), origin: "api" };
   } catch (error) {
+    // Un punto analizado en vivo vive en el disco del servidor, que se borra en cada
+    // despliegue. Si ya no está, se vuelve a analizar con las coordenadas de su id.
+    const point = liveCoordinates(parcelId);
+    if (point && error instanceof ApiError && error.status === 404) {
+      return { data: await api.analyze(point.lat, point.lon), origin: "api" };
+    }
     const realId = REAL_ID_ALIAS[parcelId];
     if (realId) {
       try {
