@@ -23,17 +23,6 @@ export function circleRing(
   return ring;
 }
 
-export function squareRing(lat: number, lon: number, sideM: number): Ring {
-  const dLat = sideM / 2 / M_PER_DEG;
-  const dLon = sideM / 2 / (M_PER_DEG * Math.cos((lat * Math.PI) / 180));
-  return [
-    [lon - dLon, lat - dLat],
-    [lon + dLon, lat - dLat],
-    [lon + dLon, lat + dLat],
-    [lon - dLon, lat + dLat],
-  ];
-}
-
 /** Centro y área (ha) con una proyección local plana, como el motor. */
 export function centerAndAreaHa(ring: Ring): {
   lat: number;

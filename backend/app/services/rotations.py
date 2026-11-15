@@ -149,6 +149,22 @@ def candidates(
     return out
 
 
+def summary(models_dir: Path) -> dict[str, Any]:
+    """Estado del Modelo 5 para /health."""
+    model = _load(str(models_dir))
+    if model is None:
+        return {"name": "model_5_crop_sequence", "status": "fallback"}
+    m = model["metrics"]
+    return {
+        "name": "model_5_crop_sequence",
+        "status": "trained",
+        "metric": m["metric"]["value"],
+        "baseline": m["baseline_metric"]["value"],
+        "unit": m["metric"]["unit"],
+        "card_path": "models/model_5_crop_sequence/CARD.md",
+    }
+
+
 def metric_note(models_dir: Path) -> str | None:
     model = _load(str(models_dir))
     if model is None:

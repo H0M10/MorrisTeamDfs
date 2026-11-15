@@ -82,7 +82,6 @@ Correcciones que ya se decidieron y no se reabren:
 - **Con etiquetas:** Diamond Valley, Nevada (el caso del reto; centro aproximado 39.68, -116.03) y dos o tres zonas de riego parecidas de Nevada, Idaho y Utah, elegidas por similitud: pivote, alfalfa y granos. Aquí se entrena y se mide.
 - **Sin etiquetas: fuera del producto (decisión de Hanniel, 15 de noviembre).** El producto se enfoca solo en Estados Unidos, donde hay OpenET, USDA CDL y los cinco modelos se pueden medir. Querétaro (San Juan del Río y Pedro Escobedo) salió de la herramienta; sus scripts y polígonos quedan en `/data-pipeline` como trabajo exploratorio y el fixture `queretaro.json` sigue en el contrato congelado solo para las pruebas del modo de ejemplo. El análisis en vivo (`/api/v1/analyze`) cubre los 48 estados contiguos.
 - Qué datos hay en cada región y qué responde cada recurso: `data-pipeline/PLAN_DE_DATOS.md`.
-- Las cifras de disponibilidad de acuíferos de CONAGUA solo se muestran si una persona las verificó contra la publicación oficial y anotó la fecha. Van como contexto de cuenca.
 
 ## 5. Modelos
 

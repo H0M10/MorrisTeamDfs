@@ -9,9 +9,9 @@ export const en: Dictionary = {
     loading: "Loading…",
     loadError: "The information could not be loaded.",
     fixtureTitle: "Example data",
-    fixtureDetail: "These figures are samples. They do not describe a real field.",
+    fixtureDetail:
+      "These figures are samples. They do not describe a real field.",
     localCopy: "Cannot reach the server. Showing the copy stored in the app.",
-    pending: "Pending",
     noData: "no data",
     source: "Source",
     date: "Date",
@@ -25,7 +25,20 @@ export const en: Dictionary = {
     },
     yes: "Yes",
     no: "No",
-    months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    months: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
     monthsLong: [
       "January",
       "February",
@@ -58,13 +71,21 @@ export const en: Dictionary = {
     stepOf: (current, total) => `Step ${current} of ${total}`,
     previous: "Previous",
     next: "Next",
-    skeletonNote: "This screen is a skeleton. Person 4 builds its content.",
     steps: {
       parcel: { name: "Field", title: "Which field is yours?" },
-      portrait: { name: "Portrait", title: "Your field seen from the satellite" },
-      constraints: { name: "Constraints", title: "What do you have to work with?" },
+      portrait: {
+        name: "Portrait",
+        title: "Your field seen from the satellite",
+      },
+      constraints: {
+        name: "Constraints",
+        title: "What do you have to work with?",
+      },
       rotations: { name: "Rotations", title: "Three rotations to compare" },
-      evidence: { name: "Evidence", title: "Where does each figure come from?" },
+      evidence: {
+        name: "Evidence",
+        title: "Where does each figure come from?",
+      },
       share: { name: "Share", title: "Sheet to share" },
     },
     parcel: {
@@ -72,7 +93,6 @@ export const en: Dictionary = {
       area: "Area",
       labeled: "With crop records",
       unlabeled: "Without crop records",
-      mapPending: "The map showing the real pixel size of each source over the field goes here.",
       saved: "This choice is saved on this device.",
       cases: "Challenge cases",
       whereTitle: "Where is your field?",
@@ -83,7 +103,8 @@ export const en: Dictionary = {
       chosenTitle: "The field you will evaluate",
       analyzedOk: "Done: your field is analyzed.",
       seePortrait: "See your field from the satellite →",
-      detected: (n: number) => `Diamond Valley: ${n} pivots detected from satellite`,
+      detected: (n: number) =>
+        `Diamond Valley: ${n} pivots detected from satellite`,
       detectedNote: (n: number) =>
         `The ${n} Diamond Valley pivots were found with satellite data (USDA crop patches and Landsat summer vigor). Each one is evaluated on the server with its own data when you pick it. Its shape is an approximate circle, not an official boundary.`,
       noneViableShort: "no viable rotation",
@@ -91,13 +112,13 @@ export const en: Dictionary = {
       mapHelp: "The yellow dots are other example fields: tap one to see it.",
     },
     constraints: {
-      intro: "First we check what you have. If a rotation does not fit here, it is ruled out before anything else is calculated.",
+      intro:
+        "First we check what you have. If a rotation does not fit here, it is ruled out before anything else is calculated.",
       water: "Maximum water per year",
       machinery: "Available machinery",
       noBuyer: "Crops without a buyer",
       none: "None",
       window: "Planting window",
-      editPending: "The controls to change these values and recalculate go here.",
       editTitle: "Change what does not match your field",
       editIntro:
         "These values come from data for the area, not from you. If you know yours, change them: the three rotations are checked again with what you declare.",
@@ -112,12 +133,14 @@ export const en: Dictionary = {
         sembradora_directa: "No-till drill",
         empacadora: "Hay baler",
       } as Record<string, string>,
-      noBuyerHelp: "Tick the crops nobody would buy from you. A rotation that includes them is ruled out.",
+      noBuyerHelp:
+        "Tick the crops nobody would buy from you. A rotation that includes them is ruled out.",
       from: "From",
       to: "to",
       apply: "Apply and check again",
       applying: "Checking…",
-      applied: "Done. Rotations, evidence and the share sheet now use these values.",
+      applied:
+        "Done. Rotations, evidence and the share sheet now use these values.",
       declaredNote: "You are seeing the values you declared on this device.",
       reset: "Go back to the values for the area",
     },
@@ -126,7 +149,6 @@ export const en: Dictionary = {
       viable: "Viable",
       ruledOut: "Ruled out",
       waterPerYear: "Water per year",
-      calendarPending: "The 36-month calendar of each rotation goes here, with patterns as well as color.",
     },
     evidence: {
       why: "Why it is suggested",
@@ -139,7 +161,6 @@ export const en: Dictionary = {
     share: {
       intro: "This sheet can be printed or saved as a PDF from the browser.",
       print: "Print or save as PDF",
-      linkPending: "The share link and the advisor review go here.",
       cover: "Months with a living crop (of 36)",
       listen: "Listen to the summary",
       stopListening: "Stop reading",
@@ -149,7 +170,8 @@ export const en: Dictionary = {
       linkCreate: "Create link",
       linkSaving: "Saving…",
       linkReady: "Link to share",
-      linkError: "The link could not be created. The rest of the tool keeps working.",
+      linkError:
+        "The link could not be created. The rest of the tool keeps working.",
       copy: "Copy link",
       copied: "Link copied",
       openReview: "Open the advisor view",
@@ -171,12 +193,14 @@ export const en: Dictionary = {
       world: "Google Dynamic World",
       agrees: "matches",
       disagrees: "does not match",
-      worldValue: (p: string, label: string) => `${p} crop (most likely: ${label})`,
+      worldValue: (p: string, label: string) =>
+        `${p} crop (most likely: ${label})`,
       model3Metric: (f1: string, base: string) =>
         `Our crop model is a neural network that reads 12 months of satellite data. On a valley it never saw while training it scored an F1 of ${f1}, against ${base} for always saying alfalfa.`,
       worldNote:
         "Google Dynamic World is a Google neural network on 10 m Sentinel-2 images. The figure is the mean crop probability over the year, including months without a crop. It is an external product: we did not measure it.",
-      worldOff: "Google Dynamic World is not available for this field right now.",
+      worldOff:
+        "Google Dynamic World is not available for this field right now.",
     },
     picker: {
       title: "Mark your field",
@@ -186,15 +210,20 @@ export const en: Dictionary = {
       searchLabel: "Search your town, ranch or road",
       searchPlaceholder: "Town, ranch or road",
       search: "Search",
-      findHelp: "If you are at your field, use your location. Otherwise, search the nearest town and zoom in on the map.",
-      noGps: "This phone or browser does not give a location. Search the nearest town.",
+      findHelp:
+        "If you are at your field, use your location. Otherwise, search the nearest town and zoom in on the map.",
+      noGps:
+        "This phone or browser does not give a location. Search the nearest town.",
       locating: "Finding your location…",
       located: "Done: the map is where you are.",
       gpsDenied: "No permission to use your location. Search the nearest town.",
       searching: "Searching…",
-      notFound: "I could not find that place in the United States. Try the nearest town.",
-      found: (name: string) => `Found: ${name}. Zoom in until you see your field.`,
-      searchError: "Search is not available now. Move the map with your finger to your field.",
+      notFound:
+        "I could not find that place in the United States. Try the nearest town.",
+      found: (name: string) =>
+        `Found: ${name}. Zoom in until you see your field.`,
+      searchError:
+        "Search is not available now. Move the map with your finger to your field.",
       step2: "Mark your field on the map",
       methodCenter: "My field is a pivot (circle)",
       methodEdges: "My field has another shape",
@@ -205,10 +234,13 @@ export const en: Dictionary = {
         large: "Large pivot (about 200 ha)",
       },
       tapCenter: "Tap the center of your pivot on the map.",
-      readyCenter: "Done. If the yellow circle does not cover your pivot, tap again or change the size.",
+      readyCenter:
+        "Done. If the yellow circle does not cover your pivot, tap again or change the size.",
       tapFirstCorner: "Tap one corner of your field on the map.",
       tapMoreCorners: (n: number) =>
-        n === 1 ? "Tap one more corner." : `Tap ${n} more corners, following the field edge.`,
+        n === 1
+          ? "Tap one more corner."
+          : `Tap ${n} more corners, following the field edge.`,
       readyEdges: (n: number) =>
         `Done: ${n} corners. You can tap more to follow the edge, or go on to step 3.`,
       undo: "Remove the last corner",
@@ -223,7 +255,8 @@ export const en: Dictionary = {
       analyzeDisabled: "First mark your field on the map",
       analyzeArea: (ha: string) => `Analyze my field (${ha} ha)`,
       analyzing: "Analyzing your field…",
-      working: (s: number) => `Working… ${s} s (it usually takes 30 to 60 seconds)`,
+      working: (s: number) =>
+        `Working… ${s} s (it usually takes 30 to 60 seconds)`,
       workImages: "Requests 36 months of satellite images of your field",
       workClimate: "Gathers the water it used, the soil and NASA weather",
       workModels: "Computes the water of each rotation and runs the models",
@@ -259,7 +292,8 @@ export const en: Dictionary = {
       title: "Advisor review",
       intro:
         "This is the sheet the farmer shared with you. Check the figures and leave your verdict. Do not write names, phone numbers or emails.",
-      missingToken: "This link has no sheet key. Ask the farmer to share it again.",
+      missingToken:
+        "This link has no sheet key. Ask the farmer to share it again.",
       loadError: "The shared sheet could not be opened.",
       sharedOn: "Shared on",
       listTitle: "Earlier reviews",
@@ -274,7 +308,8 @@ export const en: Dictionary = {
       },
       correctedWater: "Corrected maximum water",
       comments: "Comments",
-      noPersonalData: "No names, phone numbers or emails. Up to 2000 characters.",
+      noPersonalData:
+        "No names, phone numbers or emails. Up to 2000 characters.",
       submit: "Save review",
       chooseVerdict: "Choose a verdict before saving.",
       saved: "Review saved.",
@@ -301,15 +336,16 @@ export const en: Dictionary = {
     title: "Showcase",
     lead: "Judge showcase: orbital zoom to the field, 3D parcel surface, three-rotation comparison from the contract, and hand or keyboard controls.",
     canvasTitle: "3D canvas",
-    loadCanvas: "Load the 3D canvas",
     canvasLoading: "Loading the 3D canvas…",
-    canvasAlt: "Interactive 3D scene of the parcel with satellite orbit and the observed tone of the chosen month.",
+    canvasAlt:
+      "Interactive 3D scene of the parcel with satellite orbit and the observed tone of the chosen month.",
     month: "Month",
     previousMonth: "Previous month",
     nextMonth: "Next month",
     parcelGroup: "Evaluated field",
     rotationsTitle: "Contract rotations",
-    rotationsNote: "Press R, hold an open palm to the camera, or select a rotation to inspect its crop this month and sourced metrics.",
+    rotationsNote:
+      "Press R, hold an open palm to the camera, or select a rotation to inspect its crop this month and sourced metrics.",
     noViable: "No rotation passed all declared constraints.",
     rotationCrop: "Crop in sequence",
     rotationViable: "Viable",
@@ -318,15 +354,19 @@ export const en: Dictionary = {
     rotationWater: "Annual water",
     rotationCover: "Covered-soil months (36 months)",
     gesturesTitle: "Gesture control",
-    gesturesNote: "Pinch to advance one month and hold an open palm to switch rotations. The camera only turns on with this button; use left and right arrows and the R key without it.",
+    gesturesNote:
+      "Pinch to advance one month and hold an open palm to switch rotations. The camera only turns on with this button; use left and right arrows and the R key without it.",
     enableGestures: "Enable gesture control",
     cameraAsking: "Asking for camera permission…",
-    cameraGranted: "Gesture control is active. Pinch to advance one month and hold an open palm to switch rotation.",
+    cameraGranted:
+      "Gesture control is active. Pinch to advance one month and hold an open palm to switch rotation.",
     disableGestures: "Turn off camera and gestures",
     cameraPreview: "Camera preview for hand detection",
-    gestureError: "Hand recognition could not start. You can continue with the keyboard.",
+    gestureError:
+      "Hand recognition could not start. You can continue with the keyboard.",
     cameraDenied: "No camera permission. You can continue with the keyboard.",
-    cameraUnavailable: "This browser offers no camera. You can continue with the keyboard.",
+    cameraUnavailable:
+      "This browser offers no camera. You can continue with the keyboard.",
     raw: "Raw evaluation",
   },
   engineer: {
@@ -340,8 +380,6 @@ export const en: Dictionary = {
     baseline: "Baseline",
     note: "Note",
     attention: "Months that weighed most in the reading",
-    attentionNote: "This is not a causal explanation.",
-    noAttention: "No attention weights in this evaluation.",
     weight: "Weight",
   },
   remote: {

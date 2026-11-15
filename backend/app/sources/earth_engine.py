@@ -16,6 +16,7 @@ import json
 import math
 import threading
 import time
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
@@ -53,7 +54,7 @@ COMMON_BANDS = ["blue", "green", "red", "nir", "swir1", "swir2"]
 HLS_FMASK_REJECT = (1 << 1) | (1 << 3) | (1 << 4)  # nube, sombra, nieve
 SCALE_M = 30
 SMAP_SCALE_M = 9000
-PARALLEL_QUERIES = 6  # más consultas a la vez dan "Too many concurrent aggregations"
+PARALLEL_QUERIES = 12  # 12 a la vez: ~10 s por campo (con 6, ~23 s); medido el 15 nov
 
 _lock = threading.Lock()
 _state: dict[str, str] = {}  # proyecto ya iniciado en este proceso
@@ -238,26 +239,34 @@ def _get_info(job: Any, tries: int = 3) -> Any:
 
 
 def fetch_field(
-    settings: Settings, ring: list[list[float]], years: list[int]
+    settings: Settings,
+    ring: list[list[float]],
+    years: list[int],
+    check: Callable[[dict[int, int | None]], None] | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any], dict[int, int | None]]:
     """Filas mensuales, valores fijos (suelo, elevación) y CDL por año del campo.
 
-    `ring` es el anillo exterior en [lon, lat].
+    `ring` es el anillo exterior en [lon, lat]. Primero se piden suelo y CDL (menos de
+    un segundo) y se pasan a `check`, que puede detener todo (por ejemplo, si no es
+    cultivo) antes de pedir los 36 meses, que es lo lento.
     """
     ee = initialize(settings)
     field = ee.Feature(ee.Geometry.Polygon([ring]))
-    jobs = [_month_feature(ee, field, year, month) for year in years for month in range(1, 13)]
-    jobs.append(_static(ee, field, years[0] - 1, years[-1]))
     try:
-        with ThreadPoolExecutor(PARALLEL_QUERIES) as pool:
-            results = list(pool.map(_get_info, jobs))
+        extra = _get_info(_static(ee, field, years[0] - 1, years[-1]))
     except Exception as exc:  # cuota, memoria, red
         raise EarthEngineError(str(exc)) from exc
-    monthly = [result["properties"] for result in results[:-1]]
-    extra = results[-1]
     cdl: dict[int, int | None] = {}
     for feature in extra["cdl"]:
         props = feature.get("properties") or {}
         code = props.get("cdl_code")
         cdl[int(props["year"])] = None if code is None else int(code)
-    return monthly, extra["static"], cdl
+    if check is not None:
+        check(cdl)
+    jobs = [_month_feature(ee, field, year, month) for year in years for month in range(1, 13)]
+    try:
+        with ThreadPoolExecutor(PARALLEL_QUERIES) as pool:
+            results = list(pool.map(_get_info, jobs))
+    except Exception as exc:  # cuota, memoria, red
+        raise EarthEngineError(str(exc)) from exc
+    return [result["properties"] for result in results], extra["static"], cdl

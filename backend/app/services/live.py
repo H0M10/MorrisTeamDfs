@@ -291,6 +291,25 @@ def field_ring(
     return ring, c_lat, c_lon, f"-a{digest}"
 
 
+def _require_cropland(cdl: dict[int, int | None]) -> None:
+    """422 si ningún año del historial de USDA es un cultivo del banco."""
+    crops = [crop_bank.crop_code_for_cdl(code) for code in cdl.values() if code is not None]
+    if not any(crops):
+        classes = ", ".join(
+            str(code) for code in sorted({c for c in cdl.values() if c is not None})
+        )
+        raise _error(
+            422,
+            "not_cropland",
+            "Ese punto no parece un campo de cultivo: en 2021–2024 el Cropland Data Layer de "
+            f"USDA no marca ningún cultivo del banco ahí (clases {classes or 'sin dato'}). "
+            "Elige un campo de riego.",
+            "That point does not look like a crop field: in 2021–2024 the USDA Cropland Data "
+            f"Layer marks no crop from the bank there (classes {classes or 'no data'}). "
+            "Pick an irrigated field.",
+        )
+
+
 def analyze(
     lat: float, lon: float, settings: Settings, polygon: list[list[float]] | None = None
 ) -> str:
@@ -320,7 +339,9 @@ def analyze(
     if _cache_path(settings, parcel_id).is_file():
         return parcel_id
     try:
-        monthly, static, cdl = earth_engine.fetch_field(settings, ring, YEARS)
+        monthly, static, cdl = earth_engine.fetch_field(
+            settings, ring, YEARS, check=_require_cropland
+        )
     except earth_engine.EarthEngineError as exc:
         raise _error(
             503,
@@ -329,21 +350,7 @@ def analyze(
             "Las parcelas de la lista siguen funcionando.",
             f"Earth Engine did not answer ({str(exc)[:120]}). The fields in the list keep working.",
         ) from exc
-    crops = [crop_bank.crop_code_for_cdl(code) for code in cdl.values() if code is not None]
-    if not any(crops):
-        classes = ", ".join(
-            str(code) for code in sorted({c for c in cdl.values() if c is not None})
-        )
-        raise _error(
-            422,
-            "not_cropland",
-            "Ese punto no parece un campo de cultivo: en 2021–2024 el Cropland Data Layer de "
-            f"USDA no marca ningún cultivo del banco ahí (clases {classes or 'sin dato'}). "
-            "Elige un campo de riego.",
-            "That point does not look like a crop field: in 2021–2024 the USDA Cropland Data "
-            f"Layer marks no crop from the bank there (classes {classes or 'no data'}). "
-            "Pick an irrigated field.",
-        )
+    _require_cropland(cdl)  # por si la fuente no llamó la revisión
     weather = power_monthly(lat, lon, float(static.get("elevation_m") or 0.0), settings)
     rows = build_rows(parcel_id, ring, monthly, static, cdl, weather)
     if len(rows) != len(YEARS) * 12:

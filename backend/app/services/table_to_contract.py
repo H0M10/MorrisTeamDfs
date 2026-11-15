@@ -141,11 +141,11 @@ TEMPLATES: dict[str, dict[str, list[list[str]]]] = {
 }
 
 # Catálogo de alternativas por sistema y objetivo. La primera de cada lista es la
-# plantilla regional auditada (H-03). El motor elige entre las que solo usan cultivos
-# con siembra y venta registradas en la zona (los que NO están en crops_without_buyer,
-# que sale del censo y CDL en EE. UU. o de SIAP en México): para "menos agua" la de
-# menor riego FAO-56; para "más suelo" la de más meses cubiertos. Las coberturas no se
-# venden y no necesitan comprador.
+# plantilla regional auditada (H-03). Compiten con las rotaciones que se hacen en campos
+# parecidos (Modelo 5, rotations.py) en `choose_rotation`: solo cultivos con comprador en
+# la zona; "menos agua" elige la de menor agua predicha por el Modelo 1 (FAO-56 donde no
+# aplica) y "más suelo", la de más meses de cultivo vivo. Las coberturas no se venden y
+# no necesitan comprador.
 CATALOG: dict[str, dict[str, list[tuple[str, list[list[str]]]]]] = {
     "alfalfa": {
         "less_water": [
@@ -236,37 +236,6 @@ def has_market(crops: list[str], no_buyer: frozenset[str]) -> bool:
         if spec.sold and (code in no_buyer or code.removesuffix("_dormant") in no_buyer):
             return False
     return True
-
-
-def choose_alternative(
-    system: str,
-    objective: str,
-    months: list[str],
-    et0: list[float | None],
-    rain: list[float | None],
-    no_buyer: frozenset[str] | None,
-) -> tuple[list[str], str]:
-    """Secuencia de 36 meses y nombre de la opción elegida del catálogo."""
-
-    def sequence(years: list[list[str]]) -> list[str]:
-        return [years[i // 12][int(months[i][5:7]) - 1] for i in range(MONTHS_REQUIRED)]
-
-    options = [(name, sequence(years)) for name, years in CATALOG[system][objective]]
-    if no_buyer is None:
-        return options[0][1], options[0][0]  # sin datos de mercado: la plantilla auditada
-    eligible = [(n, crops) for n, crops in options if has_market(crops, no_buyer)]
-    if not eligible:
-        return options[0][1], options[0][0]  # las restricciones la descartarán y lo dirán
-    if objective == "less_water":
-
-        def score(item: tuple[str, list[str]]) -> float:
-            water = annual_water_mm(months, item[1], et0, rain)
-            return float("inf") if water is None else water
-
-        name, crops = min(eligible, key=score)
-    else:
-        name, crops = max(eligible, key=lambda item: sum(is_cover(c) for c in item[1]))
-    return crops, name
 
 
 def choose_rotation(

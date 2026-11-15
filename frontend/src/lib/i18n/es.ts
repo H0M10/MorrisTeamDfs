@@ -8,9 +8,10 @@ export const es = {
     loading: "Cargando…",
     loadError: "No se pudo cargar la información.",
     fixtureTitle: "Datos de ejemplo",
-    fixtureDetail: "Estas cifras son de muestra. No describen una parcela real.",
-    localCopy: "No hay conexión con el servidor. Se muestra la copia guardada en la aplicación.",
-    pending: "Pendiente",
+    fixtureDetail:
+      "Estas cifras son de muestra. No describen una parcela real.",
+    localCopy:
+      "No hay conexión con el servidor. Se muestra la copia guardada en la aplicación.",
     noData: "sin dato",
     source: "Fuente",
     date: "Fecha",
@@ -24,7 +25,20 @@ export const es = {
     },
     yes: "Sí",
     no: "No",
-    months: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
+    months: [
+      "ene",
+      "feb",
+      "mar",
+      "abr",
+      "may",
+      "jun",
+      "jul",
+      "ago",
+      "sep",
+      "oct",
+      "nov",
+      "dic",
+    ],
     monthsLong: [
       "enero",
       "febrero",
@@ -57,11 +71,19 @@ export const es = {
     stepOf: (current: number, total: number) => `Paso ${current} de ${total}`,
     previous: "Anterior",
     next: "Siguiente",
-    skeletonNote: "Esta pantalla es un esqueleto. Su contenido lo construye la persona 4.",
     steps: {
-      parcel: { name: "Parcela", title: "¿Cuál de las siguientes es tu parcela?" },
-      portrait: { name: "Retrato", title: "Tu parcela vista desde el satélite" },
-      constraints: { name: "Restricciones", title: "¿Con qué recursos cuentas?" },
+      parcel: {
+        name: "Parcela",
+        title: "¿Cuál de las siguientes es tu parcela?",
+      },
+      portrait: {
+        name: "Retrato",
+        title: "Tu parcela vista desde el satélite",
+      },
+      constraints: {
+        name: "Restricciones",
+        title: "¿Con qué recursos cuentas?",
+      },
       rotations: { name: "Rotaciones", title: "Tres rotaciones para comparar" },
       evidence: { name: "Evidencia", title: "¿De dónde sale cada cifra?" },
       share: { name: "Compartir", title: "Hoja para compartir" },
@@ -71,7 +93,6 @@ export const es = {
       area: "Superficie",
       labeled: "Con registros de cultivo",
       unlabeled: "Sin registros de cultivo",
-      mapPending: "Aquí irá el mapa con el tamaño real del píxel de cada fuente sobre la parcela.",
       saved: "Esta elección queda guardada en este dispositivo.",
       cases: "Casos del reto",
       whereTitle: "¿Dónde está tu campo?",
@@ -82,21 +103,23 @@ export const es = {
       chosenTitle: "El campo que vas a evaluar",
       analyzedOk: "Listo: tu campo ya está analizado.",
       seePortrait: "Ver tu campo desde el satélite →",
-      detected: (n: number) => `Diamond Valley: ${n} pivotes detectados con satélite`,
+      detected: (n: number) =>
+        `Diamond Valley: ${n} pivotes detectados con satélite`,
       detectedNote: (n: number) =>
         `Los ${n} pivotes de Diamond Valley se encontraron con datos de satélite (manchas de cultivo de USDA y vigor de verano de Landsat). Cada uno se evalúa en el servidor con sus propios datos al elegirlo. Su forma es un círculo aproximado, no un lindero oficial.`,
       noneViableShort: "ninguna rotación viable",
       mapTitle: "Mapa",
-      mapHelp: "Los puntos amarillos son otros campos de ejemplo: toca uno para verlo.",
+      mapHelp:
+        "Los puntos amarillos son otros campos de ejemplo: toca uno para verlo.",
     },
     constraints: {
-      intro: "Primero revisamos lo que tienes. Si una rotación no cabe aquí, se descarta antes de calcular lo demás.",
+      intro:
+        "Primero revisamos lo que tienes. Si una rotación no cabe aquí, se descarta antes de calcular lo demás.",
       water: "Agua máxima por año",
       machinery: "Maquinaria disponible",
       noBuyer: "Cultivos sin comprador",
       none: "Ninguno",
       window: "Ventana de siembra",
-      editPending: "Aquí irán los controles para cambiar estos valores y volver a calcular.",
       editTitle: "Cambia lo que no corresponda a tu parcela",
       editIntro:
         "Estos valores salen de datos de la zona, no de ti. Si conoces los tuyos, cámbialos: las tres rotaciones se vuelven a revisar con lo que declares.",
@@ -111,13 +134,16 @@ export const es = {
         sembradora_directa: "Sembradora de siembra directa",
         empacadora: "Empacadora de heno",
       } as Record<string, string>,
-      noBuyerHelp: "Marca los cultivos que nadie te compraría. Una rotación que los lleve se descarta.",
+      noBuyerHelp:
+        "Marca los cultivos que nadie te compraría. Una rotación que los lleve se descarta.",
       from: "De",
       to: "a",
       apply: "Aplicar y volver a revisar",
       applying: "Revisando…",
-      applied: "Listo. Rotaciones, evidencia y la hoja para compartir ya usan estos valores.",
-      declaredNote: "Estás viendo los valores que declaraste en este dispositivo.",
+      applied:
+        "Listo. Rotaciones, evidencia y la hoja para compartir ya usan estos valores.",
+      declaredNote:
+        "Estás viendo los valores que declaraste en este dispositivo.",
       reset: "Volver a los valores de la zona",
     },
     rotations: {
@@ -125,7 +151,6 @@ export const es = {
       viable: "Viable",
       ruledOut: "Descartada",
       waterPerYear: "Agua por año",
-      calendarPending: "Aquí irá el calendario de 36 meses de cada rotación, con tramas además de color.",
     },
     evidence: {
       why: "Por qué se sugiere",
@@ -136,9 +161,9 @@ export const es = {
       rejected: "Esta rotación está descartada",
     },
     share: {
-      intro: "Esta hoja se puede imprimir o guardar como PDF desde el navegador.",
+      intro:
+        "Esta hoja se puede imprimir o guardar como PDF desde el navegador.",
       print: "Imprimir o guardar como PDF",
-      linkPending: "Aquí irá el enlace para compartir y la revisión del técnico.",
       cover: "Meses con cultivo vivo (de 36)",
       listen: "Escuchar el resumen",
       stopListening: "Detener la lectura",
@@ -148,7 +173,8 @@ export const es = {
       linkCreate: "Crear enlace",
       linkSaving: "Guardando…",
       linkReady: "Enlace para compartir",
-      linkError: "No se pudo crear el enlace. Lo demás de la herramienta sigue funcionando.",
+      linkError:
+        "No se pudo crear el enlace. Lo demás de la herramienta sigue funcionando.",
       copy: "Copiar enlace",
       copied: "Enlace copiado",
       openReview: "Abrir la vista del técnico",
@@ -170,12 +196,14 @@ export const es = {
       world: "Google Dynamic World",
       agrees: "coincide",
       disagrees: "no coincide",
-      worldValue: (p: string, label: string) => `${p} cultivo (lo más probable: ${label})`,
+      worldValue: (p: string, label: string) =>
+        `${p} cultivo (lo más probable: ${label})`,
       model3Metric: (f1: string, base: string) =>
         `Nuestro modelo de cultivos es una red neuronal que lee 12 meses de satélite. En un valle que no vio al entrenar acertó con una puntuación F1 de ${f1}, contra ${base} de decir siempre alfalfa.`,
       worldNote:
         "Google Dynamic World es una red neuronal de Google sobre imágenes Sentinel-2 de 10 m. La cifra es la probabilidad media de cultivo en el año, contando también los meses sin cultivo. Es un producto externo: no lo medimos nosotros.",
-      worldOff: "Google Dynamic World no está disponible ahora para esta parcela.",
+      worldOff:
+        "Google Dynamic World no está disponible ahora para esta parcela.",
     },
     picker: {
       title: "Marca tu campo",
@@ -185,15 +213,21 @@ export const es = {
       searchLabel: "Busca tu pueblo, rancho o carretera",
       searchPlaceholder: "Pueblo, rancho o carretera",
       search: "Buscar",
-      findHelp: "Si estás en tu campo, usa tu ubicación. Si no, busca el pueblo más cercano y acércate con el mapa.",
-      noGps: "Este teléfono o navegador no da la ubicación. Busca el pueblo más cercano.",
+      findHelp:
+        "Si estás en tu campo, usa tu ubicación. Si no, busca el pueblo más cercano y acércate con el mapa.",
+      noGps:
+        "Este teléfono o navegador no da la ubicación. Busca el pueblo más cercano.",
       locating: "Buscando tu ubicación…",
       located: "Listo: el mapa está donde estás.",
-      gpsDenied: "No hay permiso para usar tu ubicación. Busca el pueblo más cercano.",
+      gpsDenied:
+        "No hay permiso para usar tu ubicación. Busca el pueblo más cercano.",
       searching: "Buscando…",
-      notFound: "No encontré ese lugar en Estados Unidos. Prueba con el pueblo más cercano.",
-      found: (name: string) => `Encontrado: ${name}. Acércate hasta ver tu campo.`,
-      searchError: "No se pudo buscar ahora. Mueve el mapa con el dedo hasta tu campo.",
+      notFound:
+        "No encontré ese lugar en Estados Unidos. Prueba con el pueblo más cercano.",
+      found: (name: string) =>
+        `Encontrado: ${name}. Acércate hasta ver tu campo.`,
+      searchError:
+        "No se pudo buscar ahora. Mueve el mapa con el dedo hasta tu campo.",
       step2: "Marca tu campo en el mapa",
       methodCenter: "Mi campo es un pivote (círculo)",
       methodEdges: "Mi campo tiene otra forma",
@@ -204,10 +238,13 @@ export const es = {
         large: "Pivote grande (unas 200 ha)",
       },
       tapCenter: "Toca el centro de tu pivote en el mapa.",
-      readyCenter: "Listo. Si el círculo amarillo no cubre tu pivote, toca otra vez o cambia el tamaño.",
+      readyCenter:
+        "Listo. Si el círculo amarillo no cubre tu pivote, toca otra vez o cambia el tamaño.",
       tapFirstCorner: "Toca una esquina de tu campo en el mapa.",
       tapMoreCorners: (n: number) =>
-        n === 1 ? "Toca una esquina más." : `Toca ${n} esquinas más, siguiendo la orilla del campo.`,
+        n === 1
+          ? "Toca una esquina más."
+          : `Toca ${n} esquinas más, siguiendo la orilla del campo.`,
       readyEdges: (n: number) =>
         `Listo: ${n} esquinas. Puedes tocar más para seguir la orilla, o seguir al paso 3.`,
       undo: "Quitar la última esquina",
@@ -222,7 +259,8 @@ export const es = {
       analyzeDisabled: "Primero marca tu campo en el mapa",
       analyzeArea: (ha: string) => `Analizar mi campo (${ha} ha)`,
       analyzing: "Analizando tu campo…",
-      working: (s: number) => `Trabajando… ${s} s (suele tardar de 30 a 60 segundos)`,
+      working: (s: number) =>
+        `Trabajando… ${s} s (suele tardar de 30 a 60 segundos)`,
       workImages: "Pide 36 meses de imágenes de satélite de tu campo",
       workClimate: "Junta el agua que usó, el suelo y el clima de la NASA",
       workModels: "Calcula el agua de cada rotación y corre los modelos",
@@ -258,7 +296,8 @@ export const es = {
       title: "Revisión del técnico",
       intro:
         "Esta es la hoja que te compartió el agricultor. Revisa las cifras y deja tu veredicto. No escribas nombres, teléfonos ni correos.",
-      missingToken: "Este enlace no trae la clave de la hoja. Pide al agricultor que te lo comparta de nuevo.",
+      missingToken:
+        "Este enlace no trae la clave de la hoja. Pide al agricultor que te lo comparta de nuevo.",
       loadError: "No se pudo abrir la hoja compartida.",
       sharedOn: "Compartida el",
       listTitle: "Revisiones anteriores",
@@ -273,7 +312,8 @@ export const es = {
       },
       correctedWater: "Agua máxima corregida",
       comments: "Comentarios",
-      noPersonalData: "Sin nombres, teléfonos ni correos. Hasta 2000 caracteres.",
+      noPersonalData:
+        "Sin nombres, teléfonos ni correos. Hasta 2000 caracteres.",
       submit: "Guardar revisión",
       chooseVerdict: "Elige un veredicto antes de guardar.",
       saved: "Revisión guardada.",
@@ -300,15 +340,16 @@ export const es = {
     title: "Presentación",
     lead: "Vista para jueces: zoom satelital, parcela en 3D, comparación de tres rotaciones del contrato y control por gestos o teclado.",
     canvasTitle: "Lienzo 3D",
-    loadCanvas: "Cargar el lienzo 3D",
     canvasLoading: "Cargando el lienzo 3D…",
-    canvasAlt: "Escena 3D interactiva de la parcela con órbita satelital y el tono observado del mes elegido.",
+    canvasAlt:
+      "Escena 3D interactiva de la parcela con órbita satelital y el tono observado del mes elegido.",
     month: "Mes",
     previousMonth: "Mes anterior",
     nextMonth: "Mes siguiente",
     parcelGroup: "Parcela evaluada",
     rotationsTitle: "Rotaciones del contrato",
-    rotationsNote: "Pulsa R, usa la mano abierta frente a la cámara o elige una rotación para ver su cultivo en este mes y sus cifras con ficha.",
+    rotationsNote:
+      "Pulsa R, usa la mano abierta frente a la cámara o elige una rotación para ver su cultivo en este mes y sus cifras con ficha.",
     noViable: "Ninguna rotación pasó todas las restricciones declaradas.",
     rotationCrop: "Cultivo en la secuencia",
     rotationViable: "Viable",
@@ -317,15 +358,19 @@ export const es = {
     rotationWater: "Agua anual",
     rotationCover: "Meses con suelo cubierto (36 meses)",
     gesturesTitle: "Control por gestos",
-    gesturesNote: "Pellizca para avanzar un mes y abre la palma para cambiar de rotación. La cámara solo se activa con este botón; con el teclado usa las flechas izquierda y derecha y la tecla R.",
+    gesturesNote:
+      "Pellizca para avanzar un mes y abre la palma para cambiar de rotación. La cámara solo se activa con este botón; con el teclado usa las flechas izquierda y derecha y la tecla R.",
     enableGestures: "Activar control por gestos",
     cameraAsking: "Pidiendo permiso de cámara…",
-    cameraGranted: "Control activo. Pellizca para avanzar un mes y mantén la mano abierta para cambiar de rotación.",
+    cameraGranted:
+      "Control activo. Pellizca para avanzar un mes y mantén la mano abierta para cambiar de rotación.",
     disableGestures: "Apagar cámara y gestos",
     cameraPreview: "Vista previa de la cámara para detectar la mano",
-    gestureError: "No se pudo iniciar el reconocimiento de la mano. Puedes seguir con el teclado.",
+    gestureError:
+      "No se pudo iniciar el reconocimiento de la mano. Puedes seguir con el teclado.",
     cameraDenied: "Sin permiso de cámara. Puedes seguir con el teclado.",
-    cameraUnavailable: "Este navegador no ofrece cámara. Puedes seguir con el teclado.",
+    cameraUnavailable:
+      "Este navegador no ofrece cámara. Puedes seguir con el teclado.",
     raw: "Evaluación en crudo",
   },
   engineer: {
@@ -339,15 +384,14 @@ export const es = {
     baseline: "Línea base",
     note: "Nota",
     attention: "Meses que más pesaron en la lectura",
-    attentionNote: "No es una explicación causal.",
-    noAttention: "Sin pesos de atención en esta evaluación.",
     weight: "Peso",
   },
   remote: {
     title: "Control desde el teléfono",
     lead: "Esqueleto. Hoy solo lee la evaluación; todavía no se conecta con la pantalla grande.",
     supabaseOn: "Supabase está configurado.",
-    supabaseOff: "Supabase no está configurado: el control remoto no puede conectarse.",
+    supabaseOff:
+      "Supabase no está configurado: el control remoto no puede conectarse.",
     month: "Mes",
     rotation: "Rotación",
     raw: "Lo que mostrará el control",

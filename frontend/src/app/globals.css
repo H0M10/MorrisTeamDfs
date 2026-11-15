@@ -696,7 +696,8 @@ textarea.field {
   border-top: 2px solid var(--color-tinta);
 }
 
-/* Los créditos del mapa: enlaces subrayados, no solo de color (axe link-in-text-block). */
-.leaflet-control-attribution a {
+/* Los créditos del mapa: enlaces subrayados, no solo de color (axe link-in-text-block).
+   Más específico que leaflet.css, que se carga después y los deja sin subrayar. */
+.leaflet-container .leaflet-control-attribution a {
   text-decoration: underline;
 }

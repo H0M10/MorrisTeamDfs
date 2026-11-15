@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import contextlib
 import threading
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from typing import Annotated, Any
 
 from fastapi import Depends, FastAPI
@@ -13,12 +15,23 @@ from app.api.v1 import get_registry, router
 from app.config import Settings, get_settings
 from app.errors import ApiError, api_error_handler
 from app.models.loader import ModelRegistry
+from app.services import rotations
 from app.services.evaluation import contract_version, list_pilots
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
     settings = settings or get_settings()
+
+    @asynccontextmanager
+    async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+        # Con decenas de parcelas reales la primera lista tarda unos segundos:
+        # se arma en segundo plano al arrancar para que nadie la espere.
+        if settings.data_mode == "real":
+            threading.Thread(target=_warm, args=(settings,), daemon=True).start()
+        yield
+
     app = FastAPI(
+        lifespan=lifespan,
         title="Field Shift API",
         version="0.1.0",
         description="Apoyo a la decisión de rotación de cultivos. Equipo The CSC.",
@@ -44,14 +57,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "contract_version": contract_version(),
             "supabase_configured": current.supabase_configured,
             "models": registry.summary(),
+            # Modelo 5 (secuencias de cultivo): fuera del contrato congelado de 4 modelos.
+            "sequence_model": rotations.summary(registry.models_dir),
         }
-
-    @app.on_event("startup")
-    def warm_pilots() -> None:
-        # Con decenas de parcelas reales la primera lista tarda unos segundos:
-        # se arma en segundo plano al arrancar para que nadie la espere.
-        if settings.data_mode == "real":
-            threading.Thread(target=_warm, args=(settings,), daemon=True).start()
 
     return app
 

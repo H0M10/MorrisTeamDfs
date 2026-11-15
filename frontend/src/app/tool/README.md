@@ -4,46 +4,25 @@ Dueño: `@Gicarrillo` (Herramienta).
 Entrega: herramienta accesible para el agricultor y su técnico: tira de 36
 meses, restricciones, tres rotaciones, ficha de evidencia y hoja imprimible.
 
-## Qué hay hoy (esqueleto navegable)
+## Qué hay hoy
 
-| Ruta | Archivo | Estado |
+| Ruta | Archivo | Qué hace |
 | --- | --- | --- |
-| `/tool` | `page.tsx` | Elige parcela piloto y la guarda en el dispositivo. Falta el mapa |
-| `/tool/retrato` | `retrato/page.tsx` | Primera versión de la tira con su tabla alternativa |
-| `/tool/restricciones` | `restricciones/page.tsx` | Solo muestra las restricciones. Faltan los controles |
-| `/tool/rotaciones` | `rotaciones/page.tsx` | Estado y agua de cada rotación. Falta el calendario |
-| `/tool/evidencia` | `evidencia/page.tsx` | Ficha de evidencia en texto. Faltan las fichas de cada cifra |
-| `/tool/compartir` | `compartir/page.tsx` | Hoja imprimible. Falta el enlace y la revisión del técnico |
+| `/tool` | `page.tsx`, `_components/FieldPicker.tsx`, `_components/ParcelMap.tsx` | "¿Dónde está tu campo?": pestaña **Marcar mi campo** (mapa de satélite, ubicación del teléfono o búsqueda, pivote por tamaño o esquinas, análisis en vivo con `api.analyze`) y pestaña **Ver un campo de ejemplo** (59 pivotes de Diamond Valley y casos del reto). Guarda el campo en el dispositivo |
+| `/tool/retrato` | `retrato/page.tsx`, `_components/ModelReadings.tsx` | Tira de 36 meses con tabla alternativa y "Lo que leen los modelos" (Modelo 3 y Dynamic World) |
+| `/tool/restricciones` | `restricciones/page.tsx`, `_components/ConstraintControls.tsx` | Restricciones editables con los códigos del motor; lo declarado se guarda por parcela y todas las pantallas usan `/simulate` |
+| `/tool/rotaciones` | `rotaciones/page.tsx`, `_components/RotationCalendar.tsx` | Tres rotaciones con calendario de 36 meses, tramas y caso sin opción viable |
+| `/tool/evidencia` | `evidencia/page.tsx`, `_components/AskBox.tsx` | Fichas de evidencia y preguntas por texto o voz a `/api/v1/ask` |
+| `/tool/compartir` | `compartir/page.tsx`, `_components/ShareSummary.tsx` | Hoja imprimible, lectura en voz alta y enlace con token |
+| `/tool/revision` | `revision/page.tsx` | Vista del técnico: aprueba, corrige o descarta, sin datos personales |
 
-`layout.tsx` pone los pasos, "Paso N de 6" y anterior/siguiente.
-`_components/steps.ts` define el orden. Lo pendiente está marcado en pantalla
-con `<Pending>`.
+`layout.tsx` pone los pasos, "Paso N de 6" y anterior/siguiente (la vista del
+técnico no es un paso). `_components/steps.ts` define el orden.
 
-## Qué construir, en orden
+## Pendiente
 
-1. **Restricciones editables** (`restricciones/`): agua máxima, maquinaria,
-   cultivos sin comprador y ventana de siembra. Al cambiar, llama
-   `api.simulate()` y guarda el resultado para las pantallas siguientes. Hay que
-   decidir dónde vive ese estado compartido (contexto en `layout.tsx` o
-   `sessionStorage`).
-2. **Calendario de 36 meses de las tres rotaciones** (`rotaciones/`): usa
-   `sequence_36m` con `palette_token` y `pattern`. Trama además de color
-   (Tierra con trama, Hoja sólido). Con tabla alternativa, como la tira.
-3. **Caso sin opción viable**: ya se muestra el aviso y el motivo. Revisa que
-   se entienda y que no aparezca ninguna recomendación.
-4. **Ficha de evidencia completa** (`evidencia/`): cada cifra con
-   `<MetricCard>` (tipo, fuente, fecha, escala). Los datos de 9 km o más se
-   presentan como contexto regional, nunca como de la parcela.
-5. **Mapa** (`/tool`): MapLibre GL con el polígono y el tamaño real del píxel
-   de cada fuente (`parcel.native_pixel_footprints_m`). Cárgalo con
-   `next/dynamic`.
-6. **Compartir y revisión del técnico** (`compartir/`): `api.share()` para el
-   enlace; `supabase.rpc("submit_review")` y `get_reviews` para la revisión
-   (ver `/supabase/README.md`). Si Supabase falla, se desactivan y queda la
-   impresión.
-7. **Preguntar por voz y escuchar** (Web Speech API) sobre `api.ask()`,
-   siempre con la alternativa en texto.
-8. **Guardar la última evaluación** en el dispositivo, para abrir sin red.
+- Prueba manual con lector de pantalla y voz en teléfono (`HUMANO.md`, H-21).
+- Probar "Usar mi ubicación" en un teléfono real.
 
 ## Reglas de esta carpeta
 
@@ -51,7 +30,7 @@ con `<Pending>`.
 - Una decisión por pantalla. Lenguaje llano, sin siglas.
 - Prohibido: degradados morados, fondo oscuro con neón, cuadrículas de
   tarjetas idénticas, etiquetas en mayúsculas espaciadas.
-- No importes three, MediaPipe ni nada de `/showcase`, `/engineer`, `/remote`.
+- No importes three, MediaPipe ni nada de `/showcase`, `/engineer`, `/remote`. Leaflet sí.
 - Cada gráfico lleva texto equivalente. Texto de 18 px o más. Objetivos de 44 px.
 - Corre `npm run test:a11y` antes de subir. Agrega tu pantalla a
   `tests/a11y.spec.ts` si creas una ruta nueva.

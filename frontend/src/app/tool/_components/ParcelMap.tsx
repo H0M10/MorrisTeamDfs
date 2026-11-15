@@ -11,33 +11,23 @@ export function ParcelMap({
   parcel,
   pilots = [],
   onSelect,
-  onPickPoint,
-  draft,
 }: {
   parcel: ParcelData;
   /** Las demás parcelas evaluables: se pintan como puntos que se pueden elegir. */
   pilots?: PilotSummary[];
   onSelect?: (id: string) => void;
-  /** Tocar el mapa fuera de un punto propone ese lugar para analizarlo en vivo. */
-  onPickPoint?: (lat: number, lon: number) => void;
-  /** Figura propuesta para el análisis en vivo, en [lon, lat]. */
-  draft?: [number, number][] | null;
 }) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const { pick, t } = useI18n();
   const selectRef = useRef(onSelect);
-  const pickRef = useRef(onPickPoint);
-  const mapRef = useRef<L.Map | null>(null);
-  const pickedLayer = useRef<L.Layer | null>(null);
   useEffect(() => {
     selectRef.current = onSelect;
-    pickRef.current = onPickPoint;
-  }, [onSelect, onPickPoint]);
+  }, [onSelect]);
 
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    const defaultCenter: [number, number] = [20.5888, -100.3899];
+    const defaultCenter: [number, number] = [39.72, -115.98]; // Diamond Valley, NV
     const initialCenter: [number, number] =
       parcel.center &&
       typeof parcel.center.lat === "number" &&
@@ -46,15 +36,15 @@ export function ParcelMap({
         : defaultCenter;
 
     const map = L.map(mapContainer.current).setView(initialCenter, 14);
-    mapRef.current = map;
-    map.on("click", (event: L.LeafletMouseEvent) =>
-      pickRef.current?.(event.latlng.lat, event.latlng.lng),
-    );
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: "© OpenStreetMap contributors",
-    }).addTo(map);
+    // Satélite, igual que en "Marcar mi campo": el campo se reconoce desde arriba.
+    L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      {
+        maxZoom: 18,
+        attribution: "Imágenes © Esri, Maxar, Earthstar Geographics",
+      },
+    ).addTo(map);
 
     const layerGroup = L.layerGroup().addTo(map);
 
@@ -105,44 +95,9 @@ export function ParcelMap({
     }
 
     return () => {
-      mapRef.current = null;
-      pickedLayer.current = null;
       map.remove();
     };
   }, [parcel, pilots, pick]);
-
-  // La figura propuesta para el análisis en vivo, sin rehacer el mapa.
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!map) return;
-    pickedLayer.current?.remove();
-    pickedLayer.current = null;
-    if (!draft || draft.length === 0) return;
-    const latLngs = draft.map(([x, y]) => [y, x] as [number, number]);
-    const style = {
-      color: "#000000",
-      weight: 2,
-      dashArray: "6 4",
-      fillColor: "#2F7D32",
-      fillOpacity: 0.25,
-    };
-    const group = L.layerGroup();
-    if (latLngs.length >= 3) group.addLayer(L.polygon(latLngs, style));
-    else if (latLngs.length === 2) group.addLayer(L.polyline(latLngs, style));
-    // Las esquinas se marcan para ver dónde se tocó.
-    for (const point of latLngs) {
-      group.addLayer(
-        L.circleMarker(point, {
-          radius: 4,
-          color: "#000000",
-          weight: 1,
-          fillColor: "#FFFFFF",
-          fillOpacity: 1,
-        }),
-      );
-    }
-    pickedLayer.current = group.addTo(map);
-  }, [draft, parcel, pilots]);
 
   const footprints = parcel.native_pixel_footprints_m
     ? Object.entries(parcel.native_pixel_footprints_m)
