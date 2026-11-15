@@ -51,7 +51,7 @@ export function ModelReadings({
   if (reading.years.length === 0 && world.years.length === 0) return null;
 
   return (
-    <section aria-labelledby="readings-heading">
+    <section aria-labelledby="readings-heading" data-guide-id="portrait.models">
       <h2 id="readings-heading">{r.title}</h2>
       <p>{r.intro}</p>
       {!labeled && <p className="note-pending">{r.experimental}</p>}

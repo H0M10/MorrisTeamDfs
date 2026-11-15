@@ -18,7 +18,7 @@ export function ParcelStrip({ timeline }: { timeline: TimelineMonth[] }) {
   }
 
   return (
-    <section aria-labelledby="strip-title">
+    <section aria-labelledby="strip-title" data-guide-id="portrait.strip">
       <h2 id="strip-title">{t.strip.title}</h2>
       <p>{t.strip.lead}</p>
 

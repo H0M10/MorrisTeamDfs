@@ -9,6 +9,7 @@ import { SkipLink } from "@/lib/components/SkipLink";
 import "./globals.css";
 // Perfil de accesibilidad: después de globals.css para ganarle (P1-1).
 import "@/lib/a11y/a11y.css";
+import "@/lib/guide/guide.css";
 
 const atkinson = Atkinson_Hyperlegible_Next({
   subsets: ["latin", "latin-ext"],

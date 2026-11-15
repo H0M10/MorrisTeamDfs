@@ -1,6 +1,9 @@
 "use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
+import { Guide, guideRoute } from "../guide/Guide";
+import { useGuideMode } from "../guide/mode";
 import { useI18n } from "../i18n";
 import { FirstVisitPrompt } from "./FirstVisitPrompt";
 import { LanguageSwitch } from "./LanguageSwitch";
@@ -12,6 +15,9 @@ export function SiteHeader() {
   const { t } = useI18n();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const settingsButton = useRef<HTMLButtonElement>(null);
+  const pathname = usePathname().replace(/\/$/, "") || "/";
+  const withGuide = guideRoute(pathname);
+  const [guideMode, setGuideMode, guideLoaded] = useGuideMode();
   return (
     <>
       <header className="site-header">
@@ -19,6 +25,15 @@ export function SiteHeader() {
           {t.common.appName}
         </Link>
         <div className="header-tools">
+          {withGuide && guideLoaded && (
+            <button
+              type="button"
+              aria-pressed={guideMode !== "off"}
+              onClick={() => setGuideMode(guideMode === "off" ? "open" : "off")}
+            >
+              {t.guide.turnOn}
+            </button>
+          )}
           <ListenButton />
           <UnitsSwitch />
           <LanguageSwitch />
@@ -32,10 +47,14 @@ export function SiteHeader() {
           </button>
         </div>
       </header>
-      <FirstVisitPrompt
-        onChoose={() => setSettingsOpen(true)}
-        onSkip={() => settingsButton.current?.focus()}
-      />
+      {withGuide ? (
+        <Guide onOpenSettings={() => setSettingsOpen(true)} />
+      ) : (
+        <FirstVisitPrompt
+          onChoose={() => setSettingsOpen(true)}
+          onSkip={() => settingsButton.current?.focus()}
+        />
+      )}
       {settingsOpen && (
         <ReadingSettingsDialog
           open={settingsOpen}

@@ -19,7 +19,7 @@ export default function ToolLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <SiteHeader />
-      <nav className="step-nav" aria-label={t.tool.stepsLabel}>
+      <nav className="step-nav" aria-label={t.tool.stepsLabel} data-guide-id="tool.steps">
         <ol>
           {STEPS.map((step, i) => (
             <li key={step.key}>

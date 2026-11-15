@@ -49,7 +49,7 @@ function ShareLink({ evaluation }: { evaluation: Evaluation }) {
   };
 
   return (
-    <section aria-labelledby="share-link-heading" className="no-print">
+    <section aria-labelledby="share-link-heading" className="no-print" data-guide-id="share.link">
       <h2 id="share-link-heading">{s.linkTitle}</h2>
       <p>{s.linkIntro}</p>
       <p>

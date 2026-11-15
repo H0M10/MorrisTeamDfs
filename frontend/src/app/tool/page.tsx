@@ -62,6 +62,7 @@ export default function ParcelPage() {
 
       <div
         className="tab-switch"
+        data-guide-id="parcel.tabs"
         role="group"
         aria-label={t.tool.parcel.whereTitle}
       >
@@ -133,7 +134,7 @@ export default function ParcelPage() {
         </>
       )}
 
-      <section aria-labelledby="chosen-heading" className="chosen">
+      <section aria-labelledby="chosen-heading" className="chosen" data-guide-id="parcel.chosen">
         <h2 id="chosen-heading">{t.tool.parcel.chosenTitle}</h2>
         <EvaluationGate state={evaluationState}>
           {(evaluation) => (

@@ -41,7 +41,7 @@ export function PriorityPicker({
   };
 
   return (
-    <section aria-labelledby="priorities-title" className="priorities">
+    <section aria-labelledby="priorities-title" className="priorities" data-guide-id="rotations.priorities">
       <h2 id="priorities-title">{r.prioritiesTitle}</h2>
       <p>{r.prioritiesLead}</p>
       <fieldset>

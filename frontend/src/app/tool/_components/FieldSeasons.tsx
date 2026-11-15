@@ -58,7 +58,7 @@ export function FieldSeasons({ timeline }: { timeline: TimelineMonth[] }) {
   const maxOf = (row: AvgRow) => Math.max(0, ...summary.map((m) => m[row] ?? 0));
 
   return (
-    <section aria-labelledby="seasons-title">
+    <section aria-labelledby="seasons-title" data-guide-id="portrait.seasons">
       <h2 id="seasons-title">{s.title}</h2>
       <p>{s.lead}</p>
       <div className="priority-result">

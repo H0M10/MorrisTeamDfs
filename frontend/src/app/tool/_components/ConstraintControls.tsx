@@ -81,7 +81,12 @@ export function ConstraintsEditor({
   };
 
   return (
-    <form className="editor" onSubmit={handleSubmit} aria-labelledby="constraints-editor-heading">
+    <form
+      className="editor"
+      onSubmit={handleSubmit}
+      aria-labelledby="constraints-editor-heading"
+      data-guide-id="constraints.editor"
+    >
       <h2 id="constraints-editor-heading">{c.editTitle}</h2>
       <p>{c.editIntro}</p>
 

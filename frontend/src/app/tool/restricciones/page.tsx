@@ -50,7 +50,7 @@ export default function ConstraintsPage() {
                 </p>
               )}
               <MetricCard label={t.tool.constraints.water} metric={active.max_water_mm_year} />
-              <dl className="facts">
+              <dl className="facts" data-guide-id="constraints.current">
                 <dt>{t.tool.constraints.machinery}</dt>
                 <dd>{active.available_machinery.map(readable).join(", ") || t.tool.constraints.none}</dd>
                 <dt>{t.tool.constraints.noBuyer}</dt>

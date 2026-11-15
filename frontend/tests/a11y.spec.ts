@@ -406,3 +406,32 @@ test("el retrato dice cuándo queda el suelo expuesto y cuándo la helada alcanz
   await expect(page.locator("main")).toContainText("unos 50 km");
   expect(await axe(page)).toEqual([]);
 });
+
+test("la Guía saluda en la primera visita, enseña la pantalla y se puede apagar", async ({
+  page,
+}) => {
+  await ready(page, "/tool/rotaciones");
+  const guide = page.getByRole("complementary", { name: "Guía" });
+  await expect(guide).toContainText("Hola, soy la Guía");
+  await guide.getByRole("button", { name: "Enséñame esta pantalla" }).click();
+  await expect(page.locator(".guide-spot")).toHaveCount(1);
+  await expect(page.locator(".guide-spot")).toBeFocused();
+  await guide.getByRole("button", { name: /Siguiente/ }).click();
+  await expect(page.locator(".guide-spot")).toHaveCount(1);
+  expect(await axe(page)).toEqual([]);
+  await guide.getByRole("button", { name: "Apagar la Guía" }).click();
+  await expect(guide).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByRole("complementary", { name: "Guía" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Guía", exact: true }).click();
+  await expect(page.getByRole("complementary", { name: "Guía" })).toBeVisible();
+  await expect(page.getByRole("complementary", { name: "Guía" })).not.toContainText("Hola, soy la Guía");
+});
+
+test("la Guía entiende órdenes sin IA ni conexión", async ({ page }) => {
+  await ready(page, "/tool/retrato");
+  const guide = page.getByRole("complementary", { name: "Guía" });
+  await guide.getByLabel("Escribe tu pregunta").fill("siguiente");
+  await guide.getByRole("button", { name: "Preguntar" }).click();
+  await expect(page).toHaveURL(/\/tool\/restricciones$/);
+});

@@ -72,7 +72,47 @@ async function request<T>(
 const post = <T>(path: string, body: unknown) =>
   request<T>(path, { method: "POST", body: JSON.stringify(body) });
 
+
+/** Pantallas de /tool que entiende POST /api/v1/guide. */
+export type GuideStep =
+  | "parcela"
+  | "retrato"
+  | "restricciones"
+  | "rotaciones"
+  | "evidencia"
+  | "compartir"
+  | "revision";
+
+export interface GuideRequest {
+  screen: GuideStep;
+  question: string;
+  lang: "es" | "en";
+  visible_guide_ids: string[];
+  guide_items: { id: string; text: string }[];
+  fields?: Record<string, string | number | boolean | null>;
+  transcript?: string | null;
+  profile?: { plain_language: boolean };
+  session_id?: string;
+}
+
+export interface GuideResponse {
+  answer: string;
+  highlight: string[];
+  go_to_step: GuideStep | null;
+  terms: string[];
+  set_constraint: {
+    max_water_mm_year: { value: number; unit: "mm" | "in" | "acre_ft"; value_mm: number } | null;
+    crops_without_buyer: string[];
+    heard: string;
+    needs_confirmation: true;
+  } | null;
+  source: "llm" | "rules";
+  lang: "es" | "en";
+}
+
 export const api = {
+  /** La Guía: sin llave de IA responde con reglas; con llave, la IA redacta sin cifras propias. */
+  guide: (body: GuideRequest) => request<GuideResponse>("/api/v1/guide", { method: "POST", body: JSON.stringify(body) }, 15_000),
   pilots: () => request<PilotsResponse>("/api/v1/pilots"),
   crops: () => request<CropsResponse>("/api/v1/crops"),
   predictions: (parcelId: string) =>

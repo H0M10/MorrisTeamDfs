@@ -76,7 +76,7 @@ export function RotationCalendar({ strategies }: { strategies: Strategy[] }) {
     ) : null;
 
   return (
-    <section aria-labelledby="calendar-title">
+    <section aria-labelledby="calendar-title" data-guide-id="rotations.calendar">
       <h2 id="calendar-title">{r.calendarTitle}</h2>
       <p>{r.calendarLead}</p>
 

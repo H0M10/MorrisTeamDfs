@@ -52,7 +52,7 @@ export function ComparisonTable({
   );
 
   return (
-    <section aria-labelledby="compare-title">
+    <section aria-labelledby="compare-title" data-guide-id="rotations.compare">
       <h2 id="compare-title">{r.compareTitle}</h2>
       <div className="table-wrap" tabIndex={0} role="region" aria-labelledby="compare-title">
         <table className="compare">

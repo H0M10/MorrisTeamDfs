@@ -17,7 +17,7 @@ export default function HomePage() {
         <p className="home-lead not-plain">{h.lead}</p>
         <p className="home-lead only-plain">{h.leadPlain}</p>
         <div className="home-actions">
-          <Link href="/tool" className="button primary home-cta">
+          <Link href="/tool" className="button primary home-cta" data-guide-id="home.start">
             {h.cta}
           </Link>
           <Link href="/showcase" className="button">
@@ -27,7 +27,7 @@ export default function HomePage() {
         <p className="home-coverage">{h.coverage}</p>
 
         <h2>{h.howTitle}</h2>
-        <ol className="home-how">
+        <ol className="home-how" data-guide-id="home.steps">
           {h.how.map((step) => (
             <li key={step}>{step}</li>
           ))}

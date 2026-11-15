@@ -30,7 +30,11 @@ export default function EvidencePage() {
         {(evaluation) => (
           <>
             {evaluation.strategies.map((strategy) => (
-              <section key={strategy.id} aria-labelledby={`evidence-${strategy.id}`}>
+              <section
+                key={strategy.id}
+                aria-labelledby={`evidence-${strategy.id}`}
+                data-guide-id={`evidence.${strategy.id}`}
+              >
                 <h2 id={`evidence-${strategy.id}`}>{pick(strategy.title)}</h2>
                 {strategy.rejection_reason ? (
                   // Restricciones primero: de una rotación descartada no se listan ventajas.
