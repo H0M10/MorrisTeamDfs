@@ -1,7 +1,7 @@
 {
   "model": "model_3_crop_history_gru",
   "metric": {
-    "value": 0.4143,
+    "value": 0.2716,
     "unit": "F1",
     "type": "modeled",
     "source": "F1 macro de cuatro clases en 'diamond_valley_nv'",
@@ -9,7 +9,7 @@
     "native_scale": "30 m"
   },
   "baseline_metric": {
-    "value": 0.2222,
+    "value": 0.2439,
     "unit": "F1",
     "type": "modeled",
     "source": "F1 macro de decir siempre 'alfalfa' en 'diamond_valley_nv'",
@@ -49,18 +49,18 @@
       "attention"
     ],
     "f1_per_class": {
-      "alfalfa": 0.8571428571428571,
-      "small_grain": 0.8,
+      "alfalfa": 0.8814192343604108,
+      "small_grain": 0.20512820512820512,
       "corn": 0.0,
       "fallow": 0.0
     },
     "baseline_f1_per_class": {
-      "alfalfa": 0.8888888888888888,
+      "alfalfa": 0.9754901960784313,
       "small_grain": 0.0,
       "corn": 0.0,
       "fallow": 0.0
     },
-    "f1_macro_last_year": 0.581,
-    "n_test": 10
+    "f1_macro_last_year": 0.7818,
+    "n_test": 627
   }
 }

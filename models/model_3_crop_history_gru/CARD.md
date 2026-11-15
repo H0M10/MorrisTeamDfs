@@ -1,48 +1,54 @@
-# Ficha del modelo: 3. Lectura del historial de cultivos
+# Ficha del modelo: 3. Lectura del historial
 
-> **Estado: ENTRENADO Y MEDIDO EN ONNX (2026-11-14).** Artefactos en `backend/artifacts/model_3_crop_history_gru/` (`model.onnx`, `model.onnx.data` y `metrics.json`) entrenados en CPU y verificados con `onnxruntime` CPU. Supera a la línea base en F1 macro (`0.4143` vs `0.2222`). Ver Límites.
-
-Media página. Llénala con la salida de `train.py` y el `metrics.json` que
-escribe. No copies cifras de una corrida con `--sample`: son sintéticas.
+> **Estado: ENTRENADO, MEDIDO Y EN USO (2026-11-15, tabla grande).** Artefactos en `backend/artifacts/model_3_crop_history_gru/` (`model.onnx`, `model.onnx.data`, `metrics.json`), verificados con `onnxruntime` en CPU. F1 macro `0.2716` contra `0.2439` de la línea base en 627 años-campo de Diamond Valley, que no vio al entrenar.
 
 ## Qué hace
 
-Lee 12 meses de índices satelitales de una parcela y dice qué grupo de cultivo hubo ese año, entregando además un vector de atención temporal sobre los 12 meses.
+Lee 12 meses de imágenes de satélite de un año y dice qué grupo de cultivo hubo: alfalfa, grano pequeño, maíz o barbecho, con su probabilidad. También entrega los pesos de atención: los meses que más pesaron en la lectura, que se muestran como tales y nunca como explicación causal.
 
 ## Datos
 
-- **Etiqueta:** CDL agrupado: `alfalfa`, `small_grain` (grano pequeño), `corn` (maíz), `fallow` (barbecho).
-- **Entradas:** `ndvi`, `ndmi`, `bsi`, `ndti`, `missing_flag` (forma `[batch, 12, 5]`; salidas `logits`, `attention`).
-- **Tabla:** `data-pipeline/exports/multi_valley_us.parquet` (`45` secuencias parcela-año de 12 meses dentro de `CROP_GROUPS` en `2021–2024`: `35` en entrenamiento y `10` en prueba).
-- **Fuentes y escala nativa:** USDA CDL (`30 m`), Landsat/HLS (`30 m`, `observed`).
+- **Etiqueta:** grupo de cultivo de USDA CDL del año.
+- **Entradas:** NDVI, NDMI, BSI y NDTI mensuales de HLS (30 m), más una marca de mes sin imagen.
+- **Tabla:** `data-pipeline/exports/train_fields.parquet`, 1 138 campos en 6 valles, 2016 a 2024. Antes: 15 campos y 45 secuencias.
+- **Algoritmo:** GRU pequeña (32 unidades) con atención temporal, pesos por clase, 60 épocas, exportada a ONNX (opset 17).
 
 ## Partición
 
-- **Por valle:** entrenado en `millard_ut` + `snake_river_id` (`35` secuencias); medido en `diamond_valley_nv` (`10` secuencias, nunca visto).
-- **Último año fuera:** `2024` dentro de los valles de entrenamiento para seleccionar la mejor época (`F1 macro = 0.581`).
-- Ninguna fila del valle de prueba se usó para entrenar ni para ajustar.
+- **Por valle:** entrenado en los 5 valles que no son `diamond_valley_nv`; medido en `diamond_valley_nv` (627 años-campo).
+- **Último año fuera:** 2024 de los valles de entrenamiento elige la mejor época y es la segunda prueba.
 
 ## Métrica contra la línea base
 
-| | Valle no visto (`diamond_valley_nv`, `n = 10`) | Último año (`2024`, entrenamiento) |
-| --- | --- | --- |
-| **Modelo** (`CropHistoryGRU`, `hidden = 32`, ONNX en CPU) | **0.4143 F1 macro** (`alfalfa 0.857`, `small_grain 0.800`, `corn 0.000`, `fallow 0.000`) | **0.581 F1 macro** |
-| **Línea base** (decir siempre `'alfalfa'`, clase más frecuente) | **0.2222 F1 macro** (`alfalfa 0.889`, `small_grain 0.000`, `corn 0.000`, `fallow 0.000`) | — |
+| | Diamond Valley (n = 627) | Línea base: decir siempre el cultivo más común |
+| --- | ---: | ---: |
+| F1 macro (4 clases) | **0.2716** | 0.2439 |
+| F1 alfalfa | 0.881 | 0.975 |
+| F1 grano pequeño | 0.205 | 0.000 |
+| F1 maíz y barbecho | 0 (no hay en el valle) | 0 |
 
-- **Métrica:** F1 por clase y F1 macro en un valle no visto.
-- **¿Gana a la línea base?** **Sí** (`0.4143` vs `0.2222` F1 macro en `diamond_valley_nv`; distingue `small_grain` además de `alfalfa`). ONNX verificado en `onnxruntime` CPU (`atol = 1e-4` contra PyTorch y suma de atención igual a `1.0`).
+- **F1 macro en el último año de los otros valles, con las 4 clases presentes: 0.78.**
+- **¿Gana?** Sí, por poco en Diamond Valley y con claridad en los otros valles. El F1 macro de Diamond Valley no puede pasar de cerca de 0.5, porque ahí no hay maíz ni barbecho y esas clases cuentan como 0.
+- La corrida anterior daba 0.41 con solo 10 casos de prueba: era una cifra frágil. Esta, con 627, es más baja y más confiable.
+
+## Cómo se usa en la herramienta
+
+- Pesos de atención en la tira de 36 meses (`attention_weight`).
+- `GET /api/v1/predictions/{id}`: cultivo leído cada año con su probabilidad y si coincide con USDA CDL. En `/tool/retrato`, "Lo que leen los modelos en tu parcela".
 
 ## Límites
 
-- Los pesos de atención son "meses que más pesaron en la lectura", no una explicación causal.
-- En Querétaro no hay etiquetas para medirlo: aparece como **experimental** y no sustituye la declaración del agricultor.
-- Solo conoce cuatro clases; cualquier otro cultivo queda mal leído.
-- Muestra de prueba pequeña (`n = 10` secuencias en `diamond_valley_nv`), dominada por `alfalfa` y `small_grain` (`corn` y `fallow` quedan en `0.000` F1 por falta de soporte en la prueba).
+- En Diamond Valley (1 808 m) distingue mal el grano pequeño (F1 0.21): confunde años de grano con alfalfa.
+- Fuera de EE. UU. no hay etiqueta para medirlo: ahí es experimental.
 
 ## Cómo se reproduce
 
+PyTorch solo-CPU en un entorno aparte (no en el del backend):
+
 ```bash
-python -m uv --directory backend run --no-project --with torch --with onnx --with onnxscript --with onnxruntime --with numpy --with pandas --with pyarrow --extra-index-url https://download.pytorch.org/whl/cpu python ../models/model_3_crop_history_gru/train.py --table ../data-pipeline/exports/multi_valley_us.parquet --test-valley diamond_valley_nv
+python models/model_3_crop_history_gru/train.py --table data-pipeline/exports/train_fields.parquet --test-valley diamond_valley_nv
 ```
 
-Fecha de entrenamiento: 2026-11-14. Quién lo corrió: `@H0M10` / ARGON. Dónde: CPU local (`torch` CPU + `onnxruntime`) sobre tabla multi-valle extraída de Google Earth Engine (`luca-497507`).
+En Windows, con `PYTHONIOENCODING=utf-8` (el exportador de ONNX imprime emojis). Alternativa: `colab_retrain.ipynb`.
+
+Fecha de entrenamiento: 2026-11-15. Quién lo corrió: `@H0M10` / Claude Code. Dónde: CPU local, alrededor de 1 minuto.
