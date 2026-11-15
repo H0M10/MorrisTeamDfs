@@ -45,9 +45,9 @@ export const es = {
     next: "Siguiente",
     skeletonNote: "Esta pantalla es un esqueleto. Su contenido lo construye la persona 4.",
     steps: {
-      parcel: { name: "Parcela", title: "¿Cuál es tu parcela?" },
+      parcel: { name: "Parcela", title: "¿Cuál de las siguientes es tu parcela?" },
       portrait: { name: "Retrato", title: "Tu parcela vista desde el satélite" },
-      constraints: { name: "Restricciones", title: "¿Con qué cuentas?" },
+      constraints: { name: "Restricciones", title: "¿Con qué recursos cuentas?" },
       rotations: { name: "Rotaciones", title: "Tres rotaciones para comparar" },
       evidence: { name: "Evidencia", title: "¿De dónde sale cada cifra?" },
       share: { name: "Compartir", title: "Hoja para compartir" },

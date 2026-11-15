@@ -37,10 +37,24 @@ export default function EvidencePage() {
                   <>
                     <h3>{t.tool.evidence.why}</h3>
                     <p>{pick(strategy.evidence_card.why_suggested)}</p>
-                    {list(t.tool.evidence.support, strategy.evidence_card.supporting_evidence)}
+                    <div className="evidence-card">
+                      <div className="evidence-card-info">
+                        {list(t.tool.evidence.support, strategy.evidence_card.supporting_evidence)}
+                      </div>
+                      <div className="evidence-card-info">
+                        {list(t.tool.evidence.benefits, strategy.evidence_card.benefits)}
+                      </div>
+                      <div className="evidence-card-info">
+                        {list(t.tool.evidence.gaps, strategy.evidence_card.information_gaps)}
+                      </div>
+                      <div className="evidence-card-info">
+                        {list(t.tool.evidence.risks, strategy.evidence_card.local_review_risks)}
+                      </div>
+                    </div>
+                    {/* {list(t.tool.evidence.support, strategy.evidence_card.supporting_evidence)}
                     {list(t.tool.evidence.benefits, strategy.evidence_card.benefits)}
                     {list(t.tool.evidence.gaps, strategy.evidence_card.information_gaps)}
-                    {list(t.tool.evidence.risks, strategy.evidence_card.local_review_risks)}
+                    {list(t.tool.evidence.risks, strategy.evidence_card.local_review_risks)} */}
                     <MetricCard label={t.tool.rotations.waterPerYear} metric={strategy.metrics.annual_water_mm} />
                   </>
                 )}

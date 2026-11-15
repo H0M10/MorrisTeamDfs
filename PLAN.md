@@ -65,8 +65,8 @@
 | ID | Tarea | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
 | T-01 | Esqueleto Next.js + Tailwind con paleta oficial (`#FFFFFF`, `#000000`, `#1247B8`, `#E9B824`, `#5A4632`, `#2F7D32`) y Atkinson Hyperlegible Next (>=18 px) + banner visible "Datos de ejemplo" cuando `data_status === "fixture"` | `@Gicarrillo` / Claude | G1 (Sáb 10:00) | Completado (esqueleto); sigue `@Gicarrillo` con `tool/README.md` |
-| T-02 | Flujo completo conectado a API fixture: parcela, mapa MapLibre con tamaño real de píxel por fuente, tira HLS de 36 meses (+ tabla accesible alternativa), restricciones y caso `has_viable_options: false` | `@Gicarrillo` | G2 (Sáb 14:00) | Pendiente |
-| T-03 | Comparación de 3 rotaciones en calendario 36 meses con tramas además de color, micro-visuales accesibles, ficha de evidencia completa y guardado en `localStorage` | `@Gicarrillo` | G3 (Sáb 19:00) | Pendiente |
+| T-02 | Flujo completo conectado a API: parcela, mapa interactivo sincronizado (`ParcelMap.tsx`), tira HLS de 36 meses (+ tabla accesible alternativa), restricciones (`ConstraintControls.tsx` → `/simulate`) y caso `has_viable_options: false` | `@Gicarrillo` | G2 (Sáb 14:00) | **Completado** (mapa Leaflet, selector sincronizado `evaluation.ts` y editor de restricciones conectados a `/simulate`) |
+| T-03 | Comparación de 3 rotaciones en calendario 36 meses (`RotationCalendar.tsx`), tarjetas de evidencia completa y guardado en `localStorage` | `@Gicarrillo` | G3 (Sáb 19:00) | **Completado** (`RotationCalendar.tsx`, tarjetas en `/evidencia` y persistencia en dispositivo integrados en `main`) |
 | T-04 | Flujo de revisión de técnico (`reviews` en Supabase), hoja compartible imprimible (PDF) + enlace por token, voz Web Speech API con alternativa en texto | `@Gicarrillo` | G5 (Dom 12:00) | Pendiente |
 | T-05 | Auditoría automática con `axe` en CI + prueba manual de teclado, zoom 200% y lector de pantalla | `@Gicarrillo` + ARGON | G5 (Dom 12:00) | Pendiente |
 

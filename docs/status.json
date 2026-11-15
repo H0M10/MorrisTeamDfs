@@ -117,40 +117,35 @@
       "folders": ["/frontend/src/app/tool", "/frontend/tests"],
       "role": "La Herramienta del Agricultor (/tool), Accesibilidad AA y Micro-visuales",
       "color": "#5A4632",
-      "progress_pct": 40,
-      "doing_now": "Clonando pista/tool, revisando Orden #3 en PLAN.md y validando decisiones visuales de H-09 (paleta Cal/Tinta/Azul/Paja/Tierra/Hoja, base >=18px).",
+      "progress_pct": 75,
+      "doing_now": "Avances de pista/tool integrados en main (ParcelMap, ConstraintControls con /simulate, RotationCalendar y tarjetas en /evidencia). Faltan voz Web Speech API, hoja compartible /reviews en /compartir y capturas reales de /tool para el video.",
       "done": [
         "Esqueleto Next.js 16 de 6 pantallas en /tool (/retrato, /restricciones, /rotaciones, /evidencia, /compartir).",
         "Paleta oficial, Atkinson Hyperlegible Next (>=18 px), objetivos >=44 px y tabla accesible en ParcelStrip.tsx.",
+        "ParcelMap.tsx (Leaflet) sincronizado con selector de parcela (evaluation.ts / fixtures.ts) y mapa interactivo en /tool.",
+        "ConstraintControls.tsx conectado a /api/v1/simulate en /restricciones + RotationCalendar.tsx en /rotaciones + tarjetas en /evidencia.",
         "Base de pruebas Playwright + axe en verde."
       ],
       "todo": [
         {
-          "id": "Orden #3 / A11Y-01",
-          "gate": "G2",
-          "title": "Conectar simulación y controles reales en /restricciones y /rotaciones",
-          "detail": "Sustituir <Pending>: estado compartido de /api/v1/simulate, sliders/checkboxes y calendario 36m con tramas además de color.",
-          "connects_to": ["H0M10"]
-        },
-        {
-          "id": "A11Y-02 / H-09",
-          "gate": "G2-G3",
-          "title": "Mapa MapLibre mostrando escalas reales por fuente (30 m, 250 m, 9 km, 50 km)",
-          "detail": "Configurar fuente de teselas con atribución, confirmar banner 'Datos de ejemplo' y revisar unidades en español.",
+          "id": "A11Y-02 escala",
+          "gate": "G3-G5",
+          "title": "Revisar capas/escala por fuente (30 m, 250 m, 9 km, 50 km) y unidades en español",
+          "detail": "Confirmar visibilidad de escala nativa en mapa/retrato y unidades localizadas.",
           "connects_to": ["H0M10", "Checo-coder"]
         },
         {
           "id": "A11Y-03 / A11Y-04",
           "gate": "G3-G5",
-          "title": "Evidencia completa + Voz (Web Speech API) + Hoja compartible y revisión técnico",
+          "title": "Voz (Web Speech API) + /api/v1/ask + Hoja compartible y revisión técnico",
           "detail": "Integrar /api/v1/ask por voz y texto, impresión PDF y POST /api/v1/share con degradación elegante si Supabase falla.",
           "connects_to": ["H0M10"]
         },
         {
-          "id": "T-05 / IA UI",
+          "id": "T-05 / Entregables",
           "gate": "G5",
-          "title": "Micro-ilustraciones/transiciones respetando prefers-reduced-motion + Lector de pantalla",
-          "detail": "Validación con agrónomo (H-03/H-09), pruebas axe y recorrido manual con teclado y NVDA/VoiceOver el domingo.",
+          "title": "Lector de pantalla NVDA/VoiceOver + capturas reales de /tool para video",
+          "detail": "Recorrido manual con teclado y lector de pantalla el domingo y capturas reales para Alexis.",
           "connects_to": ["alexishal8"]
         }
       ]

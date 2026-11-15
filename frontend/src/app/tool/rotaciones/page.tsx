@@ -1,8 +1,10 @@
 "use client";
+import dynamic from "next/dynamic";
 import { EvaluationGate } from "@/lib/components/LoadGate";
 import { useI18n } from "@/lib/i18n";
-import { Pending } from "../_components/Pending";
 import { useToolEvaluation } from "../_components/useToolEvaluation";
+
+const RotationCalendar=dynamic(()=>import("../_components/RotationCalendar").then((mod)=>mod.RotationCalendar), {ssr:false, loading:()=><p role="status">Cargando calendario...</p>})
 
 export default function RotationsPage() {
   const { t, pick, value } = useI18n();
@@ -28,17 +30,19 @@ export default function RotationsPage() {
                 {strategy.rejection_reason ? (
                   <p>{pick(strategy.rejection_reason)}</p>
                 ) : (
+                  <>
                   <p>
                     {t.tool.rotations.waterPerYear}: {value(strategy.metrics.annual_water_mm)} (
                     {t.common.kinds[strategy.metrics.annual_water_mm.type]})
                   </p>
+                  {strategy.viable && <RotationCalendar strategy={strategy} />}
+                  </>
                 )}
               </section>
             ))}
           </>
         )}
       </EvaluationGate>
-      <Pending>{t.tool.rotations.calendarPending}</Pending>
     </>
   );
 }
