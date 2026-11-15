@@ -3,6 +3,7 @@ import { Atkinson_Hyperlegible_Next } from "next/font/google";
 import type { ReactNode } from "react";
 import { LanguageProvider } from "@/lib/i18n";
 import { SkipLink } from "@/lib/components/SkipLink";
+// import {SimulationProvider} from "@/lib/components/SimulationProvider";
 import "./globals.css";
 
 const atkinson = Atkinson_Hyperlegible_Next({
@@ -35,3 +36,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     </html>
   );
 }
+
+// // layout.tsx de las rutas de la herramienta
+// export default function ToolLayout({ children }: { children: React.ReactNode }) {
+//   return <SimulationProvider>{children}</SimulationProvider>;
+// }
