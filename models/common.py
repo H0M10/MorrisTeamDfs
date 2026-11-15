@@ -2,7 +2,7 @@
 
 Reglas de validación de AGENTS.md sección 5, puestas en código:
 1. Se separa por valle, nunca por fila al azar (`split_by_valley`).
-2. El último año queda fuera como segunda prueba (`split_last_year`).
+2. `split_last_year` separa un año; cada ficha aclara si se usa para selección o prueba.
 3. Cada modelo se reporta contra su línea base aunque pierda (`write_metrics`).
 
 `--sample` usa una tabla sintética pequeña solo para comprobar que el flujo
@@ -120,9 +120,9 @@ def write_metrics(
 def partition_text(test_valley: str) -> dict[str, str]:
     return {
         "es": f"Partición por valle: se mide en '{test_valley}', que no se usó para entrenar. "
-        "El último año de los valles de entrenamiento queda como segunda prueba.",
+        "La ficha documenta si el último año se usa para selección o prueba temporal.",
         "en": f"Split by valley: measured on '{test_valley}', never used for training. "
-        "The last year of the training valleys is held out as a second test.",
+        "The model card documents whether the last year is used for selection or temporal testing.",
     }
 
 

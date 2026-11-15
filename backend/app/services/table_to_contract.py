@@ -16,7 +16,7 @@ Reglas que se respetan aquí:
   "observed"; lo que viene de tablas o plantillas del equipo, "assumed".
 - Las rotaciones alternativas son plantillas supuestas (ver TEMPLATES). Su agua
   sale del respaldo declarado del modelo 1: balance FAO-56 con el banco de
-  cultivos. Las restricciones se evalúan después, en `evaluation.py`.
+  cultivos. Las candidatas se filtran por restricciones antes de ordenarlas.
 """
 
 from __future__ import annotations
@@ -32,10 +32,12 @@ from pydantic import BaseModel, ConfigDict
 
 from app.engine import crop_bank
 from app.engine import water_balance as wb
+from app.engine.constraints import FarmerConstraints, RotationPlan, evaluate_rotation
 from app.models.loader import ModelRegistry
 from app.schemas.api import ConstraintsIn
 from app.schemas.contract import LocalizedText
 from app.services import rotations
+from app.services.constraint_application import apply_constraints
 
 Row = dict[str, Any]
 Card = dict[str, Any]
@@ -245,6 +247,7 @@ def choose_rotation(
     no_buyer: frozenset[str] | None,
     learned: list[tuple[str, list[str], float]],
     water_of: Callable[[list[str]], float | None],
+    feasible: Callable[[list[str]], bool] | None = None,
 ) -> tuple[list[str], str]:
     """Elige entre el catálogo y las rotaciones aprendidas (Modelo 5) con reglas y agua.
 
@@ -264,6 +267,8 @@ def choose_rotation(
         eligible = [options[0], *learned_options]
     else:
         eligible = [o for o in options + learned_options if has_market(o[1], no_buyer)]
+    if feasible is not None:
+        eligible = [o for o in eligible if feasible(o[1])]
     if not eligible:
         return options[0][1], options[0][0]  # las restricciones la descartarán y lo dirán
 
@@ -573,7 +578,7 @@ def _model1_source(mae: float, used: int, factor: float | None) -> str:
 
 
 def model1_water(
-    rows: list[Row], crops: list[str], registry: ModelRegistry
+    rows: list[Row], crops: list[str], registry: ModelRegistry, *, peak: bool = False
 ) -> tuple[float | None, int]:
     """Riego neto medio por año (mm) predicho por el modelo 1, y en cuántos meses se usó.
 
@@ -619,7 +624,8 @@ def model1_water(
             etc = wb.crop_et(float(et0), kc)
         need = wb.net_irrigation_requirement(etc, wb.effective_rain_usda(float(rain)))
         per_year[row["month"][:4]] = per_year.get(row["month"][:4], 0.0) + need
-    return sum(per_year.values()) / len(per_year), len(index)
+    value = max(per_year.values()) if peak else sum(per_year.values()) / len(per_year)
+    return value, len(index)
 
 
 def model_metric(registry: ModelRegistry, name: str) -> float | None:
@@ -632,7 +638,7 @@ def water_scale(source: str) -> str:
     return "30 m (campo)" if "OpenET" in source else SCALE_POWER
 
 
-def observed_net_irrigation(rows: list[Row]) -> float | None:
+def observed_net_irrigation(rows: list[Row], *, peak: bool = False) -> float | None:
     """Riego neto medio por año con ET real de OpenET. None si falta algún mes."""
     totals: dict[str, float] = {}
     for row in rows:
@@ -642,11 +648,18 @@ def observed_net_irrigation(rows: list[Row]) -> float | None:
         year = row["month"][:4]
         need = wb.net_irrigation_requirement(float(et), wb.effective_rain_usda(float(rain)))
         totals[year] = totals.get(year, 0.0) + need
-    return sum(totals.values()) / len(totals) if totals else None
+    if not totals:
+        return None
+    return max(totals.values()) if peak else sum(totals.values()) / len(totals)
 
 
 def annual_water_mm(
-    months: list[str], crops: list[str], et0: list[float | None], rain: list[float | None]
+    months: list[str],
+    crops: list[str],
+    et0: list[float | None],
+    rain: list[float | None],
+    *,
+    peak: bool = False,
 ) -> float | None:
     """Riego neto medio por año (mm) con FAO-56. None si falta clima o un Kc."""
     kc = [
@@ -656,7 +669,7 @@ def annual_water_mm(
     if any(v is None for v in [*kc, *et0, *rain]):
         return None
     per_year = wb.annual_net_irrigation(months, et0, rain, kc)  # type: ignore[arg-type]
-    return sum(per_year.values()) / len(per_year)
+    return max(per_year.values()) if peak else sum(per_year.values()) / len(per_year)
 
 
 # ---------- armado ----------
@@ -807,9 +820,13 @@ def moisture_intervals(
 
 
 def build_evaluation(
-    rows: list[Row], meta: ParcelMeta, registry: ModelRegistry, contract_version: str
+    rows: list[Row],
+    meta: ParcelMeta,
+    registry: ModelRegistry,
+    contract_version: str,
 ) -> dict[str, Any]:
-    """Evaluación real sin restricciones aplicadas (todas las rotaciones abiertas)."""
+    """Filtra y ordena candidatas con los límites activos antes de los modelos auxiliares."""
+    water_peaks: dict[str, float | None] = {}
     first = rows[0]
     parcel_id = str(first["parcel_id"])
     months = [row["month"] for row in rows]
@@ -867,6 +884,183 @@ def build_evaluation(
     heat_src = "NASA POWER, días con temperatura máxima de 35 °C o más"
 
     current = current_sequence(rows, meta, labeled)
+    # --- rotaciones ---
+    system = "alfalfa" if any(code.startswith("alfalfa") for code in current) else "summer_grain"
+    sequences = {"current": current}
+    no_buyer = (
+        frozenset(meta.constraints.crops_without_buyer) if meta.constraints is not None else None
+    )
+    chosen: dict[str, str] = {}
+    # Candidatas: catálogo del equipo + rotaciones que de verdad se hacen en campos
+    # parecidos (Modelo 5). Se ordenan con el Modelo 1 donde aplica, si no con FAO-56.
+    learned = (
+        rotations.candidates(registry.models_dir, current, months, no_buyer) if labeled else []
+    )
+    use_model1 = labeled and registry.get("model_1_crop_water").status == "trained"
+    declared = meta.constraints
+    farmer = (
+        None
+        if declared is None
+        else FarmerConstraints(
+            max_water_mm_year=declared.max_water_mm_year,
+            available_machinery=frozenset(declared.available_machinery),
+            crops_without_buyer=frozenset(declared.crops_without_buyer),
+            planting_start_month=declared.planting_window.start_month,
+            planting_end_month=declared.planting_window.end_month,
+        )
+    )
+    observed = observed_net_irrigation(rows)
+    fao_current = annual_water_mm(months, current, et0, rain)
+    model_current = None
+    profiles: dict[tuple[str, ...], tuple[float | None, float | None]] = {}
+
+    def profile(crops: list[str]) -> tuple[float | None, float | None]:
+        nonlocal model_current
+        key = tuple(crops)
+        if key in profiles:
+            return profiles[key]
+        mean = annual_water_mm(months, crops, et0, rain)
+        peak = annual_water_mm(months, crops, et0, rain, peak=True)
+        factor = observed / fao_current if observed is not None and fao_current else 1.0
+        if use_model1:
+            predicted, used = model1_water(rows, crops, registry)
+            if predicted is not None and used > 0:
+                if model_current is None:
+                    model_current, _ = model1_water(rows, current, registry)
+                mean = predicted
+                peak, _ = model1_water(rows, crops, registry, peak=True)
+                factor = observed / model_current if observed is not None and model_current else 1.0
+        result = (
+            None if mean is None else mean * factor,
+            None if peak is None else peak * factor,
+        )
+        profiles[key] = result
+        return result
+
+    def feasible(crops: list[str]) -> bool:
+        if farmer is None:
+            return True
+        # Primero comprador, maquinaria y calendario; todavía no se infiere agua.
+        plan = RotationPlan("candidate", 0.0, list(zip(months, crops, strict=True)))
+        if not evaluate_rotation(plan, farmer).viable:
+            return False
+        _, peak = profile(crops)
+        return peak is not None and peak <= farmer.max_water_mm_year
+
+    def water_of(crops: list[str]) -> float | None:
+        return profile(crops)[0]
+
+    for strategy_id in ("less_water", "more_soil"):
+        sequences[strategy_id], chosen[strategy_id] = choose_rotation(
+            system, strategy_id, months, no_buyer, learned, water_of, feasible
+        )
+    sequence_model_note = rotations.metric_note(registry.models_dir)
+    water = {key: annual_water_mm(months, crops, et0, rain) for key, crops in sequences.items()}
+    water_source = dict.fromkeys(water, SRC_FAO_WATER)
+    observed = observed_net_irrigation(rows)
+    if observed is not None:
+        # La rotación actual usa el agua medida por OpenET, que no necesita saber qué
+        # cultivo hubo (sirve aunque un año sea matorral o un cultivo fuera del banco).
+        if water["current"]:
+            # Las alternativas, FAO-56 calibrado con la misma parcela para comparar parejo.
+            factor = observed / water["current"]
+            for key, value in water.items():
+                if key != "current" and value is not None:
+                    water[key] = value * factor
+                    water_source[key] = SRC_FAO_CALIBRATED.format(factor=factor)
+        water["current"] = observed
+        water_source["current"] = SRC_OPENET_WATER
+    # Modelo 1: predice el agua de las alternativas. Solo donde se entrenó (con etiquetas).
+    # Como FAO-56, se ajusta con lo que OpenET midió en la misma parcela: el modelo pone
+    # la diferencia entre cultivos según clima y suelo; la medición del campo, el nivel.
+    model1_check: tuple[float, float] | None = None
+    mae = model_metric(registry, "model_1_crop_water")
+    if labeled and mae is not None:
+        current_predicted, _ = model1_water(rows, sequences["current"], registry)
+        factor = None
+        if current_predicted and observed is not None:
+            factor = observed / current_predicted
+            model1_check = (current_predicted, observed)
+        for key in ("less_water", "more_soil"):
+            predicted, used = model1_water(rows, sequences[key], registry)
+            if predicted is not None and used > 0:
+                water[key] = predicted * (factor if factor is not None else 1.0)
+                water_source[key] = _model1_source(mae, used, factor)
+    water_peaks["current"] = (
+        observed_net_irrigation(rows, peak=True)
+        if observed is not None
+        else annual_water_mm(months, current, et0, rain, peak=True)
+    )
+    for key in ("less_water", "more_soil"):
+        water_peaks[key] = profile(sequences[key])[1]
+    model_2_trained = labeled and registry.get("model_2_prior_crop_effect").status == "trained"
+    strategies = [
+        _strategy(
+            key,
+            sequences[key],
+            months,
+            water,
+            water_source,
+            frost_year,
+            heat_year,
+            period,
+            labeled,
+            model_2_trained=model_2_trained,
+            model_2_metric=model_metric(registry, "model_2_prior_crop_effect"),
+            option=chosen.get(key),
+            market_filtered=no_buyer is not None,
+            ranked_by_model1=use_model1,
+            sequence_model_note=sequence_model_note,
+            history_source=meta.history_source,
+        )
+        for key in ("current", "less_water", "more_soil")
+    ]
+    for strategy in strategies:
+        strategy["evidence_card"]["supporting_evidence"].extend(
+            note.model_dump() for note in meta.context_notes or []
+        )
+    if model1_check is not None:
+        predicted, measured = model1_check
+        # Prueba a la vista: el mismo modelo que predice las alternativas, contra lo medido.
+        strategies[0]["evidence_card"]["supporting_evidence"].append(
+            {
+                "es": f"Comprobación del Modelo 1 en esta parcela: para la rotación actual "
+                f"predice {predicted:.0f} mm/año sin mirar el satélite; OpenET midió "
+                f"{measured:.0f} mm/año (diferencia de {predicted - measured:+.0f} mm). Las "
+                "alternativas se ajustan con esa diferencia.",
+                "en": f"Model 1 check on this field: for the current rotation it predicts "
+                f"{predicted:.0f} mm/yr without looking at the satellite; OpenET measured "
+                f"{measured:.0f} mm/yr (difference of {predicted - measured:+.0f} mm). The "
+                "alternatives are adjusted by that difference.",
+            }
+        )
+
+    checked = {
+        "data_status": "real",
+        "strategies": strategies,
+        "has_viable_options": True,
+        "constraints": {
+            "evaluated_before_models": True,
+            "max_water_mm_year": card(
+                None,
+                "mm/yr",
+                "assumed",
+                "Sin declarar: el agricultor aún no indicó su límite de agua",
+                months[-1],
+                "parcela",
+            ),
+            "available_machinery": [],
+            "crops_without_buyer": [],
+            "planting_window": {
+                "start_month": 1,
+                "end_month": 12,
+                "label": {"es": "Sin declarar (todo el año)", "en": "Not declared (all year)"},
+            },
+        },
+    }
+    if declared is not None:
+        apply_constraints(checked, declared, meta.constraints_source, water_peaks=water_peaks)
+
     index_values, index_source, index_scale = root_zone_index(rows, awc, current)
     attention = attention_weights(rows, registry)
     intervals = moisture_intervals(rows, registry, labeled)
@@ -967,105 +1161,6 @@ def build_evaluation(
             }
         )
 
-    # --- rotaciones ---
-    system = "alfalfa" if any(code.startswith("alfalfa") for code in current) else "summer_grain"
-    sequences = {"current": current}
-    no_buyer = (
-        frozenset(meta.constraints.crops_without_buyer) if meta.constraints is not None else None
-    )
-    chosen: dict[str, str] = {}
-    # Candidatas: catálogo del equipo + rotaciones que de verdad se hacen en campos
-    # parecidos (Modelo 5). Se ordenan con el Modelo 1 donde aplica, si no con FAO-56.
-    learned = (
-        rotations.candidates(registry.models_dir, current, months, no_buyer) if labeled else []
-    )
-    use_model1 = labeled and registry.get("model_1_crop_water").status == "trained"
-
-    def water_of(crops: list[str]) -> float | None:
-        if use_model1:
-            predicted, used = model1_water(rows, crops, registry)
-            if predicted is not None and used > 0:
-                return predicted
-        return annual_water_mm(months, crops, et0, rain)
-
-    for strategy_id in ("less_water", "more_soil"):
-        sequences[strategy_id], chosen[strategy_id] = choose_rotation(
-            system, strategy_id, months, no_buyer, learned, water_of
-        )
-    sequence_model_note = rotations.metric_note(registry.models_dir)
-    water = {key: annual_water_mm(months, crops, et0, rain) for key, crops in sequences.items()}
-    water_source = dict.fromkeys(water, SRC_FAO_WATER)
-    observed = observed_net_irrigation(rows)
-    if observed is not None:
-        # La rotación actual usa el agua medida por OpenET, que no necesita saber qué
-        # cultivo hubo (sirve aunque un año sea matorral o un cultivo fuera del banco).
-        if water["current"]:
-            # Las alternativas, FAO-56 calibrado con la misma parcela para comparar parejo.
-            factor = observed / water["current"]
-            for key, value in water.items():
-                if key != "current" and value is not None:
-                    water[key] = value * factor
-                    water_source[key] = SRC_FAO_CALIBRATED.format(factor=factor)
-        water["current"] = observed
-        water_source["current"] = SRC_OPENET_WATER
-    # Modelo 1: predice el agua de las alternativas. Solo donde se entrenó (con etiquetas).
-    # Como FAO-56, se ajusta con lo que OpenET midió en la misma parcela: el modelo pone
-    # la diferencia entre cultivos según clima y suelo; la medición del campo, el nivel.
-    model1_check: tuple[float, float] | None = None
-    mae = model_metric(registry, "model_1_crop_water")
-    if labeled and mae is not None:
-        current_predicted, _ = model1_water(rows, sequences["current"], registry)
-        factor = None
-        if current_predicted and observed is not None:
-            factor = observed / current_predicted
-            model1_check = (current_predicted, observed)
-        for key in ("less_water", "more_soil"):
-            predicted, used = model1_water(rows, sequences[key], registry)
-            if predicted is not None and used > 0:
-                water[key] = predicted * (factor or 1.0)
-                water_source[key] = _model1_source(mae, used, factor)
-    model_2_trained = labeled and registry.get("model_2_prior_crop_effect").status == "trained"
-    strategies = [
-        _strategy(
-            key,
-            sequences[key],
-            months,
-            water,
-            water_source,
-            frost_year,
-            heat_year,
-            period,
-            labeled,
-            model_2_trained=model_2_trained,
-            model_2_metric=model_metric(registry, "model_2_prior_crop_effect"),
-            option=chosen.get(key),
-            market_filtered=no_buyer is not None,
-            ranked_by_model1=use_model1,
-            sequence_model_note=sequence_model_note,
-            history_source=meta.history_source,
-        )
-        for key in ("current", "less_water", "more_soil")
-    ]
-    for strategy in strategies:
-        strategy["evidence_card"]["supporting_evidence"].extend(
-            note.model_dump() for note in meta.context_notes or []
-        )
-    if model1_check is not None:
-        predicted, measured = model1_check
-        # Prueba a la vista: el mismo modelo que predice las alternativas, contra lo medido.
-        strategies[0]["evidence_card"]["supporting_evidence"].append(
-            {
-                "es": f"Comprobación del Modelo 1 en esta parcela: para la rotación actual "
-                f"predice {predicted:.0f} mm/año sin mirar el satélite; OpenET midió "
-                f"{measured:.0f} mm/año (diferencia de {predicted - measured:+.0f} mm). Las "
-                "alternativas se ajustan con esa diferencia.",
-                "en": f"Model 1 check on this field: for the current rotation it predicts "
-                f"{predicted:.0f} mm/yr without looking at the satellite; OpenET measured "
-                f"{measured:.0f} mm/yr (difference of {predicted - measured:+.0f} mm). The "
-                "alternatives are adjusted by that difference.",
-            }
-        )
-
     footprints = dict(PIXEL_FOOTPRINTS_M) | (LABELED_FOOTPRINTS_M if labeled else {})
     name = (
         meta.name.model_dump()
@@ -1150,25 +1245,8 @@ def build_evaluation(
             },
         },
         "timeline": timeline,
-        "constraints": {
-            "evaluated_before_models": True,
-            "max_water_mm_year": card(
-                None,
-                "mm/yr",
-                "assumed",
-                "Sin declarar: el agricultor aún no indicó su límite de agua",
-                months[-1],
-                "parcela",
-            ),
-            "available_machinery": [],
-            "crops_without_buyer": [],
-            "planting_window": {
-                "start_month": 1,
-                "end_month": 12,
-                "label": {"es": "Sin declarar (todo el año)", "en": "Not declared (all year)"},
-            },
-        },
-        "has_viable_options": True,
+        "constraints": checked["constraints"],
+        "has_viable_options": checked["has_viable_options"],
         "strategies": strategies,
         "models": registry.report(region_mode),  # type: ignore[arg-type]
     }

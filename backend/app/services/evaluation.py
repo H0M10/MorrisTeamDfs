@@ -18,16 +18,11 @@ from pathlib import Path
 from typing import Any
 
 from app.config import FIXTURES_DIR, Settings
-from app.engine.constraints import (
-    MONTH_NAMES,
-    FarmerConstraints,
-    RotationPlan,
-    evaluate_rotations,
-)
 from app.errors import ApiError, parcel_not_found, real_data_incomplete, real_data_unavailable
 from app.models.loader import get_registry
 from app.schemas.api import ConstraintsIn
 from app.services import live, table_to_contract
+from app.services.constraint_application import apply_constraints
 
 EvaluationDict = dict[str, Any]
 
@@ -129,43 +124,25 @@ def parcel_rows(
 
 
 def _real_base(
-    parcel_id: str, settings: Settings
+    parcel_id: str, settings: Settings, declared: ConstraintsIn | None = None
 ) -> tuple[EvaluationDict, table_to_contract.ParcelMeta]:
-    """Evaluación real desde la tabla de /data-pipeline, sin restricciones aplicadas."""
-    if live.is_live(parcel_id):
-        loaded = live.load(settings, parcel_id)
-        if loaded is None:
-            raise parcel_not_found(parcel_id)
-        rows, meta = loaded
-        registry = get_registry(settings.resolve(settings.models_dir))
-        try:
-            return table_to_contract.build_evaluation(
-                rows, meta, registry, contract_version()
-            ), meta
-        except table_to_contract.TableError as exc:
-            raise real_data_incomplete(parcel_id, str(exc)) from exc
-    data_dir = _data_dir(settings)
-    tables = table_to_contract.find_tables(data_dir)
-    if not tables:
-        raise real_data_unavailable(parcel_id)
-    if parcel_id not in tables and FIXTURE_TO_REAL_PARCEL.get(parcel_id) in tables:
-        parcel_id = FIXTURE_TO_REAL_PARCEL[parcel_id]
-    if parcel_id not in tables:
-        raise parcel_not_found(parcel_id)
+    """Construye candidatas con los límites activos y comprueba el año de mayor consumo."""
+    rows, meta = parcel_rows(parcel_id, settings)
+    if declared is not None:
+        meta = meta.model_copy(update={"constraints": declared, "constraints_source": None})
+    registry = get_registry(settings.resolve(settings.models_dir))
     try:
-        rows = table_to_contract.read_rows(tables[parcel_id], parcel_id)
-        meta = table_to_contract.load_meta(data_dir, parcel_id)
-        registry = get_registry(settings.resolve(settings.models_dir))
-        return table_to_contract.build_evaluation(rows, meta, registry, contract_version()), meta
+        result = table_to_contract.build_evaluation(rows, meta, registry, contract_version())
     except table_to_contract.TableError as exc:
         raise real_data_incomplete(parcel_id, str(exc)) from exc
+    return result, meta
 
 
 def evaluate(parcel_id: str, settings: Settings) -> EvaluationDict:
     if settings.data_mode == "real":
         evaluation, meta = _real_base(parcel_id, settings)
         if meta.constraints is not None:
-            return apply_constraints(evaluation, meta.constraints, meta.constraints_source)
+            return evaluation
         # Sin restricciones declaradas no hay nada que descartar; se dice en cada ficha.
         for strategy in evaluation["strategies"]:
             strategy["evidence_card"]["information_gaps"].append(table_to_contract.UNDECLARED_GAP)
@@ -177,77 +154,9 @@ def evaluate(parcel_id: str, settings: Settings) -> EvaluationDict:
 
 
 def simulate(parcel_id: str, declared: ConstraintsIn, settings: Settings) -> EvaluationDict:
-    """Recalcula viabilidad con las restricciones declaradas. No toca otras cifras."""
+    """Selecciona alternativas compatibles con los límites declarados."""
     if settings.data_mode == "real":
-        evaluation, _ = _real_base(parcel_id, settings)
-        return apply_constraints(evaluation, declared)
+        evaluation, _ = _real_base(parcel_id, settings, declared)
+        return evaluation
     evaluation = copy.deepcopy(evaluate(parcel_id, settings))
     return apply_constraints(evaluation, declared)
-
-
-def crop_labels(evaluation: EvaluationDict) -> dict[str, dict[str, str]]:
-    labels: dict[str, dict[str, str]] = {}
-    for strategy in evaluation["strategies"]:
-        for item in strategy["sequence_36m"]:
-            labels.setdefault(item["crop_code"], item["crop_label"])
-    return labels
-
-
-def apply_constraints(
-    evaluation: EvaluationDict, declared: ConstraintsIn, source: str | None = None
-) -> EvaluationDict:
-    """Pasa las tres rotaciones por el evaluador y actualiza la evaluación en sitio."""
-    window = declared.planting_window
-    farmer = FarmerConstraints(
-        max_water_mm_year=declared.max_water_mm_year,
-        available_machinery=frozenset(declared.available_machinery),
-        crops_without_buyer=frozenset(declared.crops_without_buyer),
-        planting_start_month=window.start_month,
-        planting_end_month=window.end_month,
-    )
-    plans = [
-        RotationPlan(
-            rotation_id=strategy["id"],
-            annual_water_mm=strategy["metrics"]["annual_water_mm"]["value"],
-            months=[(item["month"], item["crop_code"]) for item in strategy["sequence_36m"]],
-        )
-        for strategy in evaluation["strategies"]
-    ]
-    result = evaluate_rotations(plans, farmer, labels=crop_labels(evaluation))
-
-    is_fixture = evaluation["data_status"] == "fixture"
-    constraints = evaluation["constraints"]
-    constraints["evaluated_before_models"] = True
-    constraints["max_water_mm_year"] = {
-        **constraints["max_water_mm_year"],
-        "value": declared.max_water_mm_year,
-        "type": "fixture" if is_fixture else "assumed",
-        "source": (source or "Restricción declarada por el agricultor")
-        + (" (simulación sobre datos de ejemplo)" if is_fixture else ""),
-    }
-    constraints["available_machinery"] = list(declared.available_machinery)
-    constraints["crops_without_buyer"] = list(declared.crops_without_buyer)
-    constraints["planting_window"] = {
-        "start_month": window.start_month,
-        "end_month": window.end_month,
-        "label": {
-            lang: f"{names[window.start_month - 1].capitalize()} {joiner} "
-            f"{names[window.end_month - 1]}"
-            for lang, names, joiner in (
-                ("es", MONTH_NAMES["es"], "a"),
-                ("en", MONTH_NAMES["en"], "to"),
-            )
-        },
-    }
-
-    for strategy, verdict in zip(evaluation["strategies"], result.verdicts, strict=True):
-        strategy["viable"] = verdict.viable
-        strategy["constraint_evaluation"] = {
-            "water_ok": verdict.water_ok,
-            "buyer_ok": verdict.buyer_ok,
-            "machinery_ok": verdict.machinery_ok,
-            "calendar_ok": verdict.calendar_ok,
-        }
-        strategy["rejection_reason"] = verdict.rejection_reason
-    evaluation["has_viable_options"] = result.has_viable_options
-    return evaluation

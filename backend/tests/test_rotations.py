@@ -52,3 +52,26 @@ def test_candidates_follow_the_rules(current_and_months: tuple[list[str], list[s
 
 def test_without_artifact_there_are_no_candidates(tmp_path: Path) -> None:
     assert rotations.candidates(tmp_path, ["alfalfa"] * 36, ["2024-01"] * 36, None) == []
+
+
+def test_ineligible_candidates_are_not_ranked(current_and_months):
+    _, months = current_and_months
+    allowed = ["alfalfa"] * 36
+    calls = []
+
+    def water(crops):
+        calls.append(crops)
+        assert crops == allowed
+        return 500.0
+
+    chosen, _ = ttc.choose_rotation(
+        "alfalfa",
+        "less_water",
+        months,
+        None,
+        [("eligible", allowed, 0.5)],
+        water,
+        lambda crops: crops == allowed,
+    )
+    assert chosen == allowed
+    assert calls

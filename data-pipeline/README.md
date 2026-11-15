@@ -4,10 +4,9 @@ Dueño: Checo (`@Checo-coder`) y Hanniel (`@H0M10`) — Datos.
 Entrega: guiones de extracción y cruce (Earth Engine, NASA POWER) que corren
 **fuera de las laptops** y dejan una tabla mensual por parcela en GeoParquet.
 
-> **Estado:** los guiones están escritos y su sintaxis revisada, pero **nunca
-> se han ejecutado contra Earth Engine** (hace falta la cuenta). Los
-> identificadores de colección de `config.py` se escribieron de memoria: el
-> paso 1 existe para comprobarlos.
+> **Estado:** hay extracciones procesadas en `backend/data/` y artefactos entrenados
+> a partir de tablas reducidas. `ee_coverage.py` permite volver a comprobar las
+> colecciones y sus años de cobertura antes de una nueva extracción.
 
 ## Los tres pasos
 

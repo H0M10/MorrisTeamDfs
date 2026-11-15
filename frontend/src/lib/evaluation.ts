@@ -89,8 +89,7 @@ export async function loadEvaluation(
 
 /**
  * Evaluación con las restricciones que declaró el agricultor. Si la API no
- * responde no hay recálculo posible: se devuelve la evaluación sin ellas y el
- * origen queda como "local".
+ * responde no hay recálculo posible: se muestra un error y se conservan los límites.
  */
 export async function loadSimulation(
   parcelId: string,
@@ -102,10 +101,13 @@ export async function loadSimulation(
     try {
       return { data: await api.simulate(id, constraints), origin: "api" };
     } catch {
-      // se prueba el siguiente id o se cae a la evaluación sin restricciones
+      // Se prueba el alias; si también falla, no se sustituye la simulación.
     }
   }
-  return loadEvaluation(parcelId);
+  throw new ApiError(0, "simulation_unavailable", {
+    es: "No pudimos comprobar tus límites. Se conservaron en este dispositivo; vuelve a intentarlo. No se muestran rotaciones sin verificarlos.",
+    en: "We could not check your limits. They remain saved on this device; please try again. Rotations are not shown without checking them.",
+  });
 }
 
 export async function loadPilots(): Promise<Loaded<PilotsResponse>> {

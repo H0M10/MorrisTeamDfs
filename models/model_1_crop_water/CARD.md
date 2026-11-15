@@ -4,7 +4,7 @@
 
 ## Qué hace
 
-Estima la evapotranspiración mensual de un campo (mm) según su cultivo, el clima y su vigor visto desde el satélite.
+Estima la evapotranspiración mensual de un campo (mm) según su cultivo, el clima y el suelo local.
 
 ## Datos
 
@@ -16,7 +16,7 @@ Estima la evapotranspiración mensual de un campo (mm) según su cultivo, el cli
 ## Partición
 
 - **Por valle:** entrenado en los 5 valles que no son `diamond_valley_nv`; medido en `diamond_valley_nv` (`7 524` parcela-meses, nunca visto).
-- **Último año fuera:** `2024` de los valles de entrenamiento para detener el entrenamiento y como segunda prueba (`8.79 mm`).
+- **Validación temporal:** `2024` de los valles de entrenamiento se usa para detener el entrenamiento (`15.21 mm`). No es una segunda prueba independiente; esa prueba queda pendiente.
 
 ## Métrica contra la línea base
 
@@ -31,8 +31,8 @@ Estima la evapotranspiración mensual de un campo (mm) según su cultivo, el cli
 ## Cómo se usa en la herramienta
 
 - `table_to_contract.model1_water`: para cada mes de la rotación, si el cultivo es alfalfa, grano pequeño, maíz o barbecho, predice la ET con el modelo; los demás cultivos usan FAO-56. El riego es ET menos lluvia efectiva (USDA SCS), promedio por año.
-- **Ajuste por parcela:** en Diamond Valley el modelo sobreestima la rotación actual entre `+93` y `+153 mm/año` frente a lo que midió OpenET. Las alternativas se multiplican por el factor `medido / predicho` de la misma parcela (por ejemplo `0.82` en `dv-nv-01`): el modelo aporta la diferencia entre cultivos según clima y suelo; la medición del campo, el nivel. La ficha de la rotación actual muestra esa comprobación.
-- Resultado en `dv-nv-01`: actual `697 mm` (OpenET), menos agua `442 mm`, más suelo `521 mm`. FAO-56 calibrado daba `369` y `512`: según lo aprendido en 5 valles, los granos ahorran menos agua de lo que promete la tabla.
+- **Ajuste por parcela:** en Diamond Valley el modelo sobreestima la rotación actual entre `+93` y `+153 mm/año` frente a lo que midió OpenET. Las alternativas se multiplican por el factor `medido / predicho` de la misma parcela (el factor se informa en la fuente de cada evaluación): el modelo aporta la diferencia entre cultivos según clima y suelo; la medición del campo, el nivel. La ficha de la rotación actual muestra esa comprobación.
+- Las alternativas dependen de las restricciones vigentes; no se fija aquí una cifra de ejemplo. La tabla muestra el promedio anual, pero la viabilidad comprueba el año de mayor consumo con la misma fuente y calibración.
 - Solo en parcelas con etiquetas (EE. UU.). Sin OpenET en la parcela no hay ajuste y se usa la predicción tal cual.
 
 ## Límites

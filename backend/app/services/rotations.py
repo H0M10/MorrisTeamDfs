@@ -5,8 +5,8 @@
    de 3 años de grupos de cultivo (alfalfa, grano pequeño, maíz, barbecho) y se queda
    con las más comunes. Es observacional: "lo que hacen campos parecidos".
 2. Reglas: al menos dos años con un cultivo que se vende, distinta de la rotación
-   actual, y con comprador en la zona (has_market). Las restricciones del agricultor se
-   revisan después, como siempre.
+   actual, y con comprador en la zona (has_market). El constructor filtra las candidatas
+   con los límites activos antes de ordenarlas.
 3. Se juntan con las opciones del catálogo y se ordenan con el Modelo 1 (agua) o por
    meses de cultivo vivo (más suelo).
 

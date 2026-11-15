@@ -81,6 +81,28 @@ test("las restricciones editadas usan los códigos del motor", async ({
   await expect(page.getByRole("combobox")).toHaveCount(2);
 });
 
+test("una simulación fallida no muestra rotaciones sin los límites declarados", async ({ page }) => {
+  await page.route("**/api/v1/simulate", route => route.fulfill({
+    status: 503, contentType: "application/json", body: JSON.stringify({ error: "unavailable" }),
+  }));
+  await page.route("**/api/v1/evaluate", route => {
+    return route.abort();
+  });
+  await page.addInitScript(() => {
+    localStorage.setItem("fieldshift:constraints:dv-nv-fixture-01", JSON.stringify({
+      max_water_mm_year: 1, available_machinery: [], crops_without_buyer: [],
+      planting_window: { start_month: 1, end_month: 12 },
+    }));
+  });
+  await page.goto("/tool/rotaciones");
+  await expect(page.locator("main").getByRole("alert"))
+    .toContainText("No pudimos comprobar tus límites");
+  await expect(page.locator(".rotation-calendar")).toHaveCount(0);
+  expect(await page.evaluate(() => localStorage.getItem("fieldshift:constraints:dv-nv-fixture-01")))
+    .toContain('"max_water_mm_year":1');
+  expect(await axe(page)).toEqual([]);
+});
+
 test("axe sin violaciones en el caso sin opción viable", async ({ page }) => {
   await page.addInitScript(() =>
     window.localStorage.setItem(

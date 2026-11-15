@@ -17,8 +17,8 @@
     "native_scale": "30 m"
   },
   "partition_method": {
-    "es": "Partición por valle: se mide en 'diamond_valley_nv', que no se usó para entrenar. El último año de los valles de entrenamiento queda como segunda prueba.",
-    "en": "Split by valley: measured on 'diamond_valley_nv', never used for training. The last year of the training valleys is held out as a second test."
+    "es": "Partición por valle: se mide en 'diamond_valley_nv', que no se usó para entrenar. El año 2024 de los otros valles selecciona la época; su F1 es validación, no prueba temporal independiente.",
+    "en": "Split by valley: measured on 'diamond_valley_nv', never used for training. The other valleys' 2024 data selects the epoch; its F1 is validation, not an independent temporal test."
   },
   "test_valley": "diamond_valley_nv",
   "sample_run": false,

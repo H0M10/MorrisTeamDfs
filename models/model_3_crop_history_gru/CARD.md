@@ -16,7 +16,7 @@ Lee 12 meses de imágenes de satélite de un año y dice qué grupo de cultivo h
 ## Partición
 
 - **Por valle:** entrenado en los 5 valles que no son `diamond_valley_nv`; medido en `diamond_valley_nv` (627 años-campo).
-- **Último año fuera:** 2024 de los valles de entrenamiento elige la mejor época y es la segunda prueba.
+- **Validación temporal:** 2024 de los valles de entrenamiento elige la mejor época. Su F1 es de validación, no de una segunda prueba independiente; esa prueba queda pendiente.
 
 ## Métrica contra la línea base
 

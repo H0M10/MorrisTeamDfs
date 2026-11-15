@@ -5,9 +5,10 @@ Entrega: entrenamiento con partición por valle, artefactos ligeros para CPU
 (XGBoost y ONNX) y una ficha `CARD.md` por modelo con su métrica frente a la
 línea base.
 
-> **Estado:** ningún modelo está entrenado. Los guiones 1, 2 y 4 corrieron de
-> principio a fin con una tabla sintética (`--sample`); el 3 necesita PyTorch
-> y **no se ha ejecutado**. La API tiene los cuatro en respaldo.
+> **Estado:** cinco modelos con artefactos y métricas en `backend/artifacts/`.
+> Las fichas `CARD.md` documentan resultados y límites; el modelo 2 no aporta
+> evidencia de mejora. El modelo 5 propone secuencias fuera del contrato de cuatro modelos.
+> La prueba espacial existe; la validación temporal tiene límites detallados en cada ficha.
 
 ## Un guion por modelo
 
@@ -21,7 +22,7 @@ línea base.
 Todos usan `common.py`, que pone en código las reglas de validación:
 
 1. **Partición por valle**, nunca por fila al azar: `--test-valley` queda fuera.
-2. **El último año** de los valles de entrenamiento es la segunda prueba.
+2. El último año se usa para selección en los modelos 1 y 3, no como prueba independiente. El modelo 4 no lo separa. Consultar cada ficha antes de describir validación temporal.
 3. **Siempre se reporta la línea base**, aunque el modelo pierda.
 
 ## Comandos
@@ -50,9 +51,7 @@ escriben en `models/_smoke/` (ignorado por git).
 - **Tabla con al menos dos valles.** Con uno solo los guiones se detienen: no
   se puede medir en un valle no visto. La columna `valley` viene del GeoJSON de
   parcelas de `/data-pipeline`.
-- **Modelo 1: `kc_monthly.csv` está vacío.** Una persona debe llenarlo con los
-  coeficientes de FAO-56 por cultivo y mes (`HUMANO.md` H-04). Sin él, el
-  guion se detiene: no hay línea base inventada.
+- El banco `kc_monthly.csv` contiene los coeficientes declarados de FAO-56 usados por la línea base; conservar sus fuentes y supuestos.
 
 ## Después de entrenar
 

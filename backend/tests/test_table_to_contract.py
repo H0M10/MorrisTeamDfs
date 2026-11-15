@@ -19,6 +19,7 @@ from jsonschema import Draft202012Validator
 from app.config import CONTRACT_DIR, Settings
 from app.engine import water_balance as wb
 from app.models.loader import ModelRegistry
+from app.schemas.api import ConstraintsIn
 from app.schemas.contract import Evaluation
 from app.services import evaluation as evaluation_service
 from app.services import table_to_contract as ttc
@@ -653,3 +654,43 @@ def test_model_1_predicts_alternative_water_with_the_real_artifact() -> None:
         )
     checks = [n for n in current["evidence_card"]["supporting_evidence"] if "Modelo 1" in n["es"]]
     assert len(checks) == 1
+
+
+def test_simulation_rejects_peak_year_even_when_average_fits(make_settings, tmp_path):
+    table = make_table()
+    table["openet_et_mm"] = [50.0] * 12 + [150.0] * 12 + [50.0] * 12
+    folder = write_table(tmp_path / "data", table)
+    limits = ConstraintsIn(
+        max_water_mm_year=1100,
+        available_machinery=["pivote_central", "sembradora_grano", "empacadora"],
+        crops_without_buyer=[],
+        planting_window={"start_month": 1, "end_month": 12},
+    )
+    result = evaluation_service.simulate(PARCEL, limits, real_settings(make_settings, folder))
+    assert_contract(result)
+    current = result["strategies"][0]
+    assert current["metrics"]["annual_water_mm"]["value"] == 1000
+    assert not current["viable"]
+    assert not current["constraint_evaluation"]["water_ok"]
+    assert "1800 mm" in current["rejection_reason"]["es"]
+    assert "mayor consumo" in current["rejection_reason"]["es"]
+
+
+def test_simulation_reselects_when_farmer_removes_buyer(make_settings, tmp_path):
+    folder = write_table(tmp_path / "data", make_table())
+    limits = ConstraintsIn(
+        max_water_mm_year=5000,
+        available_machinery=["pivote_central", "sembradora_grano", "empacadora"],
+        crops_without_buyer=[],
+        planting_window={"start_month": 1, "end_month": 12},
+    )
+    settings = real_settings(make_settings, folder)
+    before = evaluation_service.simulate(PARCEL, limits, settings)
+    codes = {m["crop_code"] for m in before["strategies"][1]["sequence_36m"]}
+    assert "cebada_forrajera" in codes
+    limits.crops_without_buyer = ["cebada_forrajera"]
+    after = evaluation_service.simulate(PARCEL, limits, settings)
+    assert_contract(after)
+    for strategy in after["strategies"][1:]:
+        assert strategy["viable"]
+        assert "cebada_forrajera" not in {m["crop_code"] for m in strategy["sequence_36m"]}

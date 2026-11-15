@@ -18,6 +18,8 @@ Estima la humedad del suelo de la zona con un intervalo que debe contener el val
 - **Por valle:** ajustado en los 5 valles que no son `diamond_valley_nv`; medido en `diamond_valley_nv` (`108` meses de zona).
 - **Cambio de método:** antes el intervalo se calibraba con el último año de los mismos valles, y nunca veía el error de cambiar de valle (Diamond Valley está a `1 808 m`). Ahora la calibración conformal deja un valle fuera cada vez: cada valle de entrenamiento se predice con un modelo que no lo vio, y el margen sale de esos errores (`540` puntos de calibración, margen `q = 0.0252` m³/m³).
 
+El modelo final usa todos los años de los valles de entrenamiento. No se ejecutó una segunda prueba temporal con el último año separado; queda pendiente.
+
 ## Métrica contra la línea base
 
 | | Cobertura en el valle no visto (108 meses) | Ancho medio |
