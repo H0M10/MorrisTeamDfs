@@ -477,11 +477,12 @@ def test_gemini_adapter(
     assert sent["timeout"] == 8.0
 
 
-def test_gemini_asks_for_schema_and_no_thinking_on_flash() -> None:
-    config = guide_service._gemini_config("gemini-2.5-flash")
-    assert config["responseJsonSchema"] == guide_service.RESPONSE_SCHEMA
-    assert config["thinkingConfig"] == {"thinkingBudget": 0}
-    assert "thinkingConfig" not in guide_service._gemini_config("gemini-2.5-pro")
+def test_gemini_asks_for_schema_without_thinking_config() -> None:
+    # gemini-flash-lite-latest rechaza thinkingConfig con 400.
+    for model in ("gemini-flash-lite-latest", "gemini-2.5-pro"):
+        config = guide_service._gemini_config(model)
+        assert config["responseJsonSchema"] == guide_service.RESPONSE_SCHEMA
+        assert "thinkingConfig" not in config
 
 
 def test_quota_error_pauses_llm_calls(

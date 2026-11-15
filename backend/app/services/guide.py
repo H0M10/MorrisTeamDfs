@@ -57,7 +57,7 @@ FLOW: tuple[str, ...] = (
     "compartir",
 )
 
-DEFAULT_MODELS = {"anthropic": "claude-opus-5-5", "gemini": "gemini-2.5-flash"}
+DEFAULT_MODELS = {"anthropic": "claude-opus-5-5", "gemini": "gemini-flash-lite-latest"}
 MAX_ANSWER_CHARS = 700
 MAX_TOKENS = 2048
 
@@ -659,9 +659,8 @@ def _gemini_config(model: str) -> dict[str, Any]:
         "responseJsonSchema": RESPONSE_SCHEMA,
         "temperature": 0.2,
     }
-    if "flash" in model:
-        # Explicar un botón no necesita razonamiento largo; así cabe en los 8 s.
-        config["thinkingConfig"] = {"thinkingBudget": 0}
+    # Sin thinkingConfig: gemini-flash-lite-latest lo rechaza (400) y responde
+    # en menos de un segundo; gemini-flash-latest tardaba más de 8 s.
     return config
 
 
