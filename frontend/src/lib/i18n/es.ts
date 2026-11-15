@@ -204,6 +204,7 @@ export const es = {
     },
   },
   tool: {
+    allSteps: (n: number) => `Ver los ${n} pasos`,
     stepsLabel: "Pasos",
     stepOf: (current: number, total: number) => `Paso ${current} de ${total}`,
     previous: "Anterior",
@@ -248,6 +249,9 @@ export const es = {
       } as Record<string, string>,
       cases: "Casos del reto",
       whereTitle: "¿Dónde está tu campo?",
+      mineLead: "Busca tu campo y tócalo en el mapa. Después lo analizamos con datos de satélite de la NASA.",
+      examplesQuestion: "¿Solo quieres ver cómo funciona?",
+      backToMine: "Volver a marcar mi campo",
       tabMine: "Marcar mi campo",
       tabExamples: "Ver un campo de ejemplo",
       examplesIntro:
@@ -480,7 +484,7 @@ export const es = {
       noGps:
         "Este teléfono o navegador no da la ubicación. Busca el pueblo más cercano.",
       locating: "Buscando tu ubicación…",
-      located: "Listo: el mapa está donde estás.",
+      located: "Listo: el punto azul eres tú. Ahora toca tu campo en el mapa.",
       gpsDenied:
         "No hay permiso para usar tu ubicación. Busca el pueblo más cercano.",
       searching: "Buscando…",
@@ -491,13 +495,14 @@ export const es = {
       searchError:
         "No se pudo buscar ahora. Mueve el mapa con el dedo hasta tu campo.",
       step2: "Marca tu campo en el mapa",
-      methodCenter: "Mi campo es un pivote (círculo)",
-      methodEdges: "Mi campo tiene otra forma",
+      methodCenter: "Pivote (círculo)",
+      methodEdges: "Otra forma",
+      shapeLabel: "¿Cómo es tu campo?",
       sizeLabel: "Tamaño del pivote",
       sizes: {
-        small: "Pivote chico (unas 13 ha)",
-        medium: "Pivote mediano (unas 50 ha)",
-        large: "Pivote grande (unas 200 ha)",
+        small: "Chico (unas 13 ha)",
+        medium: "Mediano (unas 50 ha)",
+        large: "Grande (unas 200 ha)",
       },
       tapCenter: "Toca el centro de tu pivote en el mapa.",
       readyCenter:
@@ -678,7 +683,8 @@ export const es = {
       "home.start": "Este botón abre la herramienta. Ahí eliges tu campo y comparas rotaciones.",
       "home.steps": "Estos son los cuatro pasos: tu campo, tus límites, las tres rotaciones y la hoja para tu técnico.",
       "tool.steps": "Estos son los seis pasos de la herramienta. Puedes ir a cualquiera, pero conviene seguirlos en orden.",
-      "parcel.tabs": "Elige «Mi campo» para marcar tu terreno en el mapa, o «Ejemplos» para ver campos reales de Nevada.",
+      "parcel.tabs": "¿Solo quieres ver cómo funciona? Este enlace abre campos reales de ejemplo en Nevada.",
+      "parcel.map": "Aquí marcas tu campo. Usa tu ubicación o busca tu pueblo; elige si es un pivote o tiene otra forma y tócalo en el mapa. Al final pulsa «Analizar mi campo».",
       "parcel.chosen": "Este es el campo elegido. Queda guardado en este teléfono o computadora.",
       "portrait.strip": "Cada cuadro es un mes, pintado con el color real que vio el satélite en tu campo. Verde es cultivo vivo; café es suelo.",
       "portrait.seasons": "Esta tabla dice en qué meses tu suelo queda con poca cobertura y cuándo la helada o el calor alcanzan al cultivo verde.",

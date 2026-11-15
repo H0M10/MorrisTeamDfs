@@ -20,7 +20,32 @@ export default function ToolLayout({ children }: { children: ReactNode }) {
     <>
       <SiteHeader />
       <nav className="step-nav" aria-label={t.tool.stepsLabel} data-guide-id="tool.steps">
-        <ol>
+        {/* Teléfono: dónde estoy y cuánto falta, sin seis botones apretados. */}
+        <div className="step-compact">
+          <p>
+            <strong>{isStep ? t.tool.stepOf(index + 1, STEPS.length) : t.tool.stepsLabel}</strong>
+            {isStep && <> · {t.tool.steps[STEPS[index]!.key].name}</>}
+          </p>
+          <div className="step-progress" aria-hidden="true">
+            {STEPS.map((step, i) => (
+              <span key={step.key} data-state={!isStep ? "todo" : i < index ? "done" : i === index ? "now" : "todo"} />
+            ))}
+          </div>
+          <details>
+            <summary>{t.tool.allSteps(STEPS.length)}</summary>
+            <ol>
+              {STEPS.map((step, i) => (
+                <li key={step.key}>
+                  <Link href={step.href} aria-current={isStep && i === index ? "step" : undefined}>
+                    <span aria-hidden="true">{i + 1}.</span>
+                    {t.tool.steps[step.key].name}
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          </details>
+        </div>
+        <ol className="step-list">
           {STEPS.map((step, i) => (
             <li key={step.key}>
               <Link
@@ -35,7 +60,7 @@ export default function ToolLayout({ children }: { children: ReactNode }) {
         </ol>
       </nav>
       <main id="contenido" tabIndex={-1} className="page">
-        {isStep && <p>{t.tool.stepOf(index + 1, STEPS.length)}</p>}
+        {isStep && <p className="step-of">{t.tool.stepOf(index + 1, STEPS.length)}</p>}
         {children}
         {isStep && (
           <nav

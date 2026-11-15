@@ -14,7 +14,7 @@
 // aria-live; paso a paso con los botones sí se mueve el foco. Todo lo hablado
 // queda escrito. El personaje no se anima si se pidió menos movimiento.
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useId, useRef, useState, type CSSProperties, type FormEvent } from "react";
 import { api, type GuideResponse, type GuideStep } from "../api";
 import { useA11y } from "../a11y/profile";
 import type { ConstraintsInput } from "../contract";
@@ -182,6 +182,10 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
   const [question, setQuestion] = useState("");
   const [busy, setBusy] = useState(false);
   const [voiceOn, setVoiceOn] = useState(true);
+  const [bubbleOpen, setBubbleOpen] = useState(false);
+  const [pos, setPos] = useState<ReturnType<typeof placeBubble> | null>(null);
+  const bubbleRef = useRef<HTMLDivElement>(null);
+  const dockRef = useRef<HTMLButtonElement>(null);
 
   const stopListenRef = useRef<() => void>(() => {});
   const spotRef = useRef<HTMLElement | null>(null);
@@ -301,6 +305,7 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
     cancelAdvance();
     if (!profile.seen) updateProfile({ seen: true });
     writeFlag(AUTO_KEY, "session", true);
+    setBubbleOpen(true);
     setPlaying(true);
     setAtEnd(false);
     setWriting(false);
@@ -343,8 +348,9 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
     setFromAi(false);
     setAtEnd(false);
     setSpeaking(false);
-    const auto = !welcome && mode === "open" && readFlag(AUTO_KEY, "session") === true;
+    const auto = !welcome && mode !== "off" && readFlag(AUTO_KEY, "session") === true;
     setPlaying(auto);
+    setBubbleOpen(welcome || auto);
     if (auto) {
       const id = runId.current;
       timer.current = window.setTimeout(() => {
@@ -371,6 +377,39 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
       window.removeEventListener("keydown", onUser, true);
     };
   }, [pause, playing]);
+
+  // Encendida desde el botón "Guía" del encabezado: se presenta abierta.
+  const wasOff = useRef(false);
+  useEffect(() => {
+    if (mode !== "off" && wasOff.current) {
+      setBubbleOpen(true);
+    }
+    wasOff.current = mode === "off";
+  }, [mode]);
+
+  // Mientras explica, el globo (con el personaje) viaja junto al elemento.
+  useEffect(() => {
+    if (!tour) return;
+    let frame = 0;
+    const update = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const el = spotRef.current;
+        const bubble = bubbleRef.current;
+        if (el && bubble) setPos(placeBubble(el, bubble));
+      });
+    };
+    update();
+    const settle = window.setTimeout(update, 600);
+    window.addEventListener("scroll", update, true);
+    window.addEventListener("resize", update);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(settle);
+      window.removeEventListener("scroll", update, true);
+      window.removeEventListener("resize", update);
+    };
+  }, [tour]);
 
   useEffect(() => {
     document.body.classList.toggle("guide-touring", tour !== null);
@@ -519,33 +558,12 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
 
   if (!modeLoaded || mode === "off" || !guideRoute(pathname)) return null;
 
-  if (mode === "min") {
-    return (
-      <aside className="guide guide-min" aria-labelledby={titleId}>
-        <TutorFace speaking={false} />
-        <h2 id={titleId} className="guide-name">
-          {g.name}
-        </h2>
-        <button type="button" onClick={() => setMode("open")}>
-          {g.open}
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setMode("open");
-            start();
-          }}
-        >
-          {g.start}
-        </button>
-      </aside>
-    );
-  }
-
   const stepName = (step: GuideStep) => {
     const found = STEPS.find((s) => s.screen === step);
     return found ? t.tool.steps[found.key].name : step;
   };
+  const anchored = tour !== null && pos !== null;
+  const open = bubbleOpen || tour !== null;
   const playButton = playing ? (
     <button type="button" onClick={pause}>
       {g.pause}
@@ -565,176 +583,233 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
       {listening ? g.stopListening : g.talk}
     </button>
   );
+  const close = () => {
+    pause();
+    clearSpot();
+    setTour(null);
+    setWriting(false);
+    setBubbleOpen(false);
+    window.setTimeout(() => dockRef.current?.focus(), 0);
+  };
 
   return (
-    <aside className="guide no-print" aria-labelledby={titleId}>
-      <div className="guide-head">
-        <TutorFace speaking={speaking && !busy} />
-        <div>
-          <h2 id={titleId} className="guide-name">
-            {g.name}
-          </h2>
-          <p className="guide-tagline">{g.tagline}</p>
-        </div>
-      </div>
-
-      {heard && (
-        <p className="guide-heard">
-          <strong>{g.youSaid}:</strong> «{heard}»
-        </p>
-      )}
-      <div className="guide-message" role="status" aria-live="polite" aria-busy={busy}>
-        <p>{busy ? "…" : message}</p>
-        {fromAi && !busy && <p className="guide-note">{g.fromAi}</p>}
-      </div>
-
-      {terms.length > 0 && (
-        <dl className="guide-terms">
-          {terms.map((term) => (
-            <div key={term}>
-              <dt>{g.termTitle}</dt>
-              <dd>{g.glossary[term]}</dd>
+    <aside className="guide no-print" aria-label={g.name}>
+      {open ? (
+        <div
+          ref={bubbleRef}
+          className={anchored ? "guide-bubble is-anchored" : "guide-bubble is-docked"}
+          data-arrow={anchored ? pos.arrow : "dock"}
+          style={
+            anchored
+              ? ({
+                  top: pos.top,
+                  left: pos.left,
+                  width: pos.width,
+                  "--arrow-x": `${pos.arrowX}px`,
+                } as CSSProperties)
+              : undefined
+          }
+          onKeyDown={(event) => {
+            if (event.key === "Escape") close();
+          }}
+        >
+          <div className="guide-head">
+            <TutorFace speaking={speaking && !busy} />
+            <div className="guide-head-text">
+              <h2 className="guide-name">{g.name}</h2>
+              {!tour && <p className="guide-tagline">{g.tagline}</p>}
             </div>
-          ))}
-        </dl>
-      )}
-
-      {pending && (
-        <ConfirmConstraint
-          pending={pending}
-          onDone={(applied) => {
-            setPending(null);
-            buzz(applied ? [40, 60, 40] : 80);
-            narrate(applied ? g.applied : g.notApplied);
-          }}
-          onNeedField={() => {
-            setPending(null);
-            narrate(g.needField);
-          }}
-        />
-      )}
-
-      {goTo && (
-        <p>
-          <button
-            type="button"
-            className="primary"
-            onClick={() => router.push(STEPS.find((s) => s.screen === goTo)?.path ?? "/tool")}
-          >
-            {g.goTo(stepName(goTo))}
-          </button>
-        </p>
-      )}
-
-      {atEnd && nextStep && (
-        <p>
-          <button type="button" className="primary" onClick={() => router.push(nextStep.path)}>
-            {g.nextStep(t.tool.steps[nextStep.key].name)}
-          </button>
-        </p>
-      )}
-
-      <div className="guide-actions">
-        {playButton}
-        {talkButton}
-        <button type="button" aria-expanded={writing} onClick={writing ? () => setWriting(false) : write}>
-          {g.write}
-        </button>
-        {!profile.seen && (
-          <button
-            type="button"
-            onClick={() => {
-              updateProfile({ seen: true });
-              onOpenSettings();
-            }}
-          >
-            {g.settings}
-          </button>
-        )}
-      </div>
-      {listening && <p className="guide-listening">{g.listening}</p>}
-
-      {writing && (
-        <form className="guide-ask" onSubmit={onSubmit}>
-          <label htmlFor={`${titleId}-q`}>{g.ask}</label>
-          <div className="guide-ask-row">
-            <input
-              ref={inputRef}
-              id={`${titleId}-q`}
-              type="text"
-              value={question}
-              onChange={(event) => setQuestion(event.target.value)}
-              autoComplete="off"
-            />
-            <button type="submit" disabled={busy}>
-              {g.send}
+            <button type="button" className="guide-close" aria-label={g.minimize} onClick={close}>
+              <span aria-hidden="true">✕</span>
             </button>
           </div>
-        </form>
-      )}
 
-      {tour && (
-        // El panel queda arriba, fuera de la vista: esta barra fija repite el
-        // texto (el lector de pantalla ya lo oyó por aria-live) y lleva los
-        // controles al alcance del pulgar.
-        <div className="guide-tourbar" role="group" aria-label={g.name}>
-          <div className="guide-tourbar-text">
-            <TutorFace speaking={speaking} />
-            <p aria-hidden="true">{message}</p>
+          {heard && (
+            <p className="guide-heard">
+              <strong>{g.youSaid}:</strong> «{heard}»
+            </p>
+          )}
+          <div className="guide-message" role="status" aria-live="polite" aria-busy={busy}>
+            <p>{busy ? "…" : message}</p>
+            {fromAi && !busy && <p className="guide-note">{g.fromAi}</p>}
           </div>
-          <div className="guide-actions">
-            <button type="button" onClick={() => play(tour.index - 1, false)} disabled={tour.index === 0}>
-              {g.previous}
-            </button>
-            {playButton}
-            <button type="button" onClick={() => play(tour.index + 1, false)}>
-              {tour.index + 1 < tour.total ? g.next(tour.index + 2, tour.total) : g.finish}
-            </button>
-            {talkButton}
-          </div>
-        </div>
-      )}
 
-      <div className="guide-foot">
-        {canSpeak() && (
-          <label className="guide-check">
-            <input
-              type="checkbox"
-              checked={voiceOn}
-              onChange={(event) => {
-                setVoiceOn(event.target.checked);
-                writeFlag(VOICE_KEY, "local", event.target.checked);
-                if (!event.target.checked) stopSpeaking();
+          {terms.length > 0 && (
+            <dl className="guide-terms">
+              {terms.map((term) => (
+                <div key={term}>
+                  <dt>{g.termTitle}</dt>
+                  <dd>{g.glossary[term]}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+
+          {pending && (
+            <ConfirmConstraint
+              pending={pending}
+              onDone={(applied) => {
+                setPending(null);
+                buzz(applied ? [40, 60, 40] : 80);
+                narrate(applied ? g.applied : g.notApplied);
+              }}
+              onNeedField={() => {
+                setPending(null);
+                narrate(g.needField);
               }}
             />
-            {g.narrate}
-          </label>
-        )}
+          )}
+
+          {goTo && (
+            <p>
+              <button
+                type="button"
+                className="primary"
+                onClick={() => router.push(STEPS.find((s) => s.screen === goTo)?.path ?? "/tool")}
+              >
+                {g.goTo(stepName(goTo))}
+              </button>
+            </p>
+          )}
+
+          {atEnd && nextStep && (
+            <p>
+              <button type="button" className="primary" onClick={() => router.push(nextStep.path)}>
+                {g.nextStep(t.tool.steps[nextStep.key].name)}
+              </button>
+            </p>
+          )}
+
+          {tour ? (
+            <div className="guide-actions">
+              <button
+                type="button"
+                onClick={() => play(tour.index - 1, false)}
+                disabled={tour.index === 0}
+              >
+                {g.previous}
+              </button>
+              {playButton}
+              <button type="button" onClick={() => play(tour.index + 1, false)}>
+                {tour.index + 1 < tour.total ? g.next(tour.index + 2, tour.total) : g.finish}
+              </button>
+            </div>
+          ) : (
+            !atEnd && <div className="guide-actions">{playButton}</div>
+          )}
+          <div className="guide-actions">
+            {talkButton}
+            <button
+              type="button"
+              aria-expanded={writing}
+              onClick={writing ? () => setWriting(false) : write}
+            >
+              {g.write}
+            </button>
+          </div>
+          {listening && <p className="guide-listening">{g.listening}</p>}
+
+          {writing && (
+            <form className="guide-ask" onSubmit={onSubmit}>
+              <label htmlFor={`${titleId}-q`}>{g.ask}</label>
+              <div className="guide-ask-row">
+                <input
+                  ref={inputRef}
+                  id={`${titleId}-q`}
+                  type="text"
+                  value={question}
+                  onChange={(event) => setQuestion(event.target.value)}
+                  autoComplete="off"
+                />
+                <button type="submit" disabled={busy}>
+                  {g.send}
+                </button>
+              </div>
+            </form>
+          )}
+
+          {!tour && (
+            <div className="guide-foot">
+              {canSpeak() && (
+                <label className="guide-check">
+                  <input
+                    type="checkbox"
+                    checked={voiceOn}
+                    onChange={(event) => {
+                      setVoiceOn(event.target.checked);
+                      writeFlag(VOICE_KEY, "local", event.target.checked);
+                      if (!event.target.checked) stopSpeaking();
+                    }}
+                  />
+                  {g.narrate}
+                </label>
+              )}
+              {!profile.seen && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    updateProfile({ seen: true });
+                    onOpenSettings();
+                  }}
+                >
+                  {g.settings}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => {
+                  pause();
+                  clearSpot();
+                  writeFlag(AUTO_KEY, "session", false);
+                  setMode("off");
+                }}
+              >
+                {g.off}
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
         <button
+          ref={dockRef}
           type="button"
-          onClick={() => {
-            pause();
-            clearSpot();
-            setTour(null);
-            setMode("min");
-          }}
+          className="guide-dock"
+          aria-expanded={false}
+          onClick={() => setBubbleOpen(true)}
         >
-          {g.minimize}
+          <TutorFace speaking={false} />
+          <span>{g.name}</span>
         </button>
-        <button
-          type="button"
-          onClick={() => {
-            pause();
-            clearSpot();
-            writeFlag(AUTO_KEY, "session", false);
-            setMode("off");
-          }}
-        >
-          {g.off}
-        </button>
-      </div>
+      )}
     </aside>
   );
+}
+
+/** Dónde poner el globo junto al elemento explicado (coordenadas de la ventana). */
+function placeBubble(el: HTMLElement, bubble: HTMLElement) {
+  const r = el.getBoundingClientRect();
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const margin = 12;
+  const width = Math.min(400, vw - margin * 2);
+  const height = bubble.offsetHeight || 240;
+  const left = Math.min(Math.max(r.left, margin), vw - width - margin);
+  let top: number;
+  let arrow: "up" | "down" | "none";
+  if (r.bottom + 14 + height < vh) {
+    top = r.bottom + 14;
+    arrow = "up";
+  } else if (r.top - 14 - height > 0) {
+    top = r.top - 14 - height;
+    arrow = "down";
+  } else {
+    // El elemento es más alto que la pantalla: el globo va abajo, sin tapar su título.
+    top = Math.max(Math.min(r.top + 72, vh - height - margin), margin);
+    top = Math.max(top, vh - height - margin);
+    arrow = "none";
+  }
+  const arrowX = Math.min(Math.max(r.left + 28 - left, 20), width - 36);
+  return { top, left, width, arrow, arrowX };
 }
 
 /**

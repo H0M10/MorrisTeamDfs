@@ -203,6 +203,7 @@ export const en: Dictionary = {
     },
   },
   tool: {
+    allSteps: (n: number) => `See all ${n} steps`,
     stepsLabel: "Steps",
     stepOf: (current, total) => `Step ${current} of ${total}`,
     previous: "Previous",
@@ -247,6 +248,9 @@ export const en: Dictionary = {
       } as Record<string, string>,
       cases: "Challenge cases",
       whereTitle: "Where is your field?",
+      mineLead: "Find your field and tap it on the map. Then we analyze it with NASA satellite data.",
+      examplesQuestion: "Just want to see how it works?",
+      backToMine: "Go back to marking my field",
       tabMine: "Mark my field",
       tabExamples: "See an example field",
       examplesIntro:
@@ -476,7 +480,7 @@ export const en: Dictionary = {
       noGps:
         "This phone or browser does not give a location. Search the nearest town.",
       locating: "Finding your location…",
-      located: "Done: the map is where you are.",
+      located: "Done: the blue dot is you. Now tap your field on the map.",
       gpsDenied: "No permission to use your location. Search the nearest town.",
       searching: "Searching…",
       notFound:
@@ -486,13 +490,14 @@ export const en: Dictionary = {
       searchError:
         "Search is not available now. Move the map with your finger to your field.",
       step2: "Mark your field on the map",
-      methodCenter: "My field is a pivot (circle)",
-      methodEdges: "My field has another shape",
+      methodCenter: "Pivot (circle)",
+      methodEdges: "Other shape",
+      shapeLabel: "What shape is your field?",
       sizeLabel: "Pivot size",
       sizes: {
-        small: "Small pivot (about 13 ha)",
-        medium: "Medium pivot (about 50 ha)",
-        large: "Large pivot (about 200 ha)",
+        small: "Small (about 13 ha)",
+        medium: "Medium (about 50 ha)",
+        large: "Large (about 200 ha)",
       },
       tapCenter: "Tap the center of your pivot on the map.",
       readyCenter:
@@ -672,7 +677,8 @@ export const en: Dictionary = {
       "home.start": "This button opens the tool. There you pick your field and compare rotations.",
       "home.steps": "These are the four steps: your field, your limits, the three rotations and the sheet for your technician.",
       "tool.steps": "These are the six steps of the tool. You can jump to any, but it helps to follow them in order.",
-      "parcel.tabs": "Choose “My field” to mark your land on the map, or “Examples” to see real fields in Nevada.",
+      "parcel.tabs": "Just want to see how it works? This link opens real example fields in Nevada.",
+      "parcel.map": "Here you mark your field. Use your location or search your town; choose whether it is a pivot or another shape and tap it on the map. Then press “Analyze my field”.",
       "parcel.chosen": "This is the chosen field. It stays saved on this phone or computer.",
       "portrait.strip": "Each square is a month, painted with the real color the satellite saw on your field. Green is a living crop; brown is soil.",
       "portrait.seasons": "This table shows the months when your soil has little cover and when frost or heat reach the green crop.",

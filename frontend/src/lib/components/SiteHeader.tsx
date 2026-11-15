@@ -9,7 +9,6 @@ import { FirstVisitPrompt } from "./FirstVisitPrompt";
 import { LanguageSwitch } from "./LanguageSwitch";
 import { ListenButton } from "./ListenButton";
 import { ReadingSettingsDialog } from "./ReadingSettings";
-import { UnitsSwitch } from "./UnitsSwitch";
 
 export function SiteHeader() {
   const { t } = useI18n();
@@ -35,7 +34,6 @@ export function SiteHeader() {
             </button>
           )}
           <ListenButton />
-          <UnitsSwitch />
           <LanguageSwitch />
           <button
             ref={settingsButton}

@@ -17,7 +17,7 @@ const WCAG = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
 async function ready(page: Page, route: string) {
   await page.goto(route);
   await expect(page.locator("main#contenido h1")).toBeVisible();
-  if (route !== "/" && route !== "/accesibilidad")
+  if (route !== "/" && route !== "/accesibilidad" && route !== "/tool")
     await expect(page.getByTestId("fixture-banner")).toBeVisible();
 }
 
@@ -27,6 +27,12 @@ async function axe(page: Page) {
     (v) => `${v.id}: ${v.help} (${v.nodes.length})`,
   );
 }
+
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    if (!sessionStorage.getItem("test:first-visit")) localStorage.setItem("fieldshift:guide", "open");
+  });
+});
 
 for (const route of ALL_ROUTES) {
   test(`axe sin violaciones AA en ${route}`, async ({ page }) => {
@@ -92,7 +98,7 @@ test("axe sin violaciones en el caso sin opción viable", async ({ page }) => {
   );
 });
 
-for (const route of [...TOOL_ROUTES, ...JUDGE_ROUTES]) {
+for (const route of [...TOOL_ROUTES.slice(1), ...JUDGE_ROUTES]) {
   test(`"Datos de ejemplo" visible en ${route}`, async ({ page }) => {
     await ready(page, route);
     await expect(page.getByTestId("fixture-banner")).toContainText(
@@ -126,7 +132,7 @@ test("el flujo de /tool se recorre completo con teclado y el foco se ve", async 
     expect(outline).not.toBe("none");
     await page.keyboard.press("Enter");
     await expect(page).toHaveURL(new RegExp(`${route}/?$`));
-    await expect(page.locator(".step-nav a[aria-current=step]")).toHaveCount(1);
+    await expect(page.locator(".step-list a[aria-current=step]")).toHaveCount(1);
   }
   await expect(page.locator(".pager a[rel=next]")).toHaveCount(0);
 });
@@ -173,7 +179,7 @@ test("la parcela elegida queda guardada en el dispositivo", async ({
 test("objetivos táctiles de 44 px o más y texto de 18 px", async ({ page }) => {
   await ready(page, "/tool");
   const targets = page.locator(
-    ".step-nav a, .pager a, .lang-switch button, label.choice, select",
+    ".step-list a, .pager a, .lang-switch button, label.choice, select",
   );
   for (const box of await targets.evaluateAll((els) =>
     els.map((el) => el.getBoundingClientRect()),
@@ -316,7 +322,7 @@ test("marcar mi campo: pivote por su centro y campo dibujado por esquinas", asyn
   ).toBeEnabled();
 
   // Otra forma: esquinas numeradas, con instrucciones que cambian.
-  await page.getByRole("button", { name: "Mi campo tiene otra forma" }).click();
+  await page.getByRole("button", { name: "Otra forma", exact: true }).click();
   // Los botones cambian y el mapa se mueve: se vuelve a medir.
   await map.scrollIntoViewIfNeeded();
   const box2 = await map.boundingBox();
@@ -350,7 +356,7 @@ test("marcar mi campo con el teclado: coordenadas del centro", async ({
   await page.getByLabel("Longitud").fill("-116.0");
   await page.getByRole("button", { name: "Poner el centro aquí" }).click();
   await page
-    .getByRole("button", { name: "Pivote grande (unas 200 ha)" })
+    .getByRole("button", { name: "Grande (unas 200 ha)" })
     .click();
   await expect(
     page.getByRole("button", { name: /Analizar mi campo \(20\d ha\)/ }),
@@ -410,29 +416,40 @@ test("el retrato dice cuándo queda el suelo expuesto y cuándo la helada alcanz
 test("la Guía saluda, explica sola la pantalla y se puede apagar", async ({
   page,
 }) => {
-  // Sin voz en la prueba: el tutor avanza por tiempo de lectura.
-  await page.addInitScript(() => localStorage.setItem("fieldshift:guide-voice", "0"));
+  // Primera visita y sin voz: el tutor avanza por tiempo de lectura.
+  await page.addInitScript(() => {
+    sessionStorage.setItem("test:first-visit", "1");
+    if (!sessionStorage.getItem("test:reloaded")) localStorage.removeItem("fieldshift:guide");
+    localStorage.setItem("fieldshift:guide-voice", "0");
+  });
   await ready(page, "/tool/rotaciones");
   const guide = page.getByRole("complementary", { name: "Guía" });
   await expect(guide).toContainText("Hola, soy la Guía");
   await guide.getByRole("button", { name: "Explícame esta pantalla" }).click();
   await expect(page.locator(".guide-spot")).toHaveCount(1, { timeout: 12_000 });
-  await guide.getByRole("button", { name: "Pausa" }).first().click();
+  await expect(page.locator(".guide-bubble.is-anchored")).toBeVisible();
+  await guide.getByRole("button", { name: "Pausa" }).click();
   await guide.getByRole("button", { name: /Siguiente/ }).click();
   await expect(page.locator(".guide-spot")).toBeFocused();
   expect(await axe(page)).toEqual([]);
+  // Cerrar el globo deja al personaje en la esquina; desde ahí se apaga.
+  await guide.getByRole("button", { name: "Minimizar" }).click();
+  await expect(page.locator(".guide-spot")).toHaveCount(0);
+  await guide.getByRole("button", { name: "Guía" }).click();
   await guide.getByRole("button", { name: "Apagar la Guía" }).click();
   await expect(guide).toHaveCount(0);
+  await page.evaluate(() => sessionStorage.setItem("test:reloaded", "1"));
   await page.reload();
   await expect(page.getByRole("complementary", { name: "Guía" })).toHaveCount(0);
   await page.getByRole("button", { name: "Guía", exact: true }).click();
-  await expect(page.getByRole("complementary", { name: "Guía" })).toBeVisible();
+  await expect(page.locator(".guide-bubble")).toBeVisible();
   await expect(page.getByRole("complementary", { name: "Guía" })).not.toContainText("Hola, soy la Guía");
 });
 
 test("la Guía entiende órdenes escritas sin IA ni conexión", async ({ page }) => {
   await ready(page, "/tool/retrato");
   const guide = page.getByRole("complementary", { name: "Guía" });
+  await guide.getByRole("button", { name: "Guía" }).click();
   await guide.getByRole("button", { name: "Escribir" }).click();
   await guide.getByLabel("Escribe tu pregunta").fill("siguiente");
   await guide.getByRole("button", { name: "Preguntar" }).click();

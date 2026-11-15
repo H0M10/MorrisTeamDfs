@@ -60,27 +60,32 @@ export default function ParcelPage() {
       <title>{`${t.tool.steps.parcel.name} · Field Shift`}</title>
       <h1>{t.tool.parcel.whereTitle}</h1>
 
-      <div
-        className="tab-switch"
-        data-guide-id="parcel.tabs"
-        role="group"
-        aria-label={t.tool.parcel.whereTitle}
-      >
-        <button
-          type="button"
-          aria-pressed={tab === "mine"}
-          onClick={() => setTab("mine")}
-        >
-          {t.tool.parcel.tabMine}
-        </button>
-        <button
-          type="button"
-          aria-pressed={tab === "examples"}
-          onClick={() => setTab("examples")}
-        >
-          {t.tool.parcel.tabExamples}
-        </button>
-      </div>
+      {tab === "mine" ? (
+        <p className="parcel-lead">
+          {t.tool.parcel.mineLead}{" "}
+          <span>{t.tool.parcel.examplesQuestion}</span>{" "}
+          <button
+            type="button"
+            className="link-button"
+            data-guide-id="parcel.tabs"
+            onClick={() => setTab("examples")}
+          >
+            {t.tool.parcel.tabExamples}
+          </button>
+        </p>
+      ) : (
+        <p>
+          <button
+            type="button"
+            className="link-button"
+            data-guide-id="parcel.tabs"
+            onClick={() => setTab("mine")}
+          >
+            <span aria-hidden="true">← </span>
+            {t.tool.parcel.backToMine}
+          </button>
+        </p>
+      )}
 
       {tab === "mine" && (
         <FieldPicker
@@ -134,6 +139,8 @@ export default function ParcelPage() {
         </>
       )}
 
+      {/* Mientras marca su campo no se muestra un campo de ejemplo: confundía. */}
+      {(tab === "examples" || justAnalyzed || parcelId.startsWith("live-")) && (
       <section aria-labelledby="chosen-heading" className="chosen" data-guide-id="parcel.chosen">
         <h2 id="chosen-heading">{t.tool.parcel.chosenTitle}</h2>
         <EvaluationGate state={evaluationState}>
@@ -180,6 +187,7 @@ export default function ParcelPage() {
           )}
         </EvaluationGate>
       </section>
+      )}
     </>
   );
 }

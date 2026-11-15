@@ -53,6 +53,7 @@ export function FieldPicker({
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const markers = useRef<Marker[]>([]);
+  const meMarker = useRef<Marker | null>(null);
 
   const [view, setView] = useState<MapView>("satellite");
   const [method, setMethod] = useState<Method>("center");
@@ -68,6 +69,7 @@ export function FieldPicker({
   const [error, setError] = useState<string | null>(null);
   const [lat, setLat] = useState("");
   const [lon, setLon] = useState("");
+  const [locating, setLocating] = useState(false);
 
   // Lo que cambia en cada clic se lee por referencia: el mapa se crea una sola vez.
   const methodRef = useRef(method);
@@ -196,13 +198,28 @@ export function FieldPicker({
       setFindMessage(p.noGps);
       return;
     }
+    setLocating(true);
     setFindMessage(p.locating);
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        flyTo(position.coords.latitude, position.coords.longitude, 16);
+        const { latitude: y, longitude: x } = position.coords;
+        flyTo(y, x, 16);
+        // Punto azul donde está la persona: así sabe que funcionó.
+        const map = mapRef.current;
+        if (map) {
+          meMarker.current?.remove();
+          const element = document.createElement("div");
+          element.className = "me-pin";
+          element.setAttribute("aria-hidden", "true");
+          meMarker.current = new Marker({ element }).setLngLat([x, y]).addTo(map);
+        }
         setFindMessage(p.located);
+        setLocating(false);
       },
-      () => setFindMessage(p.gpsDenied),
+      () => {
+        setFindMessage(p.gpsDenied);
+        setLocating(false);
+      },
       { enableHighAccuracy: true, timeout: 15000 },
     );
   };
@@ -284,121 +301,121 @@ export function FieldPicker({
         {p.title}
       </h2>
 
-      <h3>
-        <span className="step-badge" aria-hidden="true">
-          1
-        </span>{" "}
-        {p.step1}
-      </h3>
-      <div className="inline-fields">
-        <button type="button" className="primary" onClick={useMyLocation}>
-          {p.useLocation}
-        </button>
-        <span>{p.or}</span>
-        <label className="visually-hidden" htmlFor="place-search">
-          {p.searchLabel}
-        </label>
-        <input
-          id="place-search"
-          className="field"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              event.preventDefault();
-              void search();
-            }
-          }}
-          placeholder={p.searchPlaceholder}
-        />
-        <button type="button" onClick={() => void search()}>
-          {p.search}
-        </button>
-      </div>
-      <p role="status" aria-live="polite" className="small">
-        {findMessage ?? p.findHelp}
-      </p>
-
-      <h3>
-        <span className="step-badge" aria-hidden="true">
-          2
-        </span>{" "}
-        {p.step2}
-      </h3>
-      <div className="method-switch" role="group" aria-label={p.step2}>
-        <button
-          type="button"
-          aria-pressed={method === "center"}
-          onClick={() => setMethod("center")}
-        >
-          {p.methodCenter}
-        </button>
-        <button
-          type="button"
-          aria-pressed={method === "edges"}
-          onClick={() => setMethod("edges")}
-        >
-          {p.methodEdges}
-        </button>
-      </div>
-      {method === "center" ? (
-        <div className="method-switch" role="group" aria-label={p.sizeLabel}>
-          {SIZES.map((s) => (
-            <button
-              key={s.key}
-              type="button"
-              aria-pressed={size === s.key}
-              onClick={() => setSize(s.key)}
-            >
-              {p.sizes[s.key]}
+      <div className="map-card" data-guide-id="parcel.map">
+        {/* 1. Encontrar: pegado al mapa, donde se ve el resultado. */}
+        <div className="map-toolbar">
+          <button
+            type="button"
+            className="primary map-locate"
+            onClick={useMyLocation}
+            disabled={locating}
+            aria-describedby="find-status"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path
+                fill="currentColor"
+                d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"
+              />
+            </svg>
+            {locating ? p.locating : p.useLocation}
+          </button>
+          <div className="map-search">
+            <label className="visually-hidden" htmlFor="place-search">
+              {p.searchLabel}
+            </label>
+            <input
+              id="place-search"
+              className="field"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  void search();
+                }
+              }}
+              placeholder={p.searchPlaceholder}
+            />
+            <button type="button" onClick={() => void search()}>
+              {p.search}
             </button>
-          ))}
+          </div>
         </div>
-      ) : (
-        <div className="inline-fields">
-          <button
-            type="button"
-            disabled={corners.length === 0}
-            onClick={() => setCorners((c) => c.slice(0, -1))}
-          >
-            {p.undo}
-          </button>
-          <button
-            type="button"
-            disabled={corners.length === 0}
-            onClick={() => setCorners([])}
-          >
-            {p.restart}
-          </button>
-        </div>
-      )}
+        <p id="find-status" role="status" aria-live="polite" className="map-status">
+          {findMessage ?? p.findHelp}
+        </p>
 
-      <p className="picker-next" role="status" aria-live="polite">
-        {next}
-      </p>
-      <div
-        className="method-switch map-views"
-        role="group"
-        aria-label={p.viewLabel}
-      >
-        {MAP_VIEWS.map((v) => (
-          <button
-            key={v}
-            type="button"
-            aria-pressed={view === v}
-            onClick={() => setView(v)}
-          >
-            {p.views[v]}
-          </button>
-        ))}
+        {/* 2. Forma del campo, antes de tocar el mapa. */}
+        <div className="map-shape">
+          <div className="segmented" role="group" aria-label={p.shapeLabel}>
+            <button type="button" aria-pressed={method === "center"} onClick={() => setMethod("center")}>
+              {p.methodCenter}
+            </button>
+            <button type="button" aria-pressed={method === "edges"} onClick={() => setMethod("edges")}>
+              {p.methodEdges}
+            </button>
+          </div>
+          {method === "center" ? (
+            <div className="segmented segmented-3" role="group" aria-label={p.sizeLabel}>
+              {SIZES.map((s) => (
+                <button key={s.key} type="button" aria-pressed={size === s.key} onClick={() => setSize(s.key)}>
+                  {p.sizes[s.key]}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="segmented">
+              <button type="button" disabled={corners.length === 0} onClick={() => setCorners((c) => c.slice(0, -1))}>
+                {p.undo}
+              </button>
+              <button type="button" disabled={corners.length === 0} onClick={() => setCorners([])}>
+                {p.restart}
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="map-wrap">
+          {/* Qué hacer ahora, sobre el mapa: donde está la mirada. */}
+          <p className={ring ? "map-instruction is-ready" : "map-instruction"} role="status" aria-live="polite">
+            {next}
+          </p>
+          <div ref={container} className="picker-map" role="region" aria-label={p.mapLabel} />
+          <div className="map-views" role="group" aria-label={p.viewLabel}>
+            {MAP_VIEWS.map((v) => (
+              <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>
+                {p.views[v]}
+              </button>
+            ))}
+          </div>
+        </div>
+        {view === "relief" && <p className="small">{p.reliefHint}</p>}
+
+        {/* 3. Analizar: justo debajo del mapa. */}
+        <button
+          type="button"
+          className="primary picker-go"
+          disabled={!ring || busy}
+          onClick={() => void analyze()}
+        >
+          {busy ? p.analyzing : area ? p.analyzeArea(area.areaHa.toFixed(0)) : p.analyzeDisabled}
+        </button>
+        <div role="status" aria-live="polite">
+          {busy && (
+            <>
+              <p>
+                <strong>{p.working(seconds)}</strong>
+              </p>
+              <ul>
+                <li>{p.workImages}</li>
+                <li>{p.workClimate}</li>
+                <li>{p.workModels}</li>
+              </ul>
+            </>
+          )}
+          {error && <p className="picker-error">{error}</p>}
+        </div>
       </div>
-      {view === "relief" && <p className="small">{p.reliefHint}</p>}
-      <div
-        ref={container}
-        className="picker-map"
-        role="region"
-        aria-label={p.mapLabel}
-      />
 
       <details className="picker-keyboard">
         <summary>{p.typeCoordinates}</summary>
@@ -428,42 +445,6 @@ export function FieldPicker({
           </button>
         </p>
       </details>
-
-      <h3>
-        <span className="step-badge" aria-hidden="true">
-          3
-        </span>{" "}
-        {p.step3}
-      </h3>
-      <p>
-        <button
-          type="button"
-          className="primary picker-go"
-          disabled={!ring || busy}
-          onClick={() => void analyze()}
-        >
-          {busy
-            ? p.analyzing
-            : area
-              ? p.analyzeArea(area.areaHa.toFixed(0))
-              : p.analyzeDisabled}
-        </button>
-      </p>
-      <div role="status" aria-live="polite">
-        {busy && (
-          <>
-            <p>
-              <strong>{p.working(seconds)}</strong>
-            </p>
-            <ul>
-              <li>{p.workImages}</li>
-              <li>{p.workClimate}</li>
-              <li>{p.workModels}</li>
-            </ul>
-          </>
-        )}
-        {error && <p className="picker-error">{error}</p>}
-      </div>
       <p className="small">{p.note}</p>
     </section>
   );
