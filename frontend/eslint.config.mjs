@@ -36,5 +36,6 @@ export default defineConfig([
     "playwright-report/**",
     "test-results/**",
     "src/lib/contract/types.ts",
+    "public/mediapipe/**",
   ]),
 ]);

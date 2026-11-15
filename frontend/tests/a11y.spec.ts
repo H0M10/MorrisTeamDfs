@@ -165,17 +165,29 @@ test("/tool no descarga three ni MediaPipe; /showcase sí descarga three", async
   expect(loaded("mediapipe")).toBe(false); // hoy nadie lo importa
 });
 
-test("el botón de gestos solo pide permiso de cámara y la apaga", async ({ page }) => {
+test("el botón de gestos solicita cámara tras pulsarlo y conserva alternativa si se deniega", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: {
+        getUserMedia: async () => {
+          Reflect.set(window, "__cameraRequestCount", Number(Reflect.get(window, "__cameraRequestCount") ?? 0) + 1);
+          throw new DOMException("Camera permission denied", "NotAllowedError");
+        },
+      },
+    });
+  });
   await ready(page, "/showcase");
   await expect(page.getByTestId("camera-status")).toBeEmpty();
   await page.getByRole("button", { name: "Activar control por gestos" }).click();
-  await expect(page.getByTestId("camera-status")).toContainText("Permiso concedido");
+  await expect(page.getByTestId("camera-status")).toContainText("Sin permiso de cámara");
+  expect(await page.evaluate(() => Reflect.get(window, "__cameraRequestCount"))).toBe(1);
 });
 
 test("/showcase permite recorrer los meses con teclado", async ({ page }) => {
   await ready(page, "/showcase");
-  const next = page.getByRole("button", { name: /Mes siguiente/ });
-  await next.focus();
-  await page.keyboard.press("Enter");
+  await page.keyboard.press("ArrowRight");
   await expect(page.getByText(/Mes: feb 2023/)).toBeVisible();
+  await page.keyboard.press("ArrowLeft");
+  await expect(page.getByText(/Mes: ene 2023/)).toBeVisible();
 });
