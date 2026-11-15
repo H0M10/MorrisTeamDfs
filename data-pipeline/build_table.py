@@ -49,9 +49,20 @@ def to_hex(red: float, green: float, blue: float) -> str | None:
     return f"#{r:02X}{g:02X}{b:02X}"
 
 
+def power_cell(lat: float, lon: float) -> tuple[float, float]:
+    """Centro de la celda de meteorología de POWER (MERRA-2, 0.5° x 0.625°) que contiene el punto.
+
+    Parcelas de la misma celda reciben la misma serie diaria, así que basta una
+    consulta por celda. La ET de referencia se sigue calculando con la latitud
+    y la elevación de cada parcela.
+    """
+    return round(lat * 2) / 2, round((lon + 180) / 0.625) * 0.625 - 180
+
+
 def power_monthly(lat: float, lon: float, elevation_m: float, start: date, end: date, client: PowerClient) -> pd.DataFrame:
     """Clima mensual de POWER para un punto: ET0, lluvia, temperaturas, heladas y calor."""
-    daily = client.daily(lat, lon, start, end)
+    cell_lat, cell_lon = power_cell(lat, lon)
+    daily = client.daily(cell_lat, cell_lon, start, end)
     v = daily.values
     rows = []
     for i, day in enumerate(daily.dates):
