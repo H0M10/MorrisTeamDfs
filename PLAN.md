@@ -78,8 +78,8 @@
 | ID | Tarea | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
 | L-01 | Esqueleto `/showcase` y `/remote` leyendo fixtures de `/lib`, con banner "Datos de ejemplo", controles de teclado y respeto a `prefers-reduced-motion` | `@alexishal8` / Claude | G1 (Sáb 10:00) | Completado (esqueleto); `/remote` congelado, sigue `@alexishal8` con `showcase/README.md` |
-| L-02 | Extra 1: Gestos con la mano (`@mediapipe/tasks-vision`, cámara activada solo con botón) + alternativa por teclado | `@alexishal8` | G3 (Sáb 19:00) | **Completado** (`handTracker.ts` + WASM/modelo en `public/mediapipe/` + flechas/teclado) |
-| L-03 | Extra 2: Zoom del globo a la parcela con órbitas de satélites + animaciones visuales IA de escala (sin cifras inventadas) | `@alexishal8` | G5 (Dom 12:00) | **En progreso** (`Scene.tsx` 3D globo + órbitas + `LayeredZoom` listos; faltan clips IA opcionales `ClipLoop`) |
+| L-02 | Extra 1: Gestos con la mano (`@mediapipe/tasks-vision`, cámara activada solo con botón) + alternativa por teclado | `@alexishal8` | G3 (Sáb 19:00) | **Completado** (`handTracker.ts` + WASM/modelo en `public/mediapipe/` + pellizco para avanzar mes y palma abierta sostenida para rotaciones + flechas/`R`) |
+| L-03 | Extra 2: Zoom del globo a la parcela con órbitas de satélites + comparación de 3 rotaciones del contrato | `@alexishal8` | G5 (Dom 12:00) | **Completado en código** (`Scene.tsx` 3D globo + órbitas + `LayeredZoom` + `RotationPanel` + `ParcelSwitch` + textos sin "Esqueleto"; solo faltan clips IA opcionales y prueba con cámara real `H-08`) |
 | L-04 | Extra 4: Terreno 3D con cultivo y partículas de lluvia (IMERG si disponible) | `@alexishal8` | G5 (Dom 12:00) | Recortado preventivamente (equipo de 4, AGENTS.md §8) |
 | L-05 | Extra 5: Control remoto desde teléfono vía QR + Supabase Realtime Broadcast (`/remote`) | `@alexishal8` | G5 (Dom 12:00) | Recortado preventivamente (equipo de 4, AGENTS.md §8) |
 
@@ -93,7 +93,7 @@
 | E-02 | Extra 3: Visualización de red en vivo con pesos reales del Modelo 3 (ocultar automáticamente si Modelo 3 no está entrenado) | `@alexishal8` | G5 (Dom 12:00) | **Completado** (`LiveNetwork.tsx` renderiza `attention_weight` mensual real del ONNX como "meses que más pesaron en la lectura (no causal)" y se oculta si no está `trained`) |
 | E-03 | Borrador de `/docs/project_page.md` (en inglés, sin cifras fixture) y `/docs/video_script.md` (30 s, guion compartido) | `@alexishal8` | G3 (Sáb 19:00) | **Completado** (actualizados con métricas reales G4 de Modelos 1–4, CQR `dv-nv-01`, NDWR Área 153 y CONAGUA Clave 2203, cero `fixture`) |
 | E-04 | Generar animaciones IA de apoyo, grabar video de respaldo sábado 23:00 y video final domingo tras congelar funciones (con datos reales, cero `fixture`) | `@alexishal8` + `@Gicarrillo` | Dom 15:00 | **Desbloqueado por datos reales** (guion listo; pendiente grabación) |
-| E-05 | Revisión final de `AI_USAGE.md`, `README.md` raíz, enlace público del repo y ensayo del pitch | `@alexishal8` + Equipo | G6 (Dom 20:00) | Pendiente |
+| E-05 | Revisión final de `AI_USAGE.md`, `README.md` raíz, enlace público del repo y ensayo del pitch | `@alexishal8` + Equipo | G6 (Dom 20:00) | **En progreso** (`README.md` raíz actualizado con estado real de Railway y respaldo de fixtures; pendiente cierre final el domingo) |
 
 ---
 

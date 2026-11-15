@@ -16,6 +16,8 @@ import { useI18n } from "@/lib/i18n";
 import { ClipLoop } from "./_components/ClipLoop";
 import { GestureButton } from "./_components/GestureButton";
 import { LayeredZoom } from "./_components/LayeredZoom";
+import { ParcelSwitch } from "./_components/ParcelSwitch";
+import { RotationPanel } from "./_components/RotationPanel";
 import { SHOWCASE_CONFIG } from "./_lib/showcaseConfig";
 
 // three no entra al paquete inicial: se descarga cuando este componente se monta.
@@ -47,10 +49,14 @@ function Stage({
   evaluation,
   index,
   setIndex,
+  rotationIndex,
+  setRotationIndex,
 }: {
   evaluation: Evaluation;
   index: number;
   setIndex: Dispatch<SetStateAction<number>>;
+  rotationIndex: number;
+  setRotationIndex: Dispatch<SetStateAction<number>>;
 }) {
   const { t, pick, month } = useI18n();
   const reducedMotion = useReducedMotion();
@@ -63,6 +69,7 @@ function Stage({
     SHOWCASE_CONFIG.layers[zoomIndex]?.cameraDistance ??
     INITIAL_CAMERA_DISTANCE;
   const last = evaluation.timeline.length - 1;
+  const strategiesCount = Math.max(1, evaluation.strategies.length);
   const current = evaluation.timeline[index] ?? evaluation.timeline[0];
   const updateCameraState = useCallback((animating: boolean, distance: number) => {
     setCameraState((currentState) =>
@@ -111,7 +118,16 @@ function Stage({
         cameraAnimating={cameraState.animating}
         cameraDistance={cameraState.distance}
       />
-      <GestureButton onPinch={() => setIndex((value) => Math.min(last, value + 1))} />
+      <RotationPanel
+        evaluation={evaluation}
+        monthIndex={index}
+        rotationIndex={rotationIndex}
+        onRotationChange={setRotationIndex}
+      />
+      <GestureButton
+        onPinch={() => setIndex((value) => Math.min(last, value + 1))}
+        onOpenPalm={() => setRotationIndex((value) => (value + 1) % strategiesCount)}
+      />
       <section aria-labelledby="clips-title">
         <h2 id="clips-title">Clips animados de apoyo</h2>
         <p>Los clips son ilustrativos y no sustituyen observaciones geográficas.</p>
@@ -131,7 +147,9 @@ function DeferredStage({ evaluation }: { evaluation: Evaluation }) {
   const sectionRef = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
   const [index, setIndex] = useState(0);
+  const [rotationIndex, setRotationIndex] = useState(0);
   const last = evaluation.timeline.length - 1;
+  const strategiesCount = Math.max(1, evaluation.strategies.length);
 
   useEffect(() => {
     function handleArrowKeys(event: KeyboardEvent) {
@@ -141,6 +159,16 @@ function DeferredStage({ evaluation }: { evaluation: Evaluation }) {
         (target.isContentEditable ||
           /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))
       ) {
+        return;
+      }
+      if (
+        event.key.toLowerCase() === "r" &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        !event.altKey
+      ) {
+        event.preventDefault();
+        setRotationIndex((value) => (value + 1) % strategiesCount);
         return;
       }
       if (target instanceof HTMLElement && target.closest("[data-zoom-controls]")) {
@@ -156,7 +184,7 @@ function DeferredStage({ evaluation }: { evaluation: Evaluation }) {
     }
     window.addEventListener("keydown", handleArrowKeys);
     return () => window.removeEventListener("keydown", handleArrowKeys);
-  }, [last]);
+  }, [last, strategiesCount]);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -179,7 +207,13 @@ function DeferredStage({ evaluation }: { evaluation: Evaluation }) {
   return (
     <section ref={sectionRef} aria-label="Experiencia del globo">
       {visible ? (
-        <Stage evaluation={evaluation} index={index} setIndex={setIndex} />
+        <Stage
+          evaluation={evaluation}
+          index={index}
+          setIndex={setIndex}
+          rotationIndex={rotationIndex}
+          setRotationIndex={setRotationIndex}
+        />
       ) : (
         <p role="status">El lienzo y los clips se cargarán al llegar a esta sección.</p>
       )}
@@ -189,7 +223,7 @@ function DeferredStage({ evaluation }: { evaluation: Evaluation }) {
 
 export default function ShowcasePage() {
   const { t } = useI18n();
-  const [parcelId] = useParcelId();
+  const [parcelId, setParcelId] = useParcelId();
   const state = useEvaluation(parcelId);
   return (
     <div className="judges">
@@ -198,8 +232,13 @@ export default function ShowcasePage() {
       <main id="contenido" tabIndex={-1} className="page">
         <h1>{t.showcase.title}</h1>
         <p>{t.showcase.lead}</p>
+        <ParcelSwitch
+          label={t.showcase.parcelGroup}
+          parcelId={parcelId}
+          onChange={setParcelId}
+        />
         <EvaluationGate state={state}>
-          {(evaluation) => <DeferredStage evaluation={evaluation} />}
+          {(evaluation) => <DeferredStage key={evaluation.parcel.id} evaluation={evaluation} />}
         </EvaluationGate>
       </main>
     </div>

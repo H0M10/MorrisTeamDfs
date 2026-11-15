@@ -164,13 +164,13 @@
       "folders": ["/frontend/src/app/showcase", "/frontend/src/app/engineer", "/docs"],
       "role": "Showcase, Modo Ingeniero, Animaciones IA, Video 30 s y Página en Inglés",
       "color": "#B45309",
-      "progress_pct": 75,
-      "doing_now": "Puliendo clips opcionales de IA, prueba con cámara real en sede (H-08) y grabación del video de 30 s con datos reales.",
+      "progress_pct": 85,
+      "doing_now": "Pistas 5 y 6 completas en software (/showcase con 3 rotaciones, palma abierta y selector de parcela; /engineer en vivo; textos sin esqueletos y README raíz al día). Faltan solo prueba con cámara real en sede (H-08), clips opcionales de IA y grabar el video de 30 s tras cierre de /tool.",
       "done": [
-        "L-02 / H-08: MediaPipe Hand Landmarker en /showcase (handTracker.ts + WASM/modelo en public/mediapipe/ + alternativa por teclado).",
-        "L-03 base: zoom 3D globo-órbitas-parcela en Scene.tsx + LayeredZoom.tsx respetando prefers-reduced-motion y escala nativa.",
+        "L-02 / H-08: MediaPipe Hand Landmarker en /showcase (handTracker.ts + WASM/modelo en public/mediapipe/ + pellizco y palma abierta + alternativa por teclado con flechas y R).",
+        "L-03: zoom 3D globo-órbitas-parcela (Scene.tsx + LayeredZoom.tsx) + ParcelSwitch + RotationPanel comparando las 3 rotaciones del contrato con ficha completa.",
         "E-01 / E-02: /engineer conectado automático a Railway DATA_MODE=real, selector dv-nv-01 / qro-sjr-01, banda CQR y Red en vivo con attention_weight real del Modelo 3 ONNX.",
-        "E-03: /docs/project_page.md (inglés) y /docs/video_script.md (30 s) actualizados con métricas G4 reales y cero cifras fixture."
+        "E-03 / README raíz: /docs/project_page.md (inglés), /docs/video_script.md (30 s) y README.md raíz actualizados al estado real G4/Railway con cero cifras fixture en textos principales."
       ],
       "todo": [
         {

@@ -3,8 +3,30 @@ import { useEffect, useRef, useState } from "react";
 import { useI18n } from "@/lib/i18n";
 
 type CameraState = "idle" | "asking" | "active" | "denied" | "unavailable" | "error";
+type Point = { x: number; y: number };
 
-export function GestureButton({ onPinch }: { onPinch: () => void }) {
+const OPEN_PALM_FRAMES = 8; // ~0.25 s sostenida para no dispararse por accidente
+
+/** Mano abierta: las cuatro puntas (8, 12, 16, 20) más lejos de la muñeca que sus nudillos medios. */
+function isOpenPalm(points: Point[]): boolean {
+  const wrist = points[0];
+  if (!wrist) return false;
+  const far = (tip: number, pip: number) => {
+    const a = points[tip];
+    const b = points[pip];
+    if (!a || !b) return false;
+    return Math.hypot(a.x - wrist.x, a.y - wrist.y) > Math.hypot(b.x - wrist.x, b.y - wrist.y) * 1.15;
+  };
+  return far(8, 6) && far(12, 10) && far(16, 14) && far(20, 18);
+}
+
+export function GestureButton({
+  onPinch,
+  onOpenPalm,
+}: {
+  onPinch: () => void;
+  onOpenPalm?: () => void;
+}) {
   const { t } = useI18n();
   const [camera, setCamera] = useState<CameraState>("idle");
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -12,6 +34,14 @@ export function GestureButton({ onPinch }: { onPinch: () => void }) {
   const frameRef = useRef<number | null>(null);
   const closeLandmarkerRef = useRef<(() => void) | null>(null);
   const pinchArmedRef = useRef(true);
+  const palmArmedRef = useRef(true);
+  const palmFramesRef = useRef(0);
+  const onPinchRef = useRef(onPinch);
+  const onOpenPalmRef = useRef(onOpenPalm);
+  useEffect(() => {
+    onPinchRef.current = onPinch;
+    onOpenPalmRef.current = onOpenPalm;
+  }, [onPinch, onOpenPalm]);
 
   function stopGestureControl() {
     if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
@@ -63,12 +93,25 @@ export function GestureButton({ onPinch }: { onPinch: () => void }) {
             const distance = Math.hypot(thumb.x - index.x, thumb.y - index.y);
             if (distance < 0.06 && pinchArmedRef.current) {
               pinchArmedRef.current = false;
-              onPinch();
+              onPinchRef.current();
             } else if (distance > 0.1) {
               pinchArmedRef.current = true;
             }
+            // Mano abierta sostenida: cambia de rotación una vez; se rearma al cerrar la mano.
+            if (distance > 0.1 && isOpenPalm(points)) {
+              palmFramesRef.current += 1;
+              if (palmFramesRef.current >= OPEN_PALM_FRAMES && palmArmedRef.current) {
+                palmArmedRef.current = false;
+                onOpenPalmRef.current?.();
+              }
+            } else {
+              palmFramesRef.current = 0;
+              palmArmedRef.current = true;
+            }
           } else {
             pinchArmedRef.current = true;
+            palmFramesRef.current = 0;
+            palmArmedRef.current = true;
           }
         }
         frameRef.current = requestAnimationFrame(detect);
