@@ -265,3 +265,15 @@ Cada despliegue de Railway borra el disco, y con él los puntos analizados en vi
 2. No hay que cambiar variables: `LIVE_CACHE_DIR` ya apunta a `.cache/live`.
 
 Sin esto, analiza de nuevo los 2 o 3 puntos de la demo después del último despliegue del domingo.
+
+### H-24. Proveedor y llave de la Guía (Hanniel, antes de las 08:00)
+
+Decidir qué modelo de lenguaje usa la Guía tutorial (Gemini u otro), conseguir la llave y ponerla en Railway como `GUIDE_LLM_API_KEY`. Nunca en `NEXT_PUBLIC_`. Sin llave, la Guía funciona solo con la capa sin IA. Diseño en `PLAN_DOMINGO.md` §3.
+
+### H-25. Precio de mercado de NASS (Hanniel, antes de las 10:00)
+
+Aprobar o descartar el cambio de contrato para mostrar el precio publicado por NASS QuickStats por cultivo (solo el precio con su ficha, nunca una ganancia). Si se aprueba, sacar la llave gratuita de QuickStats. `PLAN_DOMINGO.md` P3-3.
+
+### H-26. Verificar las prácticas de NRCS (cualquiera del equipo)
+
+Confirmar que *Conservation Crop Rotation* es el código 328 y *Cover Crop* el 340, y anotar los enlaces oficiales antes de publicar el "Siguiente paso" (`PLAN_DOMINGO.md` P2-2). Agregar a H-21 una prueba en un teléfono real al sol.

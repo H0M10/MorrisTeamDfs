@@ -758,3 +758,285 @@ textarea.field {
 .maplibregl-ctrl-attrib {
   font-size: 0.7rem;
 }
+
+/* ---------- Rotaciones: prioridades, comparación y calendario de 36 meses ---------- */
+
+/* Opciones grandes (44 px o más) sobre radios nativos: teclado, lector de
+   pantalla y control por voz funcionan sin trucos. */
+.pick-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pick-input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.pick {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-height: 44px;
+  height: 100%;
+  padding: 0.6rem 0.8rem 0.6rem 2.6rem;
+  border: 2px solid var(--color-tinta);
+  border-radius: 0.4rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.pick::before {
+  content: "";
+  position: absolute;
+  left: 0.8rem;
+  top: 0.85rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 2px solid var(--color-tinta);
+  border-radius: 50%;
+  background: var(--color-cal);
+}
+
+.pick-input:checked + .pick {
+  border-color: var(--color-compuerta);
+  box-shadow: inset 0 0 0 2px var(--color-compuerta);
+}
+
+.pick-input:checked + .pick::before {
+  background: var(--color-compuerta);
+  box-shadow: inset 0 0 0 3px var(--color-cal);
+  border-color: var(--color-compuerta);
+}
+
+.pick-input:focus-visible + .pick {
+  outline: 3px solid var(--color-compuerta);
+  outline-offset: 3px;
+}
+
+.pick-name {
+  font-weight: 700;
+}
+
+.pick-help {
+  font-size: 0.95em;
+}
+
+.priorities fieldset {
+  /* Un fieldset no se encoge por debajo de su contenido sin esto. */
+  min-width: 0;
+  border: 0;
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+.priorities legend {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.priority-result {
+  border-left: 0.5rem solid var(--color-compuerta);
+  padding: 0.25rem 0 0.25rem 1rem;
+  margin: 1rem 0 1.5rem;
+}
+
+/* Tabla comparativa: la primera columna queda fija al desplazar en teléfono. */
+.compare th[scope="row"] {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--color-cal);
+  min-width: 9rem;
+}
+
+.compare thead th {
+  min-width: 11rem;
+  vertical-align: bottom;
+}
+
+.compare-title {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.compare .status-viable,
+.compare .status-out,
+.compare .badge {
+  display: block;
+  font-weight: 700;
+}
+
+.badge {
+  margin-top: 0.35rem;
+  padding: 0.1rem 0.5rem;
+  border: 2px solid var(--color-hoja);
+  border-radius: 0.3rem;
+  width: fit-content;
+  font-size: 0.95em;
+}
+
+.metric-value {
+  font-weight: 700;
+}
+
+.metric-kind {
+  font-size: 0.9em;
+}
+
+.metric-kind::before {
+  content: "(";
+}
+
+.metric-kind::after {
+  content: ")";
+}
+
+.metric-source summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--color-compuerta);
+  text-decoration: underline;
+}
+
+/* Calendario de 36 meses. Color de la paleta + trama del contrato. */
+.rotation-calendar {
+  margin: 0 0 1rem;
+}
+
+.cal-year {
+  margin-bottom: 1rem;
+}
+
+.cal-row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 16rem) repeat(12, minmax(0, 1fr));
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.cal-name {
+  grid-column: 1;
+  font-size: 0.85rem;
+  line-height: 1.25;
+  padding-right: 0.5rem;
+}
+
+.cal-year-label {
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.cal-head .month-head {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.cal-ruled-out .crop-cell {
+  opacity: 0.45;
+}
+
+.crop-cell {
+  --pattern-ink: rgb(0 0 0 / 0.55);
+  grid-column: var(--col, auto);
+  display: block;
+  min-height: 1.75rem;
+  border: 1px solid rgb(0 0 0 / 0.45);
+  background-color: var(--color-cal);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.crop-cell[data-palette="leaf"] {
+  background-color: var(--color-hoja);
+  --pattern-ink: rgb(255 255 255 / 0.7);
+}
+
+.crop-cell[data-palette="straw"] {
+  background-color: var(--color-paja);
+}
+
+.crop-cell[data-palette="earth"] {
+  background-color: var(--color-tierra);
+  --pattern-ink: rgb(255 255 255 / 0.6);
+}
+
+.crop-cell[data-palette="gate_blue"] {
+  background-color: var(--color-compuerta);
+  --pattern-ink: rgb(255 255 255 / 0.7);
+}
+
+.crop-cell[data-pattern="hatch"] {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--pattern-ink) 0 2px,
+    transparent 2px 7px
+  );
+}
+
+.crop-cell[data-pattern="stripe"] {
+  background-image: repeating-linear-gradient(
+    0deg,
+    var(--pattern-ink) 0 2px,
+    transparent 2px 6px
+  );
+}
+
+.crop-cell[data-pattern="dots"] {
+  background-image: radial-gradient(var(--pattern-ink) 1.3px, transparent 1.7px);
+  background-size: 6px 6px;
+}
+
+.cal-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+.cal-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.crop-swatch {
+  width: 2rem;
+  min-height: 2rem;
+}
+
+/* Teléfono: el nombre de la rotación va arriba de sus 12 meses. */
+@media (max-width: 40rem) {
+  .cal-row {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .cal-name {
+    grid-column: 1 / -1;
+    padding: 0.35rem 0 0.15rem;
+  }
+
+  .cal-head .cal-name {
+    padding-top: 0;
+  }
+
+  .crop-cell {
+    grid-column: var(--col-sm, auto);
+    min-height: 1.4rem;
+  }
+
+  .cal-head .month-head {
+    font-size: 0.65rem;
+  }
+}

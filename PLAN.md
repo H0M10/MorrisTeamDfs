@@ -1,6 +1,9 @@
 # PLAN.md — Field Shift (equipo The CSC)
 
 **Coordinación:** ARGON (orquestador/auditor) y Claude (CLI constructor) se coordinan vía `/contracts/`, `PLAN.md`, `HUMANO.md`, `AGENTS.md` y el tablero visual `docs/status.json` (`python scripts/sync_board.py` -> `docs/index.html` en GitHub Pages). Ninguna función pesada ni modelo se entrena localmente en laptops de 8 GB.
+
+**Domingo 03:20 — Prioridades del día en [`PLAN_DOMINGO.md`](PLAN_DOMINGO.md):** P0 calendario real de 36 meses (hoy muestra datos fijos), tabla comparativa, prioridades del agricultor, suelo desnudo y meses vulnerables, `/tool` responsivo; P1 perfil de accesibilidad y Guía (agente tutorial con barandilla de cifras); P2 exprimir lo hecho; P3 showcase.
+
 **Equipo nominal de 4 y recortes (Sáb 09:50):** Dupla Backend/Datos (`@H0M10` Hanniel + `@Checo-coder` Checo) y Dupla Frontend/Visuales/Entrega (`@Gicarrillo` + `@alexishal8` Alexis). Se recortan preventivamente Extras #4 (`L-04`) y #5 (`L-05`) per `AGENTS.md` §8. Todo cambio de estado/decisión debe reflejarse en `docs/status.json` + `python scripts/sync_board.py`.
 
 ---

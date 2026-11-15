@@ -354,3 +354,40 @@ test("marcar mi campo con el teclado: coordenadas del centro", async ({
     page.getByRole("button", { name: /Analizar mi campo \(20\d ha\)/ }),
   ).toBeEnabled();
 });
+
+test("el calendario de rotaciones sale del contrato: 36 meses por rotación", async ({
+  page,
+}) => {
+  await ready(page, "/tool/rotaciones");
+  const calendar = page.getByRole("img", { name: /Calendario de 3 rotaciones/ });
+  await expect(calendar).toBeVisible();
+  const rows = calendar.locator(".cal-row:not(.cal-head)");
+  await expect(rows).toHaveCount(9); // 3 años x 3 rotaciones
+  await expect(calendar.locator(".cal-row:not(.cal-head) .crop-cell")).toHaveCount(108);
+  // Primer mes de la rotación actual en el fixture: alfalfa en latencia, paja con puntos.
+  const firstCell = rows.first().locator(".crop-cell").first();
+  await expect(firstCell).toHaveAttribute("data-palette", "straw");
+  await expect(firstCell).toHaveAttribute("data-pattern", "dots");
+  await page.getByText("Ver el calendario como tabla").click();
+  const table = page.locator("table", { hasText: "Qué hay en el campo cada mes" });
+  await expect(table.locator("tbody tr")).toHaveCount(36);
+  await expect(table.locator("tbody tr").first()).toContainText("Alfalfa en latencia");
+});
+
+test("las prioridades ordenan las rotaciones sin puntaje y quedan guardadas", async ({
+  page,
+}) => {
+  await ready(page, "/tool/rotaciones");
+  const firstColumn = page.locator("table.compare thead th").first();
+  await page.getByText("Ahorrar agua", { exact: true }).first().click();
+  await expect(firstColumn).toContainText("menos agua");
+  await expect(page.locator(".priority-result")).toContainText("va primero porque elegiste ahorrar agua");
+  await page.getByText("Cuidar el suelo", { exact: true }).first().click();
+  await expect(firstColumn).toContainText("Rotación actual");
+  await page.getByText("Vender lo que siembro", { exact: true }).first().click();
+  await expect(page.locator(".priority-result")).toContainText("Información que falta");
+  expect(
+    await page.evaluate(() => localStorage.getItem("fieldshift:priorities")),
+  ).toContain("market");
+  expect(await axe(page)).toEqual([]);
+});

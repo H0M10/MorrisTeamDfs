@@ -59,7 +59,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         return `${t.common.months[Number(month) - 1] ?? month} ${year}`;
       },
       value: (metric) =>
-        metric.value === null ? t.common.noData : `${number.format(metric.value)} ${metric.unit}`,
+        metric.value === null
+          ? t.common.noData
+          : `${number.format(metric.value)} ${t.common.units[metric.unit] ?? metric.unit}`.trim(),
     };
   }, [lang]);
 

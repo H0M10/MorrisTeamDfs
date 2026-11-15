@@ -13,6 +13,16 @@ export const es = {
     localCopy:
       "No hay conexión con el servidor. Se muestra la copia guardada en la aplicación.",
     noData: "sin dato",
+    // Unidades del contrato en palabras llanas. Lo que no está aquí se muestra tal cual.
+    units: {
+      "mm/yr": "mm al año",
+      "days/yr": "días al año",
+      days: "días",
+      months: "meses",
+      "m3/m3": "m³ de agua por m³ de suelo",
+      index: "",
+      relative_index_0_1: "(índice relativo de 0 a 1)",
+    } as Record<string, string>,
     source: "Fuente",
     date: "Fecha",
     scale: "Escala",
@@ -166,6 +176,74 @@ export const es = {
       viable: "Viable",
       ruledOut: "Descartada",
       waterPerYear: "Agua por año",
+      prioritiesTitle: "¿Qué te importa más?",
+      prioritiesLead:
+        "Elige lo más importante para ti. Ordenamos las rotaciones con eso. No usamos puntajes inventados: solo las cifras de abajo.",
+      firstPriority: "Lo más importante para mí",
+      secondPriority: "Si empatan, después me importa",
+      noPriority: "Nada más",
+      priorityNames: {
+        water: "Ahorrar agua",
+        soil: "Cuidar el suelo",
+        climate: "Menos helada y calor",
+        market: "Vender lo que siembro",
+      },
+      priorityHelp: {
+        water: "Menos agua al año.",
+        soil: "Más meses con el suelo cubierto.",
+        climate: "Menos días de riesgo de helada y de calor.",
+        market: "Precio y comprador.",
+      },
+      marketMissing:
+        "Información que falta: todavía no tenemos precios ni compradores confiables para tu zona, así que no podemos ordenar por esto. Pregunta a tu comprador o cooperativa. Si un cultivo no tiene comprador, márcalo en el paso Límites y la rotación se descarta.",
+      noPriorityChosen:
+        "Todavía no elegiste qué te importa más. Las rotaciones están en su orden normal.",
+      orderedBy: (first: string, second?: string) =>
+        second
+          ? `Ordenadas por: ${first.toLowerCase()} y, si empatan, ${second.toLowerCase()}. Las descartadas van al final.`
+          : `Ordenadas por: ${first.toLowerCase()}. Las descartadas van al final.`,
+      firstBecause: (name: string, priority: string, detail: string) =>
+        `«${name}» va primero porque elegiste ${priority.toLowerCase()}: ${detail}.`,
+      tied: (priority: string) =>
+        `Empatan en ${priority.toLowerCase()}; decide tu segunda prioridad.`,
+      detail: {
+        water: (amount: string) => `usa ${amount}, lo menos entre las viables`,
+        soil: (months: string) =>
+          `tiene el suelo cubierto ${months} de 36 meses, lo más entre las viables`,
+        climate: (frost: string, heat: string) =>
+          `suma ${frost} días de riesgo de helada y ${heat} de calor al año, lo menos entre las viables`,
+      },
+      best: {
+        water: "Gasta menos agua",
+        soil: "Más suelo cubierto",
+        climate: "Menos helada y calor",
+      },
+      compareTitle: "Las tres rotaciones lado a lado",
+      compareCaption:
+        "Cifras de cada rotación. Abre «De dónde sale» para ver la fuente, la fecha y la escala.",
+      rowNames: {
+        annual_water_mm: "Agua al año",
+        water_delta_vs_current_mm: "Diferencia de agua frente a la actual",
+        soil_cover_months_36m: "Meses con el suelo cubierto (de 36)",
+        frost_risk_days_year: "Días con riesgo de helada al año",
+        heat_risk_days_year: "Días con riesgo de calor al año",
+        prior_crop_vigor_delta_pct:
+          "Vigor en campos parecidos según el cultivo anterior (no es causa)",
+      },
+      whereFrom: "De dónde sale",
+      notCompared: "No se compara: está descartada.",
+      whyRuledOut: "Por qué se descartó",
+      calendarTitle: "Calendario de 36 meses",
+      calendarLead:
+        "Cada cuadro es un mes. El color y la trama dicen qué hay en el campo. Las tres rotaciones están alineadas mes con mes.",
+      calendarLabel: (count: number, from: string, to: string) =>
+        `Calendario de ${count} rotaciones, de ${from} a ${to}. La misma información está en la tabla de abajo.`,
+      legendTitle: "Qué significa cada cuadro",
+      showCalendarTable: "Ver el calendario como tabla",
+      calendarCaption: "Qué hay en el campo cada mes, en cada rotación",
+      month: "Mes",
+      ruledOutTag: "descartada",
+      seeEvidence: "Ver por qué se sugiere cada una",
     },
     evidence: {
       why: "Por qué se sugiere",

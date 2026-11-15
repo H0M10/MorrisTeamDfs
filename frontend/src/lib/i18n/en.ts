@@ -13,6 +13,16 @@ export const en: Dictionary = {
       "These figures are samples. They do not describe a real field.",
     localCopy: "Cannot reach the server. Showing the copy stored in the app.",
     noData: "no data",
+    // Contract units in plain words. Anything not listed is shown as is.
+    units: {
+      "mm/yr": "mm per year",
+      "days/yr": "days per year",
+      days: "days",
+      months: "months",
+      "m3/m3": "m³ of water per m³ of soil",
+      index: "",
+      relative_index_0_1: "(relative index from 0 to 1)",
+    } as Record<string, string>,
     source: "Source",
     date: "Date",
     scale: "Scale",
@@ -164,6 +174,74 @@ export const en: Dictionary = {
       viable: "Viable",
       ruledOut: "Ruled out",
       waterPerYear: "Water per year",
+      prioritiesTitle: "What matters most to you?",
+      prioritiesLead:
+        "Pick what matters most. We order the rotations by it. No made-up scores: only the numbers below.",
+      firstPriority: "Most important to me",
+      secondPriority: "If they tie, next I care about",
+      noPriority: "Nothing else",
+      priorityNames: {
+        water: "Save water",
+        soil: "Protect the soil",
+        climate: "Less frost and heat",
+        market: "Sell what I grow",
+      },
+      priorityHelp: {
+        water: "Less water per year.",
+        soil: "More months with the soil covered.",
+        climate: "Fewer days at risk of frost and heat.",
+        market: "Price and buyer.",
+      },
+      marketMissing:
+        "Missing information: we do not yet have reliable prices or buyers for your area, so we cannot order by this. Ask your buyer or co-op. If a crop has no buyer, mark it in the Limits step and the rotation is ruled out.",
+      noPriorityChosen:
+        "You have not picked what matters most yet. The rotations are in their normal order.",
+      orderedBy: (first: string, second?: string) =>
+        second
+          ? `Ordered by: ${first.toLowerCase()} and, if they tie, ${second.toLowerCase()}. Ruled-out ones go last.`
+          : `Ordered by: ${first.toLowerCase()}. Ruled-out ones go last.`,
+      firstBecause: (name: string, priority: string, detail: string) =>
+        `“${name}” comes first because you picked ${priority.toLowerCase()}: ${detail}.`,
+      tied: (priority: string) =>
+        `They tie on ${priority.toLowerCase()}; your second priority decides.`,
+      detail: {
+        water: (amount: string) => `it uses ${amount}, the least of the viable ones`,
+        soil: (months: string) =>
+          `the soil is covered ${months} of 36 months, the most of the viable ones`,
+        climate: (frost: string, heat: string) =>
+          `it adds up to ${frost} frost-risk days and ${heat} heat-risk days a year, the fewest of the viable ones`,
+      },
+      best: {
+        water: "Uses the least water",
+        soil: "Most soil cover",
+        climate: "Least frost and heat",
+      },
+      compareTitle: "The three rotations side by side",
+      compareCaption:
+        "Numbers for each rotation. Open “Where it comes from” to see the source, date and scale.",
+      rowNames: {
+        annual_water_mm: "Water per year",
+        water_delta_vs_current_mm: "Water difference vs. current",
+        soil_cover_months_36m: "Months with soil covered (of 36)",
+        frost_risk_days_year: "Frost-risk days per year",
+        heat_risk_days_year: "Heat-risk days per year",
+        prior_crop_vigor_delta_pct:
+          "Vigor in similar fields by previous crop (not a cause)",
+      },
+      whereFrom: "Where it comes from",
+      notCompared: "Not compared: it is ruled out.",
+      whyRuledOut: "Why it was ruled out",
+      calendarTitle: "36-month calendar",
+      calendarLead:
+        "Each square is a month. Color and pattern show what is in the field. The three rotations line up month by month.",
+      calendarLabel: (count: number, from: string, to: string) =>
+        `Calendar of ${count} rotations, from ${from} to ${to}. The same information is in the table below.`,
+      legendTitle: "What each square means",
+      showCalendarTable: "Show the calendar as a table",
+      calendarCaption: "What is in the field each month, in each rotation",
+      month: "Month",
+      ruledOutTag: "ruled out",
+      seeEvidence: "See why each one is suggested",
     },
     evidence: {
       why: "Why it is suggested",
