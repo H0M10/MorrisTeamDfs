@@ -159,3 +159,68 @@ body.guide-touring {
 .guide-spot {
   scroll-margin-top: 1.5rem;
 }
+
+/* El personaje del tutor: parpadea y mueve la boca mientras habla. */
+.guide-head {
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.tutor-face {
+  flex: none;
+}
+
+.tutor-mouth {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.tutor-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: tutor-blink 5s infinite;
+}
+
+.tutor-face.is-speaking .tutor-mouth {
+  animation: tutor-talk 0.22s infinite alternate ease-in-out;
+}
+
+@keyframes tutor-talk {
+  to {
+    transform: scaleY(2.6);
+  }
+}
+
+@keyframes tutor-blink {
+  0%,
+  95%,
+  100% {
+    transform: scaleY(1);
+  }
+  97% {
+    transform: scaleY(0.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tutor-eyes,
+  .tutor-face.is-speaking .tutor-mouth {
+    animation: none;
+  }
+}
+
+html[data-reduce-motion] .tutor-eyes,
+html[data-reduce-motion] .tutor-face.is-speaking .tutor-mouth {
+  animation: none;
+}
+
+.guide-tourbar-text {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.guide-tourbar .tutor-face {
+  width: 44px;
+  height: 44px;
+}

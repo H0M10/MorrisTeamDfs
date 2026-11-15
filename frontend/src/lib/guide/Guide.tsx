@@ -1,16 +1,18 @@
 "use client";
-// La Guía (PLAN_DOMINGO.md §3): presente desde la primera visita, explica la
-// pantalla, responde por voz o texto y se puede minimizar o apagar.
+// La Guía es un tutor, no un chat (PLAN_DOMINGO.md §3). Explica sola cada
+// pantalla, parte por parte: resalta, narra y avanza cuando termina de hablar.
+// La persona la interrumpe con un toque: "Hablar" (voz) o "Escribir" (texto);
+// también se pausa sola si la persona toca la página.
 //
-// Capa 1 (sin red ni IA): recorrido por los elementos con data-guide-id,
+// Capa 1 (sin red ni IA): narración de los elementos con data-guide-id,
 // órdenes de voz fijas y glosario. Capa 2: POST /api/v1/guide, que con llave
 // de IA redacta a partir de esta pantalla y descarta cualquier cifra que no
 // venga de los datos o de lo que dijo la persona.
 //
-// Accesibilidad: es un <aside> en el flujo (no flota ni tapa la página), los
-// mensajes se anuncian con aria-live, el recorrido mueve el foco al elemento
-// explicado y todo lo hablado también queda escrito.
-import Link from "next/link";
+// Accesibilidad (WCAG 2.2): el avance automático se puede pausar (2.2.2); en
+// modo automático no se mueve el foco, solo se resalta y se anuncia por
+// aria-live; paso a paso con los botones sí se mueve el foco. Todo lo hablado
+// queda escrito. El personaje no se anima si se pidió menos movimiento.
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { api, type GuideResponse, type GuideStep } from "../api";
@@ -21,7 +23,8 @@ import { useI18n } from "../i18n";
 import { canListen, canSpeak, listenOnce, speak, stopSpeaking } from "../speech";
 import { useGuideMode } from "./mode";
 
-const STEPS: { screen: GuideStep; path: string; key: "parcel" | "portrait" | "constraints" | "rotations" | "evidence" | "share" }[] = [
+type StepKey = "parcel" | "portrait" | "constraints" | "rotations" | "evidence" | "share";
+const STEPS: { screen: GuideStep; path: string; key: StepKey }[] = [
   { screen: "parcela", path: "/tool", key: "parcel" },
   { screen: "retrato", path: "/tool/retrato", key: "portrait" },
   { screen: "restricciones", path: "/tool/restricciones", key: "constraints" },
@@ -40,6 +43,13 @@ function screenOf(pathname: string): GuideStep | null {
   return STEPS.find((step) => step.path === pathname)?.screen ?? null;
 }
 
+/** Paso que sigue a esta pantalla (la portada lleva al primero). */
+function nextStepOf(pathname: string) {
+  if (pathname === "/") return STEPS[0];
+  const i = STEPS.findIndex((step) => step.path === pathname);
+  return i >= 0 ? STEPS[i + 1] : undefined;
+}
+
 const normalize = (text: string) =>
   text
     .toLowerCase()
@@ -48,11 +58,12 @@ const normalize = (text: string) =>
     .replace(/[¿?¡!.,]/g, "")
     .trim();
 
-type Command = "next" | "back" | "tour" | "read" | "repeat" | "stop" | "off";
+type Command = "next" | "back" | "start" | "pause" | "read" | "repeat" | "stop" | "off";
 const COMMANDS: [Command, RegExp][] = [
-  ["next", /^(siguiente|sigue|adelante|next|continue)$/],
+  ["next", /^(siguiente|adelante|next)$/],
   ["back", /^(atras|anterior|regresa|back|previous|go back)$/],
-  ["tour", /(ensename|explicame|muestrame).*(pantalla)?$|^(show me|tour|show me this screen)/],
+  ["start", /^(continua|continuar|sigue|sigue explicando|explicame|ensename|empieza|continue|go on|explain|start)( .*)?$/],
+  ["pause", /^(pausa|espera|pause|wait)$/],
   ["read", /^(leeme|lee|leer|read|read this|read it)( esto| esta pantalla| the screen| this screen)?$/],
   ["repeat", /^(repite|otra vez|repeat|again|say it again)$/],
   ["stop", /^(para|alto|calla|callate|silencio|stop|quiet|be quiet)$/],
@@ -86,9 +97,58 @@ function sessionId(): string {
   }
 }
 
+// Preferencias del tutor en este dispositivo.
+const AUTO_KEY = "fieldshift:guide-auto"; // ya pidió la explicación: sigue en cada pantalla
+const VOICE_KEY = "fieldshift:guide-voice"; // narrar en voz alta
+function readFlag(key: string, storage: "local" | "session"): boolean | null {
+  try {
+    const value = (storage === "local" ? window.localStorage : window.sessionStorage).getItem(key);
+    return value === null ? null : value === "1";
+  } catch {
+    return null;
+  }
+}
+function writeFlag(key: string, storage: "local" | "session", on: boolean) {
+  try {
+    (storage === "local" ? window.localStorage : window.sessionStorage).setItem(key, on ? "1" : "0");
+  } catch {
+    // sin almacenamiento: vale solo en esta visita
+  }
+}
+
 function guideElements(): HTMLElement[] {
   return [...document.querySelectorAll<HTMLElement>("[data-guide-id]")].filter(
-    (el) => el.offsetParent !== null || el.getClientRects().length > 0,
+    (el) => !el.closest(".guide") && (el.offsetParent !== null || el.getClientRects().length > 0),
+  );
+}
+
+/** Tiempo de lectura cuando no se narra en voz alta. */
+const readMs = (text: string) =>
+  Math.min(15000, Math.max(4000, text.split(/\s+/).length * 330 + 1500));
+
+/** El personaje: decorativo (aria-hidden); mueve la boca mientras habla. */
+function TutorFace({ speaking }: { speaking: boolean }) {
+  return (
+    <svg
+      className={speaking ? "tutor-face is-speaking" : "tutor-face"}
+      viewBox="0 0 64 64"
+      width="56"
+      height="56"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <line x1="32" y1="10" x2="32" y2="3" stroke="#000" strokeWidth="2.5" />
+      <circle cx="32" cy="4" r="3.5" fill="#E9B824" stroke="#000" strokeWidth="1.5" />
+      <circle cx="32" cy="36" r="25" fill="#1247B8" stroke="#000" strokeWidth="2" />
+      <path d="M44 14 q10 -2 12 8 q-10 2 -12 -8z" fill="#2F7D32" stroke="#000" strokeWidth="1.2" />
+      <g className="tutor-eyes">
+        <circle cx="23" cy="32" r="4.5" fill="#fff" />
+        <circle cx="41" cy="32" r="4.5" fill="#fff" />
+        <circle cx="24" cy="33" r="2" fill="#000" />
+        <circle cx="42" cy="33" r="2" fill="#000" />
+      </g>
+      <rect className="tutor-mouth" x="24" y="44" width="16" height="4" rx="2" fill="#fff" />
+    </svg>
   );
 }
 
@@ -100,14 +160,12 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
   const { profile, update: updateProfile } = useA11y();
   const [mode, setMode, modeLoaded, firstVisit] = useGuideMode();
   const titleId = useId();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const screen = screenOf(pathname);
   const intro =
-    pathname === "/"
-      ? g.screens.home
-      : screen
-        ? g.screens[screen]
-        : g.screens.other;
+    pathname === "/" ? g.screens.home : screen ? g.screens[screen] : g.screens.other;
+  const nextStep = nextStepOf(pathname);
 
   const [message, setMessage] = useState<string>("");
   const [heard, setHeard] = useState<string | null>(null);
@@ -116,24 +174,154 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
   const [pending, setPending] = useState<GuideResponse["set_constraint"]>(null);
   const [fromAi, setFromAi] = useState(false);
   const [tour, setTour] = useState<{ index: number; total: number } | null>(null);
+  const [playing, setPlaying] = useState(false);
+  const [atEnd, setAtEnd] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
   const [listening, setListening] = useState(false);
+  const [writing, setWriting] = useState(false);
   const [question, setQuestion] = useState("");
   const [busy, setBusy] = useState(false);
-  const [speakAnswers, setSpeakAnswers] = useState(false);
-  const stopRef = useRef<() => void>(() => {});
+  const [voiceOn, setVoiceOn] = useState(true);
+
+  const stopListenRef = useRef<() => void>(() => {});
   const spotRef = useRef<HTMLElement | null>(null);
-  const voiceTurn = useRef(false);
+  const runId = useRef(0); // invalida avances pendientes al pausar o cambiar de pantalla
+  const timer = useRef<number | null>(null);
+  const welcomed = useRef(false);
+  const playRef = useRef<(index: number, auto: boolean, retries?: number) => void>(() => {});
+
+  useEffect(() => {
+    // Preferencia de voz guardada; si no hay, la del perfil o encendida.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setVoiceOn(readFlag(VOICE_KEY, "local") ?? true);
+  }, []);
 
   const clearSpot = useCallback(() => {
     spotRef.current?.classList.remove("guide-spot");
     spotRef.current = null;
   }, []);
 
-  // El saludo completo sale una sola vez; después, solo la presentación.
-  const welcomed = useRef(false);
+  const cancelAdvance = useCallback(() => {
+    runId.current += 1;
+    if (timer.current !== null) window.clearTimeout(timer.current);
+    timer.current = null;
+  }, []);
 
-  // Al cambiar de pantalla: mensaje de presentación y nada resaltado.
+  /** Muestra (y narra) un texto; `then` corre al terminar si nada lo canceló. */
+  const narrate = useCallback(
+    (text: string, then?: () => void, forceVoice = false) => {
+      setMessage(text);
+      const id = runId.current;
+      const done = () => {
+        setSpeaking(false);
+        if (id === runId.current) then?.();
+      };
+      setSpeaking(true);
+      if ((voiceOn || forceVoice) && canSpeak()) {
+        speak(text, lang, done);
+      } else {
+        timer.current = window.setTimeout(done, then ? readMs(text) : 1800);
+      }
+    },
+    [lang, voiceOn],
+  );
+
+  const spotlight = useCallback(
+    (el: HTMLElement, moveFocus: boolean) => {
+      clearSpot();
+      el.classList.add("guide-spot");
+      spotRef.current = el;
+      const reduce =
+        profile.reduceMotion || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      el.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" });
+      if (moveFocus) {
+        if (el.tabIndex < 0 && !el.matches("a, button, input, select, textarea, summary")) {
+          el.setAttribute("tabindex", "-1");
+        }
+        el.focus({ preventScroll: true });
+      }
+    },
+    [clearSpot, profile.reduceMotion],
+  );
+
+  const itemText = useCallback(
+    (id: string) => g.items[id] ?? g.items[`${id.split(".")[0]}.*`] ?? "",
+    [g.items],
+  );
+
+  const tourElements = useCallback(
+    () => guideElements().filter((el) => itemText(el.dataset.guideId ?? "")),
+    [itemText],
+  );
+
+  const endOfScreen = useCallback(() => {
+    setTour(null);
+    setPlaying(false);
+    setAtEnd(true);
+    clearSpot();
+    narrate(nextStep ? g.endScreen(t.tool.steps[nextStep.key].name) : g.endAll);
+  }, [clearSpot, g, narrate, nextStep, t.tool.steps]);
+
+  /** Explica el elemento `index`; en automático, al terminar pasa al siguiente. */
+  const play = useCallback(
+    (index: number, auto: boolean, retries = 3) => {
+      cancelAdvance();
+      const elements = tourElements();
+      if (elements.length === 0) {
+        // Los datos pueden seguir cargando: se reintenta antes de rendirse.
+        if (auto && retries > 0) {
+          const id = runId.current;
+          timer.current = window.setTimeout(() => {
+            if (id === runId.current) playRef.current(index, auto, retries - 1);
+          }, 1500);
+          return;
+        }
+        setPlaying(false);
+        narrate(g.nothingHere);
+        return;
+      }
+      if (index >= elements.length) {
+        endOfScreen();
+        return;
+      }
+      const i = Math.max(0, index);
+      const el = elements[i]!;
+      setAtEnd(false);
+      setTour({ index: i, total: elements.length });
+      spotlight(el, !auto);
+      narrate(itemText(el.dataset.guideId ?? ""), auto ? () => playRef.current(i + 1, true) : undefined);
+    },
+    [cancelAdvance, endOfScreen, g.nothingHere, itemText, narrate, spotlight, tourElements],
+  );
   useEffect(() => {
+    playRef.current = play;
+  }, [play]);
+
+  const start = useCallback(() => {
+    cancelAdvance();
+    if (!profile.seen) updateProfile({ seen: true });
+    writeFlag(AUTO_KEY, "session", true);
+    setPlaying(true);
+    setAtEnd(false);
+    setWriting(false);
+    if (tour) {
+      play(tour.index, true);
+    } else {
+      narrate(intro, () => play(0, true));
+    }
+  }, [cancelAdvance, intro, narrate, play, profile.seen, tour, updateProfile]);
+
+  const pause = useCallback(() => {
+    cancelAdvance();
+    stopSpeaking();
+    setSpeaking(false);
+    setPlaying(false);
+  }, [cancelAdvance]);
+
+  // Al cambiar de pantalla: presentación, y si ya pidió la explicación, sigue sola.
+  useEffect(() => {
+    if (!modeLoaded) return;
+    cancelAdvance();
     clearSpot();
     stopSpeaking();
     const welcome = firstVisit && !welcomed.current;
@@ -145,7 +333,7 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
         // sin almacenamiento: saludará otra vez en la próxima visita
       }
     }
-    // Mensaje inicial derivado de la ruta (no hay otra fuente externa).
+    // Estado inicial derivado de la ruta (no hay otra fuente externa).
     setMessage(welcome ? `${g.welcome} ${intro}` : intro);
     setTerms([]);
     setGoTo(null);
@@ -153,62 +341,49 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
     setTour(null);
     setHeard(null);
     setFromAi(false);
-  }, [pathname, intro, firstVisit, g.welcome, clearSpot]);
+    setAtEnd(false);
+    setSpeaking(false);
+    const auto = !welcome && mode === "open" && readFlag(AUTO_KEY, "session") === true;
+    setPlaying(auto);
+    if (auto) {
+      const id = runId.current;
+      timer.current = window.setTimeout(() => {
+        if (id === runId.current) narrate(intro, () => playRef.current(0, true));
+      }, 700);
+    }
+    return () => cancelAdvance();
+    // Solo al cambiar de pantalla o de idioma, o al terminar de leer el dispositivo.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, lang, modeLoaded, firstVisit]);
+
+  // Si la persona toca o teclea en la página mientras el tutor explica, se pausa.
+  useEffect(() => {
+    if (!playing) return;
+    const onUser = (event: Event) => {
+      const target = event.target as Element | null;
+      if (target?.closest(".guide")) return;
+      pause();
+    };
+    window.addEventListener("pointerdown", onUser, true);
+    window.addEventListener("keydown", onUser, true);
+    return () => {
+      window.removeEventListener("pointerdown", onUser, true);
+      window.removeEventListener("keydown", onUser, true);
+    };
+  }, [pause, playing]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setSpeakAnswers(profile.readAloud);
-  }, [profile.readAloud]);
+    document.body.classList.toggle("guide-touring", tour !== null);
+    return () => document.body.classList.remove("guide-touring");
+  }, [tour]);
 
-  const say = useCallback(
-    (text: string, options?: { voice?: boolean }) => {
-      setMessage(text);
-      if ((options?.voice || speakAnswers || voiceTurn.current) && canSpeak()) speak(text, lang);
-    },
-    [lang, speakAnswers],
-  );
-
-  const spotlight = useCallback(
-    (el: HTMLElement) => {
+  useEffect(
+    () => () => {
+      cancelAdvance();
       clearSpot();
-      el.classList.add("guide-spot");
-      spotRef.current = el;
-      const reduce =
-        profile.reduceMotion || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      el.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" });
-      if (el.tabIndex < 0 && !el.matches("a, button, input, select, textarea, summary")) {
-        el.setAttribute("tabindex", "-1");
-      }
-      el.focus({ preventScroll: true });
+      stopSpeaking();
     },
-    [clearSpot, profile.reduceMotion],
-  );
-
-  const itemText = useCallback(
-    (id: string) => g.items[id] ?? g.items[`${id.split(".")[0]}.*`] ?? "",
-    [g.items],
-  );
-
-  const showTourStep = useCallback(
-    (index: number) => {
-      const elements = guideElements().filter((el) => itemText(el.dataset.guideId ?? ""));
-      if (elements.length === 0) {
-        setTour(null);
-        say(g.nothingHere);
-        return;
-      }
-      if (index >= elements.length) {
-        setTour(null);
-        clearSpot();
-        say(g.tourDone);
-        return;
-      }
-      const el = elements[Math.max(0, index)]!;
-      setTour({ index: Math.max(0, index), total: elements.length });
-      spotlight(el);
-      say(itemText(el.dataset.guideId ?? ""));
-    },
-    [clearSpot, g.nothingHere, g.tourDone, itemText, say, spotlight],
+    [cancelAdvance, clearSpot],
   );
 
   const goStep = useCallback(
@@ -224,39 +399,40 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
     (command: Command) => {
       switch (command) {
         case "next":
-          if (tour) showTourStep(tour.index + 1);
+          if (tour) play(tour.index + 1, false);
           else goStep(1);
           return;
         case "back":
-          if (tour) showTourStep(tour.index - 1);
+          if (tour) play(tour.index - 1, false);
           else goStep(-1);
           return;
-        case "tour":
-          showTourStep(0);
+        case "start":
+          start();
+          return;
+        case "pause":
+        case "stop":
+          pause();
           return;
         case "read": {
           const main = document.querySelector("main");
-          if (main) say(main.innerText.slice(0, 4000), { voice: true });
+          if (main) narrate(main.innerText.slice(0, 4000), undefined, true);
           return;
         }
         case "repeat":
-          say(message, { voice: true });
-          return;
-        case "stop":
-          stopSpeaking();
+          narrate(message, undefined, true);
           return;
         case "off":
-          stopSpeaking();
+          pause();
           clearSpot();
           setMode("off");
           return;
       }
     },
-    [clearSpot, goStep, message, say, setMode, showTourStep, tour],
+    [clearSpot, goStep, message, narrate, pause, play, setMode, start, tour],
   );
 
   const askGuide = useCallback(
-    async (text: string, transcript: string | null) => {
+    async (text: string, transcript: string | null, byVoice: boolean) => {
       setTerms([]);
       setGoTo(null);
       setPending(null);
@@ -267,7 +443,7 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
         return;
       }
       if (!screen) {
-        say(g.homeAsk);
+        narrate(g.homeAsk, undefined, byVoice);
         return;
       }
       const elements = guideElements();
@@ -279,14 +455,12 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
           question: text,
           lang,
           visible_guide_ids: ids,
-          guide_items: ids
-            .map((id) => ({ id, text: itemText(id) }))
-            .filter((item) => item.text),
+          guide_items: ids.map((id) => ({ id, text: itemText(id) })).filter((item) => item.text),
           transcript,
           profile: { plain_language: profile.plain },
           session_id: sessionId(),
         });
-        say(response.answer);
+        narrate(response.answer, undefined, byVoice);
         setFromAi(response.source === "llm");
         setTerms(response.terms.filter((term) => g.glossary[term]));
         if (response.go_to_step && response.go_to_step !== screen) setGoTo(response.go_to_step);
@@ -294,67 +468,61 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
         const target = response.highlight
           .map((id) => elements.find((el) => el.dataset.guideId === id))
           .find(Boolean);
-        if (target) spotlight(target);
+        if (target) spotlight(target, true);
       } catch {
-        say(g.offline);
+        narrate(g.offline, undefined, byVoice);
       } finally {
         setBusy(false);
       }
     },
-    [g.glossary, g.homeAsk, g.offline, itemText, lang, profile.plain, runCommand, say, screen, spotlight],
+    [g.glossary, g.homeAsk, g.offline, itemText, lang, narrate, profile.plain, runCommand, screen, spotlight],
   );
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
     const text = question.trim();
     if (!text) return;
-    voiceTurn.current = false;
     setHeard(null);
     setQuestion("");
-    void askGuide(text, null);
+    void askGuide(text, null, false);
   };
 
-  const toggleListening = () => {
+  const talk = () => {
     if (listening) {
-      stopRef.current();
+      stopListenRef.current();
       return;
     }
-    stopSpeaking();
+    pause();
+    setWriting(false);
     setListening(true);
     const session = listenOnce(lang);
-    stopRef.current = session.stop;
+    stopListenRef.current = session.stop;
     session.result.then(
       (text) => {
         setListening(false);
-        voiceTurn.current = true; // pregunta con voz: se responde con voz
         setHeard(text);
         buzz(30);
-        void askGuide(text, text);
+        void askGuide(text, text, true);
       },
       () => {
         setListening(false);
-        say(g.micError);
+        narrate(g.micError);
       },
     );
   };
 
-  useEffect(() => {
-    document.body.classList.toggle("guide-touring", tour !== null);
-    return () => document.body.classList.remove("guide-touring");
-  }, [tour]);
-
-  // Quita el resaltado al desmontar.
-  useEffect(() => () => clearSpot(), [clearSpot]);
+  const write = () => {
+    pause();
+    setWriting(true);
+    window.setTimeout(() => inputRef.current?.focus(), 0);
+  };
 
   if (!modeLoaded || mode === "off" || !guideRoute(pathname)) return null;
-
-  const markSeen = () => {
-    if (!profile.seen) updateProfile({ seen: true });
-  };
 
   if (mode === "min") {
     return (
       <aside className="guide guide-min" aria-labelledby={titleId}>
+        <TutorFace speaking={false} />
         <h2 id={titleId} className="guide-name">
           {g.name}
         </h2>
@@ -365,10 +533,10 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
           type="button"
           onClick={() => {
             setMode("open");
-            showTourStep(0);
+            start();
           }}
         >
-          {g.show}
+          {g.start}
         </button>
       </aside>
     );
@@ -378,14 +546,36 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
     const found = STEPS.find((s) => s.screen === step);
     return found ? t.tool.steps[found.key].name : step;
   };
+  const playButton = playing ? (
+    <button type="button" onClick={pause}>
+      {g.pause}
+    </button>
+  ) : (
+    <button type="button" className="primary" onClick={start}>
+      {tour ? g.resume : g.start}
+    </button>
+  );
+  const talkButton = canListen() && (
+    <button
+      type="button"
+      className={listening ? "guide-mic is-listening" : "guide-mic"}
+      aria-pressed={listening}
+      onClick={talk}
+    >
+      {listening ? g.stopListening : g.talk}
+    </button>
+  );
 
   return (
     <aside className="guide no-print" aria-labelledby={titleId}>
       <div className="guide-head">
-        <h2 id={titleId} className="guide-name">
-          {g.name}
-        </h2>
-        <p className="guide-tagline">{g.tagline}</p>
+        <TutorFace speaking={speaking && !busy} />
+        <div>
+          <h2 id={titleId} className="guide-name">
+            {g.name}
+          </h2>
+          <p className="guide-tagline">{g.tagline}</p>
+        </div>
       </div>
 
       {heard && (
@@ -415,98 +605,92 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
           onDone={(applied) => {
             setPending(null);
             buzz(applied ? [40, 60, 40] : 80);
-            say(applied ? g.applied : g.notApplied);
+            narrate(applied ? g.applied : g.notApplied);
           }}
           onNeedField={() => {
             setPending(null);
-            say(g.needField);
+            narrate(g.needField);
           }}
         />
       )}
 
       {goTo && (
         <p>
-          <Link className="button primary" href={STEPS.find((s) => s.screen === goTo)?.path ?? "/tool"}>
-            {g.goTo(stepName(goTo))}
-          </Link>
-        </p>
-      )}
-
-      {!tour && (
-        <div className="guide-actions">
           <button
             type="button"
             className="primary"
+            onClick={() => router.push(STEPS.find((s) => s.screen === goTo)?.path ?? "/tool")}
+          >
+            {g.goTo(stepName(goTo))}
+          </button>
+        </p>
+      )}
+
+      {atEnd && nextStep && (
+        <p>
+          <button type="button" className="primary" onClick={() => router.push(nextStep.path)}>
+            {g.nextStep(t.tool.steps[nextStep.key].name)}
+          </button>
+        </p>
+      )}
+
+      <div className="guide-actions">
+        {playButton}
+        {talkButton}
+        <button type="button" aria-expanded={writing} onClick={writing ? () => setWriting(false) : write}>
+          {g.write}
+        </button>
+        {!profile.seen && (
+          <button
+            type="button"
             onClick={() => {
-              markSeen();
-              showTourStep(0);
+              updateProfile({ seen: true });
+              onOpenSettings();
             }}
           >
-            {g.show}
+            {g.settings}
           </button>
-          {canListen() && (
-            <button
-              type="button"
-              className={listening ? "guide-mic is-listening" : "guide-mic"}
-              aria-pressed={listening}
-              onClick={() => {
-                markSeen();
-                toggleListening();
-              }}
-            >
-              {listening ? g.stopListening : g.talk}
-            </button>
-          )}
-          {!profile.seen && (
-            <button
-              type="button"
-              onClick={() => {
-                markSeen();
-                onOpenSettings();
-              }}
-            >
-              {g.settings}
-            </button>
-          )}
-        </div>
-      )}
+        )}
+      </div>
       {listening && <p className="guide-listening">{g.listening}</p>}
 
-      <form className="guide-ask" onSubmit={onSubmit}>
-        <label htmlFor={`${titleId}-q`}>{g.ask}</label>
-        <div className="guide-ask-row">
-          <input
-            id={`${titleId}-q`}
-            type="text"
-            value={question}
-            onChange={(event) => setQuestion(event.target.value)}
-            autoComplete="off"
-          />
-          <button type="submit" disabled={busy}>
-            {g.send}
-          </button>
-        </div>
-      </form>
+      {writing && (
+        <form className="guide-ask" onSubmit={onSubmit}>
+          <label htmlFor={`${titleId}-q`}>{g.ask}</label>
+          <div className="guide-ask-row">
+            <input
+              ref={inputRef}
+              id={`${titleId}-q`}
+              type="text"
+              value={question}
+              onChange={(event) => setQuestion(event.target.value)}
+              autoComplete="off"
+            />
+            <button type="submit" disabled={busy}>
+              {g.send}
+            </button>
+          </div>
+        </form>
+      )}
 
       {tour && (
-        // Durante el recorrido el panel queda arriba, fuera de la vista: esta
-        // barra fija repite el texto (el lector de pantalla ya lo oyó por
-        // aria-live) y lleva los botones al alcance del pulgar.
+        // El panel queda arriba, fuera de la vista: esta barra fija repite el
+        // texto (el lector de pantalla ya lo oyó por aria-live) y lleva los
+        // controles al alcance del pulgar.
         <div className="guide-tourbar" role="group" aria-label={g.name}>
-          <p aria-hidden="true">{message}</p>
+          <div className="guide-tourbar-text">
+            <TutorFace speaking={speaking} />
+            <p aria-hidden="true">{message}</p>
+          </div>
           <div className="guide-actions">
-            <button type="button" onClick={() => showTourStep(tour.index - 1)} disabled={tour.index === 0}>
+            <button type="button" onClick={() => play(tour.index - 1, false)} disabled={tour.index === 0}>
               {g.previous}
             </button>
-            {tour.index + 1 < tour.total ? (
-              <button type="button" className="primary" onClick={() => showTourStep(tour.index + 1)}>
-                {g.next(tour.index + 2, tour.total)}
-              </button>
-            ) : (
-              <button type="button" className="primary" onClick={() => showTourStep(tour.total)}>
-                {g.finish}
-              </button>
-            )}
+            {playButton}
+            <button type="button" onClick={() => play(tour.index + 1, false)}>
+              {tour.index + 1 < tour.total ? g.next(tour.index + 2, tour.total) : g.finish}
+            </button>
+            {talkButton}
           </div>
         </div>
       )}
@@ -516,19 +700,20 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
           <label className="guide-check">
             <input
               type="checkbox"
-              checked={speakAnswers}
+              checked={voiceOn}
               onChange={(event) => {
-                setSpeakAnswers(event.target.checked);
+                setVoiceOn(event.target.checked);
+                writeFlag(VOICE_KEY, "local", event.target.checked);
                 if (!event.target.checked) stopSpeaking();
               }}
             />
-            {g.speakAnswers}
+            {g.narrate}
           </label>
         )}
         <button
           type="button"
           onClick={() => {
-            markSeen();
+            pause();
             clearSpot();
             setTour(null);
             setMode("min");
@@ -539,9 +724,9 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
         <button
           type="button"
           onClick={() => {
-            markSeen();
-            stopSpeaking();
+            pause();
             clearSpot();
+            writeFlag(AUTO_KEY, "session", false);
             setMode("off");
           }}
         >

@@ -407,17 +407,19 @@ test("el retrato dice cuándo queda el suelo expuesto y cuándo la helada alcanz
   expect(await axe(page)).toEqual([]);
 });
 
-test("la Guía saluda en la primera visita, enseña la pantalla y se puede apagar", async ({
+test("la Guía saluda, explica sola la pantalla y se puede apagar", async ({
   page,
 }) => {
+  // Sin voz en la prueba: el tutor avanza por tiempo de lectura.
+  await page.addInitScript(() => localStorage.setItem("fieldshift:guide-voice", "0"));
   await ready(page, "/tool/rotaciones");
   const guide = page.getByRole("complementary", { name: "Guía" });
   await expect(guide).toContainText("Hola, soy la Guía");
-  await guide.getByRole("button", { name: "Enséñame esta pantalla" }).click();
-  await expect(page.locator(".guide-spot")).toHaveCount(1);
-  await expect(page.locator(".guide-spot")).toBeFocused();
+  await guide.getByRole("button", { name: "Explícame esta pantalla" }).click();
+  await expect(page.locator(".guide-spot")).toHaveCount(1, { timeout: 12_000 });
+  await guide.getByRole("button", { name: "Pausa" }).first().click();
   await guide.getByRole("button", { name: /Siguiente/ }).click();
-  await expect(page.locator(".guide-spot")).toHaveCount(1);
+  await expect(page.locator(".guide-spot")).toBeFocused();
   expect(await axe(page)).toEqual([]);
   await guide.getByRole("button", { name: "Apagar la Guía" }).click();
   await expect(guide).toHaveCount(0);
@@ -428,9 +430,10 @@ test("la Guía saluda en la primera visita, enseña la pantalla y se puede apaga
   await expect(page.getByRole("complementary", { name: "Guía" })).not.toContainText("Hola, soy la Guía");
 });
 
-test("la Guía entiende órdenes sin IA ni conexión", async ({ page }) => {
+test("la Guía entiende órdenes escritas sin IA ni conexión", async ({ page }) => {
   await ready(page, "/tool/retrato");
   const guide = page.getByRole("complementary", { name: "Guía" });
+  await guide.getByRole("button", { name: "Escribir" }).click();
   await guide.getByLabel("Escribe tu pregunta").fill("siguiente");
   await guide.getByRole("button", { name: "Preguntar" }).click();
   await expect(page).toHaveURL(/\/tool\/restricciones$/);
