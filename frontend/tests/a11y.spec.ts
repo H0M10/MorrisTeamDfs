@@ -41,6 +41,22 @@ test("axe sin violaciones con la tabla de la tira abierta y en inglés", async (
   expect(await axe(page)).toEqual([]);
 });
 
+test("vista del técnico sin enlace válido: mensaje claro y sin violaciones", async ({ page }) => {
+  await page.goto("/tool/revision");
+  await expect(page.locator("main#contenido h1")).toHaveText("Revisión del técnico");
+  await expect(page.locator("main").getByRole("alert")).toContainText("no trae la clave");
+  // No es un paso del flujo del agricultor: sin contador ni botones de paso.
+  await expect(page.getByText(/Paso \d de \d/)).toHaveCount(0);
+  expect(await axe(page)).toEqual([]);
+});
+
+test("las restricciones editadas usan los códigos del motor", async ({ page }) => {
+  await ready(page, "/tool/restricciones");
+  await expect(page.getByRole("checkbox", { name: "Riego de pivote central" })).toBeVisible();
+  await expect(page.getByRole("checkbox", { name: "Empacadora de heno" })).toBeVisible();
+  await expect(page.getByRole("combobox")).toHaveCount(2);
+});
+
 test("axe sin violaciones en el caso sin opción viable", async ({ page }) => {
   await page.addInitScript(() =>
     window.localStorage.setItem("fieldshift:last-parcel", "dv-nv-fixture-no-viable"),

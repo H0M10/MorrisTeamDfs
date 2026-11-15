@@ -3,9 +3,9 @@
 // local del fixture. El origen queda a la vista en `origin`.
 import { useEffect, useState } from "react";
 import { ApiError, api } from "./api";
-import type { Evaluation, PilotsResponse } from "./contract";
+import type { ConstraintsInput, Evaluation, PilotsResponse } from "./contract";
 import { DEFAULT_PARCEL_ID, loadFixture, loadFixturePilots } from "./fixtures";
-import { readLastParcelId, saveLastParcelId } from "./storage";
+import { readConstraints, readLastParcelId, saveConstraints, saveLastParcelId } from "./storage";
 
 export type Origin = "api" | "local";
 
@@ -25,6 +25,7 @@ const NOT_FOUND = new ApiError(404, "parcel_not_found", {
 });
 
 const PARCEL_CHANGE_EVENT = "fieldshift:parcel-change";
+const CONSTRAINTS_CHANGE_EVENT = "fieldshift:constraints-change";
 
 export const PARCEL_ID_ALIASES: Record<string, string> = {
   "dv-nv-fixture-01": "dv-nv-01",
@@ -55,6 +56,25 @@ export async function loadEvaluation(parcelId: string): Promise<Loaded<Evaluatio
     if (fixture) return { data: fixture, origin: "local" };
     throw error instanceof ApiError ? error : NOT_FOUND;
   }
+}
+
+/**
+ * Evaluación con las restricciones que declaró el agricultor. Si la API no
+ * responde no hay recálculo posible: se devuelve la evaluación sin ellas y el
+ * origen queda como "local".
+ */
+export async function loadSimulation(
+  parcelId: string,
+  constraints: ConstraintsInput,
+): Promise<Loaded<Evaluation>> {
+  for (const id of [parcelId, REAL_ID_ALIAS[parcelId]].filter(Boolean) as string[]) {
+    try {
+      return { data: await api.simulate(id, constraints), origin: "api" };
+    } catch {
+      // se prueba el siguiente id o se cae a la evaluación sin restricciones
+    }
+  }
+  return loadEvaluation(parcelId);
 }
 
 export async function loadPilots(): Promise<Loaded<PilotsResponse>> {
@@ -115,4 +135,56 @@ export function useEvaluation(parcelId: string): LoadState<Evaluation> {
 
 export function usePilots(): LoadState<PilotsResponse> {
   return useLoad(loadPilots, "pilots");
+}
+
+function parseConstraints(json: string | null): ConstraintsInput | null {
+  if (!json) return null;
+  try {
+    return JSON.parse(json) as ConstraintsInput;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Restricciones declaradas para la parcela, guardadas en este dispositivo.
+ * Todas las pantallas de /tool las leen, así la comparación usa lo mismo que
+ * el agricultor declaró. `null` = se usan las de la parcela.
+ */
+export function useDeclaredConstraints(
+  parcelId: string,
+): [ConstraintsInput | null, (next: ConstraintsInput | null) => void] {
+  const [json, setJson] = useState<string | null>(null);
+  useEffect(() => {
+    // Lectura de localStorage tras hidratar: no existe en el servidor.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setJson(readConstraints(parcelId));
+    const onChange = (event: Event) => {
+      const detail = (event as CustomEvent<{ parcelId: string; json: string | null }>).detail;
+      if (detail.parcelId === parcelId) setJson(detail.json);
+    };
+    window.addEventListener(CONSTRAINTS_CHANGE_EVENT, onChange);
+    return () => window.removeEventListener(CONSTRAINTS_CHANGE_EVENT, onChange);
+  }, [parcelId]);
+  const update = (next: ConstraintsInput | null) => {
+    const nextJson = next ? JSON.stringify(next) : null;
+    setJson(nextJson);
+    saveConstraints(parcelId, nextJson);
+    window.dispatchEvent(
+      new CustomEvent(CONSTRAINTS_CHANGE_EVENT, { detail: { parcelId, json: nextJson } }),
+    );
+  };
+  return [parseConstraints(json), update];
+}
+
+/** Evaluación de la parcela con las restricciones declaradas, si las hay. */
+export function useDeclaredEvaluation(
+  parcelId: string,
+  constraints: ConstraintsInput | null,
+): LoadState<Evaluation> {
+  const key = `evaluation:${parcelId}:${constraints ? JSON.stringify(constraints) : "parcel"}`;
+  return useLoad(
+    () => (constraints ? loadSimulation(parcelId, constraints) : loadEvaluation(parcelId)),
+    key,
+  );
 }

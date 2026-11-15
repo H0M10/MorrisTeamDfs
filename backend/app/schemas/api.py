@@ -99,6 +99,27 @@ class SharedEvaluation(StrictModel):
     result: dict[str, Any]
 
 
+class ReviewIn(StrictModel):
+    """Revisión del técnico local. Sin datos personales (AGENTS.md sección 7)."""
+
+    verdict: Literal["approve", "correct", "discard"]
+    comments: str | None = Field(default=None, max_length=2000)
+    corrected_limits: ConstraintsIn | None = None
+
+
+class Review(StrictModel):
+    id: str
+    verdict: Literal["approve", "correct", "discard"]
+    comments: str | None = None
+    corrected_limits: dict[str, Any] | None = None
+    created_at: str
+
+
+class ReviewsResponse(StrictModel):
+    token: str
+    reviews: list[Review]
+
+
 class ErrorResponse(StrictModel):
     error: str
     message: LocalizedText

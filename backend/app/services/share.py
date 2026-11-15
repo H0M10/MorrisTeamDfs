@@ -1,8 +1,10 @@
 """Enlaces compartibles en Supabase (AGENTS.md sección 7).
 
-La API habla con Supabase solo por dos funciones RPC (ver /supabase/migrations):
+La API habla con Supabase solo por cuatro funciones RPC (ver /supabase/migrations):
     create_shared_evaluation(p_token, p_input, p_result)
     get_shared_evaluation(p_token)
+    submit_review(p_token, p_verdict, p_comments, p_corrected_limits)
+    get_reviews(p_token)
 Con la seguridad a nivel de fila activada y sin políticas de lectura, la única
 forma de leer una evaluación es conocer su token.
 
@@ -44,6 +46,15 @@ def share_not_found() -> ApiError:
     )
 
 
+def _is_missing_token(response: httpx.Response) -> bool:
+    """submit_review lanza P0002 si el token no existe; PostgREST lo devuelve como error."""
+    try:
+        body = response.json()
+    except ValueError:
+        return False
+    return isinstance(body, dict) and body.get("code") == "P0002"
+
+
 class ShareStore:
     def __init__(self, settings: Settings, transport: httpx.BaseTransport | None = None) -> None:
         self._settings = settings
@@ -67,6 +78,8 @@ class ShareStore:
         except httpx.TimeoutException as exc:
             raise share_unavailable("Supabase no respondió a tiempo / Supabase timed out") from exc
         except httpx.HTTPStatusError as exc:
+            if _is_missing_token(exc.response):
+                raise share_not_found() from exc
             raise share_unavailable(f"Supabase: HTTP {exc.response.status_code}") from exc
         except (httpx.HTTPError, ValueError) as exc:
             raise share_unavailable("no hay conexión con Supabase / cannot reach Supabase") from exc
@@ -92,3 +105,41 @@ class ShareStore:
             "input": row.get("input") or {},
             "result": row.get("result") or {},
         }
+
+    def add_review(
+        self,
+        token: str,
+        verdict: str,
+        comments: str | None,
+        corrected_limits: dict[str, Any] | None,
+    ) -> str:
+        if not TOKEN_PATTERN.fullmatch(token):
+            raise share_not_found()
+        review_id = self._rpc(
+            "submit_review",
+            {
+                "p_token": token,
+                "p_verdict": verdict,
+                "p_comments": comments,
+                "p_corrected_limits": corrected_limits,
+            },
+        )
+        return str(review_id)
+
+    def reviews(self, token: str) -> list[dict[str, Any]]:
+        if not TOKEN_PATTERN.fullmatch(token):
+            raise share_not_found()
+        rows = self._rpc("get_reviews", {"p_token": token})
+        if not isinstance(rows, list):
+            return []
+        return [
+            {
+                "id": str(row.get("id", "")),
+                "verdict": row.get("verdict"),
+                "comments": row.get("comments"),
+                "corrected_limits": row.get("corrected_limits"),
+                "created_at": str(row.get("created_at", "")),
+            }
+            for row in rows
+            if isinstance(row, dict)
+        ]

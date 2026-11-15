@@ -515,3 +515,83 @@ th {
   scale: 1.02;
   transition: all 0.5s ease-in-out;
 }
+/* ---------- Formularios de /tool: restricciones, preguntas y revisión ---------- */
+.editor {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border: 2px solid var(--color-tinta);
+}
+
+.editor h2 {
+  margin-top: 0;
+}
+
+.field-label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.field {
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--color-tinta);
+  background: var(--color-cal);
+  color: var(--color-tinta);
+  font: inherit;
+  max-width: 100%;
+}
+
+.field-wide {
+  width: 100%;
+  max-width: 40rem;
+}
+
+.inline-fields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  max-width: none;
+}
+
+.check-list,
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  list-style: none;
+  max-width: none;
+}
+
+.check-list .choice {
+  align-items: center;
+}
+
+.chip-list button {
+  font-weight: 400;
+  border-radius: 1.5rem;
+  text-align: left;
+}
+
+.answer {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-left: 0.5rem solid var(--color-compuerta);
+  background: #f3f6fc;
+}
+
+.answer h3 {
+  margin-top: 0;
+}
+
+.small {
+  display: block;
+  font-size: 0.9rem;
+}
+
+textarea.field {
+  display: block;
+  margin-top: 0.35rem;
+}

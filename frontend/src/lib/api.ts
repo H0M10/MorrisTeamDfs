@@ -3,10 +3,13 @@ import type {
   ApiErrorBody,
   AskResponse,
   ConstraintsInput,
+  CropsResponse,
   Evaluation,
   Lang,
   LocalizedText,
   PilotsResponse,
+  ReviewInput,
+  ReviewsResponse,
   SharedEvaluation,
   ShareResponse,
 } from "./contract";
@@ -65,6 +68,7 @@ const post = <T>(path: string, body: unknown) =>
 
 export const api = {
   pilots: () => request<PilotsResponse>("/api/v1/pilots"),
+  crops: () => request<CropsResponse>("/api/v1/crops"),
   evaluate: (parcelId: string) => post<Evaluation>("/api/v1/evaluate", { parcel_id: parcelId }),
   simulate: (parcelId: string, constraints: ConstraintsInput) =>
     post<Evaluation>("/api/v1/simulate", { parcel_id: parcelId, constraints }),
@@ -74,4 +78,8 @@ export const api = {
     post<ShareResponse>("/api/v1/share", { input, result }),
   shared: (token: string) =>
     request<SharedEvaluation>(`/api/v1/share/${encodeURIComponent(token)}`),
+  reviews: (token: string) =>
+    request<ReviewsResponse>(`/api/v1/share/${encodeURIComponent(token)}/reviews`),
+  review: (token: string, review: ReviewInput) =>
+    post<ReviewsResponse>(`/api/v1/share/${encodeURIComponent(token)}/reviews`, review),
 };

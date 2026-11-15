@@ -1,14 +1,27 @@
 "use client";
-import { useState } from "react";
-import type { Evaluation } from "@/lib/contract";
+// Editor de restricciones. Usa los mismos códigos que el motor
+// (backend/app/engine/crop_traits.py y el banco de cultivos de /api/v1/crops):
+// un código que el motor no conoce descartaría todas las rotaciones.
+import { useEffect, useState, type FormEvent } from "react";
+import { api } from "@/lib/api";
+import type { CropSummary, Evaluation } from "@/lib/contract";
 import { useI18n } from "@/lib/i18n";
 
 type ConstraintsData = Evaluation["constraints"];
 
-const readable = (code: string) => code.replaceAll("_", " ");
+/** Equipo que reconoce el motor. Cada requisito se cumple con cualquiera de su grupo. */
+export const MACHINERY_CODES = [
+  "pivote_central",
+  "riego_aspersion",
+  "riego_compuerta",
+  "riego_goteo",
+  "sembradora_grano",
+  "sembradora_convencional",
+  "sembradora_directa",
+  "empacadora",
+] as const;
 
-const MACHINERY_OPTIONS = ["tractor", "seeder", "sprinkler_system", "drip_irrigation", "harvester"];
-const CROP_OPTIONS = ["alfalfa", "forage_barley", "corn", "wheat", "beans"];
+const readable = (code: string) => code.replaceAll("_", " ");
 
 export function ConstraintsEditor({
   initialConstraints,
@@ -20,178 +33,166 @@ export function ConstraintsEditor({
   isSubmitting?: boolean;
 }) {
   const { t, pick } = useI18n();
+  const c = t.tool.constraints;
 
   const [maxWater, setMaxWater] = useState<number>(initialConstraints.max_water_mm_year.value ?? 0);
   const [machinery, setMachinery] = useState<string[]>(initialConstraints.available_machinery ?? []);
   const [noBuyer, setNoBuyer] = useState<string[]>(initialConstraints.crops_without_buyer ?? []);
-  const [savedNotice, setSavedNotice] = useState<boolean>(false);
+  const [start, setStart] = useState(initialConstraints.planting_window.start_month);
+  const [end, setEnd] = useState(initialConstraints.planting_window.end_month);
+  const [crops, setCrops] = useState<CropSummary[] | null>(null);
+  const [savedNotice, setSavedNotice] = useState(false);
 
-  const toggleItem = (list: string[], item: string, setter: (val: string[]) => void) => {
+  useEffect(() => {
+    let alive = true;
+    api.crops().then(
+      (response) => alive && setCrops(response.crops.filter((crop) => crop.sold)),
+      () => alive && setCrops([]),
+    );
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  // Sin conexión: se ofrecen al menos los cultivos que ya trae la evaluación.
+  const cropOptions: { code: string; label: string }[] =
+    crops && crops.length > 0
+      ? crops.map((crop) => ({ code: crop.crop_code, label: pick(crop.name) }))
+      : Array.from(new Set(initialConstraints.crops_without_buyer)).map((code) => ({
+          code,
+          label: readable(code),
+        }));
+
+  const toggle = (list: string[], item: string, setter: (value: string[]) => void) => {
     setSavedNotice(false);
-    if (list.includes(item)) {
-      setter(list.filter((i) => i !== item));
-    } else {
-      setter([...list, item]);
-    }
+    setter(list.includes(item) ? list.filter((i) => i !== item) : [...list, item]);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const updated: ConstraintsData = {
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    onSave({
       ...initialConstraints,
-      max_water_mm_year: {
-        ...initialConstraints.max_water_mm_year,
-        value: Number(maxWater) || 0,
-      },
+      max_water_mm_year: { ...initialConstraints.max_water_mm_year, value: Number(maxWater) || 0 },
       available_machinery: machinery,
       crops_without_buyer: noBuyer,
-    };
-    onSave(updated);
+      planting_window: { ...initialConstraints.planting_window, start_month: start, end_month: end },
+    });
     setSavedNotice(true);
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      aria-labelledby="constraints-editor-heading"
-      style={{
-        marginTop: "2rem",
-        padding: "1.25rem",
-        border: "2px solid #000000",
-        borderRadius: "4px",
-        backgroundColor: "#FFFFFF",
-      }}
-    >
-      <h2 id="constraints-editor-heading" style={{ marginTop: 0 }}>
-        Ajustar restricciones de la parcela
-      </h2>
+    <form className="editor" onSubmit={handleSubmit} aria-labelledby="constraints-editor-heading">
+      <h2 id="constraints-editor-heading">{c.editTitle}</h2>
+      <p>{c.editIntro}</p>
 
-      {/* Límite de agua anual */}
-      <div style={{ marginBottom: "1.25rem" }}>
-        <label htmlFor="max-water-input" style={{ display: "block", fontWeight: "bold", marginBottom: "0.5rem" }}>
-          {t.tool.constraints.water} (mm/año)
+      <p>
+        <label htmlFor="max-water-input" className="field-label">
+          {c.water} ({c.mmPerYear})
         </label>
         <input
           id="max-water-input"
+          className="field"
           type="number"
+          inputMode="numeric"
           min={0}
           max={5000}
           step={10}
           value={maxWater}
-          onChange={(e) => {
+          onChange={(event) => {
             setSavedNotice(false);
-            setMaxWater(Number(e.target.value));
-          }}
-          style={{
-            minHeight: "44px",
-            padding: "0.5rem 0.75rem",
-            fontSize: "1rem",
-            border: "2px solid #000000",
-            borderRadius: "4px",
-            width: "100%",
-            maxWidth: "240px",
+            setMaxWater(Number(event.target.value));
           }}
         />
-      </div>
+      </p>
 
-      {/* Maquinaria disponible */}
-      <fieldset style={{ border: "1px solid #000000", padding: "1rem", marginBottom: "1.25rem" }}>
-        <legend style={{ fontWeight: "bold", padding: "0 0.5rem" }}>{t.tool.constraints.machinery}</legend>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
-          {MACHINERY_OPTIONS.map((item) => {
-            const checked = machinery.includes(item);
-            return (
-              <label
-                key={item}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  minHeight: "44px",
-                  padding: "0.25rem 0.75rem",
-                  border: checked ? "2px solid #1247B8" : "1px solid #000000",
-                  backgroundColor: checked ? "#e6f0fa" : "#FFFFFF",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              >
+      <fieldset>
+        <legend>{c.machinery}</legend>
+        <ul className="check-list">
+          {MACHINERY_CODES.map((code) => (
+            <li key={code}>
+              <label className="choice">
                 <input
                   type="checkbox"
-                  checked={checked}
-                  onChange={() => toggleItem(machinery, item, setMachinery)}
-                  style={{ width: "20px", height: "20px" }}
+                  checked={machinery.includes(code)}
+                  onChange={() => toggle(machinery, code, setMachinery)}
                 />
-                <span style={{ textTransform: "capitalize" }}>{readable(item)}</span>
+                <span>{c.machineryNames[code]}</span>
               </label>
-            );
-          })}
-        </div>
+            </li>
+          ))}
+        </ul>
       </fieldset>
 
-      {/* Cultivos sin comprador */}
-      <fieldset style={{ border: "1px solid #000000", padding: "1rem", marginBottom: "1.25rem" }}>
-        <legend style={{ fontWeight: "bold", padding: "0 0.5rem" }}>{t.tool.constraints.noBuyer}</legend>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
-          {CROP_OPTIONS.map((crop) => {
-            const checked = noBuyer.includes(crop);
-            return (
-              <label
-                key={crop}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  minHeight: "44px",
-                  padding: "0.25rem 0.75rem",
-                  border: checked ? "2px solid #1247B8" : "1px solid #000000",
-                  backgroundColor: checked ? "#e6f0fa" : "#FFFFFF",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              >
-                <input
-                  type="checkbox"
-                  checked={checked}
-                  onChange={() => toggleItem(noBuyer, crop, setNoBuyer)}
-                  style={{ width: "20px", height: "20px" }}
-                />
-                <span style={{ textTransform: "capitalize" }}>{readable(crop)}</span>
-              </label>
-            );
-          })}
-        </div>
+      <fieldset>
+        <legend>{c.noBuyer}</legend>
+        <p>{c.noBuyerHelp}</p>
+        {crops === null ? (
+          <p role="status">{t.common.loading}</p>
+        ) : (
+          <ul className="check-list">
+            {cropOptions.map((crop) => (
+              <li key={crop.code}>
+                <label className="choice">
+                  <input
+                    type="checkbox"
+                    checked={noBuyer.includes(crop.code)}
+                    onChange={() => toggle(noBuyer, crop.code, setNoBuyer)}
+                  />
+                  <span>{crop.label}</span>
+                </label>
+              </li>
+            ))}
+          </ul>
+        )}
       </fieldset>
 
-      {/* Ventana de siembra */}
-      <div style={{ marginBottom: "1.25rem" }}>
-        <p style={{ margin: 0 }}>
-          <strong>{t.tool.constraints.window}:</strong> {pick(initialConstraints.planting_window.label)}
+      <fieldset>
+        <legend>{c.window}</legend>
+        <p className="inline-fields">
+          <label>
+            {c.from}{" "}
+            <select
+              className="field"
+              value={start}
+              onChange={(event) => {
+                setSavedNotice(false);
+                setStart(Number(event.target.value));
+              }}
+            >
+              {t.common.monthsLong.map((name, i) => (
+                <option key={name} value={i + 1}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>{" "}
+          <label>
+            {c.to}{" "}
+            <select
+              className="field"
+              value={end}
+              onChange={(event) => {
+                setSavedNotice(false);
+                setEnd(Number(event.target.value));
+              }}
+            >
+              {t.common.monthsLong.map((name, i) => (
+                <option key={name} value={i + 1}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>
         </p>
-      </div>
+      </fieldset>
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        style={{
-          minHeight: "44px",
-          padding: "0.65rem 1.5rem",
-          backgroundColor: "#1247B8",
-          color: "#FFFFFF",
-          fontWeight: "bold",
-          fontSize: "1rem",
-          border: "2px solid #000000",
-          borderRadius: "4px",
-          cursor: "pointer",
-        }}
-      >
-        {isSubmitting ? "Simulando..." : "Aplicar restricciones"}
+      <button type="submit" className="primary" disabled={isSubmitting}>
+        {isSubmitting ? c.applying : c.apply}
       </button>
 
-      {savedNotice && (
-        <p role="status" aria-live="polite" style={{ marginTop: "0.75rem", fontWeight: "bold", color: "#2F7D32" }}>
-          Restricciones actualizadas para la evaluación.
-        </p>
-      )}
+      <p role="status" aria-live="polite">
+        {savedNotice ? c.applied : ""}
+      </p>
     </form>
   );
 }

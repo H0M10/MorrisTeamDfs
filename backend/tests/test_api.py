@@ -313,6 +313,7 @@ def test_ask_uses_simulated_constraints(client: TestClient) -> None:
 class FakeSupabase:
     def __init__(self) -> None:
         self.rows: dict[str, dict[str, Any]] = {}
+        self.reviews: dict[str, list[dict[str, Any]]] = {}
         self.requests: list[httpx.Request] = []
 
     def __call__(self, request: httpx.Request) -> httpx.Response:
@@ -329,6 +330,20 @@ class FakeSupabase:
         if request.url.path.endswith("/rpc/get_shared_evaluation"):
             row = self.rows.get(payload["p_token"])
             return httpx.Response(200, json=[row] if row else [])
+        if request.url.path.endswith("/rpc/submit_review"):
+            if payload["p_token"] not in self.rows:
+                return httpx.Response(400, json={"code": "P0002", "message": "no existe"})
+            review = {
+                "id": f"rev-{len(self.reviews) + 1}",
+                "verdict": payload["p_verdict"],
+                "comments": payload["p_comments"],
+                "corrected_limits": payload["p_corrected_limits"],
+                "created_at": "2026-11-14T09:00:00+00:00",
+            }
+            self.reviews.setdefault(payload["p_token"], []).append(review)
+            return httpx.Response(200, json=review["id"])
+        if request.url.path.endswith("/rpc/get_reviews"):
+            return httpx.Response(200, json=self.reviews.get(payload["p_token"], []))
         return httpx.Response(404)
 
 
@@ -364,6 +379,47 @@ def test_share_saves_and_reads_back_by_token(make_client: Callable[..., TestClie
     assert read.status_code == 200
     assert read.json()["result"] == fixture
     assert read.json()["input"] == {"parcel_id": DV}
+
+
+def test_technician_review_is_saved_and_listed(make_client: Callable[..., TestClient]) -> None:
+    supabase = FakeSupabase()
+    client = share_client(make_client, supabase)
+    token = client.post(
+        "/api/v1/share", json={"input": {}, "result": load_fixture("diamond_valley")}
+    ).json()["token"]
+
+    assert client.get(f"/api/v1/share/{token}/reviews").json() == {"token": token, "reviews": []}
+
+    response = client.post(
+        f"/api/v1/share/{token}/reviews",
+        json={
+            "verdict": "correct",
+            "comments": "El pozo da menos agua en agosto.",
+            "corrected_limits": constraints(max_water_mm_year=500),
+        },
+    )
+    assert response.status_code == 200
+    reviews = response.json()["reviews"]
+    assert len(reviews) == 1
+    assert reviews[0]["verdict"] == "correct"
+    assert reviews[0]["corrected_limits"]["max_water_mm_year"] == 500
+
+
+def test_review_rejects_unknown_verdict_and_unknown_token(
+    make_client: Callable[..., TestClient],
+) -> None:
+    supabase = FakeSupabase()
+    client = share_client(make_client, supabase)
+    token = client.post(
+        "/api/v1/share", json={"input": {}, "result": load_fixture("diamond_valley")}
+    ).json()["token"]
+    bad = client.post(f"/api/v1/share/{token}/reviews", json={"verdict": "maybe"})
+    assert bad.status_code == 422
+    missing = client.post(
+        "/api/v1/share/AAAAAAAAAAAAAAAAAAAAAA/reviews", json={"verdict": "approve"}
+    )
+    assert missing.status_code == 404
+    assert client.get("/api/v1/share/corto/reviews").status_code == 404
 
 
 def test_share_rejects_a_result_that_breaks_the_contract(

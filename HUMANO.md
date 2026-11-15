@@ -228,3 +228,15 @@ Con eso reemplazo el historial supuesto de Querétaro por lo que de verdad se si
 - **H-17:** Diamond Valley confirmado. Querétaro corregido a un solo campo de 2.8 ha con Sentinel-2 (10 m). Guanajuato pospuesto.
 - **H-18:** cubierto con supuestos sacados de datos (`data-pipeline/farmer_context.py`): agua que ya usa el campo (OpenET), ventana por temperatura (POWER), mercado por censo y CDL (QuickStats), precios de heno (QuickStats). Un agricultor real los reemplaza.
 - **H-19:** decidido: se mantiene SoilGrids, declarado.
+
+### H-21. Prueba manual de /tool con lector de pantalla y voz (Gicarrillo, domingo antes de las 12:00)
+
+Lo automático ya pasa (axe en CI, 34 pruebas). Falta lo que solo hace una persona:
+
+1. Recorre las seis pantallas de `/tool` solo con el teclado (Tab, Shift+Tab, Enter, espacio). El foco siempre debe verse.
+2. Haz lo mismo con NVDA (Windows) o VoiceOver (Mac/iPhone). Anota cualquier cosa que no se lea o se lea mal.
+3. Zoom del navegador al 200 %: nada debe cortarse.
+4. En `/tool/evidencia` prueba "Dictar con la voz" en Chrome y en el teléfono. En `/tool/compartir` prueba "Escuchar el resumen". En Firefox el dictado no existe: debe quedar solo la caja de texto.
+5. En `/tool/compartir` pulsa "Crear enlace", ábrelo en otro dispositivo y deja una revisión (Corrige, con agua corregida). Debe aparecer en "Revisiones anteriores".
+
+Anota el resultado aquí con la fecha.

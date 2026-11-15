@@ -66,6 +66,44 @@ export interface SharedEvaluation {
   result: Evaluation;
 }
 
+export type Verdict = "approve" | "correct" | "discard";
+
+/** Revisión del técnico local. Sin datos personales. */
+export interface ReviewInput {
+  verdict: Verdict;
+  comments?: string;
+  corrected_limits?: ConstraintsInput;
+}
+
+export interface Review {
+  id: string;
+  verdict: Verdict;
+  comments?: string | null;
+  corrected_limits?: ConstraintsInput | null;
+  created_at: string;
+}
+
+export interface ReviewsResponse {
+  token: string;
+  reviews: Review[];
+}
+
+/** Un cultivo del banco FAO-56 (todo es supuesto declarado). */
+export interface CropSummary {
+  crop_code: string;
+  crop_group: string;
+  name: LocalizedText;
+  sown: boolean;
+  sold: boolean;
+  machinery: string[];
+}
+
+export interface CropsResponse {
+  type: MetricValue["type"];
+  source: string;
+  crops: CropSummary[];
+}
+
 export interface ApiErrorBody {
   error: string;
   message: LocalizedText;

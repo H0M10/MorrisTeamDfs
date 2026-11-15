@@ -23,6 +23,8 @@ from app.schemas.api import (
     ErrorResponse,
     EvaluateRequest,
     PilotsResponse,
+    ReviewIn,
+    ReviewsResponse,
     SharedEvaluation,
     ShareRequest,
     ShareResponse,
@@ -146,3 +148,22 @@ def share(body: ShareRequest, store: ShareDep) -> dict[str, str]:
 def shared(token: str, store: ShareDep) -> dict[str, Any]:
     """Lee una evaluación compartida. Solo se puede leer conociendo el token."""
     return store.load(token)
+
+
+@router.post("/share/{token}/reviews", response_model=ReviewsResponse, responses=SHARE_RESPONSES)
+def add_review(token: str, body: ReviewIn, store: ShareDep) -> dict[str, Any]:
+    """El técnico local aprueba, corrige o descarta una evaluación compartida.
+
+    Si el técnico no conoce el token no puede escribir. Devuelve todas las
+    revisiones de esa evaluación, incluida la nueva.
+    """
+    store.load(token)  # 404 claro si el enlace no existe
+    limits = body.corrected_limits.model_dump(mode="json") if body.corrected_limits else None
+    store.add_review(token, body.verdict, body.comments, limits)
+    return {"token": token, "reviews": store.reviews(token)}
+
+
+@router.get("/share/{token}/reviews", response_model=ReviewsResponse, responses=SHARE_RESPONSES)
+def reviews(token: str, store: ShareDep) -> dict[str, Any]:
+    """Revisiones del técnico sobre una evaluación compartida, de la más antigua a la nueva."""
+    return {"token": token, "reviews": store.reviews(token)}

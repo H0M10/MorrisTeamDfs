@@ -2,12 +2,16 @@
 import { EvaluationGate } from "@/lib/components/LoadGate";
 import { MetricCard } from "@/lib/components/MetricCard";
 import type { LocalizedText } from "@/lib/contract";
+import { useDeclaredConstraints, useParcelId } from "@/lib/evaluation";
 import { useI18n } from "@/lib/i18n";
+import { AskBox } from "../_components/AskBox";
 import { useToolEvaluation } from "../_components/useToolEvaluation";
 
 export default function EvidencePage() {
   const { t, pick } = useI18n();
   const state = useToolEvaluation();
+  const [parcelId] = useParcelId();
+  const [constraints] = useDeclaredConstraints(parcelId);
   const list = (title: string, items: LocalizedText[]) => (
     <>
       <h3>{title}</h3>
@@ -60,6 +64,7 @@ export default function EvidencePage() {
                 )}
               </section>
             ))}
+            <AskBox parcelId={parcelId} constraints={constraints} />
           </>
         )}
       </EvaluationGate>
