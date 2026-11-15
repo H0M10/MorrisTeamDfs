@@ -1027,14 +1027,16 @@ def build_evaluation(
     water = {key: annual_water_mm(months, crops, et0, rain) for key, crops in sequences.items()}
     water_source = dict.fromkeys(water, SRC_FAO_WATER)
     observed = observed_net_irrigation(rows)
-    if observed is not None and water["current"]:
-        # La rotación actual usa el agua medida; las alternativas, FAO-56 calibrado con la
-        # misma parcela para que la comparación sea justa.
-        factor = observed / water["current"]
-        for key, value in water.items():
-            if key != "current" and value is not None:
-                water[key] = value * factor
-                water_source[key] = SRC_FAO_CALIBRATED.format(factor=factor)
+    if observed is not None:
+        # La rotación actual usa el agua medida por OpenET, que no necesita saber qué
+        # cultivo hubo (sirve aunque un año sea matorral o un cultivo fuera del banco).
+        if water["current"]:
+            # Las alternativas, FAO-56 calibrado con la misma parcela para comparar parejo.
+            factor = observed / water["current"]
+            for key, value in water.items():
+                if key != "current" and value is not None:
+                    water[key] = value * factor
+                    water_source[key] = SRC_FAO_CALIBRATED.format(factor=factor)
         water["current"] = observed
         water_source["current"] = SRC_OPENET_WATER
     # Modelo 1: predice el agua de las alternativas. Solo donde se entrenó (con etiquetas).
@@ -1415,6 +1417,13 @@ def _strategy(
                 "rotación.",
                 "en": "Some months have no known crop: water for this rotation cannot be "
                 "estimated.",
+            }
+            if mine is None
+            else {
+                "es": "Hay meses sin cultivo conocido (por ejemplo matorral o un cultivo fuera "
+                "del banco): el agua es la que midió OpenET, pero no se sabe qué hubo ahí.",
+                "en": "Some months have no known crop (for example shrubland or a crop outside "
+                "the bank): water is what OpenET measured, but what grew there is unknown.",
             }
         )
     risks = [
