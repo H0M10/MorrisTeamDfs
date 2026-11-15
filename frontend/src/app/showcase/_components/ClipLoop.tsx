@@ -103,9 +103,7 @@ export function ClipLoop({ clip }: { clip: ShowcaseClip }) {
       ) : (
         <>
           <p role="status" data-testid={`clip-status-${clip.id}`}>
-            {visible && src && poster && state === "idle"
-              ? "Comprobando clip…"
-              : "Clip pendiente"}
+            {state === "pending" ? "Clip pendiente" : "Comprobando clip…"}
           </p>
           {checkError && <p role="alert">{checkError}</p>}
         </>

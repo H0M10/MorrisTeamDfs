@@ -6,8 +6,10 @@ import {
   LIVE_NETWORK_MODEL,
 } from "../src/app/engineer/_lib/types";
 
-const MOCK_MODE = process.env.NEXT_PUBLIC_ENGINEER_USE_MOCK !== "false";
 const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
+const MOCK_MODE =
+  process.env.NEXT_PUBLIC_ENGINEER_USE_MOCK === "true" ||
+  (process.env.NEXT_PUBLIC_ENGINEER_USE_MOCK !== "false" && !API_URL);
 
 test.describe("pure engineer helpers", () => {
   test("requires an exact trained status", () => {
@@ -125,7 +127,8 @@ test("deployed real evaluation hides the example banner and preserves the Model 
   expect(evaluationResponse.ok()).toBe(true);
   const evaluation = (await evaluationResponse.json()) as {
     data_status: string;
-    models: Record<string, { metric?: { value?: number | null; unit?: string } }>;
+    models: Record<string, { status?: string; metric?: { value?: number | null; unit?: string } }>;
+    timeline?: Array<{ attention_weight?: unknown; soil_moisture?: { interval?: unknown } }>;
   };
   expect(evaluation.data_status).toBe("real");
   expect(evaluation.models.model_2_prior_crop_effect?.metric?.value).toBe(-6.3);
@@ -156,7 +159,20 @@ test("deployed real evaluation hides the example banner and preserves the Model 
   await expect(cqrResult).toContainText(/90%/);
   await expect(cqrBaseline).toContainText("22.9167");
   await expect(page.getByText(/This evaluation does not provide/)).toHaveCount(0);
-  await expect(page.getByText(/Esta evaluación no entrega observaciones/)).toBeVisible();
+  const hasCqrIntervals = (evaluation.timeline ?? []).some((m) => m.soil_moisture?.interval);
+  if (hasCqrIntervals) {
+    await expect(
+      page.locator("section").filter({ hasText: "Intervalo de humedad CQR" }).getByRole("table"),
+    ).toBeVisible();
+  } else {
+    await expect(page.getByText(/Esta evaluación no entrega observaciones/)).toBeVisible();
+  }
+  if (evaluation.models.model_3_crop_history_gru?.status === "trained") {
+    await expect(page.getByRole("heading", { name: /Red en vivo/ })).toBeVisible();
+    if ((evaluation.timeline ?? []).some((m) => m.attention_weight)) {
+      await expect(page.getByTestId("attention-weights")).toBeVisible();
+    }
+  }
 });
 
 test("parcel evaluation status takes precedence over the global model registry", async ({ page }) => {

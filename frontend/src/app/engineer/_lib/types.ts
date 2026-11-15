@@ -49,9 +49,18 @@ export interface CqrData {
   unit: string | null;
 }
 
+export interface AttentionPoint {
+  month: string;
+  weight: number | null;
+  cropLabel: LocalizedText | null;
+}
+
 export interface EngineerData {
   models: ModelsRegistry;
   cqr: CqrData;
+  attentionTimeline: AttentionPoint[];
+  parcelName?: LocalizedText;
+  regionMode?: "labeled" | "unlabeled";
   dataStatus: "fixture" | "real" | null;
 }
 

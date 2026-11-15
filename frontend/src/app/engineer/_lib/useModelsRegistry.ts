@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchCqrData, fetchModelsRegistry, isEngineerMockEnabled } from "./dataSource";
+import { fetchEngineerData, isEngineerMockEnabled } from "./dataSource";
 import type { EngineerLoadState } from "./types";
 
 const REFRESH_MS = 15_000;
@@ -19,11 +19,7 @@ export function useModelsRegistry(parcelId: string): EngineerLoadState {
     const refresh = async () => {
       controller = new AbortController();
       try {
-        const [registry, cqr] = await Promise.all([
-          fetchModelsRegistry(controller.signal, parcelId),
-          fetchCqrData(controller.signal, parcelId),
-        ]);
-        const data = { ...registry, cqr };
+        const data = await fetchEngineerData(controller.signal, parcelId);
         if (active) {
           setState({ status: "ok", data, mockMode: isEngineerMockEnabled(), parcelId });
         }

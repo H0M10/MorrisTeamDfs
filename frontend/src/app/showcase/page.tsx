@@ -80,7 +80,9 @@ function Stage({
   return (
     <>
       <section aria-labelledby="canvas-title">
-        <h2 id="canvas-title">{t.showcase.canvasTitle}</h2>
+        <h2 id="canvas-title">
+          {t.showcase.canvasTitle} · {pick(evaluation.parcel.name)}
+        </h2>
         <div className="canvas-frame">
           <Scene
             color={current.hls_color_hex}

@@ -53,13 +53,12 @@ test("reduced motion moves the camera directly and missing clips stay pending", 
   await expect(zoom).toHaveAttribute("data-camera-distance", "4");
   await expect(page.getByTestId("camera-motion-status")).toHaveText("Cámara en posición");
 
-  await clipsHeading.scrollIntoViewIfNeeded();
-  await expect(page.getByTestId("clip-status-globe-to-parcel")).toHaveText(
-    "Clip pendiente",
-  );
-  await expect(page.getByTestId("clip-status-source-scales")).toHaveText(
-    "Clip pendiente",
-  );
+  const clipGlobe = page.getByTestId("clip-status-globe-to-parcel");
+  const clipScales = page.getByTestId("clip-status-source-scales");
+  await clipGlobe.scrollIntoViewIfNeeded();
+  await expect(clipGlobe).toHaveText("Clip pendiente");
+  await clipScales.scrollIntoViewIfNeeded();
+  await expect(clipScales).toHaveText("Clip pendiente");
   expect(availabilityChecks).toHaveLength(4);
   expect(clipAssetRequests).toEqual([]);
   expect(browserErrors).toEqual([]);

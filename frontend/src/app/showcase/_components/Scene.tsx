@@ -57,14 +57,41 @@ function CameraRig({
   return null;
 }
 
+function GlobeOrbits({ animate }: { animate: boolean }) {
+  const group = useRef<Mesh>(null);
+  useFrame((_, delta) => {
+    if (animate && group.current) group.current.rotation.y += delta * 0.12;
+  });
+  return (
+    <group position={[0, 0, -0.6]}>
+      <mesh ref={group} rotation={[0.3, 0, 0.15]}>
+        <sphereGeometry args={[1.35, 24, 18]} />
+        <meshStandardMaterial color="#1247B8" wireframe transparent opacity={0.45} />
+      </mesh>
+      <mesh rotation={[Math.PI / 2.6, 0.25, 0]}>
+        <torusGeometry args={[1.65, 0.015, 8, 64]} />
+        <meshStandardMaterial color="#E9B824" />
+      </mesh>
+      <mesh rotation={[Math.PI / 3.2, -0.4, 0]}>
+        <torusGeometry args={[1.95, 0.012, 8, 64]} />
+        <meshStandardMaterial color="#a9c8ff" />
+      </mesh>
+      <mesh rotation={[Math.PI / 1.9, 0.1, 0.3]}>
+        <torusGeometry args={[2.25, 0.01, 8, 64]} />
+        <meshStandardMaterial color="#8a94a3" />
+      </mesh>
+    </group>
+  );
+}
+
 function Tile({ color, animate }: { color: string; animate: boolean }) {
   const mesh = useRef<Mesh>(null);
   useFrame((_, delta) => {
     if (animate && mesh.current) mesh.current.rotation.z += delta * 0.15;
   });
   return (
-    <mesh ref={mesh} rotation={[-Math.PI / 3, 0, 0]}>
-      <planeGeometry args={[3, 3, 1, 1]} />
+    <mesh ref={mesh} rotation={[-Math.PI / 3, 0, 0]} position={[0, 0, 0.25]}>
+      <planeGeometry args={[1.35, 1.35, 1, 1]} />
       <meshStandardMaterial color={color} />
     </mesh>
   );
@@ -98,6 +125,7 @@ export default function Scene({
       />
       <ambientLight intensity={1.2} />
       <directionalLight position={[2, 4, 3]} intensity={1.5} />
+      <GlobeOrbits animate={!reducedMotion} />
       <Tile color={color} animate={!reducedMotion} />
     </Canvas>
   );

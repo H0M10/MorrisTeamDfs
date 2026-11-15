@@ -36,7 +36,7 @@ export const engineerCopy = {
     limits: "Límites declarados en la ficha",
     modelLimits: {
       model_1_crop_water:
-        "Se evalúa frente a OpenET, no a mediciones de campo; requiere OpenET y CDL (EE. UU.); el uso en rotaciones alternativas aún no está integrado.",
+        "Se evalúa frente a OpenET, no a mediciones de campo; requiere OpenET y CDL (EE. UU.); en rotaciones alternativas usa FAO-56 calibrado para evitar fuga de vigor.",
       model_2_prior_crop_effect:
         "Resultado observacional, no causal ni de ahorro de agua. Sin CDL no existe fuera de EE. UU. Muestra pequeña: 39 parcela-años en 15 parcelas; algunas secuencias tienen solo una observación de entrenamiento y no permiten generalizar entre valles.",
       model_3_crop_history_gru:
@@ -44,16 +44,21 @@ export const engineerCopy = {
       model_4_moisture_cqr:
         "Contexto regional SMAP de 9 km, no humedad de parcela. La cobertura medida queda por debajo de la nominal del 90%; el cambio de distribución entre valles y los 24 puntos de calibración limitan la garantía. El balance usa capacidad de agua supuesta.",
     },
-    networkTitle: "Red en vivo · Arquitectura del modelo 3",
+    networkTitle: "Red en vivo · Modelo 3 (GRU + atención temporal)",
     networkDescription:
-      "Vista de arquitectura; no muestra activaciones ni predicciones. La ficha describe una secuencia de 12 meses, una GRU pequeña con atención temporal y cuatro grupos de cultivo.",
+      "Pesos de atención reales emitidos por el artefacto ONNX del Modelo 3 (o diagrama de arquitectura en modo demostración). Los pesos indican los meses que más pesaron en la lectura, nunca una explicación causal.",
     networkAlt:
-      "Arquitectura: 12 meses de índices satelitales entran a una GRU con atención temporal y salen cuatro clases de cultivo",
+      "Arquitectura y pesos de atención temporal: secuencia mensual hacia GRU con atención y cuatro clases de cultivo",
     networkDiagramTitle: "Entrada temporal, GRU con atención y cuatro clases de salida",
     sequence: "Secuencia de 12 meses",
     gru: "GRU temporal",
     attention: "Atención",
-    architectureNote: "El dibujo representa la arquitectura declarada en CARD.md, no una inferencia ejecutada.",
+    architectureNote: "El dibujo representa la arquitectura declarada en CARD.md cuando no hay pesos de inferencia activos.",
+    attentionWeightsTitle: "Meses que más pesaron en la lectura del Modelo 3 (no causal)",
+    attentionTableSummary: "Ver tabla mensual completa de pesos de atención",
+    attentionWeightCol: "Peso de atención",
+    cropLabelCol: "Cultivo / estado",
+    parcelLabel: "Parcela evaluada",
     crops: ["Alfalfa", "Grano pequeño", "Maíz", "Barbecho"],
   },
   en: {
@@ -93,7 +98,7 @@ export const engineerCopy = {
     limits: "Limitations stated in the model card",
     modelLimits: {
       model_1_crop_water:
-        "Evaluated against OpenET, not field measurements; requires OpenET and CDL (U.S.); use for alternative rotations is not yet integrated.",
+        "Evaluated against OpenET, not field measurements; requires OpenET and CDL (U.S.); alternative rotations use calibrated FAO-56 to avoid vigor leakage.",
       model_2_prior_crop_effect:
         "Observational, not causal and not evidence of water savings. Without CDL it is unavailable outside the U.S. Small sample: 39 parcel-years across 15 parcels; some sequences have only one training observation and cannot support cross-valley generalization.",
       model_3_crop_history_gru:
@@ -101,16 +106,21 @@ export const engineerCopy = {
       model_4_moisture_cqr:
         "Regional 9 km SMAP context, not parcel moisture. Measured coverage is below the nominal 90%; cross-valley distribution shift and 24 calibration points limit the guarantee. The balance uses assumed water capacity.",
     },
-    networkTitle: "Live network · Model 3 architecture",
+    networkTitle: "Live network · Model 3 (GRU + temporal attention)",
     networkDescription:
-      "Architecture view only; it shows no activations or predictions. The model card describes a 12-month sequence, a small GRU with temporal attention, and four crop groups.",
+      "Real attention weights from the Model 3 ONNX artifact (or architecture schematic in mock mode). Weights show which months weighed most in the reading, never causal proof.",
     networkAlt:
-      "Architecture: 12 months of satellite indices enter a GRU with temporal attention and produce four crop classes",
+      "Architecture and temporal attention weights: monthly sequence feeding a GRU with temporal attention and four crop classes",
     networkDiagramTitle: "Temporal input, GRU with attention, and four output classes",
     sequence: "12-month sequence",
     gru: "Temporal GRU",
     attention: "Attention",
-    architectureNote: "This drawing represents the architecture documented in CARD.md, not an executed inference.",
+    architectureNote: "This drawing represents the architecture documented in CARD.md when no inference weights are active.",
+    attentionWeightsTitle: "Months that weighed most in Model 3's reading (non-causal)",
+    attentionTableSummary: "View full monthly attention-weight table",
+    attentionWeightCol: "Attention weight",
+    cropLabelCol: "Crop / state",
+    parcelLabel: "Evaluated parcel",
     crops: ["Alfalfa", "Small grain", "Corn", "Fallow"],
   },
 } as const;

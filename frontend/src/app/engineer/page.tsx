@@ -120,7 +120,7 @@ function ModelsTable({
 export default function EngineerPage() {
   const { t, lang } = useI18n();
   const copy = engineerCopy[lang];
-  const [parcelId] = useParcelId();
+  const [parcelId, setParcelId] = useParcelId();
   const state = useModelsRegistry(parcelId);
 
   return (
@@ -130,6 +130,22 @@ export default function EngineerPage() {
       <main id="contenido" tabIndex={-1} className="page">
         <h1>{t.engineer.title}</h1>
         <p>{t.engineer.lead}</p>
+        <div role="group" aria-label={copy.parcelLabel}>
+          <button
+            type="button"
+            aria-pressed={parcelId.startsWith("dv-nv")}
+            onClick={() => setParcelId("dv-nv-fixture-01")}
+          >
+            Diamond Valley, NV (labeled)
+          </button>{" "}
+          <button
+            type="button"
+            aria-pressed={parcelId.startsWith("qro-sjr")}
+            onClick={() => setParcelId("qro-sjr-fixture-01")}
+          >
+            San Juan del Río, Qro. (unlabeled)
+          </button>
+        </div>
         {state.status === "loading" && (
           <p role="status" aria-live="polite">
             {copy.loading}
@@ -152,6 +168,13 @@ export default function EngineerPage() {
                 </span>
               </p>
             )}
+            {state.data.parcelName && (
+              <p>
+                <strong>{copy.parcelLabel}:</strong>{" "}
+                {lang === "en" ? state.data.parcelName.en : state.data.parcelName.es}{" "}
+                ({state.data.regionMode ?? "—"})
+              </p>
+            )}
             <section aria-labelledby="metrics-title">
               <h2 id="metrics-title">{copy.metricsTitle}</h2>
               {Object.keys(state.data.models).length === 0 ? (
@@ -161,7 +184,9 @@ export default function EngineerPage() {
               )}
             </section>
             <CqrAnalysis data={state.data.cqr} lang={lang} />
-            {isModelTrained(state.data.models, LIVE_NETWORK_MODEL) && <LiveNetwork lang={lang} />}
+            {isModelTrained(state.data.models, LIVE_NETWORK_MODEL) && (
+              <LiveNetwork lang={lang} timeline={state.data.attentionTimeline} />
+            )}
           </>
         )}
       </main>

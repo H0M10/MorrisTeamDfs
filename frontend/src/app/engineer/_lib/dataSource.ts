@@ -5,16 +5,26 @@ import {
 } from "./mock";
 import {
   CQR_MODEL,
+  type AttentionPoint,
   type CqrData,
+  type EngineerData,
+  type LocalizedText,
   type ModelsRegistry,
   type ModelsRegistryData,
 } from "./types";
 
 interface ApiEvaluation {
   data_status: "fixture" | "real";
+  parcel?: {
+    id?: string;
+    name?: LocalizedText;
+    region_mode?: "labeled" | "unlabeled";
+  };
   models?: ModelsRegistry;
   timeline?: Array<{
     month?: string;
+    attention_weight?: number | { value?: number | null } | null;
+    crop_label?: LocalizedText;
     soil_moisture?: {
       value?: number | null;
       unit?: string;
@@ -35,8 +45,10 @@ interface ApiHealth {
   models?: ModelsRegistry;
 }
 
-const USE_MOCK = process.env.NEXT_PUBLIC_ENGINEER_USE_MOCK !== "false";
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
+const USE_MOCK =
+  process.env.NEXT_PUBLIC_ENGINEER_USE_MOCK === "true" ||
+  (process.env.NEXT_PUBLIC_ENGINEER_USE_MOCK !== "false" && !API_BASE_URL);
 
 function mockSearch(): string {
   return typeof window === "undefined" ? "" : window.location.search;
@@ -113,7 +125,7 @@ function cqrFromEvaluation(evaluation: ApiEvaluation): CqrData {
     const observation = month.soil_moisture;
     const interval = observation?.interval;
     if (
-      observation?.type !== "observed" ||
+      (observation?.type !== "observed" && observation?.type !== "modeled") ||
       typeof observation.value !== "number" ||
       !Number.isFinite(observation.value) ||
       !observation.unit ||
@@ -159,17 +171,37 @@ function cqrFromEvaluation(evaluation: ApiEvaluation): CqrData {
   };
 }
 
+function attentionFromEvaluation(evaluation: ApiEvaluation): AttentionPoint[] {
+  return (evaluation.timeline ?? []).map((item) => {
+    const rawWeight = item.attention_weight;
+    const numericWeight =
+      typeof rawWeight === "number"
+        ? rawWeight
+        : rawWeight && typeof rawWeight === "object" && typeof rawWeight.value === "number"
+          ? rawWeight.value
+          : null;
+    return {
+      month: item.month ?? "—",
+      weight:
+        numericWeight !== null && Number.isFinite(numericWeight) ? numericWeight : null,
+      cropLabel: item.crop_label ?? null,
+    };
+  });
+}
+
 export function isEngineerMockEnabled(): boolean {
   return USE_MOCK;
 }
 
-export async function fetchModelsRegistry(
+export async function fetchEngineerData(
   signal: AbortSignal,
   parcelId: string,
-): Promise<ModelsRegistryData> {
+): Promise<EngineerData> {
   if (USE_MOCK) {
     return {
       models: getMockModelsRegistry(mockSearch()),
+      cqr: getMockCqrData(),
+      attentionTimeline: [],
       dataStatus: MOCK_DATA_STATUS,
     };
   }
@@ -180,11 +212,23 @@ export async function fetchModelsRegistry(
   ]);
   return {
     models: mergeRegistry(evaluation.models, health.models),
+    cqr: cqrFromEvaluation(evaluation),
+    attentionTimeline: attentionFromEvaluation(evaluation),
+    parcelName: evaluation.parcel?.name,
+    regionMode: evaluation.parcel?.region_mode,
     dataStatus: evaluation.data_status ?? null,
   };
 }
 
+export async function fetchModelsRegistry(
+  signal: AbortSignal,
+  parcelId: string,
+): Promise<ModelsRegistryData> {
+  const data = await fetchEngineerData(signal, parcelId);
+  return { models: data.models, dataStatus: data.dataStatus };
+}
+
 export async function fetchCqrData(signal: AbortSignal, parcelId: string): Promise<CqrData> {
-  if (USE_MOCK) return getMockCqrData();
-  return cqrFromEvaluation(await fetchEvaluation(signal, parcelId));
+  const data = await fetchEngineerData(signal, parcelId);
+  return data.cqr;
 }

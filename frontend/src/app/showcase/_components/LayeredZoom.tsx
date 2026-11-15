@@ -90,11 +90,11 @@ export function LayeredZoom({
           <p>{activeLayer.description}</p>
         </div>
       )}
-      <p className="fixture-banner" role="note" data-testid="map-data-status">
-        <strong>Datos de ejemplo</strong>
+      <p className="note-pending" role="note" data-testid="map-data-status">
+        <strong>Nota de escala:</strong>{" "}
         <span>
-          No hay capas cartográficas renderizadas todavía; aquí se describe la
-          resolución nativa de cada fuente, no un mapa ni un dato de parcela.
+          Vista conceptual de resolución nativa por fuente; no reemplaza el mapa
+          ni implica medición directa a nivel de parcela.
         </span>
       </p>
       <p
