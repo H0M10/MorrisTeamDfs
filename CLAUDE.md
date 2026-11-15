@@ -8,6 +8,15 @@ Copia este archivo también como `CLAUDE.md`. Lo leen todos los agentes antes de
 - **Entrega global:** página del proyecto en inglés, video de 30 segundos o 7 diapositivas, repositorio público y descripción de cómo se usó la IA. Límite: domingo 23:59 hora local.
 - **Equipo:** seis programadores. Hanniel lidera Motor y API y es el único que aprueba cambios al contrato.
 
+## 0. Modo de trabajo actual (domingo 15, 05:40 — manda sobre las secciones 1.9–1.11, 2 y 10)
+
+Hanniel trabaja solo con Claude. Se elimina el proceso de coordinación:
+- No se escribe en `HUMANO.md`, `PLAN.md`, `PLAN_DOMINGO.md`, `docs/status.json` ni el tablero. Lo que necesite a Hanniel (llaves, cuentas) se le dice en el chat.
+- No hay dueños por carpeta ni revisión cruzada con Argon.
+- `AI_USAGE.md` se completa una sola vez antes de entregar, a partir de `git log`.
+- Se mantienen las reglas 1–8, las pruebas (axe y pytest) antes de cada commit, commits pequeños y `python contracts/sync.py` si cambia el contrato.
+- Respuestas cortas; capturas solo si hay cambio visual. Prioridades vigentes: `PLAN_DOMINGO.md` §2 (solo lectura).
+
 ## 1. Reglas que no se rompen
 
 1. **Nada inventado se presenta como real.** Ningún modelo de lenguaje produce cifras de agua, rendimiento, vigor ni ahorro. Toda cifra en pantalla viene de un dato observado, de un modelo con métrica reportada o de un supuesto declarado como supuesto.
