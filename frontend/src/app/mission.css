@@ -1,0 +1,769 @@
+/* Orbital presentation. These styles never affect /tool. */
+.mission {
+  --space: #080c11;
+  --panel: #10161e;
+  --line: #35414d;
+  --ink: #eef2f5;
+  --quiet: #adb9c5;
+  background: var(--space);
+  color: var(--ink);
+  min-height: 100dvh;
+}
+.mission .presentation {
+  --paper: var(--space);
+  --forest: var(--ink);
+  --muted: var(--quiet);
+  background: var(--space);
+  color: var(--ink);
+  padding: 0;
+  max-width: none;
+}
+.mission .site-header {
+  background: var(--space);
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  padding: 1rem max(1.25rem, calc((100vw - 78rem) / 2));
+}
+.mission .site-header .brand {
+  color: var(--ink);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.mission .header-tools button {
+  background: transparent;
+  color: var(--quiet);
+  border: 1px solid var(--line);
+  font-weight: 400;
+  border-radius: 3px;
+}
+.mission .first-visit {
+  background: var(--panel);
+  border-color: var(--line);
+}
+.mission a {
+  color: #c3d9e8;
+}
+.mission :focus-visible {
+  outline: 3px solid #c3d9e8;
+  outline-offset: 4px;
+}
+.mission-navigation {
+  max-width: 78rem;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  gap: 1rem;
+}
+.mission-navigation nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+}
+.mission-navigation a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration: none;
+  color: var(--quiet);
+  border-bottom: 1px solid transparent;
+}
+.mission-navigation a[aria-current="page"] {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+.mission-tool-link {
+  white-space: nowrap;
+}
+.mission-home {
+  max-width: 78rem;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding: 4rem 1.25rem;
+  min-height: 68vh;
+}
+.mission-designation {
+  color: var(--quiet);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+.mission .mission-home h1 {
+  font-family: var(--font-sans);
+  font-size: clamp(2.5rem, 4.6vw, 4.1rem);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+  font-weight: 500;
+  margin: 0 0 1.75rem;
+}
+.mission-home-copy > p:not(.mission-designation) {
+  color: var(--quiet);
+  max-width: 42ch;
+  font-size: 1.1rem;
+}
+.mission .button,
+.mission button {
+  border: 1px solid #586675;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--ink);
+  box-shadow: none;
+  font-weight: 500;
+}
+.mission .button.primary,
+.mission button.primary {
+  background: #dbe3e9;
+  color: #10161e;
+  border-color: #dbe3e9;
+}
+.mission .button:hover,
+.mission button:hover {
+  background: #26323f;
+  color: #fff;
+}
+.mission .primary:hover {
+  background: #fff;
+  color: #080c11;
+}
+.mission-text-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--quiet);
+}
+.mission-planet {
+  position: relative;
+  min-width: 0;
+}
+.mission-planet svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.mission-planet-caption {
+  position: absolute;
+  bottom: 0;
+  right: 1rem;
+  color: var(--quiet);
+  font-size: 0.9rem;
+}
+.mission-directory {
+  max-width: 75.5rem;
+  margin: auto;
+  padding: 1rem 0 3rem;
+}
+.mission-directory > a {
+  display: grid;
+  grid-template-columns: 3rem 1fr 1.5fr 2rem;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--ink);
+}
+.mission-directory > a:hover {
+  background: #10161e;
+}
+.mission-directory p {
+  margin: 0;
+  color: var(--quiet);
+}
+.mission-directory strong {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.mission-footer {
+  max-width: 78rem;
+  margin: 3rem auto 0;
+  padding: 1.5rem 1.25rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--quiet);
+}
+.mission .present-shell {
+  width: min(100% - 2.5rem, 75.5rem);
+}
+.mission .present-section {
+  padding-block: 3rem;
+}
+.mission-route-title {
+  max-width: 75.5rem;
+  margin: 2rem auto 0 !important;
+  padding-inline: 1.25rem;
+  font-size: 1.1rem !important;
+  letter-spacing: 0 !important;
+  color: var(--quiet);
+  font-weight: 400 !important;
+}
+.mission .present-kicker,
+.mission .present-index,
+.mission .present-note,
+.mission .present-field-heading p {
+  color: var(--quiet);
+}
+.mission .presentation h2 {
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+.mission
+  :is(
+    .present-lab-toolbar,
+    .present-option,
+    .present-model-stage,
+    .present-models,
+    .present-evidence
+  ) {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line);
+}
+.mission .present-lab-toolbar {
+  padding: 1rem 0;
+  border-inline: 0;
+}
+.mission .presentation :is(select, input) {
+  background: #10161e;
+  color: var(--ink);
+  border: 1px solid #586675;
+}
+.mission .present-option {
+  border: 1px solid var(--line);
+  border-top: 2px solid #adbfcf;
+  border-radius: 0;
+  padding: 1.25rem;
+}
+.mission .present-option.is-rejected {
+  border-top-style: dashed;
+  border-top-color: #adbfcf;
+}
+.mission .present-option-status {
+  font-weight: 400;
+  color: var(--quiet);
+}
+.mission .present-scenario {
+  border-color: var(--line);
+}
+.mission .present-big-number {
+  font-weight: 400;
+}
+.mission .present-rejected {
+  border-color: #adbfcf;
+}
+.mission .present-model-switch {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+  gap: 0;
+  margin: 1.5rem 0 0;
+}
+.mission .present-model-switch > a {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 0.75rem;
+  align-items: center;
+  flex: 1 1 10rem;
+  text-decoration: none;
+  color: var(--quiet);
+  border: 1px solid transparent;
+  border-bottom: 0;
+  padding: 1rem;
+  min-width: 0;
+}
+.mission .present-model-switch > a > span {
+  color: var(--quiet);
+  font-size: 1rem;
+}
+.mission .present-model-switch small {
+  grid-column: 2;
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+.mission .present-model-switch > a[aria-current="page"] {
+  color: var(--ink);
+  background: #17212d;
+  border-color: var(--line);
+  border-bottom: 2px solid #c0d2e0;
+}
+.mission .present-model-stage {
+  border: 0;
+  padding: 2rem 0 0;
+}
+.mission .present-model-intro {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr;
+  column-gap: 3rem;
+  max-width: none;
+}
+.mission .present-model-intro .present-index {
+  grid-column: 1/-1;
+}
+.mission .present-model-intro h3 {
+  font-weight: 500;
+}
+.mission .present-model-intro p {
+  color: var(--quiet);
+}
+.mission .present-model-metrics {
+  border-color: var(--line);
+}
+.mission .present-model-metrics strong {
+  font-weight: 500;
+}
+.mission .present-model-metrics > p {
+  color: var(--quiet);
+}
+.mission-field-select {
+  max-width: 24rem;
+}
+.mission .present-models :is(.table-wrap, th, td) {
+  background: var(--space);
+  color: var(--ink);
+  border-color: var(--line);
+}
+.mission .present-bar-track {
+  background: #26313d;
+}
+.mission .present-bar-track span {
+  background: #bbcbd8;
+}
+.mission .present-sequences li {
+  border-color: var(--line);
+}
+.mission .present-sequences strong,
+.mission .present-equations code {
+  color: #d3e2ed;
+}
+.mission .present-verdict {
+  border-color: #b5c7d5;
+}
+.mission .present-journey li,
+.mission .present-sources {
+  border-color: var(--line);
+}
+.mission .present-journey span {
+  color: var(--quiet);
+}
+.mission .present-inclusion h3 {
+  font-weight: 500;
+}
+.mission .present-sources,
+.mission .present-inclusion {
+  color: var(--quiet);
+}
+.mission .present-inclusion h3,
+.mission .present-sources h3 {
+  color: var(--ink);
+}
+.mission-chapter h1 {
+  max-width: 23ch;
+  font-size: clamp(2rem, 4vw, 3.4rem) !important;
+  font-weight: 500;
+}
+.mission-chapter-lead {
+  max-width: 62ch;
+  color: var(--quiet);
+  font-size: 1.15rem;
+}
+.mission-requirements {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem 4rem;
+  margin: 3rem 0;
+}
+.mission-requirements article {
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+}
+.mission-requirements article > span {
+  color: var(--quiet);
+}
+.mission-requirements h2 {
+  margin: 1rem 0;
+  font-size: 1.5rem !important;
+}
+.mission-requirements p {
+  color: var(--quiet);
+}
+.mission-rubric {
+  margin-block: 2rem;
+}
+.mission-rubric article {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--line);
+}
+.mission-rubric p {
+  margin: 0;
+  color: var(--quiet);
+}
+.mission-rubric h3 {
+  margin: 0;
+  font-weight: 500;
+}
+.mission .nn-stage {
+  background: #0b1119;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  padding: 1rem;
+}
+.mission .nn-header h2 {
+  font-size: 1.65rem;
+}
+.mission
+  :is(.nn-hud-chip, .nn-readout-card, .nn-class-bars li, .nn-attn-list li) {
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 0;
+}
+.mission .nn-class-bars .is-predicted {
+  background: #1e2c39;
+  border-color: #879aa9;
+}
+.mission .nn-hud-controls button {
+  background: #111922;
+  border-color: var(--line);
+  color: var(--quiet);
+}
+.mission .nn-hud-controls button[aria-pressed="true"] {
+  background: #d7e2e9;
+  color: #10161e;
+}
+.mission-reference iframe {
+  width: 100%;
+  height: clamp(430px, 62vh, 680px);
+  border: 1px solid var(--line);
+  display: block;
+  background: #07090c;
+}
+.mission-reference > p {
+  color: var(--quiet);
+  font-size: 1rem;
+  margin-top: 1rem;
+  max-width: none;
+}
+.mission-mechanism {
+  margin: 2rem 0;
+  background: #0b1118;
+  border: 1px solid var(--line);
+  padding: 1.25rem;
+}
+.mission-animation-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.mission-animation-heading figcaption {
+  color: var(--quiet);
+}
+.mission-mechanism svg {
+  width: 100%;
+  height: auto;
+  color: #becdd9;
+  display: block;
+}
+.mission-mechanism svg path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+.mission-mechanism svg circle {
+  fill: #101a24;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+.mission-mechanism svg rect {
+  fill: #0e1721;
+  stroke: #697d8e;
+}
+.mission-mechanism svg text {
+  fill: #cbd7e0;
+  font: 18px var(--font-sans);
+}
+.mission-mechanism .mechanism-grid {
+  color: #25313d;
+}
+.mission-mechanism .mechanism-path {
+  stroke-dasharray: 12 5;
+  animation: signal-travel 6s linear infinite;
+}
+.mission-mechanism .mechanism-series {
+  stroke: #d2e0e9;
+  stroke-width: 2;
+}
+.mission-mechanism .mechanism-interval {
+  color: #7f97ab;
+  animation: interval-arrive 5s ease-in-out infinite;
+}
+.mission-mechanism .mechanism-scan {
+  color: #a2b8c9;
+  stroke-dasharray: 3 5;
+  animation: scan-read 12s linear infinite;
+}
+.mission-mechanism .mechanism-traveler {
+  fill: #d5e2ec;
+  animation: sequence-travel 8s linear infinite;
+}
+.mission-mechanism > p {
+  color: var(--quiet);
+  font-size: 1rem;
+  max-width: none;
+  margin: 1rem 0 0;
+}
+.mechanism-sequence-text {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  max-width: none;
+  padding-left: 1.2rem;
+  margin-top: 1rem;
+}
+.mission-mechanism[data-paused="true"] * {
+  animation-play-state: paused !important;
+}
+@keyframes signal-travel {
+  to {
+    stroke-dashoffset: -102;
+  }
+}
+@keyframes scan-read {
+  to {
+    transform: translateX(605px);
+  }
+}
+@keyframes sequence-travel {
+  to {
+    transform: translateX(470px);
+  }
+}
+@keyframes interval-arrive {
+  50% {
+    opacity: 0.45;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mission-mechanism * {
+    animation: none !important;
+  }
+}
+html[data-reduce-motion] .mission-mechanism * {
+  animation: none !important;
+}
+html[data-sun] .mission {
+  --space: #fff;
+  --panel: #fff;
+  --line: #111;
+  --ink: #000;
+  --quiet: #111;
+}
+html[data-sun] .mission .presentation {
+  color: #000;
+  background: #fff;
+}
+html[data-sun] .mission .present-models,
+html[data-sun] .mission .present-model-stage {
+  background: #fff;
+  color: #000;
+}
+html[data-sun]
+  .mission
+  :is(a, select, input, button, .present-models a, .nn-section *) {
+  color: #000;
+}
+html[data-sun]
+  .mission
+  :is(
+    .button.primary,
+    button.primary,
+    .present-model-switch > a[aria-current="page"]
+  ) {
+  color: #fff;
+  background: #000;
+}
+html[data-sun] .mission .mission-mechanism {
+  background: #fff;
+}
+html[data-sun] .mission .mission-mechanism svg {
+  color: #000;
+}
+html[data-sun] .mission .mission-mechanism svg text {
+  fill: #000;
+}
+html[data-sun] .mission .mission-mechanism svg :is(circle, rect) {
+  fill: #fff;
+  stroke: #000;
+}
+html[data-sun] .mission .nn-stage,
+html[data-sun]
+  .mission
+  :is(.nn-hud-chip, .nn-readout-card, .nn-class-bars li, .nn-attn-list li) {
+  background: #fff;
+  color: #000;
+}
+@media (max-width: 60rem) {
+  .mission-home {
+    grid-template-columns: 1fr 1fr;
+    padding-block: 3rem;
+  }
+  .mission-directory {
+    margin-inline: 1.25rem;
+  }
+  .mission .present-model-intro {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+@media (max-width: 40rem) {
+  .mission .site-header {
+    padding: 0.75rem;
+  }
+  .mission-navigation {
+    padding: 0.4rem 0.75rem;
+    align-items: start;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .mission-navigation nav {
+    gap: 0.2rem 1.15rem;
+  }
+  .mission-home {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 2rem 0.75rem;
+    min-height: 0;
+  }
+  .mission-home-copy {
+    order: 1;
+  }
+  .mission-planet {
+    max-width: 24rem;
+    max-height: 15rem;
+    overflow: hidden;
+    margin: auto;
+    width: 100%;
+  }
+  .mission-planet svg {
+    transform: translateY(-14%);
+  }
+  .mission-planet-caption {
+    display: none;
+  }
+  .mission .mission-home h1 {
+    font-size: 2.4rem;
+  }
+  .mission-home .present-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .mission-home .button {
+    width: 100%;
+  }
+  .mission-directory {
+    margin-inline: 0.75rem;
+  }
+  .mission-directory > a {
+    grid-template-columns: 2rem 1fr 1rem;
+    gap: 0.5rem;
+    padding: 1.2rem 0;
+  }
+  .mission-directory p {
+    grid-column: 2;
+  }
+  .mission-directory > a > span:last-child {
+    grid-column: 3;
+    grid-row: 1;
+  }
+  .mission-route-title {
+    margin-top: 1.25rem !important;
+  }
+  .mission-requirements {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+  .mission-rubric article {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  .mission .present-shell {
+    width: calc(100% - 1.5rem);
+  }
+  .mission .present-model-switch > a {
+    flex: 1 1 40%;
+    padding: 0.8rem 0.4rem;
+    gap: 0.2rem 0.4rem;
+  }
+  .mission .present-model-switch > a small {
+    font-size: 0.8rem;
+  }
+  .mission-mechanism {
+    padding: 0.75rem;
+    margin-inline: 0;
+  }
+  .mission-animation-heading {
+    flex-wrap: wrap;
+  }
+  .mission-mechanism svg {
+    min-height: 190px;
+  }
+  .mission-reference iframe {
+    height: 480px;
+  }
+  .mission .nn-stage {
+    padding: 0.5rem;
+  }
+  .mission :is(h1, h2, h3, p, a, button, select, label) {
+    overflow-wrap: anywhere;
+  }
+  .mission-field-select {
+    max-width: 100%;
+  }
+  .mission-footer {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+  .mission .present-inclusion {
+    gap: 1.5rem;
+  }
+}
+.mission .presentation a.button.primary {
+  color: #10161e;
+}
+html[data-sun] .mission .presentation a.button.primary {
+  color: #fff;
+}
+html[data-sun] .mission .presentation :is(select, input) {
+  background: #fff;
+  color: #000;
+}
+html[data-sun]
+  .mission
+  .present-model-switch
+  > a[aria-current="page"]
+  :is(span, small) {
+  color: #fff;
+}
+.mission .nn-header > div:first-child {
+  display: none;
+}
+.mission-validation {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.5rem;
+}
+.mission-validation .present-model-metrics {
+  border-top: 0;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+}

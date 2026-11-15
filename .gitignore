@@ -53,3 +53,6 @@ models/_smoke/
 
 # Worker de MapLibre: se copia de node_modules al compilar (scripts/copy-maplibre-worker.mjs)
 frontend/public/maplibre/
+
+# Generated local dependencies for the supplied neural reference
+frontend/public/visuals/vendor/

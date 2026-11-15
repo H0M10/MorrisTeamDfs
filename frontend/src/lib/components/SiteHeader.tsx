@@ -10,12 +10,12 @@ import { LanguageSwitch } from "./LanguageSwitch";
 import { ListenButton } from "./ListenButton";
 import { ReadingSettingsDialog } from "./ReadingSettings";
 
-export function SiteHeader() {
+export function SiteHeader({ minimal = false }: { minimal?: boolean } = {}) {
   const { t } = useI18n();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const settingsButton = useRef<HTMLButtonElement>(null);
   const pathname = usePathname().replace(/\/$/, "") || "/";
-  const withGuide = guideRoute(pathname);
+  const withGuide = !minimal && guideRoute(pathname);
   const [guideMode, setGuideMode, guideLoaded] = useGuideMode();
   return (
     <>
@@ -33,7 +33,7 @@ export function SiteHeader() {
               {t.guide.turnOn}
             </button>
           )}
-          <ListenButton />
+          {!minimal && <ListenButton />}
           <LanguageSwitch />
           <button
             ref={settingsButton}
@@ -47,7 +47,7 @@ export function SiteHeader() {
       </header>
       {withGuide ? (
         <Guide onOpenSettings={() => setSettingsOpen(true)} />
-      ) : pathname === "/campo" ? null : (
+      ) : minimal || pathname === "/campo" ? null : (
         <FirstVisitPrompt
           onChoose={() => setSettingsOpen(true)}
           onSkip={() => settingsButton.current?.focus()}

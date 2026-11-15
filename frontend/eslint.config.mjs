@@ -39,5 +39,6 @@ export default defineConfig([
     "test-results/**",
     "src/lib/contract/types.ts",
     "public/mediapipe/**",
+    "public/visuals/vendor/**",
   ]),
 ]);

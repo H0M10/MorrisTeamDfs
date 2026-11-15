@@ -24,3 +24,25 @@ La etiqueta visible declara que es ilustración generada con IA y no representa 
 7. Límites, impacto buscado, validación pendiente y enlaces verificables.
 
 La evaluación y simulación se ejecutan bajo demanda; el historial 2022–2024 no es una transmisión en directo. El modelo 5 obtiene su estado y métrica de `/health`, y sus secuencias finales del contrato; no se inventan probabilidades internas. El estado `trained` no significa que un modelo supere la línea base.
+
+## Estructura actual: presentación orbital por rutas
+
+- `/`: portada e índice. Sin cargar datos ni WebGL antes de entrar al caso o modelos.
+- `/presentacion/reto`: propósito, respuesta al reto y los cuatro criterios de la rúbrica. No publica puntuaciones esperadas.
+- `/presentacion/campo`: evaluación y escenario de agua mediante la API.
+- `/presentacion/modelos/1` a `/5`: un método y una animación por ruta.
+- `/presentacion/modelos/physics`: serie de ET y fórmulas FAO-56.
+- `/presentacion/personas`: agricultor, accesibilidad y tutor.
+- `/presentacion/evidencia`: impacto buscado, resultados, fuentes y límites.
+
+La parcela se conserva al navegar entre capítulos de `/presentacion`.
+
+### Animación neuronal de referencia
+
+Se adaptó el HTML proporcionado por el usuario (referencia CodeTap), conservando sus generadores de esfera cristalina, hélice y red fractal, sus shaders de nodos/conexiones, pulsos y OrbitControls. Se redujo la paleta a tonos gris azulados y se sirve en `frontend/public/visuals/neural-reference.html`.
+
+Las dependencias se copian de la versión bloqueada de Three.js mediante `scripts/copy-reference-vendor.mjs` en predev/prebuild; la animación no necesita CDNs ni fuentes externas. El directorio generado `public/visuals/vendor/` no se versiona.
+
+La geometría de referencia es una ilustración interactiva: no equivale a los pesos de la GRU ni a su arquitectura exacta. Probabilidades, pesos de atención y métricas medidas se muestran por separado con la API. El perfil de movimiento reducido pausa la animación; también hay controles dentro del visor. Los demás modelos tienen animaciones SVG de su mecanismo o de series reales, con pausa y equivalente textual.
+
+Las notas de defensa aportadas por el equipo se usan como guía de contenido, no como evidencia. No se incorporaron promesas de puntuación, afirmaciones de exclusividad, cifras de mercado o argumentos legales sin verificación independiente.

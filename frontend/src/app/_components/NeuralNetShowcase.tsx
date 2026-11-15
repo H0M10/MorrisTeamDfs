@@ -3,12 +3,17 @@
 // Lee los datos reales del contrato (evaluation.timeline) y de GET /api/v1/predictions/{id}
 // cuando la API y el modelo entrenado están disponibles; si no, muestra arquitectura sin inventar cifras.
 import dynamic from "next/dynamic";
+import { ReferenceNetwork } from "./ReferenceNetwork";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { api } from "@/lib/api";
 import { prefersReducedMotion } from "@/lib/a11y/motion";
 import { useA11y } from "@/lib/a11y/profile";
 import { DataStatusBanner } from "@/lib/components/DataStatusBanner";
-import type { Evaluation, PredictionsResponse, TimelineMonth } from "@/lib/contract";
+import type {
+  Evaluation,
+  PredictionsResponse,
+  TimelineMonth,
+} from "@/lib/contract";
 import { useEvaluation, useParcelId } from "@/lib/evaluation";
 import { useI18n } from "@/lib/i18n";
 import type {
@@ -26,7 +31,11 @@ const NeuralNetCanvas = dynamic(() => import("./NeuralNetCanvas"), {
 function NeuralCanvasLoading() {
   const { t } = useI18n();
   return (
-    <div className="nn-canvas-frame nn-loading" role="status" aria-live="polite">
+    <div
+      className="nn-canvas-frame nn-loading"
+      role="status"
+      aria-live="polite"
+    >
       <p>{t.landing.neural.loadingCanvas}</p>
     </div>
   );
@@ -62,7 +71,10 @@ function toInputDatum(
     colorHex: item.hls_color_hex,
     weight: typeof w === "number" && Number.isFinite(w) ? w : 1 / 12,
     isTopAttention: topMonths.has(item.month),
-    ndvi: typeof item.indices.ndvi.value === "number" ? item.indices.ndvi.value : null,
+    ndvi:
+      typeof item.indices.ndvi.value === "number"
+        ? item.indices.ndvi.value
+        : null,
   };
 }
 
@@ -71,7 +83,10 @@ function formatPct(value: number | null | undefined): string {
   return `${Math.round(value * 100)} %`;
 }
 
-export function NeuralNetShowcase({ selectedParcelId }: { selectedParcelId?: string } = {}) {
+export function NeuralNetShowcase({
+  selectedParcelId,
+  referenceVisual = false,
+}: { selectedParcelId?: string; referenceVisual?: boolean } = {}) {
   const { t, lang, pick, month } = useI18n();
   const n = t.landing.neural;
   const { profile } = useA11y();
@@ -120,7 +135,8 @@ export function NeuralNetShowcase({ selectedParcelId }: { selectedParcelId?: str
   // Divide los 36 meses en bloques anuales de 12 meses.
   const yearBlocks = useMemo(() => {
     const timeline = evaluation?.timeline ?? [];
-    if (timeline.length === 0) return [] as { year: string; items: TimelineMonth[] }[];
+    if (timeline.length === 0)
+      return [] as { year: string; items: TimelineMonth[] }[];
     const blocks: { year: string; items: TimelineMonth[] }[] = [];
     for (let i = 0; i < timeline.length; i += 12) {
       const items = timeline.slice(i, i + 12);
@@ -149,12 +165,16 @@ export function NeuralNetShowcase({ selectedParcelId }: { selectedParcelId?: str
           (b.attention_weight?.value ?? 0) - (a.attention_weight?.value ?? 0),
       );
     const scope =
-      activeBlock && activeBlock.items.some((m) => typeof m.attention_weight?.value === "number")
+      activeBlock &&
+      activeBlock.items.some(
+        (m) => typeof m.attention_weight?.value === "number",
+      )
         ? [...activeBlock.items]
             .filter((m) => typeof m.attention_weight?.value === "number")
             .sort(
               (a, b) =>
-                (b.attention_weight?.value ?? 0) - (a.attention_weight?.value ?? 0),
+                (b.attention_weight?.value ?? 0) -
+                (a.attention_weight?.value ?? 0),
             )
             .slice(0, 3)
         : weighted.slice(0, 3);
@@ -186,7 +206,9 @@ export function NeuralNetShowcase({ selectedParcelId }: { selectedParcelId?: str
 
   const allInputs = useMemo<InputMonthDatum[]>(() => {
     const timeline = evaluation?.timeline ?? [];
-    return timeline.map((item, idx) => toInputDatum(item, idx, topMonthSet, month));
+    return timeline.map((item, idx) =>
+      toInputDatum(item, idx, topMonthSet, month),
+    );
   }, [evaluation, topMonthSet, month]);
 
   const cropReading = predictions?.crop_reading ?? null;
@@ -205,13 +227,19 @@ export function NeuralNetShowcase({ selectedParcelId }: { selectedParcelId?: str
     return OUTPUT_KEYS.map((key) => {
       const probs = activeYearPred?.probabilities;
       const prob =
-        isTrainedLive && probs && typeof probs[key] === "number" ? probs[key] : null;
+        isTrainedLive && probs && typeof probs[key] === "number"
+          ? probs[key]
+          : null;
       return {
         key,
         label: n.classes[key],
         probability: prob,
-        isPredicted: Boolean(isTrainedLive && activeYearPred?.predicted === key),
-        isTruth: Boolean(isTrainedLive && activeYearPred?.usda_cdl_group === key),
+        isPredicted: Boolean(
+          isTrainedLive && activeYearPred?.predicted === key,
+        ),
+        isTruth: Boolean(
+          isTrainedLive && activeYearPred?.usda_cdl_group === key,
+        ),
       };
     });
   }, [activeYearPred, isTrainedLive, n.classes]);
@@ -289,7 +317,9 @@ export function NeuralNetShowcase({ selectedParcelId }: { selectedParcelId?: str
                 <span className="nn-hud-label">{n.metricF1Label}</span>
                 <strong className="nn-hud-value">
                   {reportMetric}
-                  {reportBaseline !== null ? ` (${n.baselineF1Label}: ${reportBaseline})` : ""}
+                  {reportBaseline !== null
+                    ? ` (${n.baselineF1Label}: ${reportBaseline})`
+                    : ""}
                 </strong>
               </div>
             )}
@@ -314,97 +344,99 @@ export function NeuralNetShowcase({ selectedParcelId }: { selectedParcelId?: str
                 ))}
               </div>
             )}
-            <div
-              className="nn-pill-switch"
-              role="group"
-              aria-label={n.densityLabel}
-            >
-              {(["low", "medium", "high"] as const).map((level) => (
-                <button
-                  key={level}
-                  type="button"
-                  aria-pressed={density === level}
-                  onClick={() => setDensity(level)}
-                >
-                  {n.densities[level]}
-                </button>
-              ))}
-            </div>
+            {!referenceVisual && (
+              <div
+                className="nn-pill-switch"
+                role="group"
+                aria-label={n.densityLabel}
+              >
+                {(["low", "medium", "high"] as const).map((level) => (
+                  <button
+                    key={level}
+                    type="button"
+                    aria-pressed={density === level}
+                    onClick={() => setDensity(level)}
+                  >
+                    {n.densities[level]}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
         {/* Lienzo 3D + leyenda lateral + dock inferior MORPH / FREEZE / RESET */}
-        <div className="nn-canvas-wrap">
-          <NeuralNetCanvas
-            morphMode={morphMode}
-            frozen={effectiveFrozen}
-            reducedMotion={reducedMotion}
-            density={density}
-            yearIndex={clampedYearIndex}
-            resetSignal={resetSignal}
-            yearInputs={yearInputs}
-            allInputs={allInputs}
-            outputs={outputs}
-            canvasAlt={n.canvasAlt}
-            webglFallback={n.webglFallback}
-          />
+        {referenceVisual ? (
+          <ReferenceNetwork />
+        ) : (
+          <div className="nn-canvas-wrap">
+            <NeuralNetCanvas
+              morphMode={morphMode}
+              frozen={effectiveFrozen}
+              reducedMotion={reducedMotion}
+              density={density}
+              yearIndex={clampedYearIndex}
+              resetSignal={resetSignal}
+              yearInputs={yearInputs}
+              allInputs={allInputs}
+              outputs={outputs}
+              canvasAlt={n.canvasAlt}
+              webglFallback={n.webglFallback}
+            />
 
-          <div className="nn-overlay-meta">
-            <p className="nn-mode-readout">
-              <span>{n.modeLabel}:</span>{" "}
-              <strong>{n.modes[morphMode]}</strong>
-            </p>
-            <ul className="nn-layer-legend" aria-label={n.controlsLabel}>
-              <li>
-                <span className="nn-dot nn-dot-input" aria-hidden="true" />
-                {n.layerLabels.inputs}
-              </li>
-              <li>
-                <span className="nn-dot nn-dot-gru" aria-hidden="true" />
-                {n.layerLabels.gru}
-              </li>
-              <li>
-                <span className="nn-dot nn-dot-attn" aria-hidden="true" />
-                {n.layerLabels.attention}
-              </li>
-              <li>
-                <span className="nn-dot nn-dot-out" aria-hidden="true" />
-                {n.layerLabels.outputs}
-              </li>
-            </ul>
-          </div>
+            <div className="nn-overlay-meta">
+              <p className="nn-mode-readout">
+                <span>{n.modeLabel}:</span>{" "}
+                <strong>{n.modes[morphMode]}</strong>
+              </p>
+              <ul className="nn-layer-legend" aria-label={n.controlsLabel}>
+                <li>
+                  <span className="nn-dot nn-dot-input" aria-hidden="true" />
+                  {n.layerLabels.inputs}
+                </li>
+                <li>
+                  <span className="nn-dot nn-dot-gru" aria-hidden="true" />
+                  {n.layerLabels.gru}
+                </li>
+                <li>
+                  <span className="nn-dot nn-dot-attn" aria-hidden="true" />
+                  {n.layerLabels.attention}
+                </li>
+                <li>
+                  <span className="nn-dot nn-dot-out" aria-hidden="true" />
+                  {n.layerLabels.outputs}
+                </li>
+              </ul>
+            </div>
 
-          <div
-            className="nn-dock"
-            role="group"
-            aria-label={n.controlsLabel}
-          >
-            <button
-              type="button"
-              className="nn-dock-btn nn-dock-morph"
-              onClick={handleMorph}
-              title={n.morphHint}
-            >
-              {n.morph} · {n.modes[morphMode]}
-            </button>
-            <button
-              type="button"
-              className="nn-dock-btn"
-              aria-pressed={effectiveFrozen}
-              disabled={reducedMotion}
-              onClick={() => setFrozen((prev) => !prev)}
-            >
-              {effectiveFrozen ? n.resume : n.freeze}
-            </button>
-            <button
-              type="button"
-              className="nn-dock-btn"
-              onClick={handleReset}
-            >
-              {n.reset}
-            </button>
+            <div className="nn-dock" role="group" aria-label={n.controlsLabel}>
+              <button
+                type="button"
+                className="nn-dock-btn nn-dock-morph"
+                onClick={handleMorph}
+                title={n.morphHint}
+              >
+                {n.morph} · {n.modes[morphMode]}
+              </button>
+              <button
+                type="button"
+                className="nn-dock-btn"
+                aria-pressed={effectiveFrozen}
+                disabled={reducedMotion}
+                onClick={() => setFrozen((prev) => !prev)}
+              >
+                {effectiveFrozen ? n.resume : n.freeze}
+              </button>
+              <button
+                type="button"
+                className="nn-dock-btn"
+                onClick={handleReset}
+              >
+                {n.reset}
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Salida numérica real del año elegido + meses que más pesaron */}
         <div className="nn-readout-grid">
@@ -442,7 +474,9 @@ export function NeuralNetShowcase({ selectedParcelId }: { selectedParcelId?: str
                     {out.isTruth && " · CDL"}
                   </span>
                   <span className="nn-bar-val">
-                    {out.probability !== null ? formatPct(out.probability) : "—"}
+                    {out.probability !== null
+                      ? formatPct(out.probability)
+                      : "—"}
                   </span>
                 </li>
               ))}
@@ -518,7 +552,9 @@ export function NeuralNetShowcase({ selectedParcelId }: { selectedParcelId?: str
                       </td>
                       <td>{raw ? pick(raw.crop_label) : "—"}</td>
                       <td>
-                        {item.ndvi !== null ? item.ndvi.toFixed(2) : t.common.noData}
+                        {item.ndvi !== null
+                          ? item.ndvi.toFixed(2)
+                          : t.common.noData}
                       </td>
                       <td>
                         {typeof raw?.attention_weight?.value === "number"
