@@ -4,20 +4,20 @@ import type { Evaluation, PilotsResponse } from "./contract";
 
 const LOADERS: Record<string, () => Promise<{ default: unknown }>> = {
   "dv-nv-fixture-01": () => import("./contract/fixtures/diamond_valley.json"),
-  "qro-sjr-fixture-01": () => import("./contract/fixtures/queretaro.json"),
-  "dv-nv-fixture-no-viable": () => import("./contract/fixtures/no_viable_options.json"),
+  "dv-nv-fixture-no-viable": () =>
+    import("./contract/fixtures/no_viable_options.json"),
   "dv-nv-01": () => import("./contract/fixtures/diamond_valley.json"),
-  "qro-sjr-01": () => import("./contract/fixtures/queretaro.json"),
 };
 
 export const DEFAULT_PARCEL_ID = "dv-nv-fixture-01";
 export const FIXTURE_PARCEL_IDS = [
   "dv-nv-fixture-01",
-  "qro-sjr-fixture-01",
   "dv-nv-fixture-no-viable",
 ];
 
-export async function loadFixture(parcelId: string): Promise<Evaluation | null> {
+export async function loadFixture(
+  parcelId: string,
+): Promise<Evaluation | null> {
   const loader = LOADERS[parcelId];
   if (!loader) return null;
   return (await loader()).default as Evaluation;

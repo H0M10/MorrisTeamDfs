@@ -156,15 +156,15 @@ test("la parcela elegida queda guardada en el dispositivo", async ({
   const select = page.getByLabel("Elige una parcela piloto");
   await select.selectOption({
     label: await select
-      .locator("option", { hasText: "San Juan del Río" })
+      .locator("option", { hasText: "Parcela Restringida" })
       .first()
       .innerText(),
   });
   await page.goto("/tool/retrato");
-  await expect(page.locator("main")).toContainText("San Juan del Río");
+  await expect(page.locator("main")).toContainText("Parcela Restringida");
   expect(
     await page.evaluate(() => localStorage.getItem("fieldshift:last-parcel")),
-  ).toBe("qro-sjr-fixture-01");
+  ).toBe("dv-nv-fixture-no-viable");
 });
 
 test("objetivos táctiles de 44 px o más y texto de 18 px", async ({ page }) => {

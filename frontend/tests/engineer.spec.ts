@@ -15,25 +15,79 @@ test.describe("pure engineer helpers", () => {
   test("requires an exact trained status", () => {
     expect(isModelTrained(undefined, LIVE_NETWORK_MODEL)).toBe(false);
     expect(isModelTrained(null, LIVE_NETWORK_MODEL)).toBe(false);
-    expect(isModelTrained({ [LIVE_NETWORK_MODEL]: null }, LIVE_NETWORK_MODEL)).toBe(false);
-    expect(isModelTrained({ [LIVE_NETWORK_MODEL]: {} }, LIVE_NETWORK_MODEL)).toBe(false);
-    expect(isModelTrained({ [LIVE_NETWORK_MODEL]: { status: "training" } }, LIVE_NETWORK_MODEL)).toBe(false);
-    expect(isModelTrained({ [LIVE_NETWORK_MODEL]: { status: "trained" } }, LIVE_NETWORK_MODEL)).toBe(true);
+    expect(
+      isModelTrained({ [LIVE_NETWORK_MODEL]: null }, LIVE_NETWORK_MODEL),
+    ).toBe(false);
+    expect(
+      isModelTrained({ [LIVE_NETWORK_MODEL]: {} }, LIVE_NETWORK_MODEL),
+    ).toBe(false);
+    expect(
+      isModelTrained(
+        { [LIVE_NETWORK_MODEL]: { status: "training" } },
+        LIVE_NETWORK_MODEL,
+      ),
+    ).toBe(false);
+    expect(
+      isModelTrained(
+        { [LIVE_NETWORK_MODEL]: { status: "trained" } },
+        LIVE_NETWORK_MODEL,
+      ),
+    ).toBe(true);
   });
 
   test("uses only the permitted mock status query values", () => {
-    expect(getMockModelsRegistry("?mockStatus=trained")[LIVE_NETWORK_MODEL]?.status).toBe("trained");
-    expect(getMockModelsRegistry("?mockStatus=training")[LIVE_NETWORK_MODEL]?.status).toBe("training");
-    expect(getMockModelsRegistry("?mockStatus=failed")[LIVE_NETWORK_MODEL]?.status).toBe("failed");
-    expect(getMockModelsRegistry("?mockStatus=absent")[LIVE_NETWORK_MODEL]?.status).toBeUndefined();
-    expect(getMockModelsRegistry("")[LIVE_NETWORK_MODEL]?.status).toBeUndefined();
+    expect(
+      getMockModelsRegistry("?mockStatus=trained")[LIVE_NETWORK_MODEL]?.status,
+    ).toBe("trained");
+    expect(
+      getMockModelsRegistry("?mockStatus=training")[LIVE_NETWORK_MODEL]?.status,
+    ).toBe("training");
+    expect(
+      getMockModelsRegistry("?mockStatus=failed")[LIVE_NETWORK_MODEL]?.status,
+    ).toBe("failed");
+    expect(
+      getMockModelsRegistry("?mockStatus=absent")[LIVE_NETWORK_MODEL]?.status,
+    ).toBeUndefined();
+    expect(
+      getMockModelsRegistry("")[LIVE_NETWORK_MODEL]?.status,
+    ).toBeUndefined();
   });
 
   test("computes empirical coverage and mean interval width", () => {
     const points = [
-      { month: "month-a", y: 1, lo: 0, hi: 2, confidence: 0.9, unit: "u", source: "test", date: "a", nativeScale: "scale" },
-      { month: "month-b", y: 4, lo: 1, hi: 3, confidence: 0.9, unit: "u", source: "test", date: "b", nativeScale: "scale" },
-      { month: "month-c", y: 2, lo: 2, hi: 2, confidence: 0.9, unit: "u", source: "test", date: "c", nativeScale: "scale" },
+      {
+        month: "month-a",
+        y: 1,
+        lo: 0,
+        hi: 2,
+        confidence: 0.9,
+        unit: "u",
+        source: "test",
+        date: "a",
+        nativeScale: "scale",
+      },
+      {
+        month: "month-b",
+        y: 4,
+        lo: 1,
+        hi: 3,
+        confidence: 0.9,
+        unit: "u",
+        source: "test",
+        date: "b",
+        nativeScale: "scale",
+      },
+      {
+        month: "month-c",
+        y: 2,
+        lo: 2,
+        hi: 2,
+        confidence: 0.9,
+        unit: "u",
+        source: "test",
+        date: "c",
+        nativeScale: "scale",
+      },
     ];
     expect(empiricalCoverage(points)).toBeCloseTo(2 / 3);
     expect(meanWidth(points)).toBeCloseTo(4 / 3);
@@ -60,16 +114,27 @@ test.describe("pure engineer helpers", () => {
   });
 });
 
-async function interceptEvaluationApi(page: Page, status?: string): Promise<void> {
+async function interceptEvaluationApi(
+  page: Page,
+  status?: string,
+): Promise<void> {
   const registry = getMockModelsRegistry("");
   const model = registry[LIVE_NETWORK_MODEL];
   if (model && status !== undefined) model.status = status;
   const evaluation = { data_status: "fixture", models: registry, timeline: [] };
   await page.route("**/health", (route) =>
-    route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ models: registry }) }),
+    route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ models: registry }),
+    }),
   );
   await page.route("**/api/v1/evaluate", (route) =>
-    route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(evaluation) }),
+    route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(evaluation),
+    }),
   );
 }
 
@@ -85,15 +150,25 @@ async function openEngineer(page: Page, status?: string): Promise<void> {
 
 test("live network appears for a trained model", async ({ page }) => {
   await openEngineer(page, "trained");
-  await expect(page.getByRole("heading", { name: /Red en vivo/ })).toHaveCount(1);
-  await expect(page.getByText("Datos de ejemplo", { exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Red en vivo/ })).toHaveCount(
+    1,
+  );
+  await expect(
+    page.getByText("Datos de ejemplo", { exact: true }),
+  ).toBeVisible();
 });
 
 for (const status of ["training", "failed", undefined]) {
-  test(`live network is absent for ${status ?? "missing"} status`, async ({ page }) => {
+  test(`live network is absent for ${status ?? "missing"} status`, async ({
+    page,
+  }) => {
     await openEngineer(page, status);
-    await expect(page.getByRole("heading", { name: /Red en vivo/ })).toHaveCount(0);
-    await expect(page.getByRole("heading", { name: /Métricas de los modelos/ })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /Red en vivo/ }),
+    ).toHaveCount(0);
+    await expect(
+      page.getByRole("heading", { name: /Métricas de los modelos/ }),
+    ).toBeVisible();
   });
 }
 
@@ -106,36 +181,60 @@ test("live network is absent when the API request fails", async ({ page }) => {
     route.fulfill({
       status: 200,
       contentType: "application/json",
-      body: JSON.stringify({ data_status: "fixture", models: getMockModelsRegistry(""), timeline: [] }),
+      body: JSON.stringify({
+        data_status: "fixture",
+        models: getMockModelsRegistry(""),
+        timeline: [],
+      }),
     }),
   );
   await page.goto("/engineer");
-  await expect(page.locator("p[role=alert]")).toContainText("No se pudo cargar");
-  await expect(page.getByRole("heading", { name: /Red en vivo/ })).toHaveCount(0);
+  await expect(page.locator("p[role=alert]")).toContainText(
+    "No se pudo cargar",
+  );
+  await expect(page.getByRole("heading", { name: /Red en vivo/ })).toHaveCount(
+    0,
+  );
   expect(pageErrors).toEqual([]);
 });
 
 test("deployed real evaluation hides the example banner and preserves the Model 2 result", async ({
   page,
 }) => {
-  test.skip(MOCK_MODE || !API_URL, "Requires mock mode disabled and the deployed API URL.");
+  test.skip(
+    MOCK_MODE || !API_URL,
+    "Requires mock mode disabled and the deployed API URL.",
+  );
   const healthResponse = await page.request.get(`${API_URL}/health`);
   expect(healthResponse.ok()).toBe(true);
-  const evaluationResponse = await page.request.post(`${API_URL}/api/v1/evaluate`, {
-    data: { parcel_id: "dv-nv-01" },
-  });
+  const evaluationResponse = await page.request.post(
+    `${API_URL}/api/v1/evaluate`,
+    {
+      data: { parcel_id: "dv-nv-01" },
+    },
+  );
   expect(evaluationResponse.ok()).toBe(true);
   const evaluation = (await evaluationResponse.json()) as {
     data_status: string;
-    models: Record<string, { status?: string; metric?: { value?: number | null; unit?: string } }>;
-    timeline?: Array<{ attention_weight?: unknown; soil_moisture?: { interval?: unknown } }>;
+    models: Record<
+      string,
+      { status?: string; metric?: { value?: number | null; unit?: string } }
+    >;
+    timeline?: Array<{
+      attention_weight?: unknown;
+      soil_moisture?: { interval?: unknown };
+    }>;
   };
   expect(evaluation.data_status).toBe("real");
   expect(evaluation.models.model_2_prior_crop_effect?.metric?.value).toBe(-6.3);
 
   const health = await healthResponse.json();
   await page.route("**/health", (route) =>
-    route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(health) }),
+    route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(health),
+    }),
   );
   await page.route("**/api/v1/evaluate", (route) =>
     route.fulfill({
@@ -145,7 +244,9 @@ test("deployed real evaluation hides the example banner and preserves the Model 
     }),
   );
   await page.goto("/engineer");
-  await expect(page.getByText("Datos de ejemplo", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Datos de ejemplo", { exact: true })).toHaveCount(
+    0,
+  );
   const negativeResult = page.getByRole("row").filter({ hasText: "-6.3" });
   const baselineResult = page.getByRole("row").filter({ hasText: "0.145" });
   await expect(negativeResult).toContainText("-6.3");
@@ -158,25 +259,47 @@ test("deployed real evaluation hides the example banner and preserves the Model 
   await expect(cqrResult).toContainText("58.3333");
   await expect(cqrResult).toContainText(/90%/);
   await expect(cqrBaseline).toContainText("22.9167");
-  await expect(page.getByText(/This evaluation does not provide/)).toHaveCount(0);
-  const hasCqrIntervals = (evaluation.timeline ?? []).some((m) => m.soil_moisture?.interval);
+  await expect(page.getByText(/This evaluation does not provide/)).toHaveCount(
+    0,
+  );
+  const hasCqrIntervals = (evaluation.timeline ?? []).some(
+    (m) => m.soil_moisture?.interval,
+  );
   if (hasCqrIntervals) {
     await expect(
-      page.locator("section").filter({ hasText: "Intervalo de humedad CQR" }).getByRole("table"),
+      page
+        .locator("section")
+        .filter({ hasText: "Intervalo de humedad CQR" })
+        .getByRole("table"),
     ).toBeVisible();
   } else {
-    await expect(page.getByText(/Esta evaluación no entrega observaciones/)).toBeVisible();
+    await expect(
+      page.getByText(/Esta evaluación no entrega observaciones/),
+    ).toBeVisible();
   }
   if (evaluation.models.model_3_crop_history_gru?.status === "trained") {
-    await expect(page.getByRole("heading", { name: /Red en vivo/ })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /Red en vivo/ }),
+    ).toBeVisible();
     if ((evaluation.timeline ?? []).some((m) => m.attention_weight)) {
       await expect(page.getByTestId("attention-weights")).toBeVisible();
     }
   }
 });
 
-test("parcel evaluation status takes precedence over the global model registry", async ({ page }) => {
-  test.skip(MOCK_MODE || !API_URL, "Requires mock mode disabled and the deployed API URL.");
+test("parcel evaluation status takes precedence over the global model registry", async ({
+  page,
+}) => {
+  // Querétaro (la única parcela sin etiquetas) salió del producto el 15 de noviembre:
+  // ya no hay en producción una parcela donde el estado difiera del registro global.
+  test.skip(
+    true,
+    "Sin parcela sin etiquetas en producción desde que se quitó Querétaro.",
+  );
+  test.skip(
+    MOCK_MODE || !API_URL,
+    "Requires mock mode disabled and the deployed API URL.",
+  );
   const [healthResponse, evaluationResponse] = await Promise.all([
     page.request.get(`${API_URL}/health`),
     page.request.post(`${API_URL}/api/v1/evaluate`, {
@@ -193,7 +316,11 @@ test("parcel evaluation status takes precedence over the global model registry",
   expect(evaluation.data_status).toBe("real");
   expect(evaluation.models?.model_2_prior_crop_effect?.status).toBe("absent");
   await page.route("**/health", (route) =>
-    route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(health) }),
+    route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(health),
+    }),
   );
   await page.route("**/api/v1/evaluate", (route) =>
     route.fulfill({
@@ -205,13 +332,21 @@ test("parcel evaluation status takes precedence over the global model registry",
   await page.goto("/engineer");
   const absentModel = page
     .getByRole("row")
-    .filter({ hasText: "Mejora frente al mismo modelo sin el cultivo anterior" });
-  await expect(page.getByText("Datos de ejemplo", { exact: true })).toHaveCount(0);
+    .filter({
+      hasText: "Mejora frente al mismo modelo sin el cultivo anterior",
+    });
+  await expect(page.getByText("Datos de ejemplo", { exact: true })).toHaveCount(
+    0,
+  );
   await expect(absentModel).toContainText("absent");
   await expect(absentModel).toContainText("Modelo pendiente de entrenamiento");
   if (evaluation.models?.model_3_crop_history_gru?.status === "trained") {
-    await expect(page.getByRole("heading", { name: /Red en vivo/ })).toHaveCount(1);
+    await expect(
+      page.getByRole("heading", { name: /Red en vivo/ }),
+    ).toHaveCount(1);
   } else {
-    await expect(page.getByRole("heading", { name: /Red en vivo/ })).toHaveCount(0);
+    await expect(
+      page.getByRole("heading", { name: /Red en vivo/ }),
+    ).toHaveCount(0);
   }
 });

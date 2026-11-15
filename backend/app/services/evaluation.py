@@ -33,7 +33,6 @@ EvaluationDict = dict[str, Any]
 
 FIXTURE_TO_REAL_PARCEL: dict[str, str] = {
     "dv-nv-fixture-01": "dv-nv-01",
-    "qro-sjr-fixture-01": "qro-sjr-01",
 }
 
 

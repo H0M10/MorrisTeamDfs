@@ -8,7 +8,7 @@ cubierto) para una parcela de riego. Evalúa primero las restricciones del
 agricultor y puede responder que ninguna rotación es viable. Cada cifra dice de
 dónde viene, de cuándo es, a qué escala y si es observada, modelada o supuesta.
 
-> **Estado: API real desplegada en Railway (`DATA_MODE=real`) con respaldo automático de fixtures.** En producción sirve las evaluaciones observadas y modeladas para `dv-nv-01` (Diamond Valley, EE. UU.) y `qro-sjr-01` (Querétaro, MX) con los 4 modelos activos; cuando el frontend corre sin `NEXT_PUBLIC_API_URL`, muestra los archivos marcados como `fixture` de `contracts/fixtures/`.
+> **Estado: API real desplegada en Railway (`DATA_MODE=real`) con respaldo automático de fixtures.** En producción sirve las evaluaciones observadas y modeladas para Diamond Valley, NV (`dv-nv-01` y 59 pivotes detectados con satélite) y para cualquier campo de los 48 estados contiguos con el análisis en vivo, con 5 modelos medidos; cuando el frontend corre sin `NEXT_PUBLIC_API_URL`, muestra los archivos marcados como `fixture` de `contracts/fixtures/`.
 
 ## Enlaces en vivo (Producción)
 

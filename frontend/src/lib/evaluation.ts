@@ -5,7 +5,12 @@ import { useEffect, useState } from "react";
 import { ApiError, api } from "./api";
 import type { ConstraintsInput, Evaluation, PilotsResponse } from "./contract";
 import { DEFAULT_PARCEL_ID, loadFixture, loadFixturePilots } from "./fixtures";
-import { readConstraints, readLastParcelId, saveConstraints, saveLastParcelId } from "./storage";
+import {
+  readConstraints,
+  readLastParcelId,
+  saveConstraints,
+  saveLastParcelId,
+} from "./storage";
 
 export type Origin = "api" | "local";
 
@@ -29,17 +34,16 @@ const CONSTRAINTS_CHANGE_EVENT = "fieldshift:constraints-change";
 
 export const PARCEL_ID_ALIASES: Record<string, string> = {
   "dv-nv-fixture-01": "dv-nv-01",
-  "qro-sjr-fixture-01": "qro-sjr-01",
   "dv-nv-01": "dv-nv-fixture-01",
-  "qro-sjr-01": "qro-sjr-fixture-01",
 };
 
 const REAL_ID_ALIAS: Record<string, string> = {
   "dv-nv-fixture-01": "dv-nv-01",
-  "qro-sjr-fixture-01": "qro-sjr-01",
 };
 
-export async function loadEvaluation(parcelId: string): Promise<Loaded<Evaluation>> {
+export async function loadEvaluation(
+  parcelId: string,
+): Promise<Loaded<Evaluation>> {
   try {
     return { data: await api.evaluate(parcelId), origin: "api" };
   } catch (error) {
@@ -67,7 +71,9 @@ export async function loadSimulation(
   parcelId: string,
   constraints: ConstraintsInput,
 ): Promise<Loaded<Evaluation>> {
-  for (const id of [parcelId, REAL_ID_ALIAS[parcelId]].filter(Boolean) as string[]) {
+  for (const id of [parcelId, REAL_ID_ALIAS[parcelId]].filter(
+    Boolean,
+  ) as string[]) {
     try {
       return { data: await api.simulate(id, constraints), origin: "api" };
     } catch {
@@ -88,14 +94,20 @@ export async function loadPilots(): Promise<Loaded<PilotsResponse>> {
 }
 
 function useLoad<T>(load: () => Promise<Loaded<T>>, key: string): LoadState<T> {
-  const [state, setState] = useState<LoadState<T> & { key?: string }>({ status: "loading" });
+  const [state, setState] = useState<LoadState<T> & { key?: string }>({
+    status: "loading",
+  });
   useEffect(() => {
     let alive = true;
     load().then(
       (loaded) => alive && setState({ status: "ready", ...loaded, key }),
       (error: unknown) =>
         alive &&
-        setState({ status: "error", error: error instanceof ApiError ? error : NOT_FOUND, key }),
+        setState({
+          status: "error",
+          error: error instanceof ApiError ? error : NOT_FOUND,
+          key,
+        }),
     );
     return () => {
       alive = false;
@@ -103,7 +115,9 @@ function useLoad<T>(load: () => Promise<Loaded<T>>, key: string): LoadState<T> {
     // `load` depende solo de `key`.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
-  return state.status !== "loading" && state.key !== key ? { status: "loading" } : state;
+  return state.status !== "loading" && state.key !== key
+    ? { status: "loading" }
+    : state;
 }
 
 /** La parcela elegida en este dispositivo (la última consultada). */
@@ -124,7 +138,9 @@ export function useParcelId(): [string, (id: string) => void] {
   const choose = (id: string) => {
     setParcelId(id);
     saveLastParcelId(id);
-    window.dispatchEvent(new CustomEvent<string>(PARCEL_CHANGE_EVENT, { detail: id }));
+    window.dispatchEvent(
+      new CustomEvent<string>(PARCEL_CHANGE_EVENT, { detail: id }),
+    );
   };
   return [parcelId, choose];
 }
@@ -160,7 +176,9 @@ export function useDeclaredConstraints(
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setJson(readConstraints(parcelId));
     const onChange = (event: Event) => {
-      const detail = (event as CustomEvent<{ parcelId: string; json: string | null }>).detail;
+      const detail = (
+        event as CustomEvent<{ parcelId: string; json: string | null }>
+      ).detail;
       if (detail.parcelId === parcelId) setJson(detail.json);
     };
     window.addEventListener(CONSTRAINTS_CHANGE_EVENT, onChange);
@@ -171,7 +189,9 @@ export function useDeclaredConstraints(
     setJson(nextJson);
     saveConstraints(parcelId, nextJson);
     window.dispatchEvent(
-      new CustomEvent(CONSTRAINTS_CHANGE_EVENT, { detail: { parcelId, json: nextJson } }),
+      new CustomEvent(CONSTRAINTS_CHANGE_EVENT, {
+        detail: { parcelId, json: nextJson },
+      }),
     );
   };
   return [parseConstraints(json), update];
@@ -184,7 +204,10 @@ export function useDeclaredEvaluation(
 ): LoadState<Evaluation> {
   const key = `evaluation:${parcelId}:${constraints ? JSON.stringify(constraints) : "parcel"}`;
   return useLoad(
-    () => (constraints ? loadSimulation(parcelId, constraints) : loadEvaluation(parcelId)),
+    () =>
+      constraints
+        ? loadSimulation(parcelId, constraints)
+        : loadEvaluation(parcelId),
     key,
   );
 }

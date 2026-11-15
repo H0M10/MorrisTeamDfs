@@ -19,8 +19,13 @@ function localizedText(
   return language === "en" ? text.en : text.es;
 }
 
-function formatValue(value: number | null | undefined, pending: string): string {
-  return typeof value === "number" && Number.isFinite(value) ? String(value) : pending;
+function formatValue(
+  value: number | null | undefined,
+  pending: string,
+): string {
+  return typeof value === "number" && Number.isFinite(value)
+    ? String(value)
+    : pending;
 }
 
 function ModelsTable({
@@ -33,20 +38,28 @@ function ModelsTable({
   const copy = engineerCopy[lang];
   const rows = Object.entries(models).flatMap(([key, model]) => {
     if (!model) {
-      return [{
-        key,
-        modelKey: key,
-        status: copy.pending,
-        metric: copy.metric,
-        value: null,
-        unit: "—",
-        partition: copy.pending,
-        description: copy.pending,
-        limitations: copy.modelLimits[key as keyof typeof copy.modelLimits] ?? copy.pending,
-      }];
+      return [
+        {
+          key,
+          modelKey: key,
+          status: copy.pending,
+          metric: copy.metric,
+          value: null,
+          unit: "—",
+          partition: copy.pending,
+          description: copy.pending,
+          limitations:
+            copy.modelLimits[key as keyof typeof copy.modelLimits] ??
+            copy.pending,
+        },
+      ];
     }
 
-    const description = localizedText(model.active_mode_note, lang, copy.pending);
+    const description = localizedText(
+      model.active_mode_note,
+      lang,
+      copy.pending,
+    );
     const provenance = (metric: ModelRecord["metric"]) =>
       metric
         ? `${description} · ${metric.type} · ${metric.source} · ${metric.date} · ${metric.native_scale}`
@@ -61,7 +74,8 @@ function ModelsTable({
         unit: model.metric?.unit ?? "—",
         partition: localizedText(model.partition_method, lang, copy.pending),
         description: provenance(model.metric),
-        limitations: copy.modelLimits[key as keyof typeof copy.modelLimits] ?? description,
+        limitations:
+          copy.modelLimits[key as keyof typeof copy.modelLimits] ?? description,
       },
       {
         key: `${key}-baseline`,
@@ -72,14 +86,20 @@ function ModelsTable({
         unit: model.baseline_metric?.unit ?? "—",
         partition: localizedText(model.partition_method, lang, copy.pending),
         description: provenance(model.baseline_metric),
-        limitations: copy.modelLimits[key as keyof typeof copy.modelLimits] ?? description,
+        limitations:
+          copy.modelLimits[key as keyof typeof copy.modelLimits] ?? description,
       },
     ];
     return metricRows;
   });
 
   return (
-    <div className="table-wrap" tabIndex={0} role="region" aria-label={copy.metricsTitle}>
+    <div
+      className="table-wrap"
+      tabIndex={0}
+      role="region"
+      aria-label={copy.metricsTitle}
+    >
       <table>
         <caption>{copy.metricsCaption}</caption>
         <thead>
@@ -103,7 +123,11 @@ function ModelsTable({
                 <th scope="row">{model?.algorithm ?? row.modelKey}</th>
                 <td>{row.status}</td>
                 <td>{row.metric}</td>
-                <td>{pending ? copy.pending : formatValue(row.value, copy.pending)}</td>
+                <td>
+                  {pending
+                    ? copy.pending
+                    : formatValue(row.value, copy.pending)}
+                </td>
                 <td>{row.unit}</td>
                 <td>{row.partition}</td>
                 <td>{row.description}</td>
@@ -137,13 +161,6 @@ export default function EngineerPage() {
             onClick={() => setParcelId("dv-nv-fixture-01")}
           >
             Diamond Valley, NV (labeled)
-          </button>{" "}
-          <button
-            type="button"
-            aria-pressed={parcelId.startsWith("qro-sjr")}
-            onClick={() => setParcelId("qro-sjr-fixture-01")}
-          >
-            San Juan del Río, Qro. (unlabeled)
           </button>
         </div>
         {state.status === "loading" && (
@@ -159,7 +176,11 @@ export default function EngineerPage() {
         {state.status === "ok" && (
           <>
             {(state.mockMode || state.data.dataStatus === "fixture") && (
-              <p className="fixture-banner" role="status" data-testid="fixture-banner">
+              <p
+                className="fixture-banner"
+                role="status"
+                data-testid="fixture-banner"
+              >
                 <strong>Datos de ejemplo</strong>
                 <span>
                   {lang === "es"
@@ -171,7 +192,9 @@ export default function EngineerPage() {
             {state.data.parcelName && (
               <p>
                 <strong>{copy.parcelLabel}:</strong>{" "}
-                {lang === "en" ? state.data.parcelName.en : state.data.parcelName.es}{" "}
+                {lang === "en"
+                  ? state.data.parcelName.en
+                  : state.data.parcelName.es}{" "}
                 ({state.data.regionMode ?? "—"})
               </p>
             )}
@@ -185,7 +208,10 @@ export default function EngineerPage() {
             </section>
             <CqrAnalysis data={state.data.cqr} lang={lang} />
             {isModelTrained(state.data.models, LIVE_NETWORK_MODEL) && (
-              <LiveNetwork lang={lang} timeline={state.data.attentionTimeline} />
+              <LiveNetwork
+                lang={lang}
+                timeline={state.data.attentionTimeline}
+              />
             )}
           </>
         )}

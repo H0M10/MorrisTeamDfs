@@ -40,7 +40,7 @@ export const engineerCopy = {
       model_2_prior_crop_effect:
         "Resultado observacional, no causal ni de ahorro de agua. Sin CDL no existe fuera de EE. UU. Muestra pequeña: 39 parcela-años en 15 parcelas; algunas secuencias tienen solo una observación de entrenamiento y no permiten generalizar entre valles.",
       model_3_crop_history_gru:
-        "Solo reconoce cuatro clases; la atención no es causal; sin etiquetas en Querétaro es experimental y no sustituye la declaración del agricultor.",
+        "Solo reconoce cuatro clases; la atención no es causal; fuera de EE. UU. sería experimental y no sustituye la declaración del agricultor.",
       model_4_moisture_cqr:
         "Contexto regional SMAP de 9 km, no humedad de parcela. La cobertura medida queda por debajo de la nominal del 90%; el cambio de distribución entre valles y los 24 puntos de calibración limitan la garantía. El balance usa capacidad de agua supuesta.",
     },
@@ -102,7 +102,7 @@ export const engineerCopy = {
       model_2_prior_crop_effect:
         "Observational, not causal and not evidence of water savings. Without CDL it is unavailable outside the U.S. Small sample: 39 parcel-years across 15 parcels; some sequences have only one training observation and cannot support cross-valley generalization.",
       model_3_crop_history_gru:
-        "Recognizes only four classes; attention is not causal; without labels in Querétaro it is experimental and does not replace the grower's declaration.",
+        "Recognizes only four classes; attention is not causal; outside the US it would be experimental and does not replace the grower's declaration.",
       model_4_moisture_cqr:
         "Regional 9 km SMAP context, not parcel moisture. Measured coverage is below the nominal 90%; cross-valley distribution shift and 24 calibration points limit the guarantee. The balance uses assumed water capacity.",
     },
