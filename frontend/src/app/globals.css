@@ -595,3 +595,108 @@ textarea.field {
   display: block;
   margin-top: 0.35rem;
 }
+
+/* ---------- Marcar el campo (/tool) ---------- */
+.tab-switch,
+.method-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+}
+
+.tab-switch button {
+  flex: 1 1 12rem;
+  min-height: 56px;
+  font-size: 1.1rem;
+}
+
+.method-switch button {
+  flex: 1 1 14rem;
+  font-weight: 400;
+}
+
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.4rem;
+  border-radius: 50%;
+  background: var(--color-compuerta);
+  color: var(--color-cal);
+  font-size: 1rem;
+}
+
+.picker h3 {
+  margin-top: 1.75rem;
+}
+
+.picker-next {
+  margin: 0.75rem 0 0.5rem;
+  padding: 0.6rem 0.9rem;
+  border-left: 0.5rem solid var(--color-paja);
+  background: #fdf6dd;
+  font-weight: 700;
+  max-width: none;
+}
+
+.picker-map {
+  width: 100%;
+  height: min(70vh, 480px);
+  border: 2px solid var(--color-tinta);
+  z-index: 1;
+}
+
+.picker-go {
+  width: 100%;
+  max-width: 28rem;
+  min-height: 56px;
+  font-size: 1.15rem;
+}
+
+.picker-go:disabled {
+  background: var(--color-tinta-claro);
+  border-color: var(--color-tinta-claro);
+  color: #3a3a3a;
+  cursor: not-allowed;
+}
+
+.picker-done {
+  padding: 0.6rem 0.9rem;
+  border-left: 0.5rem solid var(--color-hoja);
+  background: #eaf4ea;
+  font-weight: 700;
+}
+
+.picker-error {
+  font-weight: 700;
+}
+
+.picker-keyboard {
+  margin: 0.75rem 0;
+}
+
+.corner-pin {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #000;
+  border-radius: 50%;
+  background: #e9b824;
+  color: #000;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.chosen {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 2px solid var(--color-tinta);
+}
+
+/* Los créditos del mapa: enlaces subrayados, no solo de color (axe link-in-text-block). */
+.leaflet-control-attribution a {
+  text-decoration: underline;
+}

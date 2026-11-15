@@ -153,6 +153,7 @@ test("la parcela elegida queda guardada en el dispositivo", async ({
   page,
 }) => {
   await ready(page, "/tool");
+  await page.getByRole("button", { name: "Ver un campo de ejemplo" }).click();
   const select = page.getByLabel("Elige una parcela piloto");
   await select.selectOption({
     label: await select
@@ -283,43 +284,71 @@ test("/showcase permite recorrer los meses con teclado", async ({ page }) => {
   await expect(page.getByText(/Mes: ene 2023/)).toBeVisible();
 });
 
-test("se puede dibujar el área del campo tocando esquinas en el mapa", async ({
+test("marcar mi campo: pivote por su centro y campo dibujado por esquinas", async ({
   page,
 }) => {
   await ready(page, "/tool");
-  await page.getByRole("radio", { name: "Dibujar el área" }).check();
-  const map = page.getByRole("region", { name: /Mapa interactivo/ });
-  await expect(map).toBeVisible();
+  const go = page.getByRole("button", {
+    name: /Primero marca tu campo|Analizar mi campo/,
+  });
+  await expect(go).toBeDisabled();
+  await expect(
+    page.getByText("Toca el centro de tu pivote en el mapa."),
+  ).toBeVisible();
+
+  const map = page.getByRole("region", {
+    name: "Mapa de satélite para marcar tu campo",
+  });
   await map.scrollIntoViewIfNeeded();
   const box = await map.boundingBox();
   if (!box) throw new Error("sin mapa");
-  const corners = [
-    [0.3, 0.3],
-    [0.7, 0.3],
-    [0.7, 0.7],
-    [0.3, 0.7],
-  ];
-  for (const [fx, fy] of corners) {
-    await page.mouse.click(box.x + box.width * fx, box.y + box.height * fy);
-  }
-  await expect(page.getByText("4 esquinas")).toBeVisible();
-  await expect(page.getByText(/Área a analizar: \d/)).toBeVisible();
-  await page
-    .getByRole("button", { name: "Deshacer la última esquina" })
-    .click();
-  await expect(page.getByText("3 esquinas")).toBeVisible();
+  const at = (fx: number, fy: number) =>
+    page.mouse.click(box.x + box.width * fx, box.y + box.height * fy);
+
+  // Pivote mediano: un toque en el centro y el botón dice el área.
+  await at(0.5, 0.5);
+  await expect(
+    page.getByRole("button", { name: /Analizar mi campo \(50 ha\)/ }),
+  ).toBeEnabled();
+
+  // Otra forma: esquinas numeradas, con instrucciones que cambian.
+  await page.getByRole("button", { name: "Mi campo tiene otra forma" }).click();
+  // Los botones cambian y el mapa se mueve: se vuelve a medir.
+  await map.scrollIntoViewIfNeeded();
+  const box2 = await map.boundingBox();
+  if (!box2) throw new Error("sin mapa");
+  Object.assign(box, box2);
+  await expect(
+    page.getByText("Toca una esquina de tu campo en el mapa."),
+  ).toBeVisible();
+  await at(0.3, 0.3);
+  await expect(page.getByText(/Toca 2 esquinas más/)).toBeVisible();
+  await at(0.7, 0.3);
+  await at(0.7, 0.7);
+  await at(0.3, 0.7);
+  await expect(page.getByText(/Listo: 4 esquinas/)).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: /Analizar mi campo \(\d+ ha\)/ }),
+  ).toBeEnabled();
+  await page.getByRole("button", { name: "Quitar la última esquina" }).click();
+  await expect(page.getByText(/Listo: 3 esquinas/)).toBeVisible();
+  await page.getByRole("button", { name: "Empezar de nuevo" }).click();
+  await expect(go).toBeDisabled();
   expect(await axe(page)).toEqual([]);
 });
 
-test("círculo y cuadrado alrededor de un punto escrito con el teclado", async ({
+test("marcar mi campo con el teclado: coordenadas del centro", async ({
   page,
 }) => {
   await ready(page, "/tool");
+  await page.getByText("Prefiero escribir las coordenadas del centro").click();
   await page.getByLabel("Latitud").fill("39.7");
   await page.getByLabel("Longitud").fill("-116.0");
-  await page.getByLabel("Radio").selectOption("400");
-  await expect(page.getByText(/Área a analizar: 50\.\d ha/)).toBeVisible();
-  await page.getByRole("radio", { name: "Cuadrado" }).check();
-  await page.getByLabel("Lado").selectOption("400");
-  await expect(page.getByText("Área a analizar: 16.0 ha.")).toBeVisible();
+  await page.getByRole("button", { name: "Poner el centro aquí" }).click();
+  await page
+    .getByRole("button", { name: "Pivote grande (unas 200 ha)" })
+    .click();
+  await expect(
+    page.getByRole("button", { name: /Analizar mi campo \(20\d ha\)/ }),
+  ).toBeEnabled();
 });
