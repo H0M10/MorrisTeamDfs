@@ -24,6 +24,7 @@ from __future__ import annotations
 import json
 import math
 import struct
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -34,6 +35,7 @@ from app.engine import water_balance as wb
 from app.models.loader import ModelRegistry
 from app.schemas.api import ConstraintsIn
 from app.schemas.contract import LocalizedText
+from app.services import rotations
 
 Row = dict[str, Any]
 Card = dict[str, Any]
@@ -264,6 +266,48 @@ def choose_alternative(
         name, crops = min(eligible, key=score)
     else:
         name, crops = max(eligible, key=lambda item: sum(is_cover(c) for c in item[1]))
+    return crops, name
+
+
+def choose_rotation(
+    system: str,
+    objective: str,
+    months: list[str],
+    no_buyer: frozenset[str] | None,
+    learned: list[tuple[str, list[str], float]],
+    water_of: Callable[[list[str]], float | None],
+) -> tuple[list[str], str]:
+    """Elige entre el catálogo y las rotaciones aprendidas (Modelo 5) con reglas y agua.
+
+    Reglas: solo cultivos con comprador en la zona (si hay datos de mercado). Para "menos
+    agua", la de menor agua según `water_of` (Modelo 1 donde aplica); para "más suelo",
+    la de más meses de cultivo vivo y, a igualdad, la de menos agua.
+    """
+
+    def sequence(years: list[list[str]]) -> list[str]:
+        return [years[i // 12][int(months[i][5:7]) - 1] for i in range(MONTHS_REQUIRED)]
+
+    options = [(name, sequence(years)) for name, years in CATALOG[system][objective]]
+    learned_options = [(name, crops) for name, crops, _ in learned]
+    if no_buyer is None:
+        # Sin datos de mercado: la plantilla auditada y lo que de verdad se siembra en
+        # campos parecidos (Modelo 5), no cualquier opción del catálogo.
+        eligible = [options[0], *learned_options]
+    else:
+        eligible = [o for o in options + learned_options if has_market(o[1], no_buyer)]
+    if not eligible:
+        return options[0][1], options[0][0]  # las restricciones la descartarán y lo dirán
+
+    def water(item: tuple[str, list[str]]) -> float:
+        value = water_of(item[1])
+        return float("inf") if value is None else value
+
+    if objective == "less_water":
+        name, crops = min(eligible, key=water)
+    else:
+        name, crops = max(
+            eligible, key=lambda item: (sum(is_cover(c) for c in item[1]), -water(item))
+        )
     return crops, name
 
 
@@ -961,10 +1005,25 @@ def build_evaluation(
         frozenset(meta.constraints.crops_without_buyer) if meta.constraints is not None else None
     )
     chosen: dict[str, str] = {}
+    # Candidatas: catálogo del equipo + rotaciones que de verdad se hacen en campos
+    # parecidos (Modelo 5). Se ordenan con el Modelo 1 donde aplica, si no con FAO-56.
+    learned = (
+        rotations.candidates(registry.models_dir, current, months, no_buyer) if labeled else []
+    )
+    use_model1 = labeled and registry.get("model_1_crop_water").status == "trained"
+
+    def water_of(crops: list[str]) -> float | None:
+        if use_model1:
+            predicted, used = model1_water(rows, crops, registry)
+            if predicted is not None and used > 0:
+                return predicted
+        return annual_water_mm(months, crops, et0, rain)
+
     for strategy_id in ("less_water", "more_soil"):
-        sequences[strategy_id], chosen[strategy_id] = choose_alternative(
-            system, strategy_id, months, et0, rain, no_buyer
+        sequences[strategy_id], chosen[strategy_id] = choose_rotation(
+            system, strategy_id, months, no_buyer, learned, water_of
         )
+    sequence_model_note = rotations.metric_note(registry.models_dir)
     water = {key: annual_water_mm(months, crops, et0, rain) for key, crops in sequences.items()}
     water_source = dict.fromkeys(water, SRC_FAO_WATER)
     observed = observed_net_irrigation(rows)
@@ -1010,6 +1069,8 @@ def build_evaluation(
             model_2_metric=model_metric(registry, "model_2_prior_crop_effect"),
             option=chosen.get(key),
             market_filtered=no_buyer is not None,
+            ranked_by_model1=use_model1,
+            sequence_model_note=sequence_model_note,
             history_source=meta.history_source,
         )
         for key in ("current", "less_water", "more_soil")
@@ -1168,6 +1229,8 @@ def _strategy(
     model_2_metric: float | None = None,
     option: str | None = None,
     market_filtered: bool = False,
+    ranked_by_model1: bool = False,
+    sequence_model_note: str | None = None,
     history_source: str | None = None,
 ) -> dict[str, Any]:
     is_current = key == "current"
@@ -1188,7 +1251,19 @@ def _strategy(
     cover = sum(is_cover(c) for c in crops) if known else None
     sequence_type = ("modeled" if labeled else "assumed") if is_current else "assumed"
     template_source = TEMPLATE_SOURCE
-    if option and market_filtered:
+    learned_option = bool(option and option.startswith("rotación observada"))
+    by = (
+        ("menor agua predicha por el Modelo 1" if ranked_by_model1 else "menor riego FAO-56")
+        if key == "less_water"
+        else "más meses de cultivo vivo"
+    )
+    if learned_option:
+        template_source = (
+            f"Rotación aprendida de datos: {option}. {sequence_model_note or 'Modelo 5'}. "
+            f"Elegida entre las candidatas por {by}"
+            + (", solo con cultivos con comprador en la zona" if market_filtered else "")
+        )
+    elif option and market_filtered:
         objective = "menor riego FAO-56" if key == "less_water" else "más meses de suelo cubierto"
         template_source = (
             f"Opción del catálogo del equipo «{option}», elegida por el motor por {objective} "
@@ -1216,16 +1291,31 @@ def _strategy(
     elif key == "less_water":
         gain = "" if delta is None else f" ({delta:+.0f} mm por año frente a la actual)"
         gain_en = "" if delta is None else f" ({delta:+.0f} mm per year versus the current one)"
+        source_es = "el Modelo 1" if ranked_by_model1 else "FAO-56"
+        source_en = "Model 1" if ranked_by_model1 else "FAO-56"
+        origin = (
+            " Es una rotación que se hace en campos parecidos (Modelo 5)." if learned_option else ""
+        )
+        origin_en = " It is a rotation done on similar fields (Model 5)." if learned_option else ""
         why = {
-            "es": f"Usa cultivos con menor demanda de agua según FAO-56{gain}.",
-            "en": f"It uses crops with lower water demand according to FAO-56{gain_en}.",
+            "es": f"Usa cultivos con menor demanda de agua según {source_es}{gain}.{origin}",
+            "en": f"It uses crops with lower water demand according to {source_en}{gain_en}."
+            f"{origin_en}",
         }
     else:
         why = {
-            "es": f"Mantiene un cultivo vivo en el campo {cover} de 36 meses, con cultivos "
-            "de cobertura entre cosechas.",
-            "en": f"It keeps a living crop in the field {cover} of 36 months, with cover crops "
-            "between harvests.",
+            "es": f"Mantiene un cultivo vivo en el campo {cover} de 36 meses"
+            + (
+                ", como hacen campos parecidos (Modelo 5)."
+                if learned_option
+                else ", con cultivos de cobertura entre cosechas."
+            ),
+            "en": f"It keeps a living crop in the field {cover} of 36 months"
+            + (
+                ", as similar fields do (Model 5)."
+                if learned_option
+                else ", with cover crops between harvests."
+            ),
         }
     evidence = [
         {
@@ -1299,7 +1389,18 @@ def _strategy(
             "not from measurements in the field.",
         }
     gaps = [prior_gap, water_gap]
-    if not is_current:
+    if not is_current and learned_option:
+        gaps.append(
+            {
+                "es": "La secuencia viene de lo que hicieron campos parecidos (Modelo 5): es "
+                "observacional, no una receta óptima, y no considera precios, plagas ni tu "
+                "suelo.",
+                "en": "The sequence comes from what similar fields did (Model 5): it is "
+                "observational, not an optimal recipe, and it ignores prices, pests and your "
+                "soil.",
+            }
+        )
+    elif not is_current:
         gaps.append(
             {
                 "es": "La secuencia es una plantilla del equipo: no considera precios, plagas "

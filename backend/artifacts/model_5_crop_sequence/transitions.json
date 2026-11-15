@@ -1,0 +1,231 @@
+{
+ "states": [
+  "alfalfa",
+  "small_grain",
+  "corn",
+  "fallow",
+  "other"
+ ],
+ "alpha": 1.0,
+ "min_pair_count": 5,
+ "second": {
+  "alfalfa|small_grain": {
+   "small_grain": 86,
+   "fallow": 7,
+   "alfalfa": 69,
+   "other": 18,
+   "corn": 17
+  },
+  "small_grain|small_grain": {
+   "alfalfa": 89,
+   "fallow": 25,
+   "small_grain": 92,
+   "corn": 31,
+   "other": 28
+  },
+  "small_grain|alfalfa": {
+   "alfalfa": 278,
+   "fallow": 8,
+   "small_grain": 7,
+   "other": 10,
+   "corn": 9
+  },
+  "alfalfa|alfalfa": {
+   "alfalfa": 2425,
+   "small_grain": 200,
+   "corn": 359,
+   "fallow": 31,
+   "other": 116
+  },
+  "alfalfa|fallow": {
+   "alfalfa": 32,
+   "fallow": 30,
+   "small_grain": 17,
+   "other": 10,
+   "corn": 6
+  },
+  "fallow|alfalfa": {
+   "alfalfa": 93,
+   "small_grain": 12,
+   "fallow": 5,
+   "other": 11,
+   "corn": 5
+  },
+  "small_grain|fallow": {
+   "alfalfa": 17,
+   "small_grain": 52,
+   "fallow": 50,
+   "other": 4,
+   "corn": 7
+  },
+  "fallow|fallow": {
+   "fallow": 444,
+   "small_grain": 49,
+   "alfalfa": 53,
+   "other": 104,
+   "corn": 8
+  },
+  "fallow|small_grain": {
+   "alfalfa": 31,
+   "small_grain": 25,
+   "other": 25,
+   "fallow": 27,
+   "corn": 34
+  },
+  "fallow|other": {
+   "fallow": 20,
+   "small_grain": 15,
+   "other": 46,
+   "alfalfa": 13,
+   "corn": 2
+  },
+  "other|fallow": {
+   "small_grain": 5,
+   "alfalfa": 2,
+   "fallow": 21,
+   "other": 41,
+   "corn": 1
+  },
+  "alfalfa|corn": {
+   "alfalfa": 39,
+   "small_grain": 103,
+   "corn": 155,
+   "fallow": 13,
+   "other": 53
+  },
+  "corn|alfalfa": {
+   "alfalfa": 90,
+   "small_grain": 6,
+   "fallow": 5,
+   "other": 7,
+   "corn": 6
+  },
+  "fallow|corn": {
+   "alfalfa": 6,
+   "fallow": 4,
+   "small_grain": 14,
+   "corn": 14,
+   "other": 2
+  },
+  "other|small_grain": {
+   "small_grain": 31,
+   "fallow": 17,
+   "alfalfa": 39,
+   "other": 55,
+   "corn": 72
+  },
+  "corn|fallow": {
+   "alfalfa": 13,
+   "fallow": 18,
+   "corn": 9,
+   "small_grain": 5,
+   "other": 1
+  },
+  "corn|small_grain": {
+   "small_grain": 43,
+   "alfalfa": 89,
+   "fallow": 48,
+   "other": 23,
+   "corn": 136
+  },
+  "corn|corn": {
+   "fallow": 14,
+   "alfalfa": 49,
+   "small_grain": 117,
+   "corn": 389,
+   "other": 99
+  },
+  "other|other": {
+   "small_grain": 41,
+   "fallow": 36,
+   "other": 235,
+   "alfalfa": 25,
+   "corn": 31
+  },
+  "small_grain|other": {
+   "fallow": 9,
+   "small_grain": 68,
+   "alfalfa": 17,
+   "other": 34,
+   "corn": 18
+  },
+  "alfalfa|other": {
+   "alfalfa": 41,
+   "other": 43,
+   "corn": 10,
+   "small_grain": 25,
+   "fallow": 4
+  },
+  "other|alfalfa": {
+   "small_grain": 4,
+   "alfalfa": 88,
+   "other": 6,
+   "corn": 6,
+   "fallow": 2
+  },
+  "corn|other": {
+   "small_grain": 72,
+   "alfalfa": 30,
+   "other": 39,
+   "corn": 60
+  },
+  "small_grain|corn": {
+   "corn": 87,
+   "fallow": 8,
+   "other": 47,
+   "small_grain": 137,
+   "alfalfa": 18
+  },
+  "other|corn": {
+   "alfalfa": 3,
+   "corn": 63,
+   "fallow": 5,
+   "other": 24,
+   "small_grain": 10
+  }
+ },
+ "first": {
+  "small_grain": {
+   "small_grain": 277,
+   "alfalfa": 317,
+   "fallow": 124,
+   "other": 149,
+   "corn": 290
+  },
+  "alfalfa": {
+   "alfalfa": 2974,
+   "small_grain": 229,
+   "corn": 385,
+   "fallow": 51,
+   "other": 150
+  },
+  "fallow": {
+   "alfalfa": 117,
+   "fallow": 563,
+   "small_grain": 128,
+   "other": 160,
+   "corn": 31
+  },
+  "other": {
+   "fallow": 69,
+   "small_grain": 221,
+   "other": 397,
+   "alfalfa": 126,
+   "corn": 121
+  },
+  "corn": {
+   "alfalfa": 115,
+   "fallow": 44,
+   "small_grain": 381,
+   "corn": 708,
+   "other": 225
+  }
+ },
+ "base": {
+  "small_grain": 1236,
+  "alfalfa": 3649,
+  "corn": 1535,
+  "fallow": 851,
+  "other": 1081
+ }
+}
