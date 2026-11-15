@@ -6,13 +6,15 @@ Regla 11 de `AGENTS.md`: Todo lo que requiera intervención humana (cuentas, lla
 
 | Prioridad | Acción humana | Responsable | Para cuándo | Qué bloquea | Estado |
 | --- | --- | --- | --- | --- | --- |
-| **P0 (Crítico)** | Crear/verificar cuentas del equipo: proyecto **Google Earth Engine (`luca-497507`)** habilitado de uso no comercial, **Colab** y acceso a **OpenET** | `@Checo-coder` + `@H0M10` | Sáb mañana | Tareas D-01 a D-05 | **Completado (`luca-497507` habilitado por `@H0M10`)** |
-| **P0 (Crítico)** | Crear proyectos en **Railway** (`https://morristeamdfs-production.up.railway.app`), **Vercel** (`https://morris-team-dfs.vercel.app/`) y **Supabase** (`evaluations`/`reviews` con RLS sin políticas, `supabase_configured: true`) | Hanniel (`@H0M10`) | Sáb 10:00 | Despliegue API, frontend en vivo y enlaces compartibles | **Completado** |
-| **P1 (Alto)** | Elegir y dibujar las **2 o 3 zonas de riego** similares a Diamond Valley en Nevada, Idaho y Utah (pivote, alfalfa, granos, papa, maíz) para entrenamiento por valle | `@Checo-coder` + `@H0M10` | Sáb 13:00 | D-02, D-05 y partición correcta por valle en Modelos 1-4 | **Completado (`data-pipeline/parcels/multi_valley_us.geojson` -> `data-pipeline/exports/multi_valley_us.parquet`: 15 parcelas en `diamond_valley_nv`, `snake_river_id` y `millard_ut`, 720 filas 2021–2024)** |
-| **P1 (Alto)** | Ejecutar extracción de **Diamond Valley** (`luca-497507`, 36 meses HLS, POWER, OpenET, CDL, SMAP, SSURGO, SRTM) → primer `.parquet` real (`D-03`) | `@H0M10` | Sáb 12:30–14:00 | Compuerta Sábado 14:00 ("un dato real en pantalla") | **Completado (`DATA_MODE=real` activo en Railway sirviendo `dv-nv-01` y `qro-sjr-01`; norte de Guanajuato pospuesto)** |
-| **P1 (Alto)** | Decidir si se **renta una máquina en la nube con mucha RAM/GPU** (solo si Colab gratuito de ~12 GB RAM no alcanza para las tablas) | `@H0M10` + `@Checo-coder` | Sáb mediodía | Entrenamiento de Modelos 1-4 fuera de laptops de 8 GB | **Completado — No requerido (`$0`: GEE procesa los rásters en la nube gratis y los modelos 1, 2 y 4 entrenan en `< 3 s` en CPU local; el modelo 3 corre en Colab gratuito o CPU)** |
+| **P0 (Crítico)** | Confirmar por escrito con el organizador que no hay revisión el sábado y podemos avanzar desde ya (Gustavo Cruz Zarraga confirmó en WhatsApp oficial: *"nosotros sólo hacemos la evaluación del reto el día domingo, no se hace ninguna revisión el día sábado"*) | Hanniel (`@H0M10`) | Sáb madrugada | Luz verde para construir funciones completas desde el sábado | **Completado** |
+| **P0 (Crítico)** | Revisar el "stack" oficial si el organizador lo entrega a las 09:00 AM y validar compatibilidad antes del congelamiento | Hanniel (`@H0M10`) + ARGON | Sáb 09:00 | Congelamiento del contrato (Sáb 10:00) | Pendiente |
+| **P0 (Crítico)** | Crear/verificar cuentas del equipo: proyecto **Google Earth Engine** de uso no comercial, **Colab** y acceso a **OpenET** (Earthdata Login solo si se usa `earthaccess` fuera de GEE) | `@Checo-coder` + `@H0M10` | Sáb mañana | Tareas D-01 a D-05 (sin GEE/OpenET no hay datos reales ni modelos) | Pendiente |
+| **P0 (Crítico)** | Crear proyectos en **Vercel**, **Railway** y **Supabase**, obtener URLs/llaves y cargar `.env` locales + variables de entorno en la nube (sin subir secretos a Git) | Hanniel (`@H0M10`) | Sáb 10:00 | Despliegue API ejemplo (Sáb 10:00) y RLS `/supabase` | Pendiente |
+| **P1 (Alto)** | Elegir las **2 o 3 zonas de riego** similares a Diamond Valley en Nevada, Idaho y Utah (pivote, alfalfa, granos) para entrenamiento y validación por valle | `@Checo-coder` + `@H0M10` | Sáb mañana | D-02, D-05 y partición correcta por valle en Modelos 1-4 | Pendiente |
+| **P1 (Alto)** | Lanzar las **exportaciones de Earth Engine de Diamond Valley** (36 meses HLS, POWER, OpenET, CDL, SMAP, SSURGO, SRTM) en Colab | `@Checo-coder` | Sáb 11:00–13:30 | Compuerta Sábado 14:00 ("un dato real en pantalla") y 19:00 | Pendiente |
+| **P1 (Alto)** | Decidir si se **renta una máquina en la nube con mucha RAM/GPU** (solo si Colab gratuito de ~12 GB RAM no alcanza para las tablas) | `@H0M10` + `@Checo-coder` | Sáb mediodía | Entrenamiento de Modelos 1-4 fuera de laptops de 8 GB | Pendiente |
 | **P1 (Alto)** | Definir el **nombre del proyecto** (confirmar si queda "Field Shift") y el **público principal** en inglés y español | Equipo (4) | Sáb 10:00 | Textos de cabecera, `/docs/project_page.md`, pitch y guion | Pendiente |
-| **P1 (Alto)** | Definir el **polígono exacto de la parcela de Querétaro** (San Juan del Río / Pedro Escobedo, `--unlabeled`) y verificar cifra de acuíferos **CONAGUA** contra publicación oficial | `@Checo-coder` | Sáb 15:00 | Caso real `unlabeled` de Querétaro (D-04) | Pendiente |
+| **P1 (Alto)** | Definir el **polígono exacto de la parcela de Querétaro** (San Juan del Río / Pedro Escobedo) y verificar cualquier cifra de acuíferos **CONAGUA** contra publicación oficial (anotando fecha y fuente) | `@Checo-coder` + `@H0M10` | Sáb 13:00 | Caso real `unlabeled` de Querétaro (D-04) | Pendiente |
 | **P2 (Medio)** | Conseguir a un **agrónomo o agricultor** que revise la hoja de evidencia y el lenguaje llano de `/tool` | `@Gicarrillo` + Equipo | Sáb tarde - Dom mañana | Validación de utilidad real, riesgos locales y pitch | Pendiente |
 | **P2 (Medio)** | Dirección visual de `/showcase`, animaciones con IA (cero cifras inventadas) y **prueba de gestos con cámara** bajo iluminación real (con respaldo por teclado) | Alexis (`@alexishal8`) | Sáb 18:00 y Dom 11:00 | Pista local (`/showcase`) y tomas del video | Pendiente |
 | **P2 (Medio)** | Grabar **video de respaldo** (Sábado 23:00) y **video final de 30 s** + redactar la **página del proyecto en inglés** (`/docs/project_page.md`, cero cifras `fixture`) | Alexis (`@alexishal8`) + `@Gicarrillo` | Sáb 23:00 / Dom 15:00 | Entrega global oficial (Dom 20:00 / 23:59) | Pendiente |
@@ -25,55 +27,72 @@ Regla 11 de `AGENTS.md`: Todo lo que requiera intervención humana (cuentas, lla
 
 Cada paso dice qué hacer y qué desbloquea. Los agentes no los simulan.
 
-### H-01. Subir a `H0M10/MorrisTeamDfs`, invitar al equipo y activar GitHub Pages (`@H0M10`) — **Completado**
+### H-01. Subir a `H0M10/MorrisTeamDfs`, invitar al equipo y activar GitHub Pages (`@H0M10`)
 
-Ya ejecutado y verificado:
-1. Rama `main` conectada y sincronizada en `https://github.com/H0M10/MorrisTeamDfs.git`.
-2. Invitaciones de colaboradores enviadas en GitHub (`checo-coder`, `Gicarrillo`, `AlexisHal8`). Solo falta que cada integrante acepte la invitación en su cuenta.
-3. GitHub Pages activo desde `main` (`/docs`) y respondiendo en `https://h0m10.github.io/MorrisTeamDfs/`.
+El remoto apunta a `https://github.com/H0M10/MorrisTeamDfs.git` con nuestro `README.md` completo (no ejecutar `echo "# MorrisTeamDfs" >> README.md`).
 
-### H-02. Desplegar la API de ejemplo en Railway (`@H0M10`, compuerta del sábado 10:00) — **Completado**
+1. Push de `main` a `origin` y abrir la pestaña **Actions** para confirmar que `backend`, `frontend` y `Deploy Team Command Center to GitHub Pages` terminen en verde.
+2. Invitar como colaboradores a `Checo-coder`, `Gicarrillo` y `alexishal8` en: `https://github.com/H0M10/MorrisTeamDfs/settings/access`.
+3. Activar GitHub Pages en `https://github.com/H0M10/MorrisTeamDfs/settings/pages`: en **Build and deployment → Source** elegir **GitHub Actions** (o branch `main`, carpeta `/docs`). El tablero queda en `https://h0m10.github.io/MorrisTeamDfs/`.
 
-Ya ejecutado y verificado:
-- URL pública en vivo: `https://morristeamdfs-production.up.railway.app`
-- `/health` respondió `"status": "ok"`, `"data_mode": "fixture"`, `"contract_version": "0.1.1"`, `"supabase_configured": false` y los cuatro modelos en `"fallback"`.
-- `/docs` abierto en `https://morristeamdfs-production.up.railway.app/docs#/`.
-- Cuando termines `H-06` y `H-07`, solo agrega `SUPABASE_URL`, `SUPABASE_ANON_KEY` y tu dominio final de Vercel en `CORS_ORIGINS`.
+Desbloquea: clonado por ramas (`pista/motor-api`, `pista/datos-modelos`, `pista/tool`, `pista/jueces-entrega`), CI y tablero visual compartido.
 
-### H-03. Revisar la tabla de rasgos de cultivo y plantillas — **Auditado vs datos reales (`type: "assumed"` mantenido por predio)**
+### H-02. Desplegar la API de ejemplo en Railway (Hanniel, compuerta del sábado 10:00)
 
-Archivos: [backend/app/engine/crop_traits.py](backend/app/engine/crop_traits.py), [models/fao56_crop_bank.csv](models/fao56_crop_bank.csv) y `TEMPLATES` en [backend/app/services/table_to_contract.py](backend/app/services/table_to_contract.py).
-- **Auditoría ejecutada (2026-11-14) contra datos reales observados y literatura técnica:** USDA CDL 2021–2024 Eureka NV (`crop_census.py`), USDA QuickStats, SIAP 2020–2025 (`queretaro_riego.csv`), NASA POWER (`diamond_valley.parquet` y `queretaro.parquet`), FAO-56 Tabla 12/22, UNR Extension (Diamond Valley) e INIFAP (San Juan del Río / Bajío).
-- **Corrección aplicada:** en `TEMPLATES["alfalfa"]["less_water"]` (`dv-nv-01`) se reemplazó `avena_forrajera` (`0` acres confiables en Eureka County CDL) por **`trigo_primavera`** (`405 / 475 / 298` acres en CDL 2022–2024, ventana primaveral `m4_7`, `485 mm/año` vs `697 mm/año`), devolviendo 3 estrategias viables y reales en Diamond Valley.
-- **Estado de supuestos:** coeficientes FAO-56 (`trigo_invierno` `0.40` validado con suelos helados `-3.1 a -11.8 °C` dic–feb), estacionalidad y mercados regionales quedaron verificados; los campos de maquinaria individual (`empacadora`, cosecha de grano maquilada) y coberturas sin venta (`sold: false`) siguen marcados `"type": "assumed"` porque varían según el productor real (y pueden consultarse o ajustarse en `/tool/restricciones`).
+1. En railway.com: **New Project → Deploy from GitHub repo** y elige el repositorio.
+2. En el servicio: **Settings → Source → Root Directory** = `backend`.
+3. **Variables**: `DATA_MODE=fixture` y, cuando exista el dominio de Vercel, `CORS_ORIGINS=https://<tu-app>.vercel.app,http://localhost:3000`. No hace falta ninguna llave.
+4. **Settings → Networking → Generate Domain**.
+5. Comprueba: `https://<dominio>/health` debe responder `"status":"ok"` y `https://<dominio>/docs` debe abrir.
+6. Si la compilación falla porque no reconoce el constructor, cambia `"builder": "RAILPACK"` por `"NIXPACKS"` en `backend/railway.json` y vuelve a desplegar. No se pudo probar sin la cuenta.
 
-### H-04. Transcribir y verificar la tabla Kc de FAO-56 (`@Checo-coder` o `@H0M10`) — **Completado (Banco ampliado v1)**
+Desbloquea: la compuerta "API de ejemplo desplegada" y `NEXT_PUBLIC_API_URL` para el frontend.
 
-Ya poblados con referencias de **FAO Irrigation and Drainage Paper 56 (Allen et al., 1998, Tabla 12 pp. 110–114, Tabla 22 y Cap. 11)**:
-- [models/kc_monthly.csv](models/kc_monthly.csv): 11 grupos de cultivo × 12 meses (132 filas únicas).
-- [models/fao56_crop_bank.csv](models/fao56_crop_bank.csv): banco ampliado de **24 cultivos/coberturas** (alfalfa, cebada, avena, trigos, maíz, sorgo, frijol, garbanzo, lenteja, soya, girasol, canola, algodón, papa, cebolla, tomate, chile, ajo, brócoli, trébol/avena-veza/triticale de cobertura, barbecho) + 8 alias de fixtures, con códigos USDA CDL, $K_c$, $Z_r$ y $p$.
+### H-03. Revisar la tabla de rasgos de cultivo (agrónomo o quien conozca el campo)
 
-Queda sujeto únicamente a validación agronómica local de `sown/sold/machinery` y fechas de siembra regional (`H-03`).
+Archivo: `backend/app/engine/crop_traits.py`. La escribió un agente como supuesto. Decide si cada rotación pasa o no por maquinaria y comprador. Revisar: qué equipo pide cada cultivo, qué cultivos se venden, y si la cosecha de grano se supone contratada. Mientras no se revise, toda cifra que dependa de ella es `assumed`.
+
+### H-04. Transcribir y verificar la tabla Kc de FAO-56 (`@Checo-coder` o `@H0M10`)
+
+El respaldo del modelo 1 es la "tabla FAO-56, declarada". Hay que copiar de la publicación (FAO Irrigation and Drainage Paper 56, tabla 12) los coeficientes inicial, medio y final de: alfalfa, cebada, avena, trigo de invierno, maíz, sorgo y frijol, con la página consultada y la fecha. Un agente no debe escribirlos de memoria.
+
+Desbloquea: cifras de agua reales cuando el modelo 1 no esté entrenado.
 
 ### H-05. Decidir las dos inconsistencias de los fixtures — **Completado por Argon (v0.1.1)**
 
 Resuelto en `contracts/CHANGELOG.md` v0.1.1: `diamond_valley.json` amplía `planting_window` a octubre (`3..10`) para cubrir la siembra otoñal de trigo de invierno, `no_viable_options.json` corrige `current.constraint_evaluation.calendar_ok` a `true` (alfalfa ya establecida; sigue descartada por agua y maquinaria), y `KNOWN_FIXTURE_DIVERGENCES` en `backend/tests/test_constraints.py` quedó vacío.
 
-### H-06. Crear el proyecto de Supabase y aplicar la migración (`@H0M10`, sábado) — **Completado**
+### H-06. Crear el proyecto de Supabase y aplicar la migración (`@H0M10`, sábado)
 
-Ya ejecutado y verificado:
-- Migración [supabase/migrations/20261114000000_init.sql](supabase/migrations/20261114000000_init.sql) aplicada; tablas `evaluations` y `reviews` con **RLS enabled** y sin políticas.
-- Variables cargadas en Railway y Vercel (`SUPABASE_URL`, `SUPABASE_ANON_KEY` con `sb_publishable_...`, nunca `service_role`).
-- `GET https://morristeamdfs-production.up.railway.app/health` respondió `"supabase_configured": true` y `https://morris-team-dfs.vercel.app/tool/retrato` cargó la tira de parcela con **"Datos de ejemplo"** sin error de conexión.
+1. En supabase.com: **New project**. Región cercana (us-west o us-east). Guarda la contraseña de la base en tu gestor, no en el repositorio.
+2. **SQL Editor → New query**: pega completo `supabase/migrations/20261114000000_init.sql` y pulsa **Run**. Debe terminar sin errores.
+   (Alternativa con la CLI: `npx supabase login`, `npx supabase link --project-ref <ref>`, `npx supabase db push`.)
+3. Comprueba en el mismo editor:
+   ```sql
+   select public.create_shared_evaluation(
+     'prueba-token-0123456789', '{}'::jsonb,
+     '{"contract_version":"0.1.0","data_status":"fixture","strategies":[]}'::jsonb);
+   select * from public.get_shared_evaluation('prueba-token-0123456789');
+   select public.submit_review('prueba-token-0123456789', 'approve', 'prueba', null);
+   select * from public.get_reviews('prueba-token-0123456789');
+   delete from public.evaluations where share_token = 'prueba-token-0123456789';
+   ```
+   Las cuatro primeras deben devolver una fila. Si alguna falla, copia el error en `PLAN.md`: la migración solo pasó un analizador sintáctico, no se ha corrido en una base real.
+4. **Table Editor**: `evaluations` y `reviews` deben decir "RLS enabled" y no tener políticas.
+5. **Project Settings → API**: copia **Project URL** y la llave **anon public**. No copies `service_role` a ningún lado.
+6. Ponlas en:
+   - `backend/.env` y variables de Railway: `SUPABASE_URL`, `SUPABASE_ANON_KEY`.
+   - `frontend/.env.local` y variables de Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+7. Comprueba: `GET /health` de la API debe decir `"supabase_configured": true`, y `POST /api/v1/share` con un fixture debe devolver un token.
 
-*(Recordatorio de seguridad para el cierre del reto: rotar la contraseña de la base de datos y la llave `service_role` que quedaron pegadas en el chat de trabajo en Supabase → Project Settings → API Keys.)*
+Desbloquea: enlaces compartibles (A-04) y revisión del técnico (T-04). (Extra #5 `/remote` quedó recortado preventivamente por equipo de 4).
 
-### H-07. Desplegar el frontend en Vercel (`@H0M10` o `@Gicarrillo`, sábado) — **Completado**
+### H-07. Desplegar el frontend en Vercel (`@H0M10` o `@Gicarrillo`, sábado)
 
-Ya ejecutado:
-- URL pública en vivo: `https://morris-team-dfs.vercel.app/`
-- Framework Preset `Next.js`, `Root Directory = frontend`, variables `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` configuradas.
-- **Comprobación rápida:** añade `https://morris-team-dfs.vercel.app` en `CORS_ORIGINS` de Railway (separado por coma) y abre `https://morris-team-dfs.vercel.app/tool/retrato` para confirmar que muestra la tira y el aviso "Datos de ejemplo" sin error de conexión al servidor.
+1. En vercel.com: **Add New → Project**, importa el repositorio `H0M10/MorrisTeamDfs`.
+2. **Root Directory** = `frontend`. El marco (Next.js) se detecta solo.
+3. **Environment Variables**: `NEXT_PUBLIC_API_URL` = dominio de Railway (H-02), y cuando existan, `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` (H-06).
+4. Despliega. Abre `/tool/retrato`: debe verse la tira y la etiqueta "Datos de ejemplo" **sin** el aviso de "No hay conexión con el servidor". Si aparece ese aviso, revisa `NEXT_PUBLIC_API_URL` y que `CORS_ORIGINS` en Railway incluya el dominio de producción (las vistas previas `*.vercel.app` ya están permitidas).
 
 ### H-08. Decisiones visuales, animaciones IA y pruebas con cámara de `/showcase` (`@alexishal8`)
 
@@ -99,48 +118,42 @@ El agente dejó un lienzo de prueba y un botón que solo pide permiso de cámara
 
 Un proceso del sistema llamado "Manager" escucha en el puerto 8000, así que la API no puede arrancar ahí (`error while attempting to bind`). El repositorio usa **8010** por omisión. Si alguien copió un `.env` viejo con 8000, que lo cambie.
 
-### H-11. Datos: reparto 50/50 de parcelas y exportaciones GEE (`@H0M10` y `@Checo-coder`, sábado)
+### H-11. Datos: cuentas, parcelas y exportaciones (`@Checo-coder`, sábado en Colab)
 
-El proyecto de Google Earth Engine **`luca-497507`** quedó habilitado con autenticación `localhost`, fijado por omisión en `ee_common.py`, `.env.example` y el cuaderno de Colab, y verificado en producción contra todas las colecciones núcleo:
-- **`@H0M10` (Completado · `D-03`, `D-02`, `D-05`):** se ejecutaron `ee_coverage.py` (ventana común `2015–2024`), `ee_export.py --local-dir` y `build_table.py`, generando `backend/data/diamond_valley.parquet` (`36` meses `2022-01` a `2024-12` para `dv-nv-01`) y la tabla multi-valle **`data-pipeline/parcels/multi_valley_us.geojson` → `data-pipeline/exports/multi_valley_us.parquet`** (`15` parcelas en 3 valles `diamond_valley_nv`, `snake_river_id` y `millard_ut`, `720` filas `2021-01` a `2024-12`).
-- **`@Checo-coder` (Prioridad G3 19:00):** la tabla de Querétaro (`qro-sjr-01`, refinada con Sentinel-2 10 m) ya está en `backend/data/` (norte de Guanajuato pospuesto en `C-13`); falta verificar la cifra oficial de acuíferos **CONAGUA** con PDF y fecha (`D-04`) y descargar el CSV SIAP (`H-20`).
+Nada de esto corre en la laptop. Usa Colab.
 
 **Cuentas:**
-- **Earth Engine (Completado para `@H0M10`):** proyecto **`luca-497507`** habilitado y fijado por defecto en el repositorio.
-- **Google Drive:** solo hace falta si exportas muchas parcelas sin `--local-dir` (`fieldshift_exports`).
+- **Earth Engine:** en code.earthengine.google.com/register crea o elige un proyecto de Google Cloud y regístralo para uso no comercial. El id del proyecto es lo que piden los guiones (`--project` o `EE_PROJECT`).
+- **Google Drive:** las exportaciones caen en la carpeta `fieldshift_exports` del Drive de quien las lanza.
 - **NASA POWER:** no pide cuenta ni llave.
 - **Earthdata Login** solo hace falta si se usa `earthaccess` para algo fuera de Earth Engine (hoy no).
 
 **Parcelas reales (decisión de una persona):** `data-pipeline/parcels/diamond_valley.geojson` trae un rectángulo de ejemplo. Hay que dibujar los pivotes reales de Diamond Valley (por ejemplo en geojson.io, mirando la imagen), cada uno con `parcel_id` y `valley: "diamond_valley_nv"`. Lo mismo para las dos o tres zonas de Nevada, Idaho y Utah, con su propio `valley`. Sin al menos dos valles no se puede entrenar.
 
-**Comandos, en orden (Python local / máquina rentada para pocas parcelas con `--local-dir`, o Colab `data-pipeline/notebooks/field_shift_pipeline.ipynb`):**
+**Comandos, en orden (cuaderno `data-pipeline/notebooks/field_shift_pipeline.ipynb` en Colab, o a mano):**
 
 ```bash
-pip install -r data-pipeline/requirements.txt          # 1 a 2 GB si instalas todo; para D-03 local basta earthengine-api geopandas pandas pyarrow numpy httpx
+pip install -r data-pipeline/requirements.txt          # 1 a 2 GB de disco en Colab
 earthengine authenticate                               # en Colab: ee.Authenticate()
 cd data-pipeline
 
-# 1. Cobertura. RAM: < 1 GB. Lee la salida antes de fijar años (`luca-497507` va por omisión).
-python ee_coverage.py --parcels parcels/diamond_valley.geojson --project luca-497507
+# 1. Cobertura. RAM: < 1 GB. Lee la salida antes de fijar años.
+python ee_coverage.py --parcels parcels/diamond_valley.geojson --project <proyecto-ee>
 
-# 2. Descarga directa sin pasar por Drive (para pocas parcelas). RAM: < 1 GB.
-python ee_export.py --parcels parcels/diamond_valley.geojson --start-year <A> --end-year <B> --project luca-497507 --local-dir exports_dv
+# 2. Exportación a Drive. RAM: < 1 GB (el cruce corre en Earth Engine). De minutos a una hora.
+python ee_export.py --parcels parcels/diamond_valley.geojson --start-year <A> --end-year <B> --project <proyecto-ee> --wait
 
 # 3. Tabla final. RAM: < 1 GB con decenas de parcelas. Pide POWER por internet.
-python build_table.py --parcels parcels/diamond_valley.geojson --exports exports_dv --out ../backend/data/diamond_valley.parquet
+python build_table.py --parcels parcels/diamond_valley.geojson --exports <carpeta-de-drive> --out <salida>.parquet
 ```
 
 Querétaro: los mismos pasos con `--unlabeled` en 1 y 2, cuando exista su polígono.
 
 **Lo que no se pudo comprobar sin la cuenta:** los identificadores de colección de `data-pipeline/config.py` y los nombres de banda (HLS, OpenET `et_ensemble_mad`, SMAP `sm_surface` y `sm_rootzone`, SoilGrids). El paso 1 los imprime. Si algo sale `NO ENCONTRADA`, corrige `config.py` y anótalo en `PLAN.md`.
 
-### H-12. Modelos: entrenamiento 50/50 fuera de la laptop (`@H0M10` + `@Checo-coder`, tras H-11)
+### H-12. Modelos: entrenamiento fuera de la laptop (`@Checo-coder`, tras H-11)
 
-- **`@H0M10` / `@Checo-coder` (4/4 modelos entrenados y medidos en CPU local, sin rentar GPU):** entrenados sobre `data-pipeline/exports/multi_valley_us.parquet` (partición estricta por valle, prueba en `diamond_valley_nv` no visto):
-  - **Modelo 1 (`model_1_crop_water`):** `9.25 mm` MAE vs `29.05 mm` FAO-56 (**gana**; `backend/artifacts/model_1_crop_water/` + `models/model_1_crop_water/CARD.md`).
-  - **Modelo 3 (`model_3_crop_history_gru`):** `0.4143` F1 macro vs `0.2222` línea base `'alfalfa'` (`0.581` en último año; **gana** · ONNX verificado en CPU + `attention_weight` activo en `timeline`; `backend/artifacts/model_3_crop_history_gru/` + `models/model_3_crop_history_gru/CARD.md`).
-  - **Modelo 4 (`model_4_moisture_cqr`):** cobertura `58.3 %` vs `22.9 %` rango histórico (**gana** a la línea base, con aviso declarado de brecha frente al objetivo de `90 %`; `backend/artifacts/model_4_moisture_cqr/` + `models/model_4_moisture_cqr/CARD.md`).
-  - **Modelo 2 (`model_2_prior_crop_effect`):** `-6.3 %` vs línea base sin cultivo anterior (**pierde**; reportado íntegro en `backend/artifacts/model_2_prior_crop_effect/` + `models/model_2_prior_crop_effect/CARD.md`, sin evidencia local de mejora).
+Orden estricto por tiempo (`Modelo 1 → Modelo 4 → Modelo 3 → Modelo 2` solo si sobra tiempo antes del Dom 08:00):
 
 ```bash
 pip install -r models/requirements.txt      # con PyTorch: unos 3 GB de disco
@@ -156,75 +169,3 @@ python models/model_2_prior_crop_effect/train.py --table <tabla>.parquet --test-
 - El modelo 1 se detiene si `models/kc_monthly.csv` está vacío (H-04).
 - El guion del modelo 3 **no se ha ejecutado nunca** (PyTorch no se instala en la laptop). Pruébalo primero con `--sample`.
 - Al terminar: llena `models/<modelo>/CARD.md` y sube `backend/artifacts/<modelo>/` (`model.ubj` u `.onnx` más `metrics.json`).
-
-### H-13. Poner datos reales en la API (`@H0M10`, tras D-03) — **Completado**
-
-1. `backend/data/diamond_valley.parquet` y `backend/data/queretaro.parquet` validados contra `contracts/schema.json` en `DATA_MODE=real` (norte de Guanajuato pospuesto).
-2. *(Opcional cuando un humano confirme las restricciones reales del agricultor)*: completar/revisar `backend/data/<parcel_id>.meta.json` con límites confirmados. Ya quedaron cargados en `dv-nv-01.meta.json` y `qro-sjr-01.meta.json` los registros regionales oficiales de acuífero (NDWR Área 153 Orden 1264/1302 y CONAGUA DOF 2023-11-09 Clave 2203).
-3. En Railway, la variable **`DATA_MODE=real`** ya quedó activa en vivo en `https://morristeamdfs-production.up.railway.app` (`/api/v1/pilots` sirviendo `dv-nv-01` y `qro-sjr-01` en modo `real`).
-
-### H-14. Verificación humana visual de la tabla FAO-56 (Hanniel)
-
-Claude auditó `models/fao56_crop_bank.csv` contra la tabla 12 en línea de FAO-56 (`PLAN.md`, hallazgo C-01) y Argon corrigió las 6 diferencias detectadas (`trigo_invierno`, `garbanzo`, `soya`, `girasol`, `papa`, `trebol_cobertura`) sincronizando `backend/app/engine/data/fao56_crop_bank.csv`. Solo falta que una persona confirme visualmente la tabla original en `fao.org/4/x0490e/x0490e0b.htm` (la columna de Kc inicial es una imagen) y registre su nombre como verificador. Mientras tanto, la API sigue declarando esas cifras como `assumed`.
-
-### H-15. Llaves gratuitas para datos de apoyo (Hanniel o Checo)
-
-Verificado el 2026-11-14: estas APIs responden "no autorizado" sin llave. Cada una se pide con un registro gratuito; la llave va en `.env` y en Railway, nunca en el repositorio.
-
-- **USDA NASS QuickStats** (superficie y rendimiento por condado): registro en quickstats.nass.usda.gov/api.
-- **OpenET** (ET real por campo): cuenta en etdata.org. Alternativa sin llave: la colección de OpenET en Earth Engine.
-- **USDA AMS MyMarketNews** (precios): registro en mymarketnews.ams.usda.gov.
-- **Earthdata Login** (ECOSTRESS por AppEEARS, si se usa).
-
-Sin llave funcionan: NASA POWER, CropScape (CDL), Soil Data Access (SSURGO) y la API nueva de agua de USGS.
-
-### H-16. Decidir cómo se sabe qué se siembra en Querétaro (equipo)
-
-Ningún recurso de la lista del reto dice qué se cultiva en México. Opciones: (a) lo declara el agricultor, con FAO GAEZ como aptitud; (b) usar estadística oficial mexicana (SIAP), saliendo de la lista y declarándolo en la página del proyecto. Detalle en `data-pipeline/PLAN_DE_DATOS.md` §5.
-
-### H-17. Confirmar a ojo los tres polígonos (Hanniel, 2 minutos)
-
-Los polígonos ya no hay que dibujarlos: salieron de los datos con `data-pipeline/ee_pick_parcels.py` y ya se extrajeron sus 36 meses a `backend/data/`.
-
-- **Diamond Valley (`dv-nv-01`):** pivote de 50 ha donde CDL dio alfalfa en 2022, 2023 y 2024, a 3.8 km del centro del valle. Reemplaza al rectángulo de ejemplo, que mezclaba alfalfa con 17–22 % de matorral.
-- **Querétaro (`qro-sjr-01`) y norte de Guanajuato (`gto-norte-01`):** la mancha más compacta de riego probable (verde en la seca y con cosecha) de cada región.
-
-Qué hacer: abre con doble clic `data-pipeline/parcels/ver_parcelas.html`. Muestra cada contorno sobre imagen satelital. Si los tres caen sobre un campo, listo. Si quieres otra parcela:
-1. Abre https://geojson.io, arrastra el `.geojson` de la región y mueve o redibuja el polígono; guarda con el mismo `parcel_id` y `valley`.
-2. O pide otra candidata: `python ee_pick_parcels.py scout ... --rank 2` (la segunda más compacta).
-3. Vuelve a correr `ee_export.py --local-dir` y `build_table.py` (comandos en `data-pipeline/README.md`).
-
-### H-18. Datos que solo sabe el agricultor (equipo, antes de las 18:00)
-
-Por cada parcela (Diamond Valley, Querétaro y Guanajuato), con un agricultor o técnico real si se puede, o declarado como supuesto si no:
-- agua máxima por año (mm, o volumen del pozo o la concesión),
-- maquinaria disponible,
-- cultivos sin comprador,
-- ventana de siembra,
-- en México, qué sembró cada mes de los últimos tres años (no hay CDL).
-
-Va en `backend/data/<parcel_id>.meta.json` (formato en `backend/README.md`). Sin esto, ninguna rotación se descarta y la ficha lo dice.
-
-### H-19. Decidir si se mantiene SoilGrids (Hanniel)
-
-SoilGrids (ISRIC) da el suelo en la tabla real y es la única fuente de suelo para México, pero **no está en la lista de recursos del reto**. Opciones: (a) mantenerlo y declararlo en la página del proyecto; (b) usar solo SSURGO en EE. UU. y dejar el suelo de México como "información que falta". `AGENTS.md` ya dice que se usa declarado y solo donde no hay SSURGO.
-
-### H-20. Descargar el cierre agrícola municipal de SIAP (Hanniel) — HECHO, 2020–2025 integrado
-
-Decidiste usar también estadística oficial mexicana. El dominio de datos abiertos de SIAP (`nube.siap.gob.mx`) no resuelve desde la laptop (DNS: dominio inexistente), así que la descarga es manual:
-
-1. En el navegador entra a https://www.gob.mx/siap y busca **"Cierre de la producción agrícola"** (datos abiertos, por municipio).
-2. Descarga el CSV de **2024** (y 2023 si está). Trae municipio, cultivo, ciclo (otoño-invierno, primavera-verano), riego o temporal, superficie sembrada, producción y **precio medio rural**.
-3. Guárdalo en `data-pipeline/exports/siap/` (esa carpeta no se sube al repositorio) y avísame.
-
-Con eso reemplazo el historial supuesto de Querétaro por lo que de verdad se siembra con riego en el municipio, y agrego precios.
-
-> **Avance 2026-11-14 (`@H0M10`):** ya quedaron integrados tanto el cierre municipal de riego **SIAP 2020–2025** (`data-pipeline/siap/queretaro_riego.csv` + `farmer_context.py`) como el total estatal **SIAP 2025** para Querétaro (`117,320.01 ha` sembradas, `110,271.76 ha` cosechadas, `5,608,171.22` miles de pesos) y los datos oficiales de CONAGUA del **Acuífero Valle de San Juan del Río (Clave 2203, DOF 2023-11-09: `-56.89 hm³/año`)** en `backend/data/qro-sjr-01.meta.json`.
-
-### Estado de H-15 a H-19 (actualizado por Claude)
-
-- **H-15:** llaves de QuickStats y OpenET guardadas en `backend/.env` y probadas; falta AMS (opcional). Como las pegaste en el chat, conviene regenerarlas después del evento.
-- **H-16:** decidido: agricultor más SIAP (H-20).
-- **H-17:** Diamond Valley confirmado. Querétaro corregido a un solo campo de 2.8 ha con Sentinel-2 (10 m). Guanajuato pospuesto.
-- **H-18:** cubierto con supuestos sacados de datos (`data-pipeline/farmer_context.py`): agua que ya usa el campo (OpenET), ventana por temperatura (POWER), mercado por censo y CDL (QuickStats), precios de heno (QuickStats). Un agricultor real los reemplaza.
-- **H-19:** decidido: se mantiene SoilGrids, declarado.

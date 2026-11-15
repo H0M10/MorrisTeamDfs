@@ -1,6 +1,7 @@
 # PLAN.md — Field Shift (equipo The CSC)
 
-**Coordinación:** ARGON (orquestador/auditor) y Claude (CLI constructor) se coordinan vía `/contracts/`, `PLAN.md`, `HUMANO.md`, `AGENTS.md` y el tablero visual `docs/status.json` (`python scripts/sync_board.py` -> `docs/index.html` en GitHub Pages). Ninguna función pesada ni modelo se entrena localmente en laptops de 8 GB.
+**Coordinación:** ARGON (orquestador/auditor) y Claude (CLI constructor) se coordinan vía `/contracts/`, `PLAN.md`, `HUMANO.md`, `AGENTS.md` y el tablero visual `docs/status.json` (`python scripts/sync_board.py` -> `docs/index.html` en GitHub Pages).
+**Hito de las 9:00 AM (Sábado 14):** Al recibir el "stack" del organizador, ARGON y Hanniel (`@H0M10`) revisan compatibilidad antes de congelar `/contracts/schema.json` a las **10:00 AM**. Ninguna función pesada ni modelo se entrena localmente en laptops de 8 GB.
 **Equipo nominal de 4 y recortes (Sáb 09:50):** Dupla Backend/Datos (`@H0M10` Hanniel + `@Checo-coder` Checo) y Dupla Frontend/Visuales/Entrega (`@Gicarrillo` + `@alexishal8` Alexis). Se recortan preventivamente Extras #4 (`L-04`) y #5 (`L-05`) per `AGENTS.md` §8. Todo cambio de estado/decisión debe reflejarse en `docs/status.json` + `python scripts/sync_board.py`.
 
 ---
@@ -9,39 +10,39 @@
 
 | Compuerta | Cuándo | Condición de paso | Estado |
 | --- | --- | --- | --- |
-| G1 | Sábado 10:00 | Contrato congelado; API de ejemplo desplegada | **Completado** (`https://morristeamdfs-production.up.railway.app`) |
-| G2 | Sábado 14:00 | Un dato real en pantalla: `/tool` consume la API real para una parcela | **Completado** (`DATA_MODE=real` activo en Railway sirviendo `dv-nv-01` y `qro-sjr-01`; norte de Guanajuato pospuesto) |
-| G3 | Sábado 19:00 | Tres rotaciones comparables del caso real | Pendiente *(API/datos 3/3 viables listos; falta `L-02` Gestos en `/showcase`)* |
-| G4 | Domingo 8:00 | Corte de modelos: el que no tenga métrica sale y entra su respaldo | **Completado** (`M-06` + auditoría agronómica `H-03`: 4 modelos medidos en CPU, M4 activo con aviso de brecha, M2 solo reporte negativo `-6.3 %`) |
+| G1 | Sábado 10:00 | Contrato congelado; API de ejemplo desplegada | En curso |
+| G2 | Sábado 14:00 | Un dato real en pantalla: `/tool` consume la API real para una parcela | Pendiente |
+| G3 | Sábado 19:00 | Tres rotaciones comparables del caso real | Pendiente |
+| G4 | Domingo 8:00 | Corte de modelos: el que no tenga métrica sale y entra su respaldo | Pendiente |
 | G5 | Domingo 12:00 | Se congelan las funciones | Pendiente |
 | G6 | Domingo 20:00 | Entregado (límite oficial domingo 23:59) | Pendiente |
 
 ---
 
-## Pista 1 — Datos (`/data-pipeline`) — Reparto 50/50: `@H0M10` (Diamond Valley + Motor) y `@Checo-coder` (Valles NV/ID/UT + Querétaro)
-*Todo cómputo pesado corre en GEE / Colab / máquina rentada, nunca en laptops de 8 GB. Ver análisis completo de los 24 recursos en `docs/RECURSOS_NASA_Y_BANCO_CULTIVOS.md`.*
+## Pista 1 — Datos (`/data-pipeline`) — Dueño: Checo (`@Checo-coder` · Dupla Backend/Datos, Global)
+*Todo cómputo pesado corre en GEE / Colab / máquina rentada, nunca en laptops de 8 GB.*
 
 | ID | Tarea | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
-| D-01 | Confirmar en catálogo GEE los años exactos cubiertos por HLS, OpenET, USDA CDL, SMAP, SSURGO, SoilGrids y SRTM (+ opcionales S2/IMERG/PRISM) | `@Checo-coder` | G1 (Sáb 10:00) | **Completado** (`ee_coverage.py` verificado sobre `luca-497507`: 2015–2024 en común) |
-| D-02 | Dibujar 25–30 pivotes reales de 2-3 zonas vecinas en NV, ID y UT (alfalfa, granos, papa, frijol, maíz) | `@Checo-coder` + `@H0M10` | G2 (Sáb 14:00) | **Completado** (`data-pipeline/parcels/multi_valley_us.geojson`: 15 parcelas seleccionadas por CDL en `diamond_valley_nv`, `snake_river_id` y `millard_ut`) |
-| D-03 | Extraer serie de 36 meses de **Diamond Valley** (caso estrella para Compuerta G2) -> `.parquet` real | `@H0M10` | G2 (Sáb 14:00) | **Completado** (`backend/data/diamond_valley.parquet`, 36 meses 2022–2024 validado contra `contracts/schema.json`) |
-| D-04 | Polígono real de **Querétaro** (San Juan del Río / Pedro Escobedo, `--unlabeled`) + cifra acuífero CONAGUA verificada -> `.parquet` | `@Checo-coder` + `@H0M10` | G3 (Sáb 19:00) | **Completado** (`queretaro.parquet` Sentinel-2 10 m + cierre municipal SIAP 2020–2025 + total estatal SIAP 2025 + acuífero CONAGUA Clave 2203 Valle de San Juan del Río DOF 2023-11-09 `-56.89 hm³/año` en `qro-sjr-01.meta.json`) |
-| D-05 | Exportación multi-valle (NV, ID, UT) para entrenamiento en la nube | `@Checo-coder` + `@H0M10` | G3 (Sáb 19:00) | **Completado** (`data-pipeline/exports/multi_valley_us.parquet`, 720 filas 2021–2024 vía GEE `luca-497507` + POWER) |
+| D-01 | Confirmar en catálogo GEE los años exactos cubiertos por HLS, OpenET, USDA CDL, SMAP, SSURGO, SoilGrids y SRTM antes de generar tablas | `@Checo-coder` | G1 (Sáb 10:00) | Bloqueado por `HUMANO.md` (cuentas GEE/OpenET) |
+| D-02 | Elegir 2-3 zonas de riego similares a Diamond Valley en NV, ID y UT (pivote, alfalfa, granos) y exportar muestra de verificación | `@Checo-coder` | G2 (Sáb 14:00) | Bloqueado por `HUMANO.md` |
+| D-03 | Script GEE/Colab para extraer serie de 36 meses de Diamond Valley (HLS RGB/índices, POWER, OpenET, CDL, SMAP 9 km, SSURGO, SRTM) y generar artefacto compacto en JSON/Parquet | `@Checo-coder` | G2 (Sáb 14:00) | Guiones listos (`ee_export.py`, `build_table.py`); falta ejecutarlos (`HUMANO.md` H-11) |
+| D-04 | Script de extracción para la parcela de Querétaro (sin CDL ni OpenET; SoilGrids 250 m + POWER + HLS + SMAP 9 km + SRTM) tras recibir polígono | `@Checo-coder` | G3 (Sáb 19:00) | Bloqueado por `HUMANO.md` (polígono Qro.) |
+| D-05 | Exportación completa multi-valle (NV, ID, UT) para entrenamiento de Modelos 1-4 en la nube | `@Checo-coder` | G3 (Sáb 19:00) | Pendiente |
 
 ---
 
-## Pista 2 — Modelos (`/models`) — Reparto 50/50: `@H0M10` (Modelos 1 y 4) y `@Checo-coder` (Modelo 3 + opcional 2)
-*Ningún modelo llega al agricultor sin métrica medida por valle y archivo `CARD.md`. Banco FAO-56 (`kc_monthly.csv` y `fao56_crop_bank.csv`, 24 especies + alias) ya poblado (H-04).*
+## Pista 2 — Modelos (`/models`) — Dueño: Checo (`@Checo-coder` · Dupla Backend/Datos, Global)
+*Ningún modelo llega al agricultor sin métrica medida por valle y archivo `CARD.md`. Orden estricto de entrenamiento: Modelo 1 → Modelo 4 → Modelo 3 → Modelo 2 (solo si sobra tiempo). Respaldos obligatorios si no cumplen.*
 
 | ID | Tarea | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
-| M-01 | Definir esqueleto de `CARD.md` y poblar Banco FAO-56 (`kc_monthly.csv` + `fao56_crop_bank.csv`) | `@H0M10` / ARGON | G1 (Sáb 10:00) | **Completado** (32 códigos / 132 filas Kc; pendiente revisión agronómica H-03) |
-| M-02 | **Prioridad 1 · Modelo 1:** entrenar y validar en CPU/Colab (XGBoost consumo de agua vs tabla FAO-56 en valle no visto) | `@H0M10` | G4 (Dom 08:00) | **Completado** (`9.25 mm` MAE en `diamond_valley_nv` vs `29.05 mm` FAO-56 — **gana** · `backend/artifacts/model_1_crop_water/` + `CARD.md`) |
-| M-05 | **Prioridad 2 · Modelo 4:** calibrar y validar en CPU/Colab (Balance FAO-56 + residual + CQR 90% a escala SMAP 9 km) | `@H0M10` | G4 (Dom 08:00) | **Completado** (`58.3 %` cobertura CQR vs `22.9 %` rango histórico en `diamond_valley_nv` — **gana** a la línea base con aviso de brecha vs objetivo `90 %` · `backend/artifacts/model_4_moisture_cqr/` + `CARD.md`) |
-| M-04 | **Prioridad 3 · Modelo 3:** entrenar en Colab/CPU, validar Macro F1 y exportar a ONNX (GRU ligera con atención temporal) | `@Checo-coder` + `@H0M10` | G4 (Dom 08:00) | **Completado** (`0.4143` F1 macro en `diamond_valley_nv` vs `0.2222` línea base `'alfalfa'`, último año `0.581` F1 macro — **gana** · ONNX verificado en CPU · `backend/artifacts/model_3_crop_history_gru/` + `CARD.md`) |
-| M-03 | **Prioridad 4 (solo si sobra tiempo) · Modelo 2:** entrenar XGBoost observacional efecto cultivo anterior (respaldo: `"Sin evidencia local"`) | `@Checo-coder` + `@H0M10` | G4 (Dom 08:00) | **Completado** (`-6.3 %` frente a línea base sin cultivo anterior en `diamond_valley_nv` — **pierde**, reportado íntegro como "sin evidencia local" · `backend/artifacts/model_2_prior_crop_effect/` + `CARD.md`) |
-| M-06 | Corte de modelos (Domingo 08:00): empaquetar solo artefactos con métrica validada y activar respaldos en los demás | `@H0M10` + `@Checo-coder` + ARGON | G4 (Dom 08:00) | **Completado** (corte G4 cerrado: `model_1` `9.25 mm` + OpenET/FAO-56 calibrado en contrafactuales, `model_3` ONNX `0.4143` F1 + atención activa, `model_4` CQR activo en `labeled` con aviso `58.3 %` vs `90 %` y omitido en `unlabeled`, `model_2` `-6.3 %` declarado sin evidencia local / `absent` en `unlabeled`, plantilla `less_water` de NV corregida de `avena_forrajera` a `trigo_primavera` tras auditoría `H-03`) |
+| M-01 | Definir esqueleto de `CARD.md` (datos, partición por valle, último año fuera, métrica vs línea base, límites) para los 4 modelos | `@Checo-coder` / Claude | G1 (Sáb 10:00) | Completado (`models/*/CARD.md` como plantilla por llenar) |
+| M-02 | **Prioridad 1 · Modelo 1:** entrenar y validar (XGBoost consumo de agua vs tabla FAO-56 en valle no visto; respaldo: tabla FAO-56 declarada tras llenar `kc_monthly.csv`) | `@Checo-coder` | G4 (Dom 08:00) | Bloqueado por D-05 / H-04 |
+| M-03 | **Prioridad 4 (solo si sobra tiempo) · Modelo 2:** entrenar y validar (XGBoost observacional efecto cultivo anterior vs modelo sin cultivo anterior; nunca causal ni ahorro de agua; respaldo: `"Sin evidencia local"`) | `@Checo-coder` | G4 (Dom 08:00) | Bloqueado por D-05 |
+| M-04 | **Prioridad 3 · Modelo 3:** entrenar, validar y exportar a ONNX (GRU ligera con atención temporal, Macro F1 por clase en valle no visto) | `@Checo-coder` | G4 (Dom 08:00) | Bloqueado por D-05 |
+| M-05 | **Prioridad 2 · Modelo 4:** calibrar y validar (Balance FAO-56 + residual + CQR 90% a escala SMAP 9 km; cobertura real reportada) | `@Checo-coder` | G4 (Dom 08:00) | Bloqueado por D-05 |
+| M-06 | Corte de modelos (Domingo 08:00): empaquetar solo artefactos con métrica validada y activar respaldos en los demás | `@Checo-coder` + `@H0M10` + ARGON | G4 (Dom 08:00) | Pendiente |
 
 ---
 
@@ -51,11 +52,11 @@
 | --- | --- | --- | --- | --- |
 | A-01 | Crear estructura del repo, `CLAUDE.md`, `contracts/schema.json`, 3 fixtures y `CHANGELOG.md` v0.1.0 | ARGON | Madrugada Sáb | Completado |
 | A-02 | **Orden #1 Claude:** Esqueleto FastAPI en `/backend` sirviendo los 3 fixtures con validación Pydantic v2, `/health`, `/evaluate`, `/ask` (enrutador por reglas) + tipos TypeScript y cliente en `/frontend/src/lib` + `.env.example` | `@H0M10` / Claude | G1 (Sáb 10:00) | Completado (Backend + `/frontend/src/lib`) |
-| A-03 | Conectar `H0M10/MorrisTeamDfs`, congelar `/contracts/schema.json` a las 10:00 AM; desplegar API fixture en Railway | `@H0M10` | G1 (Sáb 10:00) | **Completado** (`https://morristeamdfs-production.up.railway.app`) |
-| A-04 | Migraciones SQL y políticas RLS por token en `/supabase/migrations/` (`evaluations` y `reviews` sin PII) + degradación elegante si Supabase falla | `@H0M10` / Claude | G2 (Sáb 14:00) | **Completado** (SQL aplicado, RLS activo sin políticas y `/health` con `supabase_configured: true`) |
-| A-05 | Motor físico determinista `/backend/app/engine/`: evaluador de restricciones **primero** (`has_viable_options: false` si aplica), FAO-56 mensual, heladas/calor POWER, índices HLS (sin NDRE en Landsat, sin CAI) y filtro exponencial raíz | `@H0M10` / Claude | G2 (Sáb 14:00) | **Completado** — funciones probadas y conectadas a `backend/data/diamond_valley.parquet` vía `table_to_contract.py` |
-| A-06 | Integración de datos reales de Diamond Valley + 3 rotaciones comparables (actual, menos agua, más suelo) y soporte modo `unlabeled` (Querétaro) | `@H0M10` + `@Checo-coder` / Claude | G3 (Sáb 19:00) | **Completado (`DATA_MODE=real` activo en Railway)** — sirviendo `dv-nv-01` y `qro-sjr-01` validados contra `contracts/schema.json` (norte de Guanajuato pospuesto) |
-| A-07 | Integración de artefactos ONNX/XGBoost aprobados en corte de modelos (o activación explícita de respaldos) | `@H0M10` + `@Checo-coder` / Claude | G4 (Dom 08:00) | **Completado** (`model_1`: OpenET observado + FAO-56 calibrado por parcela en alternativas para evitar fuga de NDVI/NDMI; `model_3` ONNX: `attention_weight` activo en `timeline`; `model_4`: intervalo CQR 90 % activo en `labeled` y omitido en `unlabeled`; `model_2`: sin evidencia `-6.3 %` declarado en `labeled` y `absent` en `unlabeled`) |
+| A-03 | Conectar `H0M10/MorrisTeamDfs`, congelar `/contracts/schema.json` a las 10:00 AM; desplegar API fixture en Railway | `@H0M10` | G1 (Sáb 10:00) | En curso (`H-01` conectado; falta `H-02`) |
+| A-04 | Migraciones SQL y políticas RLS por token en `/supabase/migrations/` (`evaluations` y `reviews` sin PII) + degradación elegante si Supabase falla | `@H0M10` / Claude | G2 (Sáb 14:00) | Migración escrita y API con 503 claro; falta aplicarla (`HUMANO.md` H-06) |
+| A-05 | Motor físico determinista `/backend/app/engine/`: evaluador de restricciones **primero** (`has_viable_options: false` si aplica), FAO-56 mensual, heladas/calor POWER, índices HLS (sin NDRE en Landsat, sin CAI) y filtro exponencial raíz | `@H0M10` / Claude | G2 (Sáb 14:00) | Funciones puras completadas y probadas; falta conectarlas a datos reales (A-06) |
+| A-06 | Integración de datos reales de Diamond Valley + 3 rotaciones comparables (actual, menos agua, más suelo) y soporte modo `unlabeled` (Querétaro) | `@H0M10` + `@Checo-coder` / Claude | G3 (Sáb 19:00) | Pendiente |
+| A-07 | Integración de artefactos ONNX/XGBoost aprobados en corte de modelos (o activación explícita de respaldos) | `@H0M10` + `@Checo-coder` / Claude | G4 (Dom 08:00) | Pendiente |
 
 ---
 
@@ -90,7 +91,7 @@
 | ID | Tarea | Dueño | Compuerta | Estado |
 | --- | --- | --- | --- | --- |
 | E-01 | Esqueleto `/engineer` leyendo métricas de modelos y pesos de atención de la API | `@alexishal8` / Claude | G2 (Sáb 14:00) | Completado (en crudo); sigue `@alexishal8` con `engineer/README.md` |
-| E-02 | Extra 3: Visualización de red en vivo con pesos reales del Modelo 3 (ocultar automáticamente si Modelo 3 no está entrenado) | `@alexishal8` | G5 (Dom 12:00) | **Desbloqueado por modelos** (`model_3_crop_history_gru` en `status: "trained"` + `attention_weight` mensual activo en `timeline`) |
+| E-02 | Extra 3: Visualización de red en vivo con pesos reales del Modelo 3 (ocultar automáticamente si Modelo 3 no está entrenado) | `@alexishal8` | G5 (Dom 12:00) | Depende de M-04 / G4 |
 | E-03 | Borrador de `/docs/project_page.md` (en inglés, sin cifras fixture) y `/docs/video_script.md` (30 s, guion compartido) | `@alexishal8` | G3 (Sáb 19:00) | Pendiente |
 | E-04 | Generar animaciones IA de apoyo, grabar video de respaldo sábado 23:00 y video final domingo tras congelar funciones (con datos reales, cero `fixture`) | `@alexishal8` + `@Gicarrillo` | Dom 15:00 | Bloqueado por datos reales |
 | E-05 | Revisión final de `AI_USAGE.md`, `README.md` raíz, enlace público del repo y ensayo del pitch | `@alexishal8` + Equipo | G6 (Dom 20:00) | Pendiente |
@@ -120,7 +121,7 @@ Estado de la orden de la madrugada del sábado. Cada bloque cierra con un commit
 - **Puerto local de la API: 8010.** En la laptop de Hanniel el 8000 lo ocupa un proceso del sistema.
 - **Unidades en inglés en el contrato.** Los fixtures traen `mm/yr` y `days/yr`; la interfaz en español las muestra tal cual. Decidir antes de congelar si el contrato las localiza o si lo hace la interfaz (`HUMANO.md` H-09).
 - **Estado compartido de `/tool`.** Hoy cada pantalla vuelve a pedir la evaluación de la parcela guardada. Cuando existan los controles de restricciones, `@Gicarrillo` debe decidir dónde vive el resultado de `/simulate` entre pantallas.
-- **Convertidor tabla → contrato.** Falta el paso que toma la tabla de una parcela (`build_table.py`) y arma la evaluación real para la API. Es la tarea A-06 (Orden #2).
+- **Convertidor tabla → contrato.** Falta el paso que toma la tabla de una parcela (`build_table.py`) y arma la evaluación real para la API. Es la tarea A-06 y el primer trabajo tras el stack de las 9:00.
 - **`awc_mm_m` no sale de la tabla de datos.** El contrato lo exige en `soil_profile`; hay que decidir si viene de SSURGO o de una función de pedotransferencia sobre SoilGrids, y declararlo.
 - **Métricas sintéticas bloqueadas.** Los guiones de `/models` con `--sample` marcan su `metrics.json`; la API se niega a tratarlo como modelo entrenado (prueba en `backend/tests/test_models_loader.py`).
 
@@ -145,34 +146,6 @@ Estado de la orden de la madrugada del sábado. Cada bloque cierra con un commit
 
 ## Órdenes de trabajo autónomas para Claude (no requieren llaves ni cuentas externas)
 
-- **Orden #2 (`@H0M10` Hanniel / Claude Fable 5.2 · `/backend` y `/data-pipeline`) — Completado:** Prompt en `docs/PROMPT_CLAUDE_ORDEN_2.md`. Claude resolvió `S-01` en `loader.py`, conectó el banco `models/fao56_crop_bank.csv` + `models/kc_monthly.csv` en `backend/app/engine/crop_bank.py` con `GET /api/v1/crops`, construyó `backend/app/services/table_to_contract.py` (`S-02` + `DATA_MODE=real`) y agregó Grupo B en `data-pipeline/config.py`. Argon cerró las 6 diferencias numéricas de `C-01`, fijó `luca-497507` por omisión en Earth Engine y agregó `--local-dir` en `ee_export.py`.
+- **Orden #2 (`@H0M10` Hanniel + apoyo `@Checo-coder` / Claude · `/backend` y `/data-pipeline`):** Construir `backend/app/services/table_to_contract.py` (convierte salida Parquet de `build_table.py` en payload del contrato con `data_status="real"`, `awc_mm_m` y `organic_matter_pct` declarados), corregir `S-01` (`experimental: True` en Modelo 3 cuando `region_mode == "unlabeled"`) y normalizar pesos de atención a suma `1.0`.
 - **Orden #3 (`@Gicarrillo` / Claude · `/frontend/src/app/tool`):** Sustituir los `<Pending>` de `/tool`: estado compartido de simulación (`/api/v1/simulate`), formulario accesible de `/tool/restricciones`, calendario 36m con tramas además de color en `/tool/rotaciones`, tarjeta completa de métricas + consulta `/ask` por voz (Web Speech API) y texto en `/tool/evidencia`, vista de escalas reales en `/tool` / `/tool/retrato`, y flujo de enlace compartible + revisión de técnico en `/tool/compartir` (degradando elegante si `supabase_configured === false`).
 - **Orden #4 (`@alexishal8` / Claude · `/frontend/src/app/engineer` y `/docs`):** Completar `/engineer` leyendo métricas, intervalos CQR y atención de la API (ocultando red en vivo si `model_3_crop_history_gru.status !== "trained"`), generar animaciones IA / clips de apoyo (sin cifras `fixture`) y crear plantillas limpias de `/docs/project_page.md` (en inglés, cero cifras `fixture`) y `/docs/video_script.md` (30 s, guion compartido).
-
----
-
-## Orden #2 — resultado y auditoría de Claude (rama `pista/motor-api`)
-
-**Hecho y probado (pytest):**
-- **S-01 resuelto.** `loader.py` marca `experimental: true` para `model_3_crop_history_gru` en regiones sin etiquetas aunque esté en respaldo.
-- **S-02 resuelto.** `table_to_contract.py` calcula `organic_matter_pct = soc_gkg × 0.1724` (Van Bemmelen, declarado) y `awc_mm_m` desde SSURGO si la tabla trae la columna, o por pedotransferencia de Saxton y Rawls (2006) con `type: "modeled"`.
-- **Banco de cultivos conectado.** `python contracts/sync.py` copia `models/fao56_crop_bank.csv` y `models/kc_monthly.csv` a `backend/app/engine/data/`; `crop_bank.py` los lee; `crop_traits.py` se construye desde el banco (32 códigos); `GET /api/v1/crops` lo expone con `type: "assumed"`.
-- **`DATA_MODE=real` conectado.** Lee los `.parquet` de `DATA_DIR` (por omisión `backend/data/`). Sin tabla: 503 `real_data_unavailable`. Tabla incompleta (menos de 36 meses consecutivos o sin columnas): 503 `real_data_incomplete`.
-- **Grupo B.** `data-pipeline/config.py` lista `gpm_imerg` y `prism` como opcionales y agrega `EXTENDED_CDL_GROUPS` sin tocar las cuatro clases del modelo 3.
-
-**Hallazgos de auditoría (para Hanniel; no toqué `/models` ni `/contracts`):**
-- **C-01. El banco FAO-56 no está verificado por una persona y tiene diferencias con la tabla 12.** Lo cotejé contra la publicación en línea (fao.org/4/x0490e/x0490e0b.htm). Diferencias en `models/fao56_crop_bank.csv`: `garbanzo` Kc medio 1.05 (FAO: 1.00); `soya` Kc inicial 0.35 (leguminosas: 0.40); `girasol` Kc inicial 0.30 (oleaginosas: 0.35); `papa` Kc inicial 0.45 (raíces y tubérculos: 0.50); `trebol_cobertura` 0.45/1.10/1.05 (trébol henificado promedio: 0.40/0.90/0.85); `trigo_invierno` dice "suelo no helado" con Kc inicial 0.40, pero 0.40 es el valor para suelo helado (no helado: 0.70). **[Actualización Argon 13:26]:** ya se corrigieron los 6 valores y la nota de `trigo_invierno` en `models/fao56_crop_bank.csv` y `backend/app/engine/data/fao56_crop_bank.csv`; todo sigue servido como `type: "assumed"` mientras una persona firma `H-14` tras revisar visualmente la tabla original.
-- **C-02. La curva mensual de Kc es por grupo y por mes del calendario del hemisferio norte**, no por fecha real de siembra. Para Querétaro (maíz de mayo a octubre) puede no coincidir. Declarado en `crop_bank.py` y en `/api/v1/crops`.
-- **C-03. Las rotaciones alternativas en modo real son plantillas supuestas** (`TEMPLATES` en `table_to_contract.py`): una para sistemas de alfalfa y otra para grano de verano. Llevan `type: "assumed"` y cada ficha lo dice. Las debe revisar un agrónomo (H-03).
-- **C-04. El agua en modo real sale siempre del respaldo FAO-56**, aunque el modelo 1 esté entrenado: falta conectar el modelo a rotaciones alternativas (no hay vigor observado de un cultivo que no se sembró). Es parte de A-07.
-- **C-05. Sin restricciones declaradas no se descarta nada.** Si no existe `<parcel_id>.meta.json` con las restricciones del agricultor, `/evaluate` devuelve las tres rotaciones como viables, con el límite de agua en `null` y una nota en "información que falta". `/simulate` sí evalúa con lo que mande el cliente.
-- **C-06. Un mes sin imagen HLS** sale con índices `null` y el color gris `#BDBDBD` (el esquema congelado exige un color). La interfaz debe pintarlo como "sin dato".
-- **C-07. Tipos.** POWER, SMAP L4, SoilGrids y OpenET se marcan `modeled` (son reanálisis, asimilación o predicción); HLS y SRTM, `observed`.
-- **C-08. `test_health` fallaba en `main`** desde que el contrato pasó a 0.1.1 (la prueba tenía la versión escrita a mano). Corregido.
-- **C-09. El banco de cultivos y las plantillas de rotación se eligieron antes de mirar los datos.** El censo de CDL del condado de Eureka (2021–2024, `data-pipeline/crop_census.py`) muestra que en la zona solo se siembran alfalfa, otro heno, cebada, trigos, triticale y barbecho por encima de 100 acres. "Otro heno" (CDL 37), segundo cultivo del condado, no está en el banco. Plan completo, recurso por recurso: `data-pipeline/PLAN_DE_DATOS.md`. Pendiente: censo por valle y rotaciones observadas en GEE antes de cambiar banco o plantillas.
-- **C-10. OpenET ya cubre los 48 estados contiguos desde el 15 de diciembre de 2025** (antes, 17 y luego 23 estados del oeste). `AGENTS.md` §4 todavía dice "oeste de EE. UU."; actualizarlo es decisión de Hanniel. La validación publicada (Nature Water, 2023) sigue siendo del oeste. Niveles de datos por región en `data-pipeline/PLAN_DE_DATOS.md` §3b.
-- **C-11 (2026-11-14 14:25). Análisis de recursos por pregunta y regiones de México.** `data-pipeline/PLAN_DE_DATOS.md` §0 dice qué responde cada recurso y dónde termina en la herramienta. Earth Engine (`luca-497507`) confirmó en vivo todas las fuentes globales en Querétaro y el norte de Guanajuato; `ee_irrigated_scout.py` ubicó 3 248 ha y 5 160 ha de probable riego en temporada seca (conjetura declarada). `AGENTS.md` actualizado: OpenET en 48 estados, norte de Guanajuato como región sin etiquetas y SoilGrids declarado. Pendientes humanos: H-17, H-18 y H-19.
-- **C-12 (2026-11-14 14:40). Polígonos derivados de datos y tres tablas reales.** `ee_pick_parcels.py` propone el pivote real de Diamond Valley (reemplaza al rectángulo del fixture, que mezclaba matorral) y una parcela en Querétaro y otra en el norte de Guanajuato. Verificados sobre imagen satelital (`data-pipeline/parcels/ver_parcelas.html`). Tablas de 36 meses en `backend/data/` (`diamond_valley`, `queretaro`, `guanajuato_norte`), las tres válidas contra el contrato. En México el NDVI muestra dos ciclos por año; el cultivo sigue sin declararse (H-18). Corrección: sin historial, `soil_cover_months_36m` ahora es `null` en vez de 0.
-- **C-13 (2026-11-14 15:51). Foco en Diamond Valley; datos del agricultor sacados de datos.** El norte de Guanajuato queda pospuesto. Querétaro: lindero de un solo campo con Sentinel-2 (`ee_field_boundary.py`, 2.8 ha). Diamond Valley: la rotación actual usa el riego observado por OpenET (697 mm/año) y las alternativas FAO-56 calibrado con la misma parcela. `farmer_context.py` arma `<parcel_id>.meta.json` con restricciones derivadas de OpenET, NASA POWER y QuickStats (censo 2022 y precios de heno), todas declaradas como supuesto. Resultado en Diamond Valley: "menos agua" se descarta porque usa avena y no hay registro de venta de avena en el condado; esto confirma C-09 (las plantillas deben salir de lo que se siembra). SIAP no se puede descargar automáticamente (H-20).
-- **C-14 (2026-11-14 16:41). SIAP integrado para Querétaro.** Hanniel descargó el cierre agrícola municipal 2020–2025 (crudo en `data-pipeline/exports/siap/`, ignorado por git). `siap_summary.py` deja `data-pipeline/siap/queretaro_riego.csv` (riego en Colón, Pedro Escobedo, San Juan del Río y El Marqués). Con riego dominan maíz grano y forrajero (primavera-verano), avena, cebada y triticale (otoño-invierno) y alfalfa (perenne). La curva de NDVI de la parcela muestra dos ciclos con caídas a 0.26: **no es alfalfa**; se corrigió el supuesto anterior. Ahora el historial sale mes a mes de HLS y el cultivo de cada ciclo es el de riego con más superficie en SIAP; "sin comprador" y precios también salen de SIAP. SIAP no está en la lista del reto: se usa declarado (decisión H-16).
-- **A-07 / C-15 (2026-11-14 16:54). Integración óptima de Modelos 1–4 y acuíferos oficiales NDWR / CONAGUA.** Se cierra `A-07` en `table_to_contract.py`: se mantiene OpenET observado a 30 m en la rotación actual + FAO-56 calibrado con la parcela en alternativas (superior a evaluar `model_1` con `ndvi`/`ndmi` del cultivo actual en secuencias contrafactuales); `model_4_moisture_cqr` agrega intervalos conformales CQR al 90 % a los 36 meses de `soil_moisture` en regiones `labeled` (`dv-nv-01`), omitiéndolos en `unlabeled` (`qro-sjr-01`); `model_2_prior_crop_effect` (`-6.3 %` en valle de prueba) y el agua muestran trazabilidad exacta en `_strategy()`. Además se cargan en `dv-nv-01.meta.json`, `qro-sjr-01.meta.json` y `farmer_context.py` los registros oficiales de acuíferos NDWR (Área Hidrográfica 153, Orden 1264/1302) y CONAGUA (Clave 2203 Valle de San Juan del Río, DOF 2023-11-09: `-56.89 hm³/año`) más el total estatal SIAP 2025 de Querétaro.
