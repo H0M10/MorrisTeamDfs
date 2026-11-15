@@ -35,7 +35,7 @@ const STEPS: { screen: GuideStep; path: string; key: StepKey }[] = [
 
 /** Rutas donde aparece la Guía: lo que usa el agricultor. */
 export function guideRoute(pathname: string): boolean {
-  return pathname === "/" || pathname.startsWith("/tool") || pathname === "/accesibilidad";
+  return pathname === "/" || pathname === "/campo" || pathname.startsWith("/tool") || pathname === "/accesibilidad";
 }
 
 function screenOf(pathname: string): GuideStep | null {
@@ -164,7 +164,13 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
 
   const screen = screenOf(pathname);
   const intro =
-    pathname === "/" ? g.screens.home : screen ? g.screens[screen] : g.screens.other;
+    pathname === "/"
+      ? g.screens.home
+      : pathname === "/campo"
+        ? g.screens.campo
+        : screen
+          ? g.screens[screen]
+          : g.screens.other;
   const nextStep = nextStepOf(pathname);
 
   const [message, setMessage] = useState<string>("");

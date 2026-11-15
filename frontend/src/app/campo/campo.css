@@ -183,3 +183,25 @@
   border: 2px solid var(--color-tinta);
   border-radius: 0.5rem;
 }
+
+/* Voz: escuchar la pregunta y contestar hablando. */
+.voice-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0;
+}
+
+.voice-bar button {
+  flex: 1 1 10rem;
+}
+
+.voice-heard {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+/* Espacio para que el personaje de la esquina no tape el último botón. */
+.simple {
+  padding-bottom: 6rem;
+}

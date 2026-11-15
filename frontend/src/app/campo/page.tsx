@@ -21,6 +21,7 @@ import {
 } from "../tool/_components/priorities";
 import { useToolEvaluation } from "../tool/_components/useToolEvaluation";
 import "./campo.css";
+import { VoiceBar, type VoiceOption } from "./VoiceBar";
 
 const FieldFinder = dynamic(() => import("./FieldFinder").then((m) => m.FieldFinder), {
   ssr: false,
@@ -84,6 +85,34 @@ export default function SimpleFlowPage() {
     );
   };
 
+  const goMap = (gps: boolean) => {
+    setLocate(gps);
+    setStep("map");
+  };
+  const whereOptions: VoiceOption[] = [
+    { label: s.imThere, words: ["estoy", "aqui", "ubicacion", "i am", "here", "location"], onSelect: () => goMap(true) },
+    { label: s.findOnMap, words: ["buscar", "mapa", "find", "map", "search"], onSelect: () => goMap(false) },
+    { label: s.example, words: ["ejemplo", "example"], onSelect: useExample },
+  ];
+  const waterOptions: VoiceOption[] = WATER.map((option) => ({
+    label: s.water[option.key],
+    words: s.waterWords[option.key],
+    onSelect: () => {
+      setWater(option.key);
+      setStep("priority");
+    },
+  }));
+  const priorityOptions: VoiceOption[] = PRIORITIES.map((key) => ({
+    label: t.tool.rotations.priorityNames[key],
+    words: s.priorityWords[key],
+    onSelect: () => {
+      setPriorities({ first: key, second: null });
+      setStep("result");
+    },
+  }));
+  const options =
+    step === "where" ? whereOptions : step === "water" ? waterOptions : step === "priority" ? priorityOptions : null;
+
   const stepNumber = step === "where" || step === "map" ? 1 : step === "result" ? 3 : 2;
   const title =
     step === "where" || step === "map"
@@ -111,32 +140,20 @@ export default function SimpleFlowPage() {
         <h1 ref={heading} tabIndex={-1}>
           {title}
         </h1>
+        {options && <VoiceBar question={title} options={options} />}
 
         {step === "where" && (
-          <div className="simple-choices">
-            <button
-              type="button"
-              className="primary big"
-              onClick={() => {
-                setLocate(true);
-                setStep("map");
-              }}
-            >
-              {s.imThere}
-            </button>
-            <button
-              type="button"
-              className="big"
-              onClick={() => {
-                setLocate(false);
-                setStep("map");
-              }}
-            >
-              {s.findOnMap}
-            </button>
-            <button type="button" className="big" onClick={useExample}>
-              {s.example}
-            </button>
+          <div className="simple-choices" data-guide-id="campo.where">
+            {whereOptions.map((option, n) => (
+              <button
+                key={option.label}
+                type="button"
+                className={n === 0 ? "primary big" : "big"}
+                onClick={option.onSelect}
+              >
+                {option.label}
+              </button>
+            ))}
             <p className="small">{s.whereNote}</p>
           </div>
         )}
@@ -144,7 +161,7 @@ export default function SimpleFlowPage() {
         {step === "map" && <FieldFinder locateOnStart={locate} onConfirm={analyze} />}
 
         {step === "water" && (
-          <div className="simple-choices">
+          <div className="simple-choices" data-guide-id="campo.water">
             {WATER.map((option) => (
               <button
                 key={option.key}
@@ -162,7 +179,7 @@ export default function SimpleFlowPage() {
         )}
 
         {step === "priority" && (
-          <div className="simple-choices">
+          <div className="simple-choices" data-guide-id="campo.priority">
             {PRIORITIES.map((key) => (
               <button
                 key={key}
@@ -323,7 +340,7 @@ function Answer({ evaluation }: { evaluation: Evaluation }) {
       <p className="answer-field">
         {s.forField} <strong>{pick(evaluation.parcel.name)}</strong>
       </p>
-      <section className="answer-card" aria-labelledby="answer-title">
+      <section className="answer-card" aria-labelledby="answer-title" data-guide-id="campo.answer">
         <p className="answer-kicker">{s.bestFor(r.priorityNames[key])}</p>
         <h2 id="answer-title">{pick(top.title)}</h2>
         <p className="answer-why">{s.because(detail)}</p>
@@ -335,7 +352,7 @@ function Answer({ evaluation }: { evaluation: Evaluation }) {
         {top.id === "current" && <p>{s.isCurrent}</p>}
       </section>
 
-      <div className="simple-choices">
+      <div className="simple-choices" data-guide-id="campo.next">
         <Link className="button primary big" href="/tool/evidencia">
           {s.seeWhy}
         </Link>
