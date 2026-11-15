@@ -31,7 +31,7 @@ const NOT_FOUND = new ApiError(404, "parcel_not_found", {
 });
 
 const PARCEL_CHANGE_EVENT = "fieldshift:parcel-change";
-const CONSTRAINTS_CHANGE_EVENT = "fieldshift:constraints-change";
+export const CONSTRAINTS_CHANGE_EVENT = "fieldshift:constraints-change";
 
 export const PARCEL_ID_ALIASES: Record<string, string> = {
   "dv-nv-fixture-01": "dv-nv-01",
@@ -180,7 +180,7 @@ export function usePilots(): LoadState<PilotsResponse> {
   return useLoad(loadPilots, "pilots");
 }
 
-function parseConstraints(json: string | null): ConstraintsInput | null {
+export function parseConstraints(json: string | null): ConstraintsInput | null {
   if (!json) return null;
   try {
     return JSON.parse(json) as ConstraintsInput;

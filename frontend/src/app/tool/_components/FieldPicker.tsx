@@ -14,6 +14,12 @@ import {
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef, useState } from "react";
 import { ApiError, api } from "@/lib/api";
+import {
+  MAP_ACTION_EVENT,
+  reportMapResult,
+  takePendingMapAction,
+  type MapAction,
+} from "@/lib/guide/actions";
 import { useI18n } from "@/lib/i18n";
 import {
   BASE_STYLE,
@@ -54,6 +60,7 @@ export function FieldPicker({
   const mapRef = useRef<MapLibreMap | null>(null);
   const markers = useRef<Marker[]>([]);
   const meMarker = useRef<Marker | null>(null);
+  const runAction = useRef<(action: MapAction) => void>(() => {});
 
   const [view, setView] = useState<MapView>("satellite");
   const [method, setMethod] = useState<Method>("center");
@@ -107,6 +114,9 @@ export function FieldPicker({
         source: "shape",
         paint: { "line-color": YELLOW, "line-width": 3 },
       });
+      // Una orden de voz que llegó antes de abrir el mapa ("ponme en Texas").
+      const pending = takePendingMapAction();
+      if (pending) runAction.current(pending);
     });
     map.on("click", (event) => {
       const { lat: y, lng: x } = event.lngLat;
@@ -193,9 +203,10 @@ export function FieldPicker({
   const flyTo = (y: number, x: number, zoom = 15) =>
     mapRef.current?.flyTo({ center: [x, y], zoom, duration: motion(1200) });
 
-  const useMyLocation = () => {
+  const locateMe = (spoken = false) => {
     if (!("geolocation" in navigator)) {
       setFindMessage(p.noGps);
+      if (spoken) reportMapResult(p.noGps);
       return;
     }
     setLocating(true);
@@ -214,21 +225,38 @@ export function FieldPicker({
           meMarker.current = new Marker({ element }).setLngLat([x, y]).addTo(map);
         }
         setFindMessage(p.located);
+        if (spoken) reportMapResult(p.located);
         setLocating(false);
       },
       () => {
         setFindMessage(p.gpsDenied);
+        if (spoken) reportMapResult(p.gpsDenied);
         setLocating(false);
       },
       { enableHighAccuracy: true, timeout: 15000 },
     );
   };
 
-  const search = async () => {
-    const text = query.trim();
+  const searchPlace = async (text: string, spoken: boolean) => {
     if (!text) return;
     setFindMessage(p.searching);
     try {
+      if (spoken) {
+        // Por voz se nombra el lugar más conocido: si es de otro país (Querétaro
+        // es México), se dice claro en vez de buscar una calle con ese nombre.
+        const world = (await (
+          await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=${encodeURIComponent(text)}`,
+          )
+        ).json()) as { display_name?: string; address?: { country?: string; country_code?: string } }[];
+        const top = world[0]?.address;
+        if (top?.country_code && top.country_code !== "us") {
+          setFindMessage(p.notFound);
+          const name = world[0]?.display_name?.split(",")[0]?.trim() || text;
+          reportMapResult(p.guideOutsideUS(name, top.country ?? top.country_code.toUpperCase()));
+          return;
+        }
+      }
       const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&q=${encodeURIComponent(text)}`;
       const results = (await (await fetch(url)).json()) as {
         lat: string;
@@ -238,14 +266,28 @@ export function FieldPicker({
       const first = results[0];
       if (!first) {
         setFindMessage(p.notFound);
+        if (spoken) {
+          // ¿Existe fuera de Estados Unidos? Así la Guía puede decirlo claro.
+          const world = (await (
+            await fetch(
+              `https://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=${encodeURIComponent(text)}`,
+            )
+          ).json()) as { address?: { country?: string } }[];
+          const country = world[0]?.address?.country;
+          reportMapResult(country ? p.guideOutsideUS(text, country) : p.guideNotFound(text));
+        }
         return;
       }
       flyTo(Number(first.lat), Number(first.lon), 14);
       setFindMessage(p.found(first.display_name));
+      if (spoken) reportMapResult(p.guideFound(first.display_name.split(",").slice(0, 3).join(",")));
     } catch {
       setFindMessage(p.searchError);
+      if (spoken) reportMapResult(p.searchError);
     }
   };
+
+  const search = () => searchPlace(query.trim(), false);
 
   const typedCenter = () => {
     const y = Number(lat.trim().replace(",", "."));
@@ -282,13 +324,62 @@ export function FieldPicker({
       });
       setCenter(null);
       setCorners([]);
+      reportMapResult(p.guideAnalyzed);
       onDone(evaluation.parcel.id);
     } catch (caught) {
-      setError(caught instanceof ApiError ? pick(caught.localized) : p.error);
+      const message = caught instanceof ApiError ? pick(caught.localized) : p.error;
+      setError(message);
+      reportMapResult(message);
     } finally {
       setBusy(false);
     }
   };
+
+  // Órdenes de la Guía ("ponme en Texas", "aquí está mi campo", "analiza mi campo").
+  useEffect(() => {
+    runAction.current = (action: MapAction) => {
+      switch (action.type) {
+        case "go":
+          void searchPlace(action.place, true);
+          return;
+        case "locate":
+          locateMe(true);
+          return;
+        case "view":
+          setView(action.view);
+          reportMapResult(p.guideView(p.views[action.view]));
+          return;
+        case "size":
+          setMethod("center");
+          setSize(action.size);
+          reportMapResult(p.guideSize(p.sizes[action.size]));
+          return;
+        case "mark": {
+          const map = mapRef.current;
+          if (!map) return;
+          const c = map.getCenter();
+          setMethod("center");
+          setCenter({ lat: c.lat, lon: c.lng });
+          reportMapResult(p.guideMarked);
+          return;
+        }
+        case "analyze":
+          if (!ring || busy) {
+            reportMapResult(busy ? p.analyzing : p.guideNeedMark);
+            return;
+          }
+          reportMapResult(p.guideAnalyzing);
+          void analyze();
+          return;
+      }
+    };
+  });
+
+  useEffect(() => {
+    const onAction = (event: Event) => runAction.current((event as CustomEvent<MapAction>).detail);
+    window.addEventListener(MAP_ACTION_EVENT, onAction);
+    return () => window.removeEventListener(MAP_ACTION_EVENT, onAction);
+  }, []);
 
   // Qué tiene que hacer ahora la persona, en una frase.
   let next: string;
@@ -309,7 +400,7 @@ export function FieldPicker({
           <button
             type="button"
             className="primary map-locate"
-            onClick={useMyLocation}
+            onClick={() => locateMe()}
             disabled={locating}
             aria-describedby="find-status"
           >

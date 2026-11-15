@@ -21,7 +21,10 @@ import type { ConstraintsInput } from "../contract";
 import { useDeclaredConstraints, useEvaluation, useParcelId } from "../evaluation";
 import { useI18n } from "../i18n";
 import { canListen, canSpeak, listenOnce, speak, stopSpeaking } from "../speech";
-import { savePriorities } from "@/app/tool/_components/priorities";
+import { orderStrategies, savePriorities, type Priorities } from "@/app/tool/_components/priorities";
+import type { Evaluation } from "../contract";
+import { MAP_RESULT_EVENT, parseMapAction, sendMapAction } from "./actions";
+import { runVoiceInterview } from "./voiceInterview";
 import { useGuideMode } from "./mode";
 
 type StepKey = "parcel" | "portrait" | "constraints" | "rotations" | "evidence" | "share";
@@ -154,7 +157,7 @@ function TutorFace({ speaking }: { speaking: boolean }) {
 }
 
 export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
-  const { t, lang } = useI18n();
+  const { t, lang, pick, value } = useI18n();
   const g = t.guide;
   const pathname = usePathname().replace(/\/$/, "") || "/";
   const router = useRouter();
@@ -195,6 +198,10 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
   const dockRef = useRef<HTMLButtonElement>(null);
 
   const stopListenRef = useRef<() => void>(() => {});
+  // Modo de voz guiado: refs declaradas antes de los efectos que las leen.
+  const pathRef = useRef(pathname);
+  const interviewActive = useRef(false);
+  const interviewCancelled = useRef(false);
   const spotRef = useRef<HTMLElement | null>(null);
   const runId = useRef(0); // invalida avances pendientes al pausar o cambiar de pantalla
   const timer = useRef<number | null>(null);
@@ -332,7 +339,8 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
 
   // Al cambiar de pantalla: presentación, y si ya pidió la explicación, sigue sola.
   useEffect(() => {
-    if (!modeLoaded) return;
+    pathRef.current = pathname;
+    if (!modeLoaded || interviewActive.current) return;
     cancelAdvance();
     clearSpot();
     stopSpeaking();
@@ -384,6 +392,150 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
       window.removeEventListener("keydown", onUser, true);
     };
   }, [pause, playing]);
+
+  // ---- Modo de voz guiado: preguntas en voz alta, respuestas habladas ----
+  const [interviewing, setInterviewing] = useState(false);
+
+  const sayAsync = useCallback(
+    (text: string) =>
+      new Promise<void>((resolve) => {
+        setMessage(text);
+        setBubbleOpen(true);
+        if (!canSpeak()) {
+          window.setTimeout(resolve, readMs(text));
+          return;
+        }
+        setSpeaking(true);
+        speak(text, lang, () => {
+          setSpeaking(false);
+          resolve();
+        });
+      }),
+    [lang],
+  );
+
+  const listenAsync = useCallback(
+    () =>
+      new Promise<string | null>((resolve) => {
+        if (!canListen() || interviewCancelled.current) {
+          resolve(null);
+          return;
+        }
+        setListening(true);
+        const session = listenOnce(lang);
+        stopListenRef.current = session.stop;
+        session.result.then(
+          (text) => {
+            setListening(false);
+            setHeard(text);
+            buzz(30);
+            resolve(text);
+          },
+          () => {
+            setListening(false);
+            resolve(null);
+          },
+        );
+      }),
+    [lang],
+  );
+
+  const explainTop = useCallback(
+    (evaluation: Evaluation, priorities: Priorities) => {
+      const r = t.tool.rotations;
+      const key = priorities.first && priorities.first !== "market" ? priorities.first : "water";
+      const top = orderStrategies(evaluation.strategies, priorities)[0];
+      if (!top) return "";
+      const m = top.metrics;
+      return key === "water"
+        ? r.detail.water(value(m.annual_water_mm))
+        : key === "soil"
+          ? r.detail.soil(String(m.soil_cover_months_36m.value))
+          : r.detail.climate(String(m.frost_risk_days_year.value), String(m.heat_risk_days_year.value));
+    },
+    [t, value],
+  );
+
+  const startInterview = useCallback(async () => {
+    if (interviewActive.current) return;
+    pause();
+    setTour(null);
+    clearSpot();
+    setWriting(false);
+    if (!profile.seen) updateProfile({ seen: true });
+    interviewActive.current = true;
+    interviewCancelled.current = false;
+    setInterviewing(true);
+    try {
+      await runVoiceInterview({
+        lang,
+        texts: {
+          ...g.interview,
+          analyzing: t.tool.picker.guideAnalyzing,
+          analyzed: t.tool.picker.guideAnalyzed,
+          describe: (pending) => {
+            const parts: string[] = [];
+            const iv = g.interview;
+            if (pending.max_water_mm_year) {
+              parts.push(iv.heardWater(String(pending.max_water_mm_year.value), iv.units[pending.max_water_mm_year.unit] ?? pending.max_water_mm_year.unit));
+            }
+            const machine = (codes: string[]) =>
+              codes.map((code) => t.tool.constraints.machineryNames[code] ?? code.replaceAll("_", " ")).join(", ");
+            if (pending.machinery_have?.length) parts.push(iv.heardHave(machine(pending.machinery_have)));
+            if (pending.machinery_missing?.length) parts.push(iv.heardMissing(machine(pending.machinery_missing)));
+            if (pending.crops_without_buyer.length) {
+              parts.push(iv.heardCrops(pending.crops_without_buyer.map((c) => c.replaceAll("_", " ")).join(", ")));
+            }
+            if (pending.planting_window) {
+              const months = t.common.monthsLong;
+              parts.push(
+                iv.heardWindow(
+                  months[pending.planting_window.start_month - 1] ?? "",
+                  months[pending.planting_window.end_month - 1] ?? "",
+                ),
+              );
+            }
+            if (pending.priority) parts.push(iv.heardPriority(t.tool.rotations.priorityNames[pending.priority]));
+            return `${parts.join(" ")} ${iv.isRight}`;
+          },
+        },
+        say: sayAsync,
+        listen: listenAsync,
+        go: (path) => {
+          if (pathRef.current !== path) router.push(path);
+        },
+        currentPath: () => pathRef.current,
+        cancelled: () => interviewCancelled.current,
+        explain: explainTop,
+        pickName: (strategy) => pick(strategy.title),
+        pickReason: (strategy) => (strategy.rejection_reason ? pick(strategy.rejection_reason) : ""),
+      });
+    } finally {
+      interviewActive.current = false;
+      setInterviewing(false);
+      setListening(false);
+    }
+  }, [clearSpot, explainTop, g.interview, lang, listenAsync, pause, pick, profile.seen, router, sayAsync, t, updateProfile]);
+
+  const stopInterview = useCallback(() => {
+    interviewCancelled.current = true;
+    stopListenRef.current();
+    stopSpeaking();
+    setSpeaking(false);
+    setMessage(g.interview.stopped);
+  }, [g.interview.stopped]);
+
+  // El mapa avisa qué hizo; la Guía lo dice (con voz si la orden fue hablada).
+  const spokenTurn = useRef(false);
+  useEffect(() => {
+    const onResult = (event: Event) => {
+      if (interviewActive.current) return;
+      setBubbleOpen(true);
+      narrate((event as CustomEvent<string>).detail, undefined, spokenTurn.current);
+    };
+    window.addEventListener(MAP_RESULT_EVENT, onResult);
+    return () => window.removeEventListener(MAP_RESULT_EVENT, onResult);
+  }, [narrate]);
 
   // Encendida desde el botón "Guía" del encabezado: se presenta abierta.
   const wasOff = useRef(false);
@@ -483,6 +635,29 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
       setGoTo(null);
       setPending(null);
       setFromAi(false);
+      if (/(llena|llenar|llenemos|guiame|guiar|hazme las preguntas|todo con (mi )?(la )?voz|fill (it )?(all|everything)|guide me|ask me)/i.test(text.normalize("NFD").replace(/[̀-ͯ]/g, ""))) {
+        void startInterview();
+        return;
+      }
+      // Órdenes que se ejecutan en el mapa: se hacen, no se contestan como chat.
+      const mapAction = parseMapAction(text);
+      if (mapAction) {
+        spokenTurn.current = byVoice;
+        setBubbleOpen(true);
+        const onMap = pathname === "/tool";
+        sendMapAction(mapAction, onMap);
+        if (!onMap) {
+          narrate(g.openingMap, undefined, byVoice);
+          router.push("/tool");
+        } else if (mapAction.type === "go") {
+          narrate(
+            g.searchingPlace(mapAction.place.replace(/\b\p{L}/gu, (c) => c.toUpperCase())),
+            undefined,
+            byVoice,
+          );
+        }
+        return;
+      }
       const command = commandOf(text);
       if (command) {
         runCommand(command);
@@ -521,7 +696,7 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
         setBusy(false);
       }
     },
-    [g.glossary, g.homeAsk, g.offline, itemText, lang, narrate, profile.plain, runCommand, screen, spotlight],
+    [g, itemText, lang, narrate, pathname, profile.plain, router, runCommand, screen, spotlight, startInterview],
   );
 
   const onSubmit = (event: FormEvent) => {
@@ -703,6 +878,19 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
             </div>
           ) : (
             !atEnd && <div className="guide-actions">{playButton}</div>
+          )}
+          {canListen() && canSpeak() && (
+            <div className="guide-actions">
+              {interviewing ? (
+                <button type="button" className="primary" onClick={stopInterview}>
+                  {g.stopVoice}
+                </button>
+              ) : (
+                <button type="button" className="primary" onClick={() => void startInterview()}>
+                  {g.fillByVoice}
+                </button>
+              )}
+            </div>
           )}
           <div className="guide-actions">
             {talkButton}

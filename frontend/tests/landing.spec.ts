@@ -28,7 +28,7 @@ async function setup(page: Page) {
 test("inicio orbital y capítulos en rutas distintas", async ({ page }) => {
   await setup(page);
   await page.goto("/");
-  await expect(page.locator("main h1")).toContainText("Observar la Tierra");
+  await expect(page.locator("main h1")).toContainText("Field Shift");
   await expect(page.locator(".present-option")).toHaveCount(0);
   await page.getByRole("link", { name: "El reto", exact: true }).click();
   await expect(page).toHaveURL(/\/presentacion\/reto$/);
@@ -37,7 +37,7 @@ test("inicio orbital y capítulos en rutas distintas", async ({ page }) => {
   );
   await page.getByRole("link", { name: "Las personas", exact: true }).click();
   await expect(page).toHaveURL(/\/personas$/);
-  await expect(page.locator("main")).toContainText("lector de pantalla");
+  await expect(page.locator("main")).toContainText("lectores de pantalla");
   await page
     .getByRole("link", { name: "Evidencia", exact: true })
     .first()

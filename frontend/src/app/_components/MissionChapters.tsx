@@ -54,8 +54,8 @@ export function PeopleChapter() {
             </p>
             <Link href="/accesibilidad">
               {tr(
-                "Qué probamos y qué falta",
-                "What we tested and what remains",
+                "Cómo la hicimos accesible",
+                "How we made it accessible",
               )}{" "}
               ↗
             </Link>
