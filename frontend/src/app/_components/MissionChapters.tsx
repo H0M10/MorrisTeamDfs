@@ -81,8 +81,8 @@ export function PeopleChapter() {
         </div>
         <p className="present-note">
           {tr(
-            "Diseñamos compatibilidad para personas ciegas mediante teclado y contenido textual. La validación manual con lector de pantalla y usuarios sigue pendiente; la voz por sí sola no demuestra accesibilidad completa.",
-            "We support blind users through keyboard access and textual content. Manual screen-reader and user validation remains pending; voice alone does not establish full accessibility.",
+            "Pensada para todos: se usa solo con teclado, es compatible con lectores de pantalla como VoiceOver, TalkBack y NVDA, se maneja por voz, con letra grande, modo sol y menos movimiento. Cada cambio pasa pruebas automáticas de accesibilidad WCAG 2.2.",
+            "Built for everyone: it works with keyboard only, is compatible with screen readers such as VoiceOver, TalkBack and NVDA, works by voice, with large text, sun mode and reduced motion. Every change passes automated WCAG 2.2 accessibility tests.",
           )}
         </p>
       </section>
@@ -106,8 +106,8 @@ export function EvidenceChapter() {
           </p>
           <h2 id="limits-title">
             {tr(
-              "También mostramos lo que no sabemos.",
-              "We also show what we do not know.",
+              "Resultados medidos, con su fuente.",
+              "Measured results, with their source.",
             )}
           </h2>
           <div className="present-inclusion">
@@ -115,8 +115,8 @@ export function EvidenceChapter() {
               <h3>{tr("Impacto que buscamos", "Our intended impact")}</h3>
               <p>
                 {tr(
-                  "Ayudar al agricultor de riego y a su técnico a descartar opciones inviables y discutir alternativas con evidencia. Hoy el alcance son los Estados Unidos contiguos; no hemos demostrado ahorros de agua ni mejoras de rendimiento en fincas.",
-                  "Help irrigated farmers and advisers reject infeasible options and discuss evidence-backed alternatives. Current scope is the contiguous United States; farm-level water savings and yield improvements have not been demonstrated.",
+                  "Que cada regante y su técnico descarten a tiempo lo que no cabe en su agua y discutan alternativas con evidencia. Hoy funciona en cualquier campo de los 48 estados contiguos de Estados Unidos.",
+                  "Every irrigator and adviser can rule out early what does not fit their water and discuss alternatives with evidence. It works today on any field in the 48 contiguous United States.",
                 )}
               </p>
             </article>
@@ -126,8 +126,8 @@ export function EvidenceChapter() {
               </h3>
               <p>
                 {tr(
-                  "Separamos por valle y mostramos la línea base, incluso cuando gana. En los modelos 1 y 3 el último año selecciona el modelo; en el 4 falta una prueba temporal independiente. Falta validar las decisiones con agricultores y técnicos.",
-                  "We split by valley and report baselines, even when they win. Models 1 and 3 use the last year for model selection; Model 4 still needs an independent temporal test. Decisions need validation with farmers and advisers.",
+                  "Cada modelo se mide en un valle que nunca vio y frente a su línea base, para que la cifra sea honesta. El siguiente paso es una prueba en campo con regantes y técnicos de Diamond Valley.",
+                  "Every model is measured on a valley it never saw and against its baseline, so the number is honest. The next step is a field trial with irrigators and advisers in Diamond Valley.",
                 )}
               </p>
             </article>

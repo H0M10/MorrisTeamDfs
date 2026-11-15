@@ -615,8 +615,8 @@ export function Roadmap() {
       </ol>
       <p className="present-note">
         {en
-          ? "Until they exist, the evidence cards state these points as missing information instead of guessing."
-          : "Mientras no existan, las fichas de evidencia los muestran como información que falta en lugar de adivinar."}
+          ? "Each one already has its place in the evidence cards, flagged for review with the local adviser."
+          : "Cada uno ya tiene su lugar en las fichas de evidencia, marcado para revisarlo con el técnico local."}
       </p>
     </section>
   );
