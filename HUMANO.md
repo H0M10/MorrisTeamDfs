@@ -240,3 +240,19 @@ Lo automático ya pasa (axe en CI, 33 pruebas). Falta lo que solo hace una perso
 5. En `/tool/compartir` pulsa "Crear enlace", ábrelo en otro dispositivo y deja una revisión (Corrige, con agua corregida). Debe aparecer en "Revisiones anteriores".
 
 Anota el resultado aquí con la fecha.
+
+### H-22. Activar el análisis en vivo en Railway (dueño del proyecto `steam-way-479315-n0`, 10 minutos)
+
+El código ya está en `main` (`POST /api/v1/analyze`). Sin estos pasos, la ruta responde 503 con un mensaje claro y lo demás de la herramienta funciona igual. El proyecto `luca-497507` agotó su cuota gratuita de Earth Engine el 14 de noviembre en la noche (exportación de 1 138 parcelas): ya no se usa para nada en vivo.
+
+1. En https://console.cloud.google.com, elige el proyecto `steam-way-479315-n0`.
+2. **IAM y administración → Cuentas de servicio → Crear cuenta de servicio.** Nombre: `fieldshift-railway`.
+3. Dale dos roles: **Earth Engine Resource Viewer** y **Service Usage Consumer**.
+4. Entra a la cuenta creada → **Claves → Agregar clave → JSON**. Se descarga un archivo.
+5. En Railway, servicio del backend → **Variables**:
+   - `EE_PROJECT` = `steam-way-479315-n0`
+   - `EE_SERVICE_ACCOUNT_JSON` = el contenido completo del archivo JSON, pegado tal cual.
+6. Railway vuelve a desplegar solo. Prueba en https://morris-team-dfs.vercel.app/tool: toca un pivote de Diamond Valley que no tenga punto amarillo y pulsa "Analizar este punto". Debe tardar de 20 a 40 s.
+7. Borra el JSON de Descargas. **Nunca lo subas al repositorio** (AGENTS.md regla 8).
+
+Cada análisis hace unas 37 consultas pequeñas a Earth Engine; el resultado se guarda y el mismo punto no se vuelve a pedir hasta el siguiente despliegue.

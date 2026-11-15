@@ -80,7 +80,7 @@ export const en: Dictionary = {
         `The ${n} Diamond Valley pivots were found with satellite data (USDA crop patches and Landsat summer vigor). Each one is evaluated on the server with its own data when you pick it. Its shape is an approximate circle, not an official boundary.`,
       noneViableShort: "no viable rotation",
       mapTitle: "Map",
-      mapHelp: "The yellow dots are other fields. Tap one to evaluate it.",
+      mapHelp: "The yellow dots are other fields: tap one to evaluate it. Tap anywhere else to analyze it live.",
     },
     constraints: {
       intro: "First we check what you have. If a rotation does not fit here, it is ruled out before anything else is calculated.",
@@ -148,6 +148,22 @@ export const en: Dictionary = {
       parcel: "Field",
       rotation: "Rotation",
       status: "Status",
+    },
+    live: {
+      title: "Or analyze any field",
+      intro:
+        "Tap a field on the map or type its coordinates. The server requests 36 months of satellite and weather data for a 250 m circle around it and runs the same engine and the same models.",
+      lat: "Latitude",
+      lon: "Longitude",
+      submit: "Analyze this point",
+      analyzing: "Analyzing…",
+      stepImages: "Requesting 36 months of satellite images from Earth Engine",
+      stepClimate: "Gathering water use, soil and NASA weather",
+      stepModels: "Computing the water balance and running the models",
+      seconds: (n: number) => `${n} s`,
+      badCoordinates: "Type a latitude and a longitude as numbers.",
+      error: "That point could not be analyzed.",
+      note: "For now only in the contiguous United States, where there is water use (OpenET) and crop history (USDA) data. The circle approximates the field; it is not a boundary.",
     },
     ask: {
       title: "Ask in your own words",

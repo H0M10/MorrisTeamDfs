@@ -32,6 +32,15 @@ class Settings(BaseSettings):
     models_dir: Path = Path("artifacts")
     data_dir: Path = Path("data")
 
+    # Análisis en vivo de un punto (/api/v1/analyze) con Google Earth Engine.
+    # EE_SERVICE_ACCOUNT_JSON es el contenido del archivo de llave de una cuenta
+    # de servicio; va solo en variables de entorno, nunca en el repositorio.
+    # Sin cuenta de servicio y con EE_PROJECT, se usan las credenciales locales
+    # de `earthengine authenticate` (solo para la laptop).
+    ee_project: str = ""
+    ee_service_account_json: str = ""
+    live_cache_dir: Path = Path(".cache/live")
+
     @property
     def cors_origin_list(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
@@ -39,6 +48,10 @@ class Settings(BaseSettings):
     @property
     def supabase_configured(self) -> bool:
         return bool(self.supabase_url and self.supabase_anon_key)
+
+    @property
+    def earth_engine_configured(self) -> bool:
+        return bool(self.ee_project)
 
     def resolve(self, path: Path) -> Path:
         """Las rutas relativas se resuelven contra /backend."""

@@ -27,7 +27,7 @@ from app.engine.constraints import (
 from app.errors import ApiError, parcel_not_found, real_data_incomplete, real_data_unavailable
 from app.models.loader import get_registry
 from app.schemas.api import ConstraintsIn
-from app.services import table_to_contract
+from app.services import live, table_to_contract
 
 EvaluationDict = dict[str, Any]
 
@@ -109,6 +109,18 @@ def _real_base(
     parcel_id: str, settings: Settings
 ) -> tuple[EvaluationDict, table_to_contract.ParcelMeta]:
     """Evaluación real desde la tabla de /data-pipeline, sin restricciones aplicadas."""
+    if live.is_live(parcel_id):
+        loaded = live.load(settings, parcel_id)
+        if loaded is None:
+            raise parcel_not_found(parcel_id)
+        rows, meta = loaded
+        registry = get_registry(settings.resolve(settings.models_dir))
+        try:
+            return table_to_contract.build_evaluation(
+                rows, meta, registry, contract_version()
+            ), meta
+        except table_to_contract.TableError as exc:
+            raise real_data_incomplete(parcel_id, str(exc)) from exc
     data_dir = _data_dir(settings)
     tables = table_to_contract.find_tables(data_dir)
     if not tables:

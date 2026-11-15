@@ -1,10 +1,11 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { EvaluationGate } from "@/lib/components/LoadGate";
 import type { PilotSummary } from "@/lib/contract";
 import { PARCEL_ID_ALIASES, useParcelId, usePilots } from "@/lib/evaluation";
 import { useI18n } from "@/lib/i18n";
+import { LiveAnalyze } from "./_components/LiveAnalyze";
 import { useToolEvaluation } from "./_components/useToolEvaluation";
 
 const ParcelMap = dynamic(
@@ -25,6 +26,8 @@ export default function ParcelPage() {
 
   useEffect(() => {
     if (pilots.status !== "ready" || pilots.data.pilots.length === 0) return;
+    // Un punto analizado en vivo no está en la lista de pilotos, pero es válido.
+    if (parcelId.startsWith("live-")) return;
     const available = pilots.data.pilots;
     if (available.some((pilot) => pilot.id === parcelId)) return;
     const first = available.find((pilot) => !isDetected(pilot)) ?? available[0];
@@ -37,6 +40,9 @@ export default function ParcelPage() {
   }, [pilots, parcelId, setParcelId]);
 
   const evaluationState = useToolEvaluation(parcelId);
+  const [picked, setPicked] = useState<{ lat: number; lon: number } | null>(
+    null,
+  );
   const all = pilots.status === "ready" ? pilots.data.pilots : [];
   const cases = all.filter((pilot) => !isDetected(pilot));
   const detected = all.filter(isDetected);
@@ -86,6 +92,15 @@ export default function ParcelPage() {
         </>
       )}
 
+      <LiveAnalyze
+        point={picked}
+        onPoint={setPicked}
+        onDone={(id) => {
+          setPicked(null);
+          setParcelId(id);
+        }}
+      />
+
       <EvaluationGate state={evaluationState}>
         {(evaluation) => (
           <>
@@ -102,6 +117,8 @@ export default function ParcelPage() {
               parcel={evaluation.parcel}
               pilots={all}
               onSelect={setParcelId}
+              onPickPoint={(lat, lon) => setPicked({ lat, lon })}
+              picked={picked}
             />
           </>
         )}

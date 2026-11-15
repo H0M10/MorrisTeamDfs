@@ -18,6 +18,7 @@ from app.engine.crop_traits import TRAITS_SOURCE, TRAITS_TYPE
 from app.models.loader import ModelRegistry
 from app.models.loader import get_registry as cached_registry
 from app.schemas.api import (
+    AnalyzeRequest,
     AskRequest,
     AskResponse,
     ErrorResponse,
@@ -33,6 +34,7 @@ from app.schemas.api import (
 from app.schemas.contract import Evaluation
 from app.services import ask as ask_service
 from app.services import evaluation as evaluation_service
+from app.services import live as live_service
 from app.services.share import ShareStore
 
 router = APIRouter(prefix="/api/v1")
@@ -110,6 +112,23 @@ def evaluate(body: EvaluateRequest, settings: SettingsDep) -> JSONResponse:
     ignoran aquí (para recalcular con ellas usa /simulate).
     """
     return JSONResponse(evaluation_service.evaluate(body.parcel_id, settings))
+
+
+@router.post(
+    "/analyze",
+    response_model=None,
+    responses={**EVALUATION_RESPONSES, 422: {"model": ErrorResponse}},
+)
+def analyze(body: AnalyzeRequest, settings: SettingsDep) -> JSONResponse:
+    """Analiza en vivo un punto cualquiera: trae sus datos de satélite y clima y los procesa.
+
+    Tarda de 30 a 90 s la primera vez; después el punto queda guardado y su id
+    `live-…` sirve en /evaluate, /simulate, /ask y /share.
+    """
+    if settings.data_mode != "real":
+        raise live_service.not_in_real_mode()
+    parcel_id = live_service.analyze(body.lat, body.lon, settings)
+    return JSONResponse(evaluation_service.evaluate(parcel_id, settings))
 
 
 @router.post("/simulate", response_model=None, responses=EVALUATION_RESPONSES)

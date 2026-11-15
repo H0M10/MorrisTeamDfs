@@ -14,10 +14,9 @@ import type {
   ShareResponse,
 } from "./contract";
 
-export const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8010").replace(
-  /\/+$/,
-  "",
-);
+export const API_URL = (
+  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8010"
+).replace(/\/+$/, "");
 
 const TIMEOUT_MS = 8000;
 
@@ -38,19 +37,25 @@ const OFFLINE: LocalizedText = {
   en: "Cannot reach the server.",
 };
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
+async function request<T>(
+  path: string,
+  init?: RequestInit,
+  timeoutMs = TIMEOUT_MS,
+): Promise<T> {
   let response: Response;
   try {
     response = await fetch(`${API_URL}${path}`, {
       ...init,
       headers: { "content-type": "application/json", ...init?.headers },
-      signal: AbortSignal.timeout(TIMEOUT_MS),
+      signal: AbortSignal.timeout(timeoutMs),
     });
   } catch {
     throw new ApiError(0, "offline", OFFLINE);
   }
   if (!response.ok) {
-    const body = (await response.json().catch(() => null)) as Partial<ApiErrorBody> | null;
+    const body = (await response
+      .json()
+      .catch(() => null)) as Partial<ApiErrorBody> | null;
     throw new ApiError(
       response.status,
       body?.error ?? "http_error",
@@ -69,17 +74,40 @@ const post = <T>(path: string, body: unknown) =>
 export const api = {
   pilots: () => request<PilotsResponse>("/api/v1/pilots"),
   crops: () => request<CropsResponse>("/api/v1/crops"),
-  evaluate: (parcelId: string) => post<Evaluation>("/api/v1/evaluate", { parcel_id: parcelId }),
+  evaluate: (parcelId: string) =>
+    post<Evaluation>("/api/v1/evaluate", { parcel_id: parcelId }),
+  /** Analiza en vivo un punto: trae satélite y clima. Tarda de 30 a 90 s la primera vez. */
+  analyze: (lat: number, lon: number) =>
+    request<Evaluation>(
+      "/api/v1/analyze",
+      { method: "POST", body: JSON.stringify({ lat, lon }) },
+      150_000,
+    ),
   simulate: (parcelId: string, constraints: ConstraintsInput) =>
     post<Evaluation>("/api/v1/simulate", { parcel_id: parcelId, constraints }),
-  ask: (parcelId: string, question: string, lang: Lang, constraints?: ConstraintsInput) =>
-    post<AskResponse>("/api/v1/ask", { parcel_id: parcelId, question, lang, constraints }),
+  ask: (
+    parcelId: string,
+    question: string,
+    lang: Lang,
+    constraints?: ConstraintsInput,
+  ) =>
+    post<AskResponse>("/api/v1/ask", {
+      parcel_id: parcelId,
+      question,
+      lang,
+      constraints,
+    }),
   share: (input: Record<string, unknown>, result: Evaluation) =>
     post<ShareResponse>("/api/v1/share", { input, result }),
   shared: (token: string) =>
     request<SharedEvaluation>(`/api/v1/share/${encodeURIComponent(token)}`),
   reviews: (token: string) =>
-    request<ReviewsResponse>(`/api/v1/share/${encodeURIComponent(token)}/reviews`),
+    request<ReviewsResponse>(
+      `/api/v1/share/${encodeURIComponent(token)}/reviews`,
+    ),
   review: (token: string, review: ReviewInput) =>
-    post<ReviewsResponse>(`/api/v1/share/${encodeURIComponent(token)}/reviews`, review),
+    post<ReviewsResponse>(
+      `/api/v1/share/${encodeURIComponent(token)}/reviews`,
+      review,
+    ),
 };

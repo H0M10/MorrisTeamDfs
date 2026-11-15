@@ -39,6 +39,13 @@ class EvaluateRequest(StrictModel):
     constraints: ConstraintsIn | None = None
 
 
+class AnalyzeRequest(StrictModel):
+    """Un punto del mapa. Se analiza un círculo de 250 m de radio alrededor."""
+
+    lat: float = Field(ge=-90, le=90)
+    lon: float = Field(ge=-180, le=180)
+
+
 class SimulateRequest(StrictModel):
     parcel_id: str = ParcelId
     constraints: ConstraintsIn

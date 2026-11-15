@@ -79,7 +79,7 @@ export const es = {
         `Los ${n} pivotes de Diamond Valley se encontraron con datos de satélite (manchas de cultivo de USDA y vigor de verano de Landsat). Cada uno se evalúa en el servidor con sus propios datos al elegirlo. Su forma es un círculo aproximado, no un lindero oficial.`,
       noneViableShort: "ninguna rotación viable",
       mapTitle: "Mapa",
-      mapHelp: "Los puntos amarillos son otras parcelas. Toca uno para evaluarlo.",
+      mapHelp: "Los puntos amarillos son otras parcelas: toca uno para evaluarlo. Toca cualquier otro lugar para analizarlo en vivo.",
     },
     constraints: {
       intro: "Primero revisamos lo que tienes. Si una rotación no cabe aquí, se descarta antes de calcular lo demás.",
@@ -147,6 +147,22 @@ export const es = {
       parcel: "Parcela",
       rotation: "Rotación",
       status: "Estado",
+    },
+    live: {
+      title: "O analiza cualquier campo",
+      intro:
+        "Toca un campo en el mapa o escribe sus coordenadas. El servidor pide 36 meses de imágenes de satélite y de clima para un círculo de 250 m alrededor y los procesa con el mismo motor y los mismos modelos.",
+      lat: "Latitud",
+      lon: "Longitud",
+      submit: "Analizar este punto",
+      analyzing: "Analizando…",
+      stepImages: "Pidiendo 36 meses de imágenes de satélite a Earth Engine",
+      stepClimate: "Juntando agua usada, suelo y clima de la NASA",
+      stepModels: "Calculando el balance de agua y corriendo los modelos",
+      seconds: (n: number) => `${n} s`,
+      badCoordinates: "Escribe una latitud y una longitud con números.",
+      error: "No se pudo analizar ese punto.",
+      note: "Por ahora solo en los 48 estados contiguos de EE. UU., donde hay datos de agua usada (OpenET) e historial de cultivos (USDA). El círculo es una aproximación del campo, no un lindero.",
     },
     ask: {
       title: "Pregunta en tus palabras",

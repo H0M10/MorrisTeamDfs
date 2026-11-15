@@ -2,6 +2,10 @@
 
 Regla de gobernanza: El contrato se congela el **sábado 14 de noviembre de 2026 a las 10:00 AM**. Después de esa hora, **ningún cambio entra sin aprobación explícita de Hanniel** y su registro aquí.
 
+## API (sin cambio al contrato de evaluación) - 2026-11-15 madrugada
+### Agregado
+- `POST /api/v1/analyze` con `{lat, lon}`: análisis en vivo de un círculo de 250 m (Earth Engine + NASA POWER + motor y modelos). Devuelve una evaluación normal con `parcel.id` = `live-…`, que después sirve en `/evaluate`, `/simulate`, `/ask` y `/share`. Errores: 422 `outside_coverage` (fuera de los 48 estados contiguos), 422 `not_cropland`, 503 `live_unavailable`. `schema.json` no cambia.
+
 ## API (sin cambio al contrato de evaluación) - 2026-11-14 noche
 ### Agregado
 - `POST /api/v1/share/{token}/reviews` y `GET /api/v1/share/{token}/reviews` (revisión del técnico: `verdict` `approve` | `correct` | `discard`, `comments` hasta 2000 caracteres, `corrected_limits` con la forma de `constraints` de `/simulate`). Usan las funciones `submit_review` y `get_reviews` que ya estaban en la migración. `schema.json` no cambia. Aprobado por Hanniel.
