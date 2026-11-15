@@ -768,18 +768,24 @@ html[data-sun]
   padding-top: 0.5rem;
 }
 
-/* ---------- Portada para la rúbrica: problema, distintos, pruebas, reto ---------- */
-.landing-problem {
-  border-left: 4px solid #e9b824;
-  padding-left: 1rem;
-  color: var(--ink);
-  max-width: 38rem;
+/* ---------- Portada y capítulos: estilos sobrios, mismo tono que la presentación ---------- */
+
+/* Portada */
+.mission .mission-home h1#mission-title {
+  font-size: clamp(3rem, 7vw, 5.5rem);
 }
 
-.landing-problem a,
-.landing-band a,
-.landing-small a {
-  color: #a9c8ff;
+.landing-tagline {
+  font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+  color: var(--ink) !important;
+  max-width: 36rem;
+}
+
+.landing-problem {
+  border-left: 2px solid var(--line);
+  padding-left: 1rem;
+  color: var(--quiet) !important;
+  max-width: 38rem;
 }
 
 .landing-small {
@@ -787,73 +793,92 @@ html[data-sun]
   font-size: 0.95rem;
 }
 
+.landing-problem a,
+.landing-small a,
+.present-section a:not(.button) {
+  color: #a9c8ff;
+}
+
 .landing-hero-figure {
   margin: 0;
 }
 
-.landing-hero-figure img,
-.landing-figure img {
-  display: block;
+.landing-hero-map {
   width: 100%;
-  height: auto;
-  border-radius: 0.75rem;
+  aspect-ratio: 4 / 3;
+  border-radius: 0.5rem;
   border: 1px solid var(--line);
+  overflow: hidden;
 }
 
-.landing-hero-figure figcaption,
-.landing-figure figcaption {
+.landing-hero-figure figcaption {
   margin-top: 0.5rem;
   color: var(--quiet);
   font-size: 0.9rem;
 }
 
-.landing-sections {
-  max-width: 78rem;
-  margin: 0 auto;
-  padding: 0 1.25rem;
+/* Cita del reto */
+.landing-quote {
+  margin: 1.5rem 0;
+  padding: 0 0 0 1.25rem;
+  border-left: 2px solid var(--ink);
 }
 
-.landing-band {
-  padding: 3rem 0;
-  border-top: 1px solid var(--line);
+.landing-quote p {
+  margin: 0;
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+  line-height: 1.55;
+  color: var(--ink);
 }
 
-.landing-band h2 {
-  font-size: clamp(1.6rem, 3vw, 2.3rem);
-  letter-spacing: -0.02em;
-  margin: 0 0 1rem;
-}
-
-.landing-lead {
-  max-width: 46rem;
+.landing-quote footer {
+  margin-top: 0.75rem;
   color: var(--quiet);
+  font-size: 0.9rem;
+}
+
+/* Listas numeradas sobrias */
+.mission .landing-asks,
+.mission .landing-diff,
+.mission .method-steps {
+  list-style: none;
+  padding: 0;
+  margin: 1.25rem 0;
+  max-width: none;
+}
+
+.landing-asks li {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--line);
+  counter-increment: ask;
+}
+
+.landing-asks {
+  counter-reset: ask;
+}
+
+.landing-asks li::before {
+  content: counter(ask, decimal-leading-zero);
+  color: var(--quiet);
+  font-variant-numeric: tabular-nums;
 }
 
 .landing-diff {
-  list-style: none;
-  padding: 0;
-  margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
-  gap: 1.5rem;
-  counter-reset: diff;
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  gap: 2rem;
 }
 
 .landing-diff li {
-  counter-increment: diff;
   padding-top: 1rem;
-  border-top: 3px solid #e9b824;
-}
-
-.landing-diff li::before {
-  content: "0" counter(diff);
-  color: var(--quiet);
-  font-weight: 700;
+  border-top: 1px solid var(--ink);
 }
 
 .landing-diff h3 {
-  font-size: 1.25rem;
-  margin: 0.4rem 0;
+  font-size: 1.15rem;
+  margin: 0 0 0.4rem;
 }
 
 .landing-diff p {
@@ -861,6 +886,7 @@ html[data-sun]
   margin: 0;
 }
 
+/* Tablas */
 .mission .landing-proof,
 .mission .landing-map {
   width: 100%;
@@ -875,16 +901,20 @@ html[data-sun]
 
 .mission .landing-proof :is(th, td),
 .mission .landing-map :is(th, td) {
-  border: 1px solid var(--line);
-  padding: 0.6rem 0.75rem;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 0.75rem 0.75rem 0.75rem 0;
   text-align: left;
   vertical-align: top;
   color: var(--ink);
+  background: transparent;
 }
 
 .mission .landing-proof thead th,
 .mission .landing-map thead th {
-  background: var(--panel);
+  color: var(--quiet);
+  font-weight: 600;
+  border-bottom: 1px solid var(--ink);
 }
 
 .proof-win {
@@ -897,53 +927,123 @@ html[data-sun]
   color: #ffd27a !important;
 }
 
-.landing-figure {
-  margin: 0;
-}
-
-.landing-figure-wide {
-  margin-top: 2rem;
-  max-width: 52rem;
-}
-
-.landing-split {
+/* Cifras con fuente */
+.landing-facts,
+.adoption-facts {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
   gap: 2rem;
-  align-items: start;
+  margin: 1.5rem 0;
+  max-width: none;
 }
 
-.landing-split ul {
+.landing-facts dt,
+.adoption-facts dt {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.landing-facts dd,
+.adoption-facts dd {
+  margin: 0.3rem 0 0;
   color: var(--quiet);
 }
 
-@media (max-width: 52rem) {
-  .landing-split {
-    grid-template-columns: 1fr;
-  }
-}
-
-.landing-hero-map {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  border-radius: 0.75rem;
-  border: 1px solid var(--line);
-  overflow: hidden;
-}
-
-.mission .landing-diff {
+/* Consideraciones opcionales */
+.mission .landing-coverage {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
   max-width: none;
-  width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+}
+
+.landing-coverage li {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 1rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.landing-coverage strong {
+  font-weight: 600;
+}
+
+.landing-coverage li[data-state="yes"] strong {
+  color: #9be29f;
+}
+
+.landing-coverage li[data-state="part"] strong {
+  color: #ffd27a;
+}
+
+.landing-coverage li[data-state="no"] strong {
+  color: #ffb4a8;
+}
+
+.landing-list {
+  color: var(--quiet);
+  padding-left: 1.2rem;
+}
+
+.landing-list strong {
+  color: var(--ink);
+}
+
+/* Método: fórmulas en LaTeX */
+.method-block {
+  margin: 2rem 0;
+}
+
+.method-heading {
+  margin-top: 3rem;
+}
+
+.method-steps li {
+  padding: 1.75rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.method-steps h3 {
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem;
+}
+
+.method-steps p {
+  color: var(--quiet);
+  max-width: 48rem;
+  margin: 0;
+}
+
+.method-formula {
+  margin: 1rem 0 0;
+  padding: 0.25rem 0;
+  overflow-x: auto;
+  color: var(--ink);
+}
+
+.method-formula .katex-display {
+  margin: 0.5rem 0;
+  text-align: left;
+}
+
+.method-formula .katex-display > .katex {
+  text-align: left;
+  font-size: 1.15em;
+}
+
+.method-note {
+  margin-top: 0.75rem !important;
+  font-size: 0.95rem;
 }
 
 @media (max-width: 52rem) {
-  /* El título y el problema primero; la imagen después. */
   .landing-hero-figure {
     order: 2;
   }
 
-  /* Cada requisito del reto como tarjeta: sin columnas angostas. */
   .mission .landing-map,
   .mission .landing-map tbody,
   .mission .landing-map tr,
@@ -962,198 +1062,15 @@ html[data-sun]
   }
 
   .mission .landing-map tr {
-    border: 1px solid var(--line);
-    border-radius: 0.5rem;
-    margin-bottom: 0.75rem;
-    padding: 0.5rem 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--line);
   }
 
   .mission .landing-map :is(th, td) {
     border: 0;
-    padding: 0.2rem 0;
+    padding: 0.15rem 0;
   }
-}
 
-.landing-facts {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
-  gap: 1.5rem;
-  margin: 1.5rem 0;
-}
-
-.landing-facts dt {
-  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-  font-weight: 700;
-  color: #e9b824;
-  letter-spacing: -0.02em;
-}
-
-.landing-facts dd {
-  margin: 0.4rem 0 0;
-  color: var(--ink);
-}
-
-.landing-list {
-  color: var(--quiet);
-  padding-left: 1.2rem;
-}
-
-.landing-list strong {
-  color: var(--ink);
-}
-
-.landing-band h3 {
-  font-size: 1.2rem;
-  margin: 1.5rem 0 0.5rem;
-}
-
-.landing-steps {
-  list-style: none;
-  padding: 0;
-  margin: 1.5rem 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
-  gap: 1.25rem;
-}
-
-.landing-steps li {
-  border: 1px solid var(--line);
-  border-radius: 0.6rem;
-  padding: 1rem 1.1rem;
-  background: var(--panel);
-}
-
-.landing-steps h3 {
-  margin-top: 0;
-}
-
-.landing-steps p {
-  color: var(--quiet);
-  margin: 0.5rem 0 0;
-}
-
-.landing-formula {
-  overflow-wrap: anywhere;
-}
-
-.landing-formula code {
-  display: inline-block;
-  padding: 0.45rem 0.65rem;
-  border-radius: 0.35rem;
-  background: #05080c;
-  border: 1px solid var(--line);
-  color: #e6edf3;
-  font-size: 0.95rem;
-  white-space: pre-wrap;
-}
-
-.landing-quote {
-  margin: 1rem 0;
-  padding: 1rem 1.25rem;
-  border-left: 4px solid #a9c8ff;
-  background: var(--panel);
-  border-radius: 0 0.5rem 0.5rem 0;
-}
-
-.landing-quote p {
-  margin: 0.4rem 0;
-  font-size: 1.1rem;
-  color: var(--ink);
-}
-
-.landing-quote footer {
-  color: var(--quiet);
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-}
-
-.landing-asks {
-  counter-reset: ask;
-  list-style: none;
-  padding: 0;
-  display: grid;
-  gap: 0.6rem;
-}
-
-.landing-asks li {
-  counter-increment: ask;
-  display: grid;
-  grid-template-columns: 2.2rem 1fr;
-  gap: 0.5rem;
-  align-items: start;
-}
-
-.landing-asks li::before {
-  content: counter(ask);
-  font-weight: 700;
-  color: #e9b824;
-  font-size: 1.2rem;
-}
-
-.mission .landing-steps,
-.mission .landing-asks,
-.mission .landing-facts {
-  max-width: none;
-  width: 100%;
-}
-
-.mission .mission-home h1#mission-title {
-  font-size: clamp(3rem, 7vw, 5.5rem);
-}
-
-.landing-tagline {
-  font-size: clamp(1.15rem, 1.8vw, 1.4rem);
-  color: var(--ink) !important;
-  max-width: 36rem;
-}
-
-.mission .landing-coverage {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0 0;
-  display: grid;
-  gap: 0.6rem;
-  max-width: none;
-}
-
-.landing-coverage li {
-  display: grid;
-  grid-template-columns: 8rem 1fr;
-  gap: 0.75rem;
-  padding: 0.6rem 0.8rem;
-  border: 1px solid var(--line);
-  border-radius: 0.5rem;
-}
-
-.landing-coverage strong {
-  font-weight: 700;
-}
-
-.landing-coverage li[data-state="yes"] strong {
-  color: #9be29f;
-}
-
-.landing-coverage li[data-state="part"] strong {
-  color: #ffd27a;
-}
-
-.landing-coverage li[data-state="no"] strong {
-  color: #ffb4a8;
-}
-
-.landing-coverage li[data-state="yes"] strong::before {
-  content: "✓ ";
-}
-
-.landing-coverage li[data-state="part"] strong::before {
-  content: "◐ ";
-}
-
-.landing-coverage li[data-state="no"] strong::before {
-  content: "✕ ";
-}
-
-@media (max-width: 40rem) {
   .landing-coverage li {
     grid-template-columns: 1fr;
     gap: 0.2rem;

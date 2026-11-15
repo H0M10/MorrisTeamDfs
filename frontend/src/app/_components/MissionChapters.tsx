@@ -13,7 +13,7 @@ export function PeopleChapter() {
         aria-labelledby="people-title"
       >
         <p className="present-kicker">
-          03 /{" "}
+          05 /{" "}
           {tr("Diseñada para quien decide", "Designed for the decision maker")}
         </p>
         <h2 id="people-title">
@@ -102,7 +102,7 @@ export function EvidenceChapter() {
       >
         <div className="present-shell present-section">
           <p className="present-kicker">
-            04 / {tr("Resultados con límites", "Evidence with limits")}
+            06 / {tr("Resultados con límites", "Evidence with limits")}
           </p>
           <h2 id="limits-title">
             {tr(

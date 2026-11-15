@@ -1,10 +1,12 @@
 "use client";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
+import { ChallengeMap, NasaChallenge, OptionalCoverage } from "../../_components/LandingSections";
 export default function Page() {
   const { lang } = useI18n();
   const tr = (es: string, en: string) => (lang === "en" ? en : es);
   return (
+    <>
     <div className="mission-chapter present-shell present-section">
       <p className="mission-designation">
         01 / Field Shift: Adapting Farms with NASA Data
@@ -21,40 +23,11 @@ export default function Page() {
           "The challenge proposes combining NASA data, local soil, crop traits and farmer priorities to explore rotations that protect soil and adapt to water and climate conditions.",
         )}
       </p>
-      <div className="mission-requirements">
-        {[
-          [
-            "Comparar",
-            "Compare",
-            "Tres estrategias, incluida la rotación actual. Un horizonte de 36 meses en nuestra herramienta.",
-            "Three strategies, including the current rotation. Our tool uses a 36-month horizon.",
-          ],
-          [
-            "Explicar",
-            "Explain",
-            "Por qué se propone cada opción, qué evidencia la apoya y qué beneficios podría ofrecer.",
-            "Why each option is suggested, what evidence supports it and what benefits it may offer.",
-          ],
-          [
-            "Reconocer límites",
-            "Recognize limits",
-            "Información que falta, incertidumbre y riesgos que requieren revisión local.",
-            "Missing information, uncertainty and risks that need local review.",
-          ],
-          [
-            "Dar control",
-            "Give control",
-            "El agricultor declara agua, maquinaria, comprador y calendario. El técnico revisa la decisión.",
-            "The farmer declares water, machinery, buyers and calendar constraints. An adviser reviews the decision.",
-          ],
-        ].map(([a, b, c, d], i) => (
-          <article key={a}>
-            <span>0{i + 1}</span>
-            <h2>{tr(a!, b!)}</h2>
-            <p>{tr(c!, d!)}</p>
-          </article>
-        ))}
-      </div>
+    </div>
+      <NasaChallenge />
+      <ChallengeMap />
+      <OptionalCoverage />
+    <div className="mission-chapter present-shell present-section">
       <h2>
         {tr(
           "Cómo responde nuestro proyecto a la rúbrica",
@@ -104,5 +77,6 @@ export default function Page() {
         {tr("Ver una decisión real", "Explore a real decision")} →
       </Link>
     </div>
+    </>
   );
 }

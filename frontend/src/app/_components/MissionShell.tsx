@@ -19,6 +19,7 @@ const chapters = [
   ["/", "Inicio", "Overview"],
   ["/presentacion/reto", "El reto", "The challenge"],
   ["/presentacion/campo", "Caso real", "Live case"],
+  ["/presentacion/metodo", "Método", "Method"],
   ["/presentacion/modelos/3", "Modelos", "Models"],
   ["/presentacion/personas", "Las personas", "People"],
   ["/presentacion/evidencia", "Evidencia", "Evidence"],

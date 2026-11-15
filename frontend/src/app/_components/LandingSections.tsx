@@ -43,7 +43,7 @@ export function Differentiators() {
         ["Hecha para todos en el campo", "Un tutor por voz que explica cada pantalla, compatible con lectores de pantalla, alto contraste para el sol, letra grande y español o inglés."],
       ];
   return (
-    <section className="landing-band" aria-labelledby="diff-title">
+    <section className="present-shell present-section" aria-labelledby="diff-title">
       <h2 id="diff-title">{en ? "What makes Field Shift different" : "Lo que hace distinto a Field Shift"}</h2>
       <ol className="landing-diff">
         {items.map(([title, text]) => (
@@ -93,9 +93,9 @@ export function ModelProof() {
       : `${new Intl.NumberFormat(en ? "en-US" : "es-MX", { maximumFractionDigits: 2 }).format(metric.value)} ${metric.unit}`;
 
   return (
-    <section className="landing-band" aria-labelledby="proof-title">
+    <section className="present-shell present-section" aria-labelledby="proof-title">
       <h2 id="proof-title">{en ? "Tested, not promised" : "Probado, no prometido"}</h2>
-      <p className="landing-lead">
+      <p className="present-lead">
         {en
           ? "Each model is measured on a valley it never saw during training and compared with a simple baseline. These values are read live from our API."
           : "Cada modelo se mide en un valle que no vio al entrenar y se compara con una línea base sencilla. Estas cifras se leen en vivo de nuestra API."}
@@ -174,7 +174,7 @@ export function ChallengeMap() {
     ["Farmer-centered, plain language", "Centrado en el agricultor, lenguaje llano", "/accesibilidad", "Voice tutor, screen readers, sun mode, US units", "Tutor por voz, lectores de pantalla, modo sol, unidades de EE. UU."],
   ];
   return (
-    <section className="landing-band" aria-labelledby="map-title">
+    <section className="present-shell present-section" aria-labelledby="map-title">
       <h2 id="map-title">{en ? "What the challenge asks, and where to see it" : "Lo que pide el reto y dónde verlo"}</h2>
       <div className="table-wrap" tabIndex={0} role="region" aria-labelledby="map-title">
         <table className="landing-map">
@@ -221,9 +221,9 @@ export function ValleyProblem() {
         ["35 años", "Un plan apoyado por 257 titulares de derechos de agua (Orden 1302, 2019) debe bajar el bombeo hasta la recarga natural del valle."],
       ];
   return (
-    <section className="landing-band" aria-labelledby="valley-title">
+    <section className="present-shell present-section" aria-labelledby="valley-title">
       <h2 id="valley-title">{en ? "The valley is running out of water" : "El valle se está quedando sin agua"}</h2>
-      <p className="landing-lead">
+      <p className="present-lead">
         {en
           ? "Every irrigator there will have to grow the same farm with less water. Which crops, in which order, and what happens to the soil in between: that is the decision Field Shift supports."
           : "Cada regante tendrá que sacar adelante su campo con menos agua. Qué cultivos, en qué orden y qué le pasa al suelo entre uno y otro: esa es la decisión que apoya Field Shift."}
@@ -274,9 +274,9 @@ export function NasaData() {
     ["MODIS", "Landsat/HLS sees the field at 30 m instead of 250 m.", "Landsat/HLS ve el campo a 30 m en lugar de 250 m."],
   ];
   return (
-    <section className="landing-band" aria-labelledby="nasa-title">
+    <section className="method-block" aria-labelledby="nasa-title">
       <h2 id="nasa-title">{en ? "The NASA data we use, and how" : "Los datos de la NASA que usamos y cómo"}</h2>
-      <p className="landing-lead">
+      <p className="present-lead">
         {en
           ? "Every number on screen keeps the native scale of the source it came from. Coarse sources describe the region; they are never shown as if they measured your field."
           : "Cada cifra en pantalla conserva la escala nativa de su fuente. Las fuentes gruesas describen la región; nunca se muestran como si midieran tu campo."}
@@ -313,96 +313,6 @@ export function NasaData() {
   );
 }
 
-/** Cómo funciona por dentro: el motor físico, los cinco modelos y su validación. */
-export function HowItWorks() {
-  const { lang } = useI18n();
-  const en = lang === "en";
-  const steps: { title: [string, string]; formula: [string, string]; text: [string, string] }[] = [
-    {
-      title: ["1. Constraints first", "1. Restricciones primero"],
-      formula: ["viable ⇔ water ≤ limit ∧ buyer ∧ machinery ∧ planting window", "viable ⇔ agua ≤ límite ∧ comprador ∧ maquinaria ∧ ventana de siembra"],
-      text: [
-        "Before ranking anything, each rotation is checked against what the farmer declared. If none passes, the tool says so and does not fill the gap with a recommendation.",
-        "Antes de ordenar nada, cada rotación se revisa contra lo que declaró el agricultor. Si ninguna pasa, la herramienta lo dice y no rellena con una recomendación.",
-      ],
-    },
-    {
-      title: ["2. Physical water balance (FAO-56)", "2. Balance de agua físico (FAO-56)"],
-      formula: ["ETc = Kc × ET0      net irrigation = max(0, ETc − effective rain)", "ETc = Kc × ET0      riego neto = max(0, ETc − lluvia efectiva)"],
-      text: [
-        "ET0 is computed with FAO-56 Penman-Monteith from NASA POWER weather; Kc is each crop's monthly coefficient; effective rain follows the USDA SCS method. Deterministic and auditable.",
-        "ET0 se calcula con Penman-Monteith FAO-56 a partir del clima de NASA POWER; Kc es el coeficiente mensual de cada cultivo; la lluvia efectiva sigue el método USDA SCS. Determinista y auditable.",
-      ],
-    },
-    {
-      title: ["3. What the satellite sees", "3. Lo que ve el satélite"],
-      formula: ["NDVI = (NIR − Red) / (NIR + Red)      NDMI = (NIR − SWIR1) / (NIR + SWIR1)", "NDVI = (NIR − Rojo) / (NIR + Rojo)      NDMI = (NIR − SWIR1) / (NIR + SWIR1)"],
-      text: [
-        "Monthly greenness, moisture, bare soil (BSI) and residue (NDTI) from Landsat/HLS at 30 m. They paint the field strip and show when the soil is left uncovered.",
-        "Verdor, humedad, suelo desnudo (BSI) y rastrojo (NDTI) cada mes con Landsat/HLS a 30 m. Pintan la tira del campo y muestran cuándo queda el suelo sin cubrir.",
-      ],
-    },
-    {
-      title: ["4. Model 1 · Water each crop uses (XGBoost)", "4. Modelo 1 · Agua que usa cada cultivo (XGBoost)"],
-      formula: ["ŷ = f₁(x) + f₂(x) + … + f_K(x)   (each tree corrects the previous error)", "ŷ = f₁(x) + f₂(x) + … + f_K(x)   (cada árbol corrige el error del anterior)"],
-      text: [
-        "Gradient-boosted trees learn monthly water use from OpenET using crop, weather, elevation and soil. No satellite greenness on purpose: it must predict rotations nobody has planted yet.",
-        "Árboles con gradiente aprenden el agua mensual de OpenET a partir del cultivo, el clima, la elevación y el suelo. Sin verdor satelital a propósito: debe predecir rotaciones que nadie ha sembrado todavía.",
-      ],
-    },
-    {
-      title: ["5. Model 3 · Reading the crop history (GRU + attention)", "5. Modelo 3 · Lectura del historial (GRU + atención)"],
-      formula: ["h_t = GRU(x_t, h_{t−1})      α_t = softmax(w·h_t)      c = Σ α_t h_t", "h_t = GRU(x_t, h_{t−1})      α_t = softmax(w·h_t)      c = Σ α_t h_t"],
-      text: [
-        "A small recurrent network reads 12 months of indices and says what was grown. The attention weights α show which months weighed most in that reading — not a causal explanation.",
-        "Una red recurrente pequeña lee 12 meses de índices y dice qué se sembró. Los pesos de atención α muestran qué meses pesaron más en esa lectura; no son una explicación causal.",
-      ],
-    },
-    {
-      title: ["6. Model 4 · Soil moisture with an honest range (CQR)", "6. Modelo 4 · Humedad con un rango honesto (CQR)"],
-      formula: ["[ q_low(x) − Q , q_high(x) + Q ]   with Q chosen so 90% of held-out cases fall inside", "[ q_bajo(x) − Q , q_alto(x) + Q ]   con Q elegido para que el 90 % de los casos apartados caiga dentro"],
-      text: [
-        "The FAO-56 balance is corrected with trees, and conformalized quantile regression turns it into a range calibrated against SMAP, leaving one valley out each time.",
-        "El balance FAO-56 se corrige con árboles, y la regresión cuantílica conformal lo convierte en un rango calibrado contra SMAP, dejando un valle fuera cada vez.",
-      ],
-    },
-    {
-      title: ["7. Model 5 · What farmers actually plant next (Markov chain)", "7. Modelo 5 · Qué siembran después de verdad (cadena de Markov)"],
-      formula: ["P(crop_t | crop_{t−1}, crop_{t−2}) = (n + 1) / (N + K)", "P(cultivo_t | cultivo_{t−1}, cultivo_{t−2}) = (n + 1) / (N + K)"],
-      text: [
-        "Second-order transition counts from 8,352 real crop changes, with Laplace smoothing. Alternatives are built from rotations that farmers really practice.",
-        "Conteo de transiciones de segundo orden sobre 8 352 cambios de cultivo reales, con suavizado de Laplace. Las alternativas salen de rotaciones que los agricultores de verdad practican.",
-      ],
-    },
-  ];
-  return (
-    <section className="landing-band" aria-labelledby="how-title">
-      <h2 id="how-title">{en ? "How it works inside" : "Cómo funciona por dentro"}</h2>
-      <p className="landing-lead">
-        {en
-          ? "Trained on 1,138 irrigated fields in 6 valleys of Nevada, Utah and Idaho (2016–2024). Every model is trained on 5 valleys and measured on Diamond Valley, which it never saw: neighboring pixels look alike, so a random split would inflate the scores."
-          : "Entrenado con 1 138 campos de riego en 6 valles de Nevada, Utah e Idaho (2016–2024). Cada modelo se entrena en 5 valles y se mide en Diamond Valley, que nunca vio: los píxeles vecinos se parecen, así que partir al azar inflaría los resultados."}
-      </p>
-      <ol className="landing-steps">
-        {steps.map((step) => (
-          <li key={step.title[0]}>
-            <h3>{en ? step.title[0] : step.title[1]}</h3>
-            <p className="landing-formula">
-              <code>{en ? step.formula[0] : step.formula[1]}</code>
-            </p>
-            <p>{en ? step.text[0] : step.text[1]}</p>
-          </li>
-        ))}
-      </ol>
-      <p className="landing-small">
-        {en
-          ? "The language model in the tutor only explains the screen: a validator discards any answer with a number that does not come from the data."
-          : "El modelo de lenguaje del tutor solo explica la pantalla: un validador descarta cualquier respuesta con una cifra que no venga de los datos."}
-      </p>
-    </section>
-  );
-}
-
 /** El desafío tal como lo publica la NASA, citado; de aquí parte todo lo demás. */
 export function NasaChallenge() {
   const { lang } = useI18n();
@@ -425,7 +335,7 @@ export function NasaChallenge() {
         "Ser una herramienta de apoyo que no reemplace el juicio del agricultor ni la experiencia agrícola local.",
       ];
   return (
-    <section className="landing-band" aria-labelledby="challenge-title">
+    <section className="present-shell present-section" aria-labelledby="challenge-title">
       <h2 id="challenge-title">{en ? "The NASA challenge, as written" : "El desafío de la NASA, tal cual"}</h2>
       <blockquote className="landing-quote" lang="en" cite="https://www.spaceappschallenge.org/">
         <p>
@@ -439,7 +349,7 @@ export function NasaChallenge() {
         <footer>NASA Space Apps Challenge 2026 · Field Shift: Adapting Farms with NASA Data</footer>
       </blockquote>
       {!en && (
-        <p className="landing-lead">
+        <p className="present-lead">
           Traducción: los agricultores enfrentan temperaturas cambiantes, lluvias irregulares, escasez de agua, clima
           extremo y suelos cada vez más pobres. Eso dificulta elegir rotaciones que protejan el campo, ahorren agua y den
           resiliencia a largo plazo. El reto es crear una herramienta de apoyo a la decisión que use observaciones de la
@@ -481,7 +391,7 @@ export function OptionalCoverage() {
   ];
   const label = { yes: en ? "Covered" : "Cubierto", part: en ? "Partly" : "En parte", no: en ? "Not yet" : "Todavía no" };
   return (
-    <section className="landing-band" aria-labelledby="optional-title">
+    <section className="present-shell present-section" aria-labelledby="optional-title">
       <h2 id="optional-title">{en ? "The challenge's optional considerations" : "Las consideraciones opcionales del reto"}</h2>
       <ul className="landing-coverage">
         {rows.map(([state, enText, esText]) => (
@@ -491,6 +401,110 @@ export function OptionalCoverage() {
           </li>
         ))}
       </ul>
+    </section>
+  );
+}
+
+/** Por qué las herramientas de apoyo a la decisión agrícola no se usan, con fuentes, y qué hacemos contra cada causa. */
+export function FarmerAdoption() {
+  const { lang } = useI18n();
+  const en = lang === "en";
+  const rows: [string, string, string, string][] = [
+    [
+      "Poor usability: complex interfaces, cluttered screens, confusing terms.",
+      "Mala usabilidad: interfaces complejas, pantallas saturadas, términos confusos.",
+      "One decision per screen, plain language without acronyms, a glossary and a voice tutor that explains each part.",
+      "Una decisión por pantalla, lenguaje llano sin siglas, glosario y un tutor por voz que explica cada parte.",
+    ],
+    [
+      "Not relevant to the farmer's own field and situation.",
+      "No es relevante para el campo y la situación del agricultor.",
+      "Analyzes the farmer's own field anywhere in the 48 contiguous states, with their water, buyers, machinery and planting window.",
+      "Analiza el campo del propio agricultor en cualquiera de los 48 estados contiguos, con su agua, compradores, maquinaria y fechas de siembra.",
+    ],
+    [
+      "Low trust: the farmer cannot see where a recommendation comes from.",
+      "Poca confianza: el agricultor no ve de dónde sale una recomendación.",
+      "Every number shows its source, date, scale and type; models that lose are published; nothing is invented by the language model.",
+      "Cada cifra muestra fuente, fecha, escala y tipo; los modelos que pierden se publican; el modelo de lenguaje no inventa nada.",
+    ],
+    [
+      "Unclear return and high cost.",
+      "Retorno poco claro y costo alto.",
+      "Free, runs in any phone browser, no hardware or account; the result is in water and soil terms the farmer already manages.",
+      "Gratis, funciona en el navegador de cualquier teléfono, sin equipo ni cuenta; el resultado habla de agua y suelo, lo que el agricultor ya maneja.",
+    ],
+    [
+      "Advisers use these tools far more than farmers do.",
+      "Los técnicos usan estas herramientas mucho más que los agricultores.",
+      "Built for both: the farmer decides, and a shareable sheet and review screen let the local adviser approve, correct or reject.",
+      "Hecha para los dos: el agricultor decide, y una hoja para compartir y una pantalla de revisión dejan que el técnico local apruebe, corrija o descarte.",
+    ],
+  ];
+  return (
+    <section className="present-shell present-section" aria-labelledby="adoption-title">
+      <p className="present-kicker">{en ? "Why tools fail" : "Por qué fallan las herramientas"}</p>
+      <h2 id="adoption-title">
+        {en ? "Most farm decision tools are built, then not used." : "La mayoría de las herramientas agrícolas se construyen y luego no se usan."}
+      </h2>
+      <dl className="adoption-facts">
+        <div>
+          <dt>49 %</dt>
+          <dd>
+            {en
+              ? "of farmers used any decision-support tool, against all of the advisers surveyed (Rose et al., 2016)."
+              : "de los agricultores usaba alguna herramienta de apoyo a la decisión, frente a todos los técnicos encuestados (Rose et al., 2016)."}
+          </dd>
+        </div>
+        <div>
+          <dt>15</dt>
+          <dd>
+            {en
+              ? "factors explain low uptake; usability, relevance, performance and cost-effectiveness lead the list (Rose et al., 2016)."
+              : "factores explican el bajo uso; encabezan la lista la usabilidad, la relevancia, el desempeño y el costo-beneficio (Rose et al., 2016)."}
+          </dd>
+        </div>
+        <div>
+          <dt>49 %</dt>
+          <dd>
+            {en
+              ? "of farmers worldwide use at least one agtech solution; unclear return and cost are the main barriers (McKinsey, Global Farmer Insights)."
+              : "de los agricultores del mundo usa al menos una solución agtech; el retorno poco claro y el costo son las barreras principales (McKinsey, Global Farmer Insights)."}
+          </dd>
+        </div>
+      </dl>
+      <div className="table-wrap" tabIndex={0} role="region" aria-labelledby="adoption-title">
+        <table className="landing-map">
+          <thead>
+            <tr>
+              <th scope="col">{en ? "Why tools fail" : "Por qué fallan"}</th>
+              <th scope="col">{en ? "What Field Shift does" : "Qué hace Field Shift"}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(([enWhy, esWhy, enDo, esDo]) => (
+              <tr key={enWhy}>
+                <th scope="row">{en ? enWhy : esWhy}</th>
+                <td>{en ? enDo : esDo}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="present-note">
+        {en ? "Sources: " : "Fuentes: "}
+        <a href="https://www.repository.cam.ac.uk/handle/1810/261110" rel="noreferrer" target="_blank">
+          Rose, D. C. et al. (2016). Decision support tools for agriculture: Towards effective design and delivery. Agricultural Systems
+        </a>
+        {" · "}
+        <a href="https://www.mckinsey.com/industries/agriculture/our-insights/global-farmer-insights" rel="noreferrer" target="_blank">
+          McKinsey, Global Farmer Insights
+        </a>
+        {" · "}
+        <a href="https://www.mckinsey.com/industries/agriculture/our-insights/agtech-breaking-down-the-farmer-adoption-dilemma" rel="noreferrer" target="_blank">
+          McKinsey, Agtech: breaking down the farmer adoption dilemma
+        </a>
+      </p>
     </section>
   );
 }
