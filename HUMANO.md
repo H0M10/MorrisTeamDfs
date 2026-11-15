@@ -231,7 +231,7 @@ Con eso reemplazo el historial supuesto de Querétaro por lo que de verdad se si
 
 ### H-21. Prueba manual de /tool con lector de pantalla y voz (Gicarrillo, domingo antes de las 12:00)
 
-Lo automático ya pasa (axe en CI, 34 pruebas). Falta lo que solo hace una persona:
+Lo automático ya pasa (axe en CI, 33 pruebas). Falta lo que solo hace una persona:
 
 1. Recorre las seis pantallas de `/tool` solo con el teclado (Tab, Shift+Tab, Enter, espacio). El foco siempre debe verse.
 2. Haz lo mismo con NVDA (Windows) o VoiceOver (Mac/iPhone). Anota cualquier cosa que no se lea o se lea mal.
