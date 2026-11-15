@@ -5,11 +5,24 @@
 //   3. Analiza. El servidor trae 36 meses de satélite y clima de esa área y corre el
 //      mismo motor y los mismos modelos.
 // Alternativa con teclado: escribir las coordenadas del centro.
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import {
+  Map as MapLibreMap,
+  Marker,
+  NavigationControl,
+  type GeoJSONSource,
+} from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef, useState } from "react";
 import { ApiError, api } from "@/lib/api";
 import { useI18n } from "@/lib/i18n";
+import {
+  BASE_STYLE,
+  MAP_VIEWS,
+  applyView,
+  motion,
+  whenReady,
+  type MapView,
+} from "@/lib/mapStyle";
 import {
   centerAndAreaHa,
   circleRing,
@@ -26,7 +39,9 @@ const SIZES = [
 type SizeKey = (typeof SIZES)[number]["key"];
 
 // Diamond Valley, NV: el caso del reto. El agricultor se mueve a su campo desde aquí.
-const START: [number, number] = [39.72, -115.98];
+const START: [number, number] = [-115.98, 39.72]; // [lon, lat]
+const EMPTY = { type: "FeatureCollection" as const, features: [] };
+const YELLOW = "#E9B824";
 
 export function FieldPicker({
   onDone,
@@ -36,9 +51,10 @@ export function FieldPicker({
   const { t, pick } = useI18n();
   const p = t.tool.picker;
   const container = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<L.Map | null>(null);
-  const shapeLayer = useRef<L.LayerGroup | null>(null);
+  const mapRef = useRef<MapLibreMap | null>(null);
+  const markers = useRef<Marker[]>([]);
 
+  const [view, setView] = useState<MapView>("satellite");
   const [method, setMethod] = useState<Method>("center");
   const [size, setSize] = useState<SizeKey>("medium");
   const [center, setCenter] = useState<{ lat: number; lon: number } | null>(
@@ -61,39 +77,55 @@ export function FieldPicker({
 
   useEffect(() => {
     if (!container.current) return;
-    const map = L.map(container.current, { zoomControl: true }).setView(
-      START,
-      12,
+    const map = new MapLibreMap({
+      container: container.current,
+      style: BASE_STYLE,
+      center: START,
+      zoom: 12,
+      maxPitch: 75,
+      doubleClickZoom: false, // el doble toque marcaría dos esquinas
+      attributionControl: { compact: true },
+    });
+    map.addControl(
+      new NavigationControl({ visualizePitch: true }),
+      "top-right",
     );
-    // Satélite: el agricultor reconoce su campo por cómo se ve desde arriba.
-    L.tileLayer(
-      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-      {
-        maxZoom: 18,
-        attribution: "Imágenes © Esri, Maxar, Earthstar Geographics",
-      },
-    ).addTo(map);
-    L.tileLayer(
-      "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
-      { maxZoom: 18 },
-    ).addTo(map);
-    map.getContainer().style.cursor = "crosshair";
-    map.on("click", (event: L.LeafletMouseEvent) => {
-      const { lat: y, lng: x } = event.latlng;
+    map.getCanvas().style.cursor = "crosshair";
+    map.on("load", () => {
+      map.addSource("shape", { type: "geojson", data: EMPTY });
+      map.addLayer({
+        id: "shape-fill",
+        type: "fill",
+        source: "shape",
+        paint: { "fill-color": YELLOW, "fill-opacity": 0.28 },
+      });
+      map.addLayer({
+        id: "shape-line",
+        type: "line",
+        source: "shape",
+        paint: { "line-color": YELLOW, "line-width": 3 },
+      });
+    });
+    map.on("click", (event) => {
+      const { lat: y, lng: x } = event.lngLat;
       if (methodRef.current === "center") {
         setCenter({ lat: y, lon: x });
         // Con el mapa lejos el círculo se ve chico: se acerca para comprobar que cubre el pivote.
-        if (map.getZoom() < 14) map.setView([y, x], 15);
-      }
-      else setCorners((list) => [...list, [x, y]]);
+        if (map.getZoom() < 14 && map.getPitch() < 10) {
+          map.flyTo({ center: [x, y], zoom: 15, duration: motion(800) });
+        }
+      } else setCorners((list) => [...list, [x, y]]);
     });
     mapRef.current = map;
-    shapeLayer.current = L.layerGroup().addTo(map);
     return () => {
       map.remove();
       mapRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    if (mapRef.current) applyView(mapRef.current, view);
+  }, [view]);
 
   const radius = SIZES.find((s) => s.key === size)?.radius ?? 400;
   const ring: Ring | null =
@@ -106,47 +138,48 @@ export function FieldPicker({
         : null;
   const area = ring ? centerAndAreaHa(ring) : null;
 
-  // Dibuja la figura propuesta y las esquinas numeradas.
+  // Dibuja la figura propuesta y las esquinas numeradas (o el centro del pivote).
   useEffect(() => {
-    const group = shapeLayer.current;
-    if (!group) return;
-    group.clearLayers();
-    const style = {
-      color: "#E9B824",
-      weight: 3,
-      fillColor: "#E9B824",
-      fillOpacity: 0.25,
-    };
-    if (method === "center" && center) {
-      group.addLayer(L.circle([center.lat, center.lon], { ...style, radius }));
-      group.addLayer(
-        L.circleMarker([center.lat, center.lon], {
-          radius: 5,
-          color: "#000",
-          fillColor: "#fff",
-          fillOpacity: 1,
-          weight: 2,
-        }),
+    const map = mapRef.current;
+    if (!map) return;
+    whenReady(map, () => {
+      const source = map.getSource("shape") as GeoJSONSource | undefined;
+      let shape: Ring = [];
+      if (method === "center" && center)
+        shape = circleRing(center.lat, center.lon, radius);
+      if (method === "edges") shape = corners;
+      const closed =
+        shape.length >= 3 ? [...shape, shape[0] as [number, number]] : shape;
+      source?.setData(
+        closed.length >= 2
+          ? {
+              type: "Feature",
+              properties: {},
+              geometry:
+                closed.length >= 4
+                  ? { type: "Polygon", coordinates: [closed] }
+                  : { type: "LineString", coordinates: closed },
+            }
+          : EMPTY,
       );
-    }
-    if (method === "edges" && corners.length > 0) {
-      const latLngs = corners.map(([x, y]) => [y, x] as [number, number]);
-      if (latLngs.length >= 3) group.addLayer(L.polygon(latLngs, style));
-      else if (latLngs.length === 2) group.addLayer(L.polyline(latLngs, style));
-      latLngs.forEach((point, i) => {
-        group.addLayer(
-          L.marker(point, {
-            icon: L.divIcon({
-              className: "corner-pin",
-              html: String(i + 1),
-              iconSize: [26, 26],
-            }),
-            interactive: false,
-            keyboard: false,
-          }),
+      for (const marker of markers.current) marker.remove();
+      markers.current = [];
+      const pins: { at: [number, number]; label: string }[] =
+        method === "center" && center
+          ? [{ at: [center.lon, center.lat], label: "" }]
+          : method === "edges"
+            ? corners.map((c, i) => ({ at: c, label: String(i + 1) }))
+            : [];
+      for (const pin of pins) {
+        const element = document.createElement("div");
+        element.className = pin.label ? "corner-pin" : "center-pin";
+        element.textContent = pin.label;
+        element.setAttribute("aria-hidden", "true");
+        markers.current.push(
+          new Marker({ element }).setLngLat(pin.at).addTo(map),
         );
-      });
-    }
+      }
+    });
   }, [method, center, corners, radius]);
 
   useEffect(() => {
@@ -156,7 +189,7 @@ export function FieldPicker({
   }, [busy]);
 
   const flyTo = (y: number, x: number, zoom = 15) =>
-    mapRef.current?.setView([y, x], zoom);
+    mapRef.current?.flyTo({ center: [x, y], zoom, duration: motion(1200) });
 
   const useMyLocation = () => {
     if (!("geolocation" in navigator)) {
@@ -343,6 +376,23 @@ export function FieldPicker({
       <p className="picker-next" role="status" aria-live="polite">
         {next}
       </p>
+      <div
+        className="method-switch map-views"
+        role="group"
+        aria-label={p.viewLabel}
+      >
+        {MAP_VIEWS.map((v) => (
+          <button
+            key={v}
+            type="button"
+            aria-pressed={view === v}
+            onClick={() => setView(v)}
+          >
+            {p.views[v]}
+          </button>
+        ))}
+      </div>
+      {view === "relief" && <p className="small">{p.reliefHint}</p>}
       <div
         ref={container}
         className="picker-map"

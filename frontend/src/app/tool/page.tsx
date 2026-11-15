@@ -141,10 +141,26 @@ export default function ParcelPage() {
               {justAnalyzed && (
                 <p className="picker-done">{t.tool.parcel.analyzedOk}</p>
               )}
-              <p>
-                <strong>{pick(evaluation.parcel.name)}</strong>:{" "}
-                {t.tool.parcel.area} {value(evaluation.parcel.area_ha)}.
-              </p>
+              <div className="parcel-summary">
+                <p className="parcel-summary-title">
+                  <strong>{pick(evaluation.parcel.name)}</strong>
+                </p>
+                <dl className="facts">
+                  <dt>{t.tool.parcel.area}</dt>
+                  <dd>{value(evaluation.parcel.area_ha)}</dd>
+                  <dt>{t.tool.parcel.coordinatesLabel}</dt>
+                  <dd>
+                    {evaluation.parcel.center.lat.toFixed(4)},{" "}
+                    {evaluation.parcel.center.lon.toFixed(4)}
+                  </dd>
+                  <dt>{t.tool.parcel.cropRecords}</dt>
+                  <dd>
+                    {evaluation.parcel.region_mode === "labeled"
+                      ? t.tool.parcel.labeled
+                      : t.tool.parcel.unlabeled}
+                  </dd>
+                </dl>
+              </div>
               <p>
                 <Link className="button primary" href="/tool/retrato">
                   {t.tool.parcel.seePortrait}

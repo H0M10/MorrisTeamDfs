@@ -1,9 +1,23 @@
 "use client";
-import { useEffect, useRef } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+// Mapa de un campo de ejemplo (MapLibre GL): su contorno, los demás campos como puntos
+// que se pueden tocar, tres vistas (satélite, relieve 3D, mapa) y el tamaño real del
+// píxel de cada fuente. Basado en el mapa de Checo (@Checo-coder, be08ba0).
+import {
+  LngLatBounds,
+  Map as MapLibreMap,
+  NavigationControl,
+} from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
+import { useEffect, useRef, useState } from "react";
 import type { Evaluation, PilotSummary } from "@/lib/contract";
 import { useI18n } from "@/lib/i18n";
+import {
+  BASE_STYLE,
+  MAP_VIEWS,
+  applyView,
+  whenReady,
+  type MapView,
+} from "@/lib/mapStyle";
 
 type ParcelData = Evaluation["parcel"];
 
@@ -17,136 +31,168 @@ export function ParcelMap({
   pilots?: PilotSummary[];
   onSelect?: (id: string) => void;
 }) {
-  const mapContainer = useRef<HTMLDivElement>(null);
   const { pick, t } = useI18n();
+  const p = t.tool.parcel;
+  const container = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<MapLibreMap | null>(null);
   const selectRef = useRef(onSelect);
+  const [view, setView] = useState<MapView>("satellite");
+
   useEffect(() => {
     selectRef.current = onSelect;
   }, [onSelect]);
 
   useEffect(() => {
-    if (!mapContainer.current) return;
+    if (!container.current) return;
+    const ring = (parcel.polygon_wgs84 ?? []) as [number, number][];
+    const map = new MapLibreMap({
+      container: container.current,
+      style: BASE_STYLE,
+      center: [parcel.center.lon, parcel.center.lat],
+      zoom: 14,
+      maxPitch: 75,
+      attributionControl: { compact: true },
+    });
+    map.addControl(
+      new NavigationControl({ visualizePitch: true }),
+      "top-right",
+    );
+    mapRef.current = map;
 
-    const defaultCenter: [number, number] = [39.72, -115.98]; // Diamond Valley, NV
-    const initialCenter: [number, number] =
-      parcel.center &&
-      typeof parcel.center.lat === "number" &&
-      typeof parcel.center.lon === "number"
-        ? [parcel.center.lat, parcel.center.lon]
-        : defaultCenter;
-
-    const map = L.map(mapContainer.current).setView(initialCenter, 14);
-
-    // Satélite, igual que en "Marcar mi campo": el campo se reconoce desde arriba.
-    L.tileLayer(
-      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-      {
-        maxZoom: 18,
-        attribution: "Imágenes © Esri, Maxar, Earthstar Geographics",
-      },
-    ).addTo(map);
-
-    const layerGroup = L.layerGroup().addTo(map);
-
-    // Las demás parcelas: un clic recalcula todo para esa parcela.
-    for (const pilot of pilots) {
-      if (pilot.id === parcel.id) continue;
-      const marker = L.circleMarker([pilot.center.lat, pilot.center.lon], {
-        radius: 7,
-        color: "#000000",
-        weight: 1,
-        fillColor: "#E9B824",
-        fillOpacity: 0.9,
+    map.on("load", () => {
+      map.addSource("parcel", {
+        type: "geojson",
+        data:
+          ring.length >= 3
+            ? {
+                type: "Feature",
+                properties: {},
+                geometry: { type: "Polygon", coordinates: [ring] },
+              }
+            : { type: "FeatureCollection", features: [] },
       });
-      marker.bindTooltip(pick(pilot.name));
-      marker.on("click", () => selectRef.current?.(pilot.id));
-      layerGroup.addLayer(marker);
-    }
+      map.addLayer({
+        id: "parcel-fill",
+        type: "fill",
+        source: "parcel",
+        paint: { "fill-color": "#1247B8", "fill-opacity": 0.25 },
+      });
+      map.addLayer({
+        id: "parcel-line",
+        type: "line",
+        source: "parcel",
+        paint: { "line-color": "#FFFFFF", "line-width": 3 },
+      });
+      map.addSource("pilots", {
+        type: "geojson",
+        data: {
+          type: "FeatureCollection",
+          features: pilots
+            .filter((pilot) => pilot.id !== parcel.id)
+            .map((pilot) => ({
+              type: "Feature" as const,
+              properties: { id: pilot.id },
+              geometry: {
+                type: "Point" as const,
+                coordinates: [pilot.center.lon, pilot.center.lat],
+              },
+            })),
+        },
+      });
+      map.addLayer({
+        id: "pilots",
+        type: "circle",
+        source: "pilots",
+        paint: {
+          "circle-radius": 8,
+          "circle-color": "#E9B824",
+          "circle-stroke-color": "#000000",
+          "circle-stroke-width": 1.5,
+        },
+      });
+      map.on("click", "pilots", (event) => {
+        const id = event.features?.[0]?.properties?.id;
+        if (typeof id === "string") selectRef.current?.(id);
+      });
+      map.on("mouseenter", "pilots", () => {
+        map.getCanvas().style.cursor = "pointer";
+      });
+      map.on("mouseleave", "pilots", () => {
+        map.getCanvas().style.cursor = "";
+      });
 
-    if (
-      parcel.polygon_wgs84 &&
-      Array.isArray(parcel.polygon_wgs84) &&
-      parcel.polygon_wgs84.length > 0
-    ) {
-      try {
-        const latLngs = parcel.polygon_wgs84.map(
-          (pt: number[]) => [pt[1], pt[0]] as [number, number],
+      if (ring.length >= 3) {
+        const first = ring[0] as [number, number];
+        const bounds = ring.reduce(
+          (b, point) => b.extend(point),
+          new LngLatBounds(first, first),
         );
-        const polygonLayer = L.polygon(latLngs, {
-          color: "#1247B8",
-          weight: 3,
-          fillColor: "#1247B8",
-          fillOpacity: 0.35,
+        // Con más campos alrededor se aleja un poco para que se vean los vecinos.
+        map.fitBounds(bounds, {
+          padding: 40,
+          maxZoom: pilots.length > 1 ? 13.5 : 16,
+          duration: 0,
         });
-
-        layerGroup.addLayer(polygonLayer);
-
-        const bounds = polygonLayer.getBounds();
-        if (bounds.isValid()) {
-          // Con más parcelas alrededor se aleja un poco para que se vean las vecinas.
-          map.fitBounds(bounds, {
-            padding: [40, 40],
-            maxZoom: pilots.length > 1 ? 13 : 16,
-          });
-        }
-      } catch (e) {
-        console.error("Error al renderizar el polígono en Leaflet:", e);
       }
-    }
+    });
 
     return () => {
       map.remove();
+      mapRef.current = null;
     };
-  }, [parcel, pilots, pick]);
+  }, [parcel, pilots]);
 
-  const footprints = parcel.native_pixel_footprints_m
-    ? Object.entries(parcel.native_pixel_footprints_m)
-    : [];
+  useEffect(() => {
+    const map = mapRef.current;
+    if (map) whenReady(map, () => applyView(map, view));
+  }, [view]);
+
+  const footprints = Object.entries(parcel.native_pixel_footprints_m ?? {});
+  const meters = new Intl.NumberFormat();
 
   return (
-    <section aria-labelledby="map-heading" style={{ margin: "1.5rem 0" }}>
+    <section aria-labelledby="map-heading" className="map-block">
       <h2 id="map-heading">
-        {t.tool.parcel.mapTitle}: {pick(parcel.name)}
+        {p.mapTitle}: {pick(parcel.name)}
       </h2>
-      {pilots.length > 1 && <p>{t.tool.parcel.mapHelp}</p>}
+      {pilots.length > 1 && <p>{p.mapHelp}</p>}
       <div
-        ref={mapContainer}
+        className="method-switch map-views"
+        role="group"
+        aria-label={t.tool.picker.viewLabel}
+      >
+        {MAP_VIEWS.map((v) => (
+          <button
+            key={v}
+            type="button"
+            aria-pressed={view === v}
+            onClick={() => setView(v)}
+          >
+            {t.tool.picker.views[v]}
+          </button>
+        ))}
+      </div>
+      {view === "relief" && <p className="small">{t.tool.picker.reliefHint}</p>}
+      <div
+        ref={container}
+        className="picker-map"
         role="region"
         aria-label={`Mapa interactivo mostrando los límites de ${pick(parcel.name)}`}
-        style={{
-          width: "100%",
-          height: "380px",
-          border: "2px solid #000000",
-          borderRadius: "4px",
-          zIndex: 1,
-        }}
       />
-      <div style={{ marginTop: "1rem" }}>
-        <h3>Escala real de píxel por fuente de datos</h3>
-        {footprints.length > 0 ? (
-          <dl className="facts">
-            {footprints.map(([source, meters]) => (
-              <div
-                key={source}
-                style={{
-                  display: "flex",
-                  gap: "0.5rem",
-                  marginBottom: "0.25rem",
-                }}
-              >
-                <dt style={{ fontWeight: "bold" }}>
-                  {source.replaceAll("_", " ")}:
-                </dt>
-                <dd style={{ margin: 0 }}>{String(meters)} metros por píxel</dd>
-              </div>
-            ))}
-          </dl>
-        ) : (
-          <p>
-            Información de resolución espacial no disponible para esta parcela.
-          </p>
-        )}
-      </div>
+      <details className="map-footprints">
+        <summary>{p.footprintsTitle}</summary>
+        <p className="small">{p.footprintsHelp}</p>
+        <dl className="facts">
+          {footprints.map(([key, size]) => (
+            <div key={key} className="footprint-row">
+              <dt>{p.sourceNames[key] ?? key.replaceAll("_", " ")}</dt>
+              <dd>
+                {meters.format(size)} {p.metersPerPixel}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </details>
     </section>
   );
 }

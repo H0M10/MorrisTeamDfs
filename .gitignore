@@ -50,3 +50,6 @@ Thumbs.db
 
 # Salidas de las pruebas de flujo de /models (datos sintéticos)
 models/_smoke/
+
+# Worker de MapLibre: se copia de node_modules al compilar (scripts/copy-maplibre-worker.mjs)
+frontend/public/maplibre/

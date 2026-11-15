@@ -30,7 +30,7 @@ técnico no es un paso). `_components/steps.ts` define el orden.
 - Una decisión por pantalla. Lenguaje llano, sin siglas.
 - Prohibido: degradados morados, fondo oscuro con neón, cuadrículas de
   tarjetas idénticas, etiquetas en mayúsculas espaciadas.
-- No importes three, MediaPipe ni nada de `/showcase`, `/engineer`, `/remote`. Leaflet sí.
+- No importes three, MediaPipe ni nada de `/showcase`, `/engineer`, `/remote`. El mapa es MapLibre GL (`src/lib/mapStyle.ts`); su worker se copia a `public/maplibre/` al compilar.
 - Cada gráfico lleva texto equivalente. Texto de 18 px o más. Objetivos de 44 px.
 - Corre `npm run test:a11y` antes de subir. Agrega tu pantalla a
   `tests/a11y.spec.ts` si creas una ruta nueva.

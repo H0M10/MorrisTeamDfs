@@ -30,6 +30,8 @@ export default defineConfig([
   ...nextTs,
   toolIsolation,
   globalIgnores([
+    // Copia generada del worker de MapLibre (scripts/copy-maplibre-worker.mjs).
+    "public/maplibre/**",
     ".next/**",
     "out/**",
     "next-env.d.ts",

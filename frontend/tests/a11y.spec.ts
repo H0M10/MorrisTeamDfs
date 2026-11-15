@@ -219,6 +219,8 @@ test("la hoja impresa oculta la navegación y conserva la etiqueta de ejemplo", 
 test("/tool no descarga three ni MediaPipe; /showcase sí descarga three", async ({
   page,
 }) => {
+  // El mapa de /tool baja teselas de satélite y de relieve antes de quedar en reposo.
+  test.setTimeout(120_000);
   const scripts = new Map<string, string>();
   page.on("response", async (response) => {
     if (response.request().resourceType() !== "script") return;

@@ -94,6 +94,21 @@ export const es = {
       labeled: "Con registros de cultivo",
       unlabeled: "Sin registros de cultivo",
       saved: "Esta elección queda guardada en este dispositivo.",
+      coordinatesLabel: "Coordenadas del centro",
+      cropRecords: "Registro de cultivos",
+      footprintsTitle: "Tamaño real del píxel de cada fuente sobre tu campo",
+      footprintsHelp:
+        "Cada fuente mira el campo con un tamaño de píxel distinto. Las de varios kilómetros describen la región, no tu campo.",
+      metersPerPixel: "metros por píxel",
+      sourceNames: {
+        hls_landsat: "Color del campo (satélites Landsat y Sentinel)",
+        openet: "Agua que usó el campo (OpenET)",
+        usda_cdl: "Cultivos sembrados por año",
+        srtm: "Altura y pendiente del terreno",
+        soilgrids: "Textura y materia orgánica del suelo",
+        smap: "Humedad de la región por satélite",
+        nasa_power: "Lluvia, temperatura y heladas de la región",
+      } as Record<string, string>,
       cases: "Casos del reto",
       whereTitle: "¿Dónde está tu campo?",
       tabMine: "Marcar mi campo",
@@ -207,6 +222,10 @@ export const es = {
     },
     picker: {
       title: "Marca tu campo",
+      viewLabel: "Vista del mapa",
+      views: { satellite: "Satélite", relief: "Relieve 3D", map: "Mapa" },
+      reliefHint:
+        "Relieve 3D: el terreno se ve en tres dimensiones, con la altura exagerada para que se noten las sierras. Gíralo o inclínalo con dos dedos (en computadora, clic derecho y arrastrar). Un toque normal sigue marcando tu campo.",
       step1: "Encuentra tu campo",
       useLocation: "Usar mi ubicación",
       or: "o",

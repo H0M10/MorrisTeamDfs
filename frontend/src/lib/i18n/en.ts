@@ -94,6 +94,21 @@ export const en: Dictionary = {
       labeled: "With crop records",
       unlabeled: "Without crop records",
       saved: "This choice is saved on this device.",
+      coordinatesLabel: "Center coordinates",
+      cropRecords: "Crop records",
+      footprintsTitle: "Real pixel size of each source over your field",
+      footprintsHelp:
+        "Each source sees the field with a different pixel size. Those of several kilometers describe the region, not your field.",
+      metersPerPixel: "meters per pixel",
+      sourceNames: {
+        hls_landsat: "Field color (Landsat and Sentinel satellites)",
+        openet: "Water the field used (OpenET)",
+        usda_cdl: "Crops planted each year",
+        srtm: "Terrain height and slope",
+        soilgrids: "Soil texture and organic matter",
+        smap: "Regional satellite soil moisture",
+        nasa_power: "Regional rain, temperature and frost",
+      } as Record<string, string>,
       cases: "Challenge cases",
       whereTitle: "Where is your field?",
       tabMine: "Mark my field",
@@ -204,6 +219,10 @@ export const en: Dictionary = {
     },
     picker: {
       title: "Mark your field",
+      viewLabel: "Map view",
+      views: { satellite: "Satellite", relief: "3D relief", map: "Map" },
+      reliefHint:
+        "3D relief: the terrain is shown in three dimensions, with height exaggerated so the ranges stand out. Rotate or tilt it with two fingers (on a computer, right-click and drag). A normal tap still marks your field.",
       step1: "Find your field",
       useLocation: "Use my location",
       or: "or",

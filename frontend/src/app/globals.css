@@ -679,6 +679,8 @@ textarea.field {
 }
 
 .corner-pin {
+  width: 26px;
+  height: 26px;
   display: flex !important;
   align-items: center;
   justify-content: center;
@@ -696,8 +698,63 @@ textarea.field {
   border-top: 2px solid var(--color-tinta);
 }
 
-/* Los créditos del mapa: enlaces subrayados, no solo de color (axe link-in-text-block).
-   Más específico que leaflet.css, que se carga después y los deja sin subrayar. */
-.leaflet-container .leaflet-control-attribution a {
+
+/* ---------- Mapa MapLibre de /tool ---------- */
+.center-pin {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.map-views {
+  margin: 0.5rem 0;
+}
+
+.map-views button {
+  flex: 1 1 8rem;
+}
+
+.maplibregl-ctrl-attrib a {
   text-decoration: underline;
+}
+
+.map-footprints {
+  margin: 0.75rem 0;
+}
+
+.footprint-row {
+  display: contents;
+}
+
+.parcel-summary {
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-tinta);
+}
+
+.parcel-summary-title {
+  margin-bottom: 0.5rem;
+  font-size: 1.15rem;
+}
+
+/* Controles de MapLibre: sin el estilo global de botones (relleno y borde hacían que el
+   ícono se repitiera), pero con objetivos táctiles de 44 px. */
+.maplibregl-ctrl-group button,
+.maplibregl-ctrl-attrib-button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.maplibregl-ctrl-group button + button {
+  border-top: 1px solid #ddd;
+}
+
+.maplibregl-ctrl-attrib {
+  font-size: 0.7rem;
 }
