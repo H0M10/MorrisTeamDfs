@@ -767,3 +767,209 @@ html[data-sun]
   margin-top: 0.5rem;
   padding-top: 0.5rem;
 }
+
+/* ---------- Portada para la rúbrica: problema, distintos, pruebas, reto ---------- */
+.landing-problem {
+  border-left: 4px solid #e9b824;
+  padding-left: 1rem;
+  color: var(--ink);
+  max-width: 38rem;
+}
+
+.landing-problem a,
+.landing-band a,
+.landing-small a {
+  color: #a9c8ff;
+}
+
+.landing-small {
+  color: var(--quiet);
+  font-size: 0.95rem;
+}
+
+.landing-hero-figure {
+  margin: 0;
+}
+
+.landing-hero-figure img,
+.landing-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  border: 1px solid var(--line);
+}
+
+.landing-hero-figure figcaption,
+.landing-figure figcaption {
+  margin-top: 0.5rem;
+  color: var(--quiet);
+  font-size: 0.9rem;
+}
+
+.landing-sections {
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.landing-band {
+  padding: 3rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.landing-band h2 {
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  letter-spacing: -0.02em;
+  margin: 0 0 1rem;
+}
+
+.landing-lead {
+  max-width: 46rem;
+  color: var(--quiet);
+}
+
+.landing-diff {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  gap: 1.5rem;
+  counter-reset: diff;
+}
+
+.landing-diff li {
+  counter-increment: diff;
+  padding-top: 1rem;
+  border-top: 3px solid #e9b824;
+}
+
+.landing-diff li::before {
+  content: "0" counter(diff);
+  color: var(--quiet);
+  font-weight: 700;
+}
+
+.landing-diff h3 {
+  font-size: 1.25rem;
+  margin: 0.4rem 0;
+}
+
+.landing-diff p {
+  color: var(--quiet);
+  margin: 0;
+}
+
+.mission .landing-proof,
+.mission .landing-map {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.mission .landing-proof caption {
+  text-align: left;
+  color: var(--quiet);
+  padding-bottom: 0.5rem;
+}
+
+.mission .landing-proof :is(th, td),
+.mission .landing-map :is(th, td) {
+  border: 1px solid var(--line);
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+  color: var(--ink);
+}
+
+.mission .landing-proof thead th,
+.mission .landing-map thead th {
+  background: var(--panel);
+}
+
+.proof-win {
+  font-weight: 700;
+  color: #9be29f !important;
+}
+
+.proof-loss {
+  font-weight: 700;
+  color: #ffd27a !important;
+}
+
+.landing-figure {
+  margin: 0;
+}
+
+.landing-figure-wide {
+  margin-top: 2rem;
+  max-width: 52rem;
+}
+
+.landing-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.landing-split ul {
+  color: var(--quiet);
+}
+
+@media (max-width: 52rem) {
+  .landing-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+.landing-hero-map {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 0.75rem;
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.mission .landing-diff {
+  max-width: none;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+}
+
+@media (max-width: 52rem) {
+  /* El título y el problema primero; la imagen después. */
+  .landing-hero-figure {
+    order: 2;
+  }
+
+  /* Cada requisito del reto como tarjeta: sin columnas angostas. */
+  .mission .landing-map,
+  .mission .landing-map tbody,
+  .mission .landing-map tr,
+  .mission .landing-map th,
+  .mission .landing-map td {
+    display: block;
+    width: 100%;
+  }
+
+  .mission .landing-map thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .mission .landing-map tr {
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .mission .landing-map :is(th, td) {
+    border: 0;
+    padding: 0.2rem 0;
+  }
+}
