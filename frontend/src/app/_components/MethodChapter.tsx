@@ -172,13 +172,12 @@ const STEPS: Step[] = [
 
 /** Las palabras dentro de las fórmulas, en español. */
 const TEX_ES: [string, string][] = [
-  [String.raw`	ext{viable}(r)`, String.raw`	ext{viable}(r)`],
-  [String.raw`	ext{buyer}`, String.raw`	ext{comprador}`],
-  [String.raw`	ext{machinery}`, String.raw`	ext{maquinaria}`],
-  [String.raw`	ext{window}`, String.raw`	ext{ventana}`],
+  [String.raw`\text{buyer}`, String.raw`\text{comprador}`],
+  [String.raw`\text{machinery}`, String.raw`\text{maquinaria}`],
+  [String.raw`\text{window}`, String.raw`\text{ventana}`],
   ["without prior", "sin anterior"],
   ["with prior", "con anterior"],
-  [String.raw`	ext{Quantile}`, String.raw`	ext{Cuantil}`],
+  [String.raw`\text{Quantile}`, String.raw`\text{Cuantil}`],
 ];
 const localizeTex = (tex: string) => TEX_ES.reduce((acc, [en, es]) => acc.split(en).join(es), tex);
 
