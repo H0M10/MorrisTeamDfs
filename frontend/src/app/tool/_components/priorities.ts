@@ -19,6 +19,8 @@ export interface Priorities {
 }
 
 const STORAGE_KEY = "fieldshift:priorities";
+/** Aviso para que las pantallas abiertas se reordenen cuando la Guía aplica una prioridad dicha por voz. */
+export const PRIORITIES_EVENT = "fieldshift:priorities-change";
 const EMPTY: Priorities = { first: null, second: null };
 
 const isKey = (value: unknown): value is PriorityKey =>
@@ -37,12 +39,13 @@ function readPriorities(): Priorities {
   }
 }
 
-function savePriorities(priorities: Priorities): void {
+export function savePriorities(priorities: Priorities): void {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(priorities));
   } catch {
     // sin almacenamiento: la elección vale solo en esta visita
   }
+  window.dispatchEvent(new CustomEvent(PRIORITIES_EVENT, { detail: priorities }));
 }
 
 /** Prioridades guardadas en el dispositivo (sin datos personales). */
@@ -52,6 +55,9 @@ export function usePriorities(): [Priorities, (next: Priorities) => void] {
     // Lectura única de localStorage tras hidratar: no existe en el servidor.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setPriorities(readPriorities());
+    const onChange = (event: Event) => setPriorities((event as CustomEvent<Priorities>).detail);
+    window.addEventListener(PRIORITIES_EVENT, onChange);
+    return () => window.removeEventListener(PRIORITIES_EVENT, onChange);
   }, []);
   const update = useCallback((next: Priorities) => {
     const clean = { first: next.first, second: next.second === next.first ? null : next.second };

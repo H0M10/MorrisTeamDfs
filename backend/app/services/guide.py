@@ -75,6 +75,39 @@ TEXT = {
         "last": "Ya estás en el último paso.",
         "heard_water": "Escuché: agua máxima {value} {unit} al año.",
         "heard_crops": "Escuché: sin comprador para {crops}.",
+        "heard_have": "Escuché que tienes: {items}.",
+        "heard_missing": "Escuché que no tienes: {items}.",
+        "heard_window": "Escuché: siembras de {start} a {end}.",
+        "heard_priority": "Escuché: lo que más te importa es {priority}.",
+        "machinery": {
+            "pivote_central": "pivote central",
+            "riego_aspersion": "riego por aspersión",
+            "riego_compuerta": "riego por compuerta",
+            "riego_goteo": "riego por goteo",
+            "sembradora_grano": "sembradora de grano",
+            "sembradora_convencional": "sembradora convencional",
+            "sembradora_directa": "sembradora de siembra directa",
+            "empacadora": "empacadora",
+        },
+        "months": [
+            "enero",
+            "febrero",
+            "marzo",
+            "abril",
+            "mayo",
+            "junio",
+            "julio",
+            "agosto",
+            "septiembre",
+            "octubre",
+            "noviembre",
+            "diciembre",
+        ],
+        "priorities": {
+            "water": "ahorrar agua",
+            "soil": "cuidar el suelo",
+            "climate": "tener menos helada y calor",
+        },
         "confirm": "¿Lo aplico?",
         "units": {"mm": "milímetros", "in": "pulgadas", "acre_ft": "acre-pies por acre"},
     },
@@ -87,6 +120,39 @@ TEXT = {
         "last": "You are already on the last step.",
         "heard_water": "I heard: maximum water {value} {unit} per year.",
         "heard_crops": "I heard: no buyer for {crops}.",
+        "heard_have": "I heard you have: {items}.",
+        "heard_missing": "I heard you do not have: {items}.",
+        "heard_window": "I heard: you plant from {start} to {end}.",
+        "heard_priority": "I heard: what matters most to you is {priority}.",
+        "machinery": {
+            "pivote_central": "center pivot",
+            "riego_aspersion": "sprinkler irrigation",
+            "riego_compuerta": "gated-pipe irrigation",
+            "riego_goteo": "drip irrigation",
+            "sembradora_grano": "grain drill",
+            "sembradora_convencional": "conventional planter",
+            "sembradora_directa": "no-till drill",
+            "empacadora": "hay baler",
+        },
+        "months": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ],
+        "priorities": {
+            "water": "saving water",
+            "soil": "protecting the soil",
+            "climate": "less frost and heat",
+        },
         "confirm": "Should I apply it?",
         "units": {"mm": "millimeters", "in": "inches", "acre_ft": "acre-feet per acre"},
     },
@@ -224,6 +290,87 @@ NO_BUYER_RE = re.compile(
     r"sin comprador|no tengo comprador|no hay comprador|nadie (?:me )?compra|no (?:lo )?vendo"
     r"|no (?:se )?(?:puede|puedo) vender|no buyer|nobody buys|no one buys|can.?t sell|cannot sell"
 )
+# Maquinaria que el motor entiende (mismos códigos que ConstraintsIn) y cómo se dice.
+MACHINERY_WORDS: dict[str, tuple[str, ...]] = {
+    "pivote_central": ("pivote", "pivotes", "center pivot", "pivot"),
+    "riego_aspersion": ("aspersion", "aspersores", "aspersor", "sprinkler", "sprinklers"),
+    "riego_compuerta": (
+        "compuerta",
+        "compuertas",
+        "por gravedad",
+        "surcos",
+        "gated pipe",
+        "furrow",
+        "flood",
+    ),
+    "riego_goteo": ("goteo", "cintilla", "drip"),
+    "sembradora_grano": ("sembradora de grano", "grain drill"),
+    "sembradora_convencional": ("sembradora convencional", "planter"),
+    "sembradora_directa": ("siembra directa", "sembradora directa", "no till", "no-till"),
+    "empacadora": ("empacadora", "embaladora", "empacar", "baler", "hay baler"),
+}
+NEGATION_RE = re.compile(
+    r"(?:no tengo|no cuento con|no hay|sin|me falta|ya no tengo"
+    r"|don.?t have|do not have|no|ni|nor|without)\s+(?:\w+\s+){0,2}$"
+)
+MONTHS: dict[str, int] = {
+    **{
+        m: i + 1
+        for i, m in enumerate(
+            [
+                "enero",
+                "febrero",
+                "marzo",
+                "abril",
+                "mayo",
+                "junio",
+                "julio",
+                "agosto",
+                "septiembre",
+                "octubre",
+                "noviembre",
+                "diciembre",
+            ]
+        )
+    },
+    "setiembre": 9,
+    **{
+        m: i + 1
+        for i, m in enumerate(
+            [
+                "january",
+                "february",
+                "march",
+                "april",
+                "may",
+                "june",
+                "july",
+                "august",
+                "september",
+                "october",
+                "november",
+                "december",
+            ]
+        )
+    },
+}
+_MONTH = "(" + "|".join(sorted(MONTHS, key=len, reverse=True)) + ")"
+WINDOW_RE = re.compile(
+    r"(?:siembr\w*|sembrar|plant\w*|sow\w*)\D{0,40}?(?:de|desde|entre|from|between)\s+"
+    + _MONTH
+    + r"\s+(?:a|hasta|y|to|through|until|and)\s+"
+    + _MONTH
+)
+PRIORITY_WORDS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("water", ("agua", "water")),
+    ("soil", ("suelo", "tierra", "soil")),
+    ("climate", ("helada", "heladas", "calor", "clima", "frost", "heat")),
+)
+PRIORITY_RE = re.compile(
+    r"(?:me importa|importa mas|lo mas importante|prioridad|priority"
+    r"|care (?:most )?about|most important|matters most)\D{0,40}"
+)
+
 CROP_NAME_STOP = frozenset(
     [
         "cobertura",
@@ -366,8 +513,45 @@ def water_limit(value: float, unit: str) -> dict[str, Any] | None:
     return {"value": value, "unit": unit, "value_mm": value_mm}
 
 
+def machinery_heard(heard: str) -> tuple[list[str], list[str]]:
+    """Maquinaria que la persona dice tener y la que dice no tener (texto normalizado)."""
+    have: list[str] = []
+    missing: list[str] = []
+    for code, words in MACHINERY_WORDS.items():
+        for word in words:
+            match = re.search(rf"\b{re.escape(word)}\b", heard)
+            if not match:
+                continue
+            before = heard[max(0, match.start() - 30) : match.start()]
+            (missing if NEGATION_RE.search(before) else have).append(code)
+            break
+    return have, missing
+
+
+def window_heard(heard: str) -> dict[str, int] | None:
+    match = WINDOW_RE.search(heard)
+    if not match:
+        return None
+    return {"start_month": MONTHS[match.group(1)], "end_month": MONTHS[match.group(2)]}
+
+
+def priority_heard(heard: str) -> str | None:
+    """La prioridad que se nombra primero después de «me importa más…»."""
+    match = PRIORITY_RE.search(heard)
+    if not match:
+        return None
+    rest = heard[match.start() : match.end() + 40]
+    found: list[tuple[int, str]] = []
+    for key, words in PRIORITY_WORDS:
+        for word in words:
+            hit = re.search(r"\b" + re.escape(word) + r"\b", rest)
+            if hit:
+                found.append((hit.start(), key))
+    return min(found)[1] if found else None
+
+
 def parse_constraints(heard_raw: str) -> dict[str, Any] | None:
-    """Capa 1: agua máxima y cultivos sin comprador, solo con lo que se dijo."""
+    """Capa 1: lo que la persona dijo, leído con reglas. Nada que no haya dicho."""
     heard = normalize(heard_raw)
     water = None
     match = WATER_RE.search(heard)
@@ -378,14 +562,44 @@ def parse_constraints(heard_raw: str) -> dict[str, Any] | None:
     crops: list[str] = []
     if NO_BUYER_RE.search(heard):
         crops = crops_heard(heard)
-    if water is None and not crops:
+    have, missing = machinery_heard(heard)
+    window = window_heard(heard)
+    priority = priority_heard(heard)
+    if (
+        water is None
+        and not crops
+        and not have
+        and not missing
+        and window is None
+        and priority is None
+    ):
         return None
     return {
         "max_water_mm_year": water,
         "crops_without_buyer": crops,
+        "machinery_have": have,
+        "machinery_missing": missing,
+        "planting_window": window,
+        "priority": priority,
         "heard": heard_raw,
         "needs_confirmation": True,
     }
+
+
+def merge_constraints(
+    llm: dict[str, Any] | None, rules: dict[str, Any] | None
+) -> dict[str, Any] | None:
+    """El agua y los cultivos validados del modelo, más lo demás leído con reglas."""
+    if llm is None:
+        return rules
+    if rules is None:
+        return llm
+    merged = dict(rules)
+    merged["max_water_mm_year"] = llm["max_water_mm_year"] or rules["max_water_mm_year"]
+    merged["crops_without_buyer"] = list(
+        dict.fromkeys([*llm["crops_without_buyer"], *rules["crops_without_buyer"]])
+    )
+    return merged
 
 
 def validate_constraint(raw: Any, heard_raw: str) -> dict[str, Any] | None:
@@ -419,6 +633,10 @@ def validate_constraint(raw: Any, heard_raw: str) -> dict[str, Any] | None:
     return {
         "max_water_mm_year": water,
         "crops_without_buyer": list(dict.fromkeys(crops)),
+        "machinery_have": [],
+        "machinery_missing": [],
+        "planting_window": None,
+        "priority": None,
         "heard": heard_raw,
         "needs_confirmation": True,
     }
@@ -436,6 +654,29 @@ def describe_constraint(constraint: dict[str, Any], lang: str) -> str:
         names = {s.crop_code: s.name[lang] for s in crop_bank.list_crops()}
         listed = ", ".join(names.get(c, c) for c in constraint["crops_without_buyer"])
         parts.append(t["heard_crops"].format(crops=listed))
+    machinery = t["machinery"]
+    if constraint.get("machinery_have"):
+        parts.append(
+            t["heard_have"].format(
+                items=", ".join(machinery[c] for c in constraint["machinery_have"])
+            )
+        )
+    if constraint.get("machinery_missing"):
+        parts.append(
+            t["heard_missing"].format(
+                items=", ".join(machinery[c] for c in constraint["machinery_missing"])
+            )
+        )
+    window = constraint.get("planting_window")
+    if window:
+        parts.append(
+            t["heard_window"].format(
+                start=t["months"][window["start_month"] - 1],
+                end=t["months"][window["end_month"] - 1],
+            )
+        )
+    if constraint.get("priority"):
+        parts.append(t["heard_priority"].format(priority=t["priorities"][constraint["priority"]]))
     parts.append(t["confirm"])
     return " ".join(parts)
 
@@ -703,7 +944,9 @@ def validate_llm(raw_text: str, request: GuideRequest) -> dict[str, Any]:
     step = step if step in STEPS and step != request.screen else None
 
     heard = request.transcript or request.question
-    constraint = validate_constraint(raw.get("set_constraint"), heard) or parse_constraints(heard)
+    constraint = merge_constraints(
+        validate_constraint(raw.get("set_constraint"), heard), parse_constraints(heard)
+    )
     return {
         "answer": answer.strip(),
         "highlight": list(dict.fromkeys(highlight)),

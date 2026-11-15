@@ -516,3 +516,49 @@ def test_llm_keeps_terms_found_by_rules(
     data = llm_client.post(URL, json=body(question="¿Qué es el NDVI?")).json()
     assert data["source"] == "llm"
     assert data["terms"] == ["ndvi", "pixel"]
+
+
+# ------------------------------------------------- llenar todo hablando (capa 1)
+
+
+def test_rules_fill_machinery_window_and_priority_from_speech() -> None:
+    said = (
+        "Tengo pivote y empacadora, no tengo sembradora de grano ni goteo. "
+        "Siembro de marzo a mayo y me importa más ahorrar agua."
+    )
+    c = guide_service.parse_constraints(said)
+    assert c is not None
+    assert c["machinery_have"] == ["pivote_central", "empacadora"]
+    assert c["machinery_missing"] == ["riego_goteo", "sembradora_grano"]
+    assert c["planting_window"] == {"start_month": 3, "end_month": 5}
+    assert c["priority"] == "water"
+    assert c["needs_confirmation"] is True
+
+
+def test_rules_fill_in_english() -> None:
+    c = guide_service.parse_constraints(
+        "I plant from April to June and soil matters most to me. I don't have a baler."
+    )
+    assert c is not None
+    assert c["planting_window"] == {"start_month": 4, "end_month": 6}
+    assert c["machinery_missing"] == ["empacadora"]
+
+
+def test_priority_needs_an_explicit_phrase() -> None:
+    # Hablar de agua sin decir que es lo que más importa no cambia la prioridad.
+    c = guide_service.parse_constraints("tengo 20 pulgadas de agua al año")
+    assert c is not None and c["priority"] is None
+
+
+def test_describe_reads_back_everything_heard() -> None:
+    c = guide_service.parse_constraints(
+        "me importa más el suelo, siembro de abril a junio, tengo pivote"
+    )
+    text = guide_service.describe_constraint(c, "es")
+    assert (
+        "pivote central" in text
+        and "abril" in text
+        and "junio" in text
+        and "cuidar el suelo" in text
+    )
+    assert text.endswith("¿Lo aplico?")

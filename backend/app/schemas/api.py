@@ -129,11 +129,20 @@ class WaterLimitHeard(StrictModel):
     value_mm: float
 
 
+class PlantingWindowHeard(StrictModel):
+    start_month: int = Field(ge=1, le=12)
+    end_month: int = Field(ge=1, le=12)
+
+
 class SetConstraint(StrictModel):
     """Límite que dijo la persona. Se confirma antes de aplicarlo en /simulate."""
 
     max_water_mm_year: WaterLimitHeard | None = None
     crops_without_buyer: list[str] = Field(default_factory=list)
+    machinery_have: list[str] = Field(default_factory=list)
+    machinery_missing: list[str] = Field(default_factory=list)
+    planting_window: PlantingWindowHeard | None = None
+    priority: Literal["water", "soil", "climate"] | None = None
     heard: str
     needs_confirmation: Literal[True] = True
 

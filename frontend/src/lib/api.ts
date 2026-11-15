@@ -103,6 +103,10 @@ export interface GuideResponse {
   set_constraint: {
     max_water_mm_year: { value: number; unit: "mm" | "in" | "acre_ft"; value_mm: number } | null;
     crops_without_buyer: string[];
+    machinery_have?: string[];
+    machinery_missing?: string[];
+    planting_window?: { start_month: number; end_month: number } | null;
+    priority?: "water" | "soil" | "climate" | null;
     heard: string;
     needs_confirmation: true;
   } | null;

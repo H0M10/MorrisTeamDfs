@@ -21,6 +21,7 @@ import type { ConstraintsInput } from "../contract";
 import { useDeclaredConstraints, useEvaluation, useParcelId } from "../evaluation";
 import { useI18n } from "../i18n";
 import { canListen, canSpeak, listenOnce, speak, stopSpeaking } from "../speech";
+import { savePriorities } from "@/app/tool/_components/priorities";
 import { useGuideMode } from "./mode";
 
 type StepKey = "parcel" | "portrait" | "constraints" | "rotations" | "evidence" | "share";
@@ -853,14 +854,34 @@ function ConfirmConstraint({
           }
         : null);
     if (!parcelId || !base) {
+      // Sin campo todavía, la prioridad sí se puede guardar.
+      if (pending.priority) {
+        savePriorities({ first: pending.priority, second: null });
+        onDone(true);
+        return;
+      }
       onNeedField();
       return;
     }
-    setDeclared({
-      ...base,
-      max_water_mm_year: pending.max_water_mm_year?.value_mm ?? base.max_water_mm_year,
-      crops_without_buyer: [...new Set([...base.crops_without_buyer, ...pending.crops_without_buyer])],
-    });
+    const missing = new Set(pending.machinery_missing ?? []);
+    const touchesLimits =
+      pending.max_water_mm_year !== null ||
+      pending.crops_without_buyer.length > 0 ||
+      (pending.machinery_have ?? []).length > 0 ||
+      missing.size > 0 ||
+      Boolean(pending.planting_window);
+    if (touchesLimits) {
+      setDeclared({
+        ...base,
+        max_water_mm_year: pending.max_water_mm_year?.value_mm ?? base.max_water_mm_year,
+        crops_without_buyer: [...new Set([...base.crops_without_buyer, ...pending.crops_without_buyer])],
+        available_machinery: [
+          ...new Set([...base.available_machinery, ...(pending.machinery_have ?? [])]),
+        ].filter((code) => !missing.has(code)),
+        planting_window: pending.planting_window ?? base.planting_window,
+      });
+    }
+    if (pending.priority) savePriorities({ first: pending.priority, second: null });
     onDone(true);
   };
 
