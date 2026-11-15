@@ -1,96 +1,779 @@
-/* Portada (P1-4). Fondo blanco, texto negro; el único color es el botón
-   principal en Azul compuerta (AGENTS.md §8). Sin tarjetas ni degradados. */
+/* Estilos de la portada de presentación (/), red neuronal 3D y espacios Higgsfield.
+   Cumple WCAG 2.2 AA (>= 4.5:1), >= 18 px por defecto, zoom 200 % sin overflow
+   horizontal, objetivos táctiles >= 44 px y adaptación completa al Modo Sol (data-sun). */
 
-.home {
-  padding-top: 2rem;
+.landing-main {
+  padding: 0;
+  max-width: none;
+}
+
+.landing-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 2.25rem 1.25rem;
+}
+
+/* ---------- 1. Hero cósmico ---------- */
+
+.landing-hero {
+  background-color: #070b14;
+  background-image:
+    radial-gradient(circle at 75% 18%, rgba(233, 184, 36, 0.16), transparent 44%),
+    radial-gradient(circle at 18% 22%, rgba(18, 71, 184, 0.34), transparent 52%),
+    linear-gradient(180deg, #050811 0%, #0b1120 100%);
+  color: #f8fafc;
+  border-bottom: 2px solid #334155;
+}
+
+.landing-eyebrow {
+  display: inline-block;
+  margin: 0 0 0.85rem;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid #93c5fd;
+  border-radius: 999px;
+  color: #dbeafe;
+  background-color: #0d224f;
+  font-weight: 700;
 }
 
 .home-title {
-  font-size: clamp(1.9rem, 6vw, 2.75rem);
-  line-height: 1.15;
-  max-width: 22ch;
-  margin-bottom: 1rem;
+  font-size: clamp(1.9rem, 3.8vw, 3rem);
+  line-height: 1.12;
+  max-width: 24ch;
+  margin: 0 0 1rem;
 }
 
 .home-lead {
-  font-size: 1.15rem;
-  max-width: 48ch;
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  max-width: 58ch;
+  color: #e2e8f0;
+  margin: 0 0 1.4rem;
 }
 
 .home-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin: 1.5rem 0 0.75rem;
+  margin: 1.4rem 0 1.5rem;
 }
 
 .home-cta {
-  min-height: 3.5rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 1.2rem;
+  padding: 0.85rem 1.45rem;
+  font-size: 1.05rem;
+  border: 2px solid #93c5fd;
 }
 
-.home-coverage {
-  margin-bottom: 2.5rem;
+.landing-secondary {
+  background: #111a2e;
+  color: #f8fafc;
+  border: 2px solid #94a3b8;
+  padding: 0.85rem 1.25rem;
 }
 
-.home-how {
-  list-style: none;
-  counter-reset: paso;
-  padding: 0;
-  margin: 0 0 1.5rem;
-  max-width: 48rem;
+.landing-hero :focus-visible,
+.landing-band-dark :focus-visible,
+.landing-band-clips :focus-visible {
+  outline: 3px solid #e9b824;
+  outline-offset: 3px;
 }
 
-.home-how li {
-  counter-increment: paso;
-  display: grid;
-  grid-template-columns: 2.5rem 1fr;
-  gap: 0.75rem;
-  padding: 0.75rem 0;
-  border-top: 2px solid var(--color-tinta);
-}
-
-.home-how li:last-child {
-  border-bottom: 2px solid var(--color-tinta);
-}
-
-.home-how li::before {
-  content: counter(paso);
-  font-size: 1.5rem;
-  font-weight: 800;
-  line-height: 1.2;
-}
-
-.home-trust {
-  font-weight: 700;
-}
-
-.home-footer {
-  max-width: 60rem;
-  margin: 2rem auto 0;
-  padding: 1rem;
-  border-top: 2px solid var(--color-tinta);
-}
-
-.home-footer ul {
+.landing-facts {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
-  list-style: none;
-  padding: 0;
+  gap: 0.5rem 2rem;
+  color: #cbd5e1;
+  margin: 0 0 1.5rem;
+}
+
+.landing-facts p {
   margin: 0;
 }
 
-.home-footer a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
+.landing-pillars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 0.9rem;
 }
 
-/* Teléfono: botones a todo lo ancho, al alcance del pulgar. */
+@media (min-width: 56rem) {
+  .landing-pillars {
+    grid-template-columns: 1.35fr 1fr;
+  }
+}
+
+.landing-pillar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid #334155;
+  border-left: 3px solid #93c5fd;
+  border-radius: 0.6rem;
+  background-color: #0f172a;
+}
+
+.landing-pillar:first-child {
+  border-left-color: #e9b824;
+}
+
+.landing-pillar-tag {
+  align-self: flex-start;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid #64748b;
+  color: #fde68a;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.landing-pillar p {
+  margin: 0;
+  color: #cbd5e1;
+}
+
+/* ---------- 2. Escenario 3D Red Neuronal Modelo 3 ---------- */
+
+.landing-band-dark {
+  background: #060913;
+  color: #f8fafc;
+  border-bottom: 2px solid #1e293b;
+}
+
+.nn-section h2,
+.nn-section h3 {
+  margin-top: 0;
+  color: #f8fafc;
+}
+
+.nn-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.nn-header p {
+  color: #cbd5e1;
+}
+
+.nn-stage {
+  border: 2px solid #334155;
+  border-radius: 1rem;
+  background-color: #050811;
+  background-image:
+    radial-gradient(circle at 50% 42%, rgba(245, 208, 97, 0.14), rgba(15, 23, 42, 0.8) 52%, #04060d 100%);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.nn-hud-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.nn-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  flex: 1 1 20rem;
+  min-width: 0;
+}
+
+.nn-hud-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid #475569;
+  border-radius: 0.65rem;
+  background-color: #0f172a;
+  max-width: 100%;
+}
+
+.nn-hud-label {
+  font-size: 0.82rem;
+  color: #cbd5e1;
+}
+
+.nn-hud-value {
+  color: #f8fafc;
+  font-size: 0.95rem;
+}
+
+.nn-hud-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.nn-pill-switch {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.nn-pill-switch button {
+  background: #111a2e;
+  color: #f8fafc;
+  border: 2px solid #64748b;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.92rem;
+}
+
+.nn-pill-switch button[aria-pressed="true"] {
+  background: #f8fafc;
+  color: #050811;
+  border-color: #f5d061;
+}
+
+.nn-canvas-wrap {
+  position: relative;
+  border: 1px solid #475569;
+  border-radius: 0.85rem;
+  background: radial-gradient(circle at center, #1b1713 0%, #0a101f 52%, #03050a 100%);
+  overflow: hidden;
+}
+
+.nn-canvas-frame {
+  width: 100%;
+  height: clamp(20rem, 56vh, 34rem);
+  position: relative;
+}
+
+.nn-loading,
+.nn-webgl-fallback {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  text-align: center;
+  color: #f8fafc;
+}
+
+.nn-overlay-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+  padding: 0.65rem 1rem;
+  background-color: #060a14;
+  border-top: 1px solid #334155;
+}
+
+.nn-mode-readout {
+  margin: 0;
+  color: #f8fafc;
+}
+
+.nn-layer-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  font-size: 0.9rem;
+  color: #e2e8f0;
+}
+
+.nn-layer-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.nn-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  border: 1px solid #ffffff;
+}
+
+.nn-dot-input { background: #a8997a; }
+.nn-dot-gru { background: #818cf8; }
+.nn-dot-attn { background: #fde047; }
+.nn-dot-out { background: #4ade80; }
+
+/* Dock MORPH / FREEZE / RESET inspirado en la interfaz de referencia */
+.nn-dock {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background-color: #070b14;
+  border-top: 1px solid #334155;
+}
+
+.nn-dock-btn {
+  min-height: 44px;
+  min-width: 7.5rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: 999px;
+  background: #172033;
+  color: #f8fafc;
+  border: 2px solid #94a3b8;
+  font-weight: 700;
+}
+
+.nn-dock-btn.nn-dock-morph {
+  background: #1247b8;
+  border-color: #f5d061;
+  color: #ffffff;
+}
+
+.nn-dock-btn[aria-pressed="true"] {
+  background: #e9b824;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+.nn-dock-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  border-style: dashed;
+}
+
+/* Tarjetas numéricas debajo del lienzo */
+.nn-readout-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: 1rem;
+}
+
+.nn-readout-card {
+  padding: 1rem;
+  border: 1px solid #334155;
+  border-radius: 0.75rem;
+  background: #0b1120;
+  min-width: 0;
+}
+
+.nn-kv {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.3rem 1rem;
+  margin: 0 0 0.9rem;
+}
+
+.nn-kv dt {
+  color: #cbd5e1;
+}
+
+.nn-kv dd {
+  margin: 0;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.nn-class-bars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.nn-class-bars li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0.75rem;
+  border-radius: 0.45rem;
+  border: 1px solid #334155;
+  background: #060a14;
+}
+
+.nn-class-bars li.is-predicted {
+  border-color: #4ade80;
+  background-color: #133b20;
+}
+
+.nn-bar-val {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.nn-attn-list {
+  list-style: none;
+  margin: 0 0 0.85rem;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.nn-attn-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.75rem;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid #334155;
+  border-radius: 0.45rem;
+  background: #060a14;
+}
+
+.nn-attn-crop,
+.nn-muted,
+.nn-honesty {
+  color: #cbd5e1;
+}
+
+.nn-honesty {
+  margin: 0;
+  font-size: 0.95rem;
+  border-left: 3px solid #e9b824;
+  padding-left: 0.75rem;
+}
+
+.nn-table-details summary {
+  color: #a9c8ff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.nn-table-details th,
+.nn-table-details td {
+  border-color: #475569;
+  color: #f8fafc;
+  background: #090e1a;
+}
+
+/* ---------- 3. Escenas Higgsfield AI ---------- */
+
+.landing-band-clips {
+  background: #0b1120;
+  color: #f8fafc;
+  border-bottom: 2px solid #334155;
+}
+
+.hf-head h2 {
+  margin-top: 0;
+  color: #f8fafc;
+}
+
+.hf-head p {
+  color: #cbd5e1;
+}
+
+.hf-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1.15rem;
+  margin-top: 1.25rem;
+}
+
+.hf-card {
+  border: 1px solid #334155;
+  border-radius: 0.85rem;
+  background: #060a14;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hf-stage {
+  background: #03050b;
+  border-bottom: 1px solid #334155;
+}
+
+.hf-video,
+.hf-svg {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: block;
+  object-fit: cover;
+}
+
+.hf-placeholder {
+  display: flex;
+  flex-direction: column;
+}
+
+.hf-placeholder-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.8rem 1rem;
+  background-color: #060a14;
+  border-top: 1px solid #334155;
+  min-width: 0;
+}
+
+.hf-placeholder-label code {
+  font-size: 0.84rem;
+  color: #fde68a;
+  overflow-wrap: anywhere;
+}
+
+.hf-status-pill {
+  align-self: flex-start;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid #93c5fd;
+  background-color: #0d224f;
+  color: #f8fafc;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.hf-spec {
+  font-size: 0.85rem;
+  color: #cbd5e1;
+}
+
+.hf-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.hf-body h3 {
+  margin: 0;
+  color: #f8fafc;
+}
+
+.hf-body p {
+  margin: 0;
+  color: #cbd5e1;
+}
+
+.hf-body .hf-honesty {
+  color: #fde68a;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.hf-ready {
+  color: #86efac;
+  font-weight: 700;
+}
+
+/* ---------- 4. Flujo claro en blanco/tinta + arquitectura ---------- */
+
+.landing-band-light {
+  background: var(--color-cal);
+  color: var(--color-tinta);
+  border-bottom: 2px solid var(--color-tinta);
+}
+
+.landing-band-light h2 {
+  margin-top: 0;
+}
+
+.home-how {
+  counter-reset: step;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.85rem;
+  max-width: 52rem;
+}
+
+.home-how li {
+  counter-increment: step;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  border: 2px solid var(--color-tinta);
+  border-radius: 0.65rem;
+  padding: 1rem;
+  background: var(--color-cal);
+}
+
+.home-how li::before {
+  content: counter(step);
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--color-tinta);
+  border-radius: 50%;
+  font-weight: 800;
+  background: var(--color-paja);
+  color: var(--color-tinta);
+}
+
+.landing-arch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1rem;
+}
+
+.landing-arch-card {
+  border: 2px solid var(--color-tinta);
+  border-radius: 0.65rem;
+  padding: 1rem;
+  background: var(--color-cal);
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.landing-arch-prov {
+  align-self: flex-start;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-compuerta);
+}
+
+.landing-arch-card h3 {
+  margin: 0;
+}
+
+.landing-arch-card p {
+  margin: 0;
+}
+
+/* ---------- 5. Cierre y pie ---------- */
+
+.landing-entry {
+  background: #f8fafc;
+  color: var(--color-tinta);
+}
+
+.landing-entry-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+}
+
+.landing-entry h2 {
+  margin-top: 0;
+}
+
+.landing-entry p {
+  margin-bottom: 0;
+}
+
+.home-more {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  padding-top: 1.25rem;
+  padding-bottom: 2.25rem;
+  border-top: 2px solid var(--color-tinta);
+  align-items: center;
+}
+
+.home-more a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 700;
+}
+
+/* ---------- Modo Sol (html[data-sun]): blanco puro, tinta negra, bordes gruesos ---------- */
+
+html[data-sun] .landing-hero,
+html[data-sun] .landing-band-dark,
+html[data-sun] .landing-band-clips,
+html[data-sun] .landing-entry,
+html[data-sun] .landing-pillar,
+html[data-sun] .landing-eyebrow,
+html[data-sun] .landing-pillar-tag,
+html[data-sun] .nn-stage,
+html[data-sun] .nn-hud-chip,
+html[data-sun] .nn-overlay-meta,
+html[data-sun] .nn-dock,
+html[data-sun] .nn-readout-card,
+html[data-sun] .nn-class-bars li,
+html[data-sun] .nn-attn-list li,
+html[data-sun] .hf-card,
+html[data-sun] .hf-status-pill,
+html[data-sun] .hf-placeholder-label,
+html[data-sun] .nn-table-details th,
+html[data-sun] .nn-table-details td {
+  background: #ffffff;
+  background-image: none;
+  color: #000000;
+  border-color: #000000;
+}
+
+html[data-sun] .landing-hero *,
+html[data-sun] .landing-band-dark *,
+html[data-sun] .landing-band-clips * {
+  color: #000000;
+}
+
+html[data-sun] .landing-hero .button.primary,
+html[data-sun] .nn-dock-btn.nn-dock-morph {
+  background: #1247b8;
+  color: #ffffff;
+  border: 3px solid #000000;
+}
+
+html[data-sun] .landing-secondary,
+html[data-sun] .nn-pill-switch button,
+html[data-sun] .nn-dock-btn {
+  background: #ffffff;
+  color: #000000;
+  border: 3px solid #000000;
+}
+
+html[data-sun] .nn-pill-switch button[aria-pressed="true"],
+html[data-sun] .nn-dock-btn[aria-pressed="true"] {
+  background: #000000;
+  color: #ffffff;
+}
+
+html[data-sun] .nn-canvas-wrap {
+  border: 3px solid #000000;
+  /* Conserva el fondo oscuro dentro del visor 3D para distinguir los nodos luminosos */
+  background: #060913;
+}
+
+html[data-sun] .nn-canvas-wrap .nn-overlay-meta *,
+html[data-sun] .nn-canvas-wrap .nn-dock .nn-dock-btn {
+  color: #000000;
+}
+
+html[data-sun] .nn-canvas-wrap .nn-dock .nn-dock-morph {
+  color: #ffffff;
+}
+
+html[data-sun] .nn-canvas-wrap .nn-dock .nn-dock-btn[aria-pressed="true"] {
+  color: #ffffff;
+}
+
+html[data-sun] .hf-placeholder-label {
+  background: #ffffff;
+  border-top: 2px solid #000000;
+  position: static;
+}
+
+html[data-sun] .hf-stage {
+  aspect-ratio: auto;
+  background: #ffffff;
+}
+
+html[data-sun] .hf-svg {
+  aspect-ratio: 16 / 9;
+}
+
 @media (max-width: 40rem) {
-  .home-actions .button {
-    width: 100%;
+  .landing-inner {
+    padding: 1.5rem 0.9rem;
+  }
+
+  .nn-dock-btn {
+    flex: 1 1 8rem;
   }
 }

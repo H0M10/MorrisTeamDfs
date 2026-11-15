@@ -967,9 +967,9 @@ export const en: Dictionary = {
     },
     enterBanner: {
       title: "Ready to test with a real parcel or demo",
-      lead: "Move from this presentation into the 3-question guided flow or open the full step-by-step farmer workbench.",
-      primary: "Open guided flow",
-      secondary: "Open step-by-step tool (/tool)",
+      lead: "Move from this overview into the full workbench to mark a field, declare water and equipment, and compare three rotations.",
+      primary: "Analyze my field (/tool)",
+      secondary: "3D satellite showcase (/showcase)",
     },
   },
 };

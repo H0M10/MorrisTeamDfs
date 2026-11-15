@@ -973,9 +973,9 @@ export const es = {
     },
     enterBanner: {
       title: "Listo para probar con tu parcela o en modo demo",
-      lead: "Pasa de esta presentación al flujo guiado de tres preguntas o abre directamente la herramienta completa por pasos.",
-      primary: "Entrar al flujo guiado",
-      secondary: "Abrir herramienta por pasos (/tool)",
+      lead: "Pasa de esta presentación a la herramienta completa para elegir parcela, declarar agua y equipo, y comparar tres rotaciones.",
+      primary: "Analizar mi parcela (/tool)",
+      secondary: "Vista satélite 3D (/showcase)",
     },
   },
 };
