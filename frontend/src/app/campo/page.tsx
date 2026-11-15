@@ -14,7 +14,13 @@ import { useDeclaredConstraints, useEvaluation, useParcelId, usePilots } from "@
 import { DEFAULT_PARCEL_ID } from "@/lib/fixtures";
 import { useI18n } from "@/lib/i18n";
 import { rememberLiveRequest, type Ring } from "@/lib/shapes";
+import { ComparisonTable } from "../tool/_components/ComparisonTable";
+import { FieldSeasons } from "../tool/_components/FieldSeasons";
+import { ModelReadings } from "../tool/_components/ModelReadings";
+import { ParcelStrip } from "../tool/_components/ParcelStrip";
+import { RotationCalendar } from "../tool/_components/RotationCalendar";
 import {
+  bestByKey,
   orderStrategies,
   usePriorities,
   type RankableKey,
@@ -326,6 +332,18 @@ function Answer({ evaluation }: { evaluation: Evaluation }) {
         ? r.detail.soil(String(m.soil_cover_months_36m.value))
         : r.detail.climate(String(m.frost_risk_days_year.value), String(m.heat_risk_days_year.value));
   const others = ordered.slice(1);
+  const card = top.evidence_card;
+  const list = (title: string, items: { es: string; en: string }[]) =>
+    items.length > 0 && (
+      <>
+        <h3>{title}</h3>
+        <ul>
+          {items.map((item) => (
+            <li key={item.es}>{pick(item)}</li>
+          ))}
+        </ul>
+      </>
+    );
   const fact = (label: string, metric: typeof m.annual_water_mm) => (
     <div>
       <dt>{label}</dt>
@@ -352,31 +370,91 @@ function Answer({ evaluation }: { evaluation: Evaluation }) {
         {top.id === "current" && <p>{s.isCurrent}</p>}
       </section>
 
-      <div className="simple-choices" data-guide-id="campo.next">
-        <Link className="button primary big" href="/tool/evidencia">
-          {s.seeWhy}
+      {/* El expediente del campo: todo lo que calculamos, a un toque. */}
+      <h2 className="dossier-title">{s.dossierTitle}</h2>
+      <p className="small">{s.dossierLead}</p>
+
+      <details className="dossier" open data-guide-id="campo.why">
+        <summary>
+          <span className="dossier-name">{s.sections.why}</span>
+          <span className="dossier-hint">{s.hints.why}</span>
+        </summary>
+        <p>{pick(card.why_suggested)}</p>
+        {list(t.tool.evidence.support, card.supporting_evidence)}
+        {list(t.tool.evidence.benefits, card.benefits)}
+        {list(s.unknown, card.information_gaps)}
+        {list(s.reviewLocal, card.local_review_risks)}
+      </details>
+
+      <details className="dossier" data-guide-id="campo.history">
+        <summary>
+          <span className="dossier-name">{s.sections.history}</span>
+          <span className="dossier-hint">{s.hints.history}</span>
+        </summary>
+        <ParcelStrip timeline={evaluation.timeline} />
+        {evaluation.data_status === "real" && (
+          <ModelReadings
+            parcelId={evaluation.parcel.id}
+            labeled={evaluation.parcel.region_mode === "labeled"}
+          />
+        )}
+      </details>
+
+      <details className="dossier" data-guide-id="campo.risk">
+        <summary>
+          <span className="dossier-name">{s.sections.risk}</span>
+          <span className="dossier-hint">{s.hints.risk}</span>
+        </summary>
+        <FieldSeasons timeline={evaluation.timeline} />
+      </details>
+
+      <details className="dossier" data-guide-id="campo.compare">
+        <summary>
+          <span className="dossier-name">{s.sections.compare}</span>
+          <span className="dossier-hint">{s.hints.compare}</span>
+        </summary>
+        <ul className="answer-others">
+          {others.map((strategy) => (
+            <li key={strategy.id}>
+              <strong>{pick(strategy.title)}</strong>
+              <span>
+                {strategy.viable
+                  ? `${r.rowNames.annual_water_mm}: ${value(strategy.metrics.annual_water_mm)}`
+                  : `${r.ruledOut}. ${strategy.rejection_reason ? pick(strategy.rejection_reason) : ""}`}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <ComparisonTable strategies={ordered} best={bestByKey(evaluation.strategies)} />
+        <RotationCalendar strategies={ordered} />
+      </details>
+
+      <details className="dossier" data-guide-id="campo.limits">
+        <summary>
+          <span className="dossier-name">{s.sections.limits}</span>
+          <span className="dossier-hint">{s.hints.limits}</span>
+        </summary>
+        <dl className="facts">
+          <dt>{t.tool.constraints.water}</dt>
+          <dd>{value(evaluation.constraints.max_water_mm_year)}</dd>
+          <dt>{t.tool.constraints.noBuyer}</dt>
+          <dd>{evaluation.constraints.crops_without_buyer.join(", ") || t.tool.constraints.none}</dd>
+          <dt>{t.tool.constraints.window}</dt>
+          <dd>{pick(evaluation.constraints.planting_window.label)}</dd>
+        </dl>
+        <Link className="button" href="/tool/restricciones">
+          {s.changeLimits}
         </Link>
-        <Link className="button big" href="/tool/compartir">
+      </details>
+
+      <div className="simple-choices" data-guide-id="campo.next">
+        <Link className="button primary big" href="/tool/compartir">
           {s.share}
         </Link>
+        <button type="button" className="big" onClick={() => window.location.assign("/campo")}>
+          {s.otherField}
+        </button>
       </div>
-
-      <h2>{s.others}</h2>
-      <ul className="answer-others">
-        {others.map((strategy) => (
-          <li key={strategy.id}>
-            <strong>{pick(strategy.title)}</strong>
-            <span>
-              {strategy.viable
-                ? `${r.rowNames.annual_water_mm}: ${value(strategy.metrics.annual_water_mm)}`
-                : `${r.ruledOut}. ${strategy.rejection_reason ? pick(strategy.rejection_reason) : ""}`}
-            </span>
-          </li>
-        ))}
-      </ul>
-      <p>
-        <Link href="/tool/rotaciones">{s.compareAll}</Link>
-      </p>
       <p className="small">{s.disclaimer}</p>
     </>
   );

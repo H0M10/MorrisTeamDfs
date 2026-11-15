@@ -205,3 +205,63 @@
 .simple {
   padding-bottom: 6rem;
 }
+
+/* El expediente: secciones grandes que se abren con un toque. */
+.dossier-title {
+  margin-top: 2rem;
+}
+
+.dossier {
+  border: 2px solid var(--color-tinta);
+  border-radius: 0.6rem;
+  margin: 0.75rem 0;
+  padding: 0 1rem;
+}
+
+.dossier[open] {
+  padding-bottom: 1rem;
+}
+
+.dossier > summary {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.9rem 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.dossier > summary::-webkit-details-marker {
+  display: none;
+}
+
+.dossier > summary::after {
+  content: "+";
+  position: absolute;
+  right: 1rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.dossier {
+  position: relative;
+}
+
+.dossier[open] > summary::after {
+  content: "−";
+}
+
+.dossier-name {
+  font-weight: 800;
+  font-size: 1.15rem;
+  padding-right: 2rem;
+}
+
+.dossier-hint {
+  font-size: 0.95em;
+}
+
+.dossier[open] > summary {
+  border-bottom: 1px solid var(--color-tinta);
+  margin-bottom: 0.5rem;
+}
