@@ -54,6 +54,11 @@ export function ReadingSettingsDialog({
         returnFocus.current?.focus();
       }}
     >
+      <div className="a11y-close-bar">
+        <button type="button" className="primary" onClick={() => ref.current?.close()}>
+          {a.dialog.done}
+        </button>
+      </div>
       <h2 id={`${id}-title`}>{a.dialog.title}</h2>
       <p id={`${id}-intro`}>{a.dialog.intro}</p>
 
@@ -116,9 +121,6 @@ export function ReadingSettingsDialog({
       <div className="a11y-actions">
         <button type="button" onClick={reset}>
           {a.dialog.reset}
-        </button>
-        <button type="button" className="primary" onClick={() => ref.current?.close()}>
-          {a.dialog.done}
         </button>
       </div>
     </dialog>

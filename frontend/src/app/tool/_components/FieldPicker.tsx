@@ -248,13 +248,15 @@ export function FieldPicker({
   };
 
   const typedCenter = () => {
-    const y = Number(lat);
-    const x = Number(lon);
+    const y = Number(lat.trim().replace(",", "."));
+    const x = Number(lon.trim().replace(",", "."));
     if (
-      lat === "" ||
-      lon === "" ||
+      lat.trim() === "" ||
+      lon.trim() === "" ||
       !Number.isFinite(y) ||
-      !Number.isFinite(x)
+      !Number.isFinite(x) ||
+      Math.abs(y) > 90 ||
+      Math.abs(x) > 180
     ) {
       setError(p.badCoordinates);
       return;
@@ -434,7 +436,7 @@ export function FieldPicker({
             {p.lon}{" "}
             <input
               className="field"
-              inputMode="decimal"
+              inputMode="text"
               value={lon}
               onChange={(e) => setLon(e.target.value)}
               placeholder="-116.0000"

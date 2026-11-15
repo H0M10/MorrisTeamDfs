@@ -277,6 +277,17 @@ html[data-reduce-motion] .guide-bubble.is-anchored {
     right: 0.5rem;
     bottom: 0.5rem;
     width: auto;
+    max-height: calc(60dvh - env(safe-area-inset-bottom));
+    bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
+
+  .guide-ask-row {
+    flex-wrap: wrap;
+  }
+
+  .guide-ask input {
+    flex-basis: 100%;
+    width: 100%;
   }
 
   .guide-dock {

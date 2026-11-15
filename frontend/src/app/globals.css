@@ -1202,6 +1202,7 @@ textarea.field {
   border-radius: 0.6rem;
   padding: 0.75rem;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.6rem;
 }
 
@@ -1319,7 +1320,67 @@ textarea.field {
   }
 
   .map-wrap .picker-map {
-    height: 58vh;
+    height: 58svh;
+    min-height: 240px;
+  }
+
+  .map-search {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    flex-basis: 100%;
+  }
+
+  .map-search input {
+    width: 100%;
+  }
+
+  /* Instructions and layer controls must not cover a small map or spill outside it. */
+  .map-instruction,
+  .map-wrap .map-views {
+    position: static;
+    margin: 0 0 0.5rem;
+  }
+
+  .map-wrap .map-views {
+    flex-wrap: wrap;
+    margin: 0.5rem 0 0;
+  }
+
+  .map-wrap .map-views button {
+    flex: 1 1 auto;
+  }
+
+  dl.facts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.2rem;
+  }
+
+  dl.facts dd {
+    margin-bottom: 0.75rem;
+    overflow-wrap: anywhere;
+  }
+
+  .inline-fields > label {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .pager .button {
+    min-width: 0;
+    flex: 1 1 12rem;
+    text-align: center;
+  }
+
+  .pager {
+    flex-wrap: wrap;
+  }
+
+  html[data-text-size] .segmented-3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  html[data-text-size] .map-search {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
