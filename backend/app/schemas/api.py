@@ -6,9 +6,9 @@ contract.py; aquí solo está lo que la envuelve.
 
 from __future__ import annotations
 
-from typing import Any, Literal
+from typing import Annotated, Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StringConstraints
 
 from app.schemas.contract import Center, Evaluation, LocalizedText, MetricValue
 
@@ -78,6 +78,74 @@ class AskResponse(StrictModel):
     answer: str
     data_status: Literal["fixture", "real"]
     sources: list[AskSource]
+
+
+GuideStep = Literal[
+    "parcela", "retrato", "restricciones", "rotaciones", "evidencia", "compartir", "revision"
+]
+GuideId = Annotated[str, StringConstraints(pattern=r"^[a-z0-9][a-z0-9._-]{0,63}$")]
+FieldKey = Annotated[str, StringConstraints(min_length=1, max_length=120)]
+FieldValue = Annotated[str, StringConstraints(max_length=400)] | float | int | bool | None
+
+
+class GuideItem(StrictModel):
+    """Texto de la capa 1 (escrito por el equipo) de un elemento visible."""
+
+    id: GuideId
+    text: str = Field(min_length=1, max_length=600)
+
+
+class GuideProfile(BaseModel):
+    """Perfil de lectura. Se ignoran los ajustes que el backend no usa."""
+
+    model_config = ConfigDict(extra="ignore")
+
+    plain_language: bool = False
+
+
+class GuideRequest(StrictModel):
+    """Pregunta a la Guía sobre la pantalla actual.
+
+    `fields` son los campos del contrato que la pantalla muestra (ruta → valor).
+    Son, junto con los textos de `guide_items`, la pregunta y la transcripción,
+    lo único de donde la respuesta puede sacar una cifra.
+    """
+
+    screen: GuideStep
+    question: str = Field(min_length=1, max_length=500)
+    lang: Lang = "es"
+    visible_guide_ids: list[GuideId] = Field(default_factory=list, max_length=80)
+    guide_items: list[GuideItem] = Field(default_factory=list, max_length=80)
+    fields: dict[FieldKey, FieldValue] = Field(default_factory=dict, max_length=80)
+    glossary_ids: list[GuideId] = Field(default_factory=list, max_length=40)
+    transcript: str | None = Field(default=None, max_length=500)
+    profile: GuideProfile = Field(default_factory=GuideProfile)
+    session_id: str | None = Field(default=None, min_length=1, max_length=80)
+
+
+class WaterLimitHeard(StrictModel):
+    value: float
+    unit: Literal["mm", "in", "acre_ft"]
+    value_mm: float
+
+
+class SetConstraint(StrictModel):
+    """Límite que dijo la persona. Se confirma antes de aplicarlo en /simulate."""
+
+    max_water_mm_year: WaterLimitHeard | None = None
+    crops_without_buyer: list[str] = Field(default_factory=list)
+    heard: str
+    needs_confirmation: Literal[True] = True
+
+
+class GuideResponse(StrictModel):
+    answer: str
+    highlight: list[str]
+    go_to_step: GuideStep | None
+    terms: list[str]
+    set_constraint: SetConstraint | None = None
+    source: Literal["llm", "rules"]
+    lang: Lang
 
 
 class PilotSummary(StrictModel):

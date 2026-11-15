@@ -239,11 +239,49 @@ export const es = {
       calendarLabel: (count: number, from: string, to: string) =>
         `Calendario de ${count} rotaciones, de ${from} a ${to}. La misma información está en la tabla de abajo.`,
       legendTitle: "Qué significa cada cuadro",
+      legendLead:
+        "El color dice el tipo: verde, cultivo creciendo; amarillo paja, grano o cultivo en reposo; café, suelo sin cultivo. La trama distingue cada cultivo.",
       showCalendarTable: "Ver el calendario como tabla",
       calendarCaption: "Qué hay en el campo cada mes, en cada rotación",
       month: "Mes",
       ruledOutTag: "descartada",
       seeEvidence: "Ver por qué se sugiere cada una",
+    },
+    seasons: {
+      title: "¿Cuándo está expuesto tu campo?",
+      lead: "Un año típico de tu campo con los años del retrato: cuándo queda el suelo sin cubrir y cuándo la helada o el calor alcanzan al cultivo verde.",
+      caption: "Mes por mes, en los años observados",
+      monthNames: [
+        "enero", "febrero", "marzo", "abril", "mayo", "junio",
+        "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
+      ],
+      rows: {
+        exposed: "Poca cobertura verde (años)",
+        snow: "Nieve probable (años)",
+        frostGreen: "Helada con el cultivo verde (años)",
+        heatGreen: "Calor con el cultivo verde (años)",
+        frost: "Días de helada (promedio de la región)",
+        heat: "Días de calor (promedio de la región)",
+      },
+      yearsOf: (n: number, total: number) => `${n} de ${total}`,
+      noData: "sin dato",
+      exposedSummary: (n: number, total: number, months: string | null) =>
+        months
+          ? `Tu campo tuvo poca cobertura verde en ${n} de ${total} meses con dato, sobre todo en ${months}. En esos meses el suelo queda más expuesto al viento y a la lluvia.`
+          : `Tu campo tuvo poca cobertura verde en ${n} de ${total} meses con dato.`,
+      noExposed: "En los meses con dato, tu campo casi siempre tuvo cobertura verde.",
+      frostSummary: (months: string) =>
+        `Hubo heladas cuando el cultivo ya estaba verde en ${months}. Es la temporada más delicada para tu cultivo actual.`,
+      heatSummary: (months: string) => `Hubo días de calor con el cultivo verde en ${months}.`,
+      noStress: "En estos años no encontramos heladas ni calor con el cultivo verde.",
+      howTitle: "Cómo lo calculamos",
+      how: (greenMin: number) => [
+        `Poca cobertura verde: el índice de verdor del satélite (NDVI) es menor que ${greenMin} y el índice de suelo desnudo es positivo. Ese umbral lo fijamos nosotros; un técnico lo puede ajustar.`,
+        "Nieve probable: el índice de verdor es negativo, algo típico de nieve o agua sobre el suelo. La nieve también cubre el suelo.",
+        `Cultivo verde: índice de verdor de ${greenMin} o más.`,
+        "La helada y el calor vienen de NASA POWER, con una celda de unos 50 km: describen la región, no tu campo.",
+        "Los meses sin dato (por nubes) no se cuentan.",
+      ],
     },
     evidence: {
       why: "Por qué se sugiere",

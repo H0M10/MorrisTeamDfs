@@ -41,8 +41,9 @@ test("axe sin violaciones con la tabla de la tira abierta y en inglés", async (
   await ready(page, "/tool/retrato");
   await page.getByRole("button", { name: "English" }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
-  await page.locator("summary").click();
-  await expect(page.getByRole("table")).toBeVisible();
+  const strip = page.locator("section[aria-labelledby='strip-title']");
+  await strip.locator("summary").click();
+  await expect(strip.getByRole("table")).toBeVisible();
   expect(await axe(page)).toEqual([]);
 });
 
@@ -142,9 +143,10 @@ test("la tira tiene 36 meses y una tabla alternativa con los mismos 36", async (
     "background-color",
     "rgb(122, 108, 86)",
   );
-  await page.locator("summary").click();
-  await expect(page.locator("table tbody tr")).toHaveCount(36);
-  await expect(page.locator("table tbody tr").first()).toContainText(
+  const section = page.locator("section[aria-labelledby='strip-title']");
+  await section.locator("summary").click();
+  await expect(section.locator("table tbody tr")).toHaveCount(36);
+  await expect(section.locator("table tbody tr").first()).toContainText(
     "ene 2023",
   );
 });
@@ -389,5 +391,18 @@ test("las prioridades ordenan las rotaciones sin puntaje y quedan guardadas", as
   expect(
     await page.evaluate(() => localStorage.getItem("fieldshift:priorities")),
   ).toContain("market");
+  expect(await axe(page)).toEqual([]);
+});
+
+test("el retrato dice cuándo queda el suelo expuesto y cuándo la helada alcanza al cultivo", async ({
+  page,
+}) => {
+  await ready(page, "/tool/retrato");
+  const section = page.getByRole("region", { name: "¿Cuándo está expuesto tu campo?" });
+  await expect(section.locator("tbody tr").first()).toContainText("Poca cobertura verde");
+  await expect(section.locator("tbody tr").first().locator("td")).toHaveCount(12);
+  await expect(page.locator("main")).toContainText("meses con dato");
+  await page.getByText("Cómo lo calculamos").click();
+  await expect(page.locator("main")).toContainText("unos 50 km");
   expect(await axe(page)).toEqual([]);
 });

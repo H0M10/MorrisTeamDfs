@@ -41,6 +41,24 @@ class Settings(BaseSettings):
     ee_service_account_json: str = ""
     live_cache_dir: Path = Path(".cache/live")
 
+    # Guía tutorial (/api/v1/guide). Sin GUIDE_LLM_API_KEY responde la capa
+    # determinista; con llave, el modelo de lenguaje redacta y el backend valida.
+    guide_llm_api_key: str = ""
+    guide_llm_provider: Literal["anthropic", "gemini"] = "anthropic"
+    # Vacío = modelo por omisión del proveedor (ver services/guide.py).
+    guide_llm_model: str = ""
+    guide_timeout_s: float = 8.0
+    guide_cache_ttl_s: float = 3600.0
+    guide_cache_size: int = 512
+    # Peticiones al modelo por sesión y ventana; al pasarse responde la capa determinista.
+    guide_session_limit: int = 30
+    guide_anonymous_limit: int = 300
+    guide_window_s: float = 600.0
+
+    @property
+    def guide_llm_configured(self) -> bool:
+        return bool(self.guide_llm_api_key)
+
     @property
     def cors_origin_list(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]

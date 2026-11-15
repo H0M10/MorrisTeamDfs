@@ -237,11 +237,49 @@ export const en: Dictionary = {
       calendarLabel: (count: number, from: string, to: string) =>
         `Calendar of ${count} rotations, from ${from} to ${to}. The same information is in the table below.`,
       legendTitle: "What each square means",
+      legendLead:
+        "Color shows the type: green, a growing crop; straw yellow, grain or a dormant crop; brown, soil with no crop. The pattern tells each crop apart.",
       showCalendarTable: "Show the calendar as a table",
       calendarCaption: "What is in the field each month, in each rotation",
       month: "Month",
       ruledOutTag: "ruled out",
       seeEvidence: "See why each one is suggested",
+    },
+    seasons: {
+      title: "When is your field exposed?",
+      lead: "A typical year of your field from the portrait years: when the soil is left uncovered and when frost or heat reach the green crop.",
+      caption: "Month by month, across the observed years",
+      monthNames: [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December",
+      ],
+      rows: {
+        exposed: "Little green cover (years)",
+        snow: "Likely snow (years)",
+        frostGreen: "Frost with the crop green (years)",
+        heatGreen: "Heat with the crop green (years)",
+        frost: "Frost days (regional average)",
+        heat: "Heat days (regional average)",
+      },
+      yearsOf: (n: number, total: number) => `${n} of ${total}`,
+      noData: "no data",
+      exposedSummary: (n: number, total: number, months: string | null) =>
+        months
+          ? `Your field had little green cover in ${n} of ${total} months with data, mostly in ${months}. In those months the soil is most exposed to wind and rain.`
+          : `Your field had little green cover in ${n} of ${total} months with data.`,
+      noExposed: "In the months with data, your field almost always had green cover.",
+      frostSummary: (months: string) =>
+        `There was frost when the crop was already green in ${months}. That is the most delicate season for your current crop.`,
+      heatSummary: (months: string) => `There were heat days with the crop green in ${months}.`,
+      noStress: "In these years we found no frost or heat while the crop was green.",
+      howTitle: "How we calculate it",
+      how: (greenMin: number) => [
+        `Little green cover: the satellite greenness index (NDVI) is below ${greenMin} and the bare-soil index is positive. We set that threshold; a technician can adjust it.`,
+        "Likely snow: the greenness index is negative, which is typical of snow or water on the ground. Snow also covers the soil.",
+        `Green crop: greenness index of ${greenMin} or more.`,
+        "Frost and heat come from NASA POWER, with a cell of about 50 km: they describe the region, not your field.",
+        "Months without data (because of clouds) are not counted.",
+      ],
     },
     evidence: {
       why: "Why it is suggested",

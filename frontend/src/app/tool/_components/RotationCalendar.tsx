@@ -10,6 +10,31 @@ import type { Strategy } from "./priorities";
 
 type SequenceMonth = Strategy["sequence_36m"][number];
 
+// El color del contrato dice el tipo de cobertura (verde: cultivo creciendo;
+// paja: grano o latencia; café: suelo sin cultivo) y varios cultivos lo
+// comparten. Para distinguirlos sin cambiar el contrato, el primer cultivo de
+// cada combinación conserva su trama y los siguientes reciben una libre.
+const EXTRA_PATTERNS = ["cross", "vline", "grid", "diag-rev", "hatch", "dots", "stripe", "solid"];
+
+function cropPatterns(strategies: Strategy[]): Map<string, string> {
+  const result = new Map<string, string>();
+  const used = new Map<string, Set<string>>(); // color -> tramas ya usadas
+  for (const strategy of strategies) {
+    for (const item of strategy.sequence_36m) {
+      if (result.has(item.crop_code)) continue;
+      const taken = used.get(item.palette_token) ?? new Set<string>();
+      used.set(item.palette_token, taken);
+      let pattern = item.pattern as string;
+      if (taken.has(pattern)) {
+        pattern = EXTRA_PATTERNS.find((candidate) => !taken.has(candidate)) ?? item.pattern;
+      }
+      taken.add(pattern);
+      result.set(item.crop_code, pattern);
+    }
+  }
+  return result;
+}
+
 export function RotationCalendar({ strategies }: { strategies: Strategy[] }) {
   const { t, pick, month } = useI18n();
   const r = t.tool.rotations;
@@ -21,6 +46,7 @@ export function RotationCalendar({ strategies }: { strategies: Strategy[] }) {
   const years = [...new Set(reference.map((item) => item.month.slice(0, 4)))];
   const byMonth = (strategy: Strategy) =>
     new Map(strategy.sequence_36m.map((item) => [item.month, item]));
+  const patterns = cropPatterns(strategies);
   const maps = strategies.map((strategy) => ({ strategy, months: byMonth(strategy) }));
 
   // Leyenda: un renglón por cultivo distinto que aparece en alguna rotación.
@@ -37,7 +63,7 @@ export function RotationCalendar({ strategies }: { strategies: Strategy[] }) {
         key={key}
         className="crop-cell"
         data-palette={item.palette_token}
-        data-pattern={item.pattern}
+        data-pattern={patterns.get(item.crop_code) ?? item.pattern}
         // Columna del mes: con el nombre a la izquierda (pantalla ancha) o arriba (teléfono).
         style={
           {
@@ -89,13 +115,14 @@ export function RotationCalendar({ strategies }: { strategies: Strategy[] }) {
       </div>
 
       <h3>{r.legendTitle}</h3>
+      <p>{r.legendLead}</p>
       <ul className="cal-legend">
         {[...legend.values()].map((item) => (
           <li key={item.crop_code}>
             <span
               className="crop-cell crop-swatch"
               data-palette={item.palette_token}
-              data-pattern={item.pattern}
+              data-pattern={patterns.get(item.crop_code) ?? item.pattern}
               aria-hidden="true"
             />
             {pick(item.crop_label)}

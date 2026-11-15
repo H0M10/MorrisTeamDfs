@@ -39,6 +39,12 @@ Somos unos 20 equipos globales con este reto, más los locales. Lo más probable
 
 **Avance (04:40):** P0-1, P0-2 y P0-3 **hechos** en `/tool/rotaciones` (calendario real desde `sequence_36m`, tabla con ficha por cifra, prioridades con orden lexicográfico; 47 pruebas en verde, 320 px sin desbordes). Límite conocido: varios cultivos comparten color y trama en el contrato (por ejemplo, tres cultivos verdes lisos); la tabla alternativa los distingue. Siguen P0-4 y P0-5.
 
+**Avance (05:30):** P0-4 **hecho**: sección "¿Cuándo está expuesto tu campo?" en `/tool/retrato`, con año típico, frases calculadas por código, umbral de verdor 0.3 declarado y nota de escala regional para helada y calor. Con los datos reales de Diamond Valley aparecen heladas en mayo de 2024 con la alfalfa verde, y nieve probable en febrero y marzo de 2023. P0-5: `/tool` pasa la prueba de 320 px en las 6 pantallas; falta revisar en un teléfono real (H-21). 49 pruebas en verde.
+
+**Decisiones de Hanniel (05:30):**
+- **Cultivos con el mismo color (sin cambio de contrato):** el color del contrato sigue indicando el tipo de cobertura; el frontend da una trama propia a cada cultivo que comparte color y trama con otro. La leyenda lo explica.
+- **H-25, precio de NASS: no se cambia el contrato.** La prioridad "Vender lo que siembro" sigue como información que falta. Si alguien consigue la llave de QuickStats antes de las 10:00, el precio entra como **ruta aparte** (`/api/v1/market`), solo como referencia con su ficha, y nunca ordena las rotaciones: el precio sin rendimiento ni costos no es ingreso.
+
 Las prioridades P0 y P1 son el producto. P2 exprime lo ya construido. P3 es para los jueces y corre en paralelo (Alexis); es lo primero que se corta.
 
 ### P0 — Núcleo del reto y credibilidad (meta: 09:00)

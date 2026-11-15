@@ -997,6 +997,34 @@ textarea.field {
   background-size: 6px 6px;
 }
 
+.crop-cell[data-pattern="cross"] {
+  background-image:
+    repeating-linear-gradient(45deg, var(--pattern-ink) 0 2px, transparent 2px 8px),
+    repeating-linear-gradient(-45deg, var(--pattern-ink) 0 2px, transparent 2px 8px);
+}
+
+.crop-cell[data-pattern="vline"] {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--pattern-ink) 0 2px,
+    transparent 2px 6px
+  );
+}
+
+.crop-cell[data-pattern="grid"] {
+  background-image:
+    repeating-linear-gradient(0deg, var(--pattern-ink) 0 1.5px, transparent 1.5px 7px),
+    repeating-linear-gradient(90deg, var(--pattern-ink) 0 1.5px, transparent 1.5px 7px);
+}
+
+.crop-cell[data-pattern="diag-rev"] {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--pattern-ink) 0 2px,
+    transparent 2px 7px
+  );
+}
+
 .cal-legend {
   display: flex;
   flex-wrap: wrap;
@@ -1039,4 +1067,39 @@ textarea.field {
   .cal-head .month-head {
     font-size: 0.65rem;
   }
+}
+
+/* ---------- Retrato: ¿cuándo está expuesto tu campo? ---------- */
+
+.seasons th[scope="row"] {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--color-cal);
+  min-width: 10rem;
+}
+
+.season-cell {
+  text-align: center;
+  white-space: nowrap;
+  min-width: 3.4rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* El tono acompaña al número; nunca lo reemplaza. Texto siempre negro sobre
+   tonos claros para mantener contraste AA. */
+.season-cell[data-level="1"][data-tone="earth"] { background: #efe6db; }
+.season-cell[data-level="2"][data-tone="earth"] { background: #dccab4; }
+.season-cell[data-level="3"][data-tone="earth"] { background: #c4a986; font-weight: 700; }
+.season-cell[data-level="1"][data-tone="blue"] { background: #e3ebf8; }
+.season-cell[data-level="2"][data-tone="blue"] { background: #c4d5f1; }
+.season-cell[data-level="3"][data-tone="blue"] { background: #a3bde9; font-weight: 700; }
+.season-cell[data-level="1"][data-tone="straw"] { background: #fbf1d0; }
+.season-cell[data-level="2"][data-tone="straw"] { background: #f6e19f; }
+.season-cell[data-level="3"][data-tone="straw"] { background: #efcd5f; font-weight: 700; }
+
+.season-cell,
+.crop-cell {
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
 }

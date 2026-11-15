@@ -23,6 +23,8 @@ from app.schemas.api import (
     AskResponse,
     ErrorResponse,
     EvaluateRequest,
+    GuideRequest,
+    GuideResponse,
     PilotsResponse,
     ReviewIn,
     ReviewsResponse,
@@ -34,6 +36,7 @@ from app.schemas.api import (
 from app.schemas.contract import Evaluation
 from app.services import ask as ask_service
 from app.services import evaluation as evaluation_service
+from app.services import guide as guide_service
 from app.services import live as live_service
 from app.services import predictions as predictions_service
 from app.services.share import ShareStore
@@ -155,6 +158,17 @@ def ask(body: AskRequest, settings: SettingsDep) -> JSONResponse:
     else:
         evaluation = evaluation_service.evaluate(body.parcel_id, settings)
     return JSONResponse(ask_service.answer(evaluation, body.question, body.lang))
+
+
+@router.post("/guide", response_model=GuideResponse)
+def guide(body: GuideRequest, settings: SettingsDep) -> dict[str, Any]:
+    """La Guía: explica la pantalla y actúa sobre ella (resaltar, ir a un paso, glosario).
+
+    Con GUIDE_LLM_API_KEY redacta un modelo de lenguaje y el backend valida su
+    respuesta (cifras, ids, límites dictados); sin llave, o si falla, tarda más
+    de 8 s o inventa una cifra, responde la capa determinista. No guarda preguntas.
+    """
+    return guide_service.answer(body, settings)
 
 
 @router.post("/share", response_model=ShareResponse, responses=SHARE_RESPONSES)

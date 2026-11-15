@@ -270,7 +270,7 @@ Sin esto, analiza de nuevo los 2 o 3 puntos de la demo después del último desp
 
 Decidir qué modelo de lenguaje usa la Guía tutorial (Gemini u otro), conseguir la llave y ponerla en Railway como `GUIDE_LLM_API_KEY`. Nunca en `NEXT_PUBLIC_`. Sin llave, la Guía funciona solo con la capa sin IA. Diseño en `PLAN_DOMINGO.md` §3.
 
-### H-25. Precio de mercado de NASS (Hanniel, antes de las 10:00)
+### H-25. Precio de mercado de NASS (Hanniel) — DECIDIDO 05:30: sin cambio de contrato; solo ruta aparte si aparece la llave (ver PLAN_DOMINGO.md)
 
 Aprobar o descartar el cambio de contrato para mostrar el precio publicado por NASS QuickStats por cultivo (solo el precio con su ficha, nunca una ganancia). Si se aprueba, sacar la llave gratuita de QuickStats. `PLAN_DOMINGO.md` P3-3.
 
