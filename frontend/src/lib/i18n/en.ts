@@ -74,6 +74,13 @@ export const en: Dictionary = {
       unlabeled: "Without crop records",
       mapPending: "The map showing the real pixel size of each source over the field goes here.",
       saved: "This choice is saved on this device.",
+      cases: "Challenge cases",
+      detected: (n: number) => `Diamond Valley: ${n} pivots detected from satellite`,
+      detectedNote: (n: number) =>
+        `The ${n} Diamond Valley pivots were found with satellite data (USDA crop patches and Landsat summer vigor). Each one is evaluated on the server with its own data when you pick it. Its shape is an approximate circle, not an official boundary.`,
+      noneViableShort: "no viable rotation",
+      mapTitle: "Map",
+      mapHelp: "The yellow dots are other fields. Tap one to evaluate it.",
     },
     constraints: {
       intro: "First we check what you have. If a rotation does not fit here, it is ruled out before anything else is calculated.",

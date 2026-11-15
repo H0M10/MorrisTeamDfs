@@ -35,13 +35,18 @@ def main() -> None:
     parser.add_argument("--max-ha", type=float, default=80)
     parser.add_argument("--min-compact", type=float, default=0.85)
     parser.add_argument("--min-ndvi", type=float, default=0.4)
+    parser.add_argument("--erode-m", type=float, default=60)
+    parser.add_argument(
+        "--bbox", nargs=4, type=float, metavar=("W", "S", "E", "N"),
+        help="por omisión, la caja del valle en ee_sample_fields.py",
+    )
     parser.add_argument("--id-prefix", default="dv-f")
     parser.add_argument("--project", default=None)
     parser.add_argument("--out", required=True)
     args = parser.parse_args()
 
     init_ee(args.project)
-    region = ee.Geometry.Rectangle(list(VALLEYS[args.valley]))
+    region = ee.Geometry.Rectangle(list(args.bbox or VALLEYS[args.valley]))
     cdl = (
         ee.ImageCollection("USDA/NASS/CDL")
         .filterDate(f"{args.year}-01-01", f"{args.year}-12-31")
@@ -57,8 +62,12 @@ def main() -> None:
         ee.Date.fromYMD(args.year, 6, 1),
         ee.Date.fromYMD(args.year, 9, 1),
     ).median()
+    # Los pivotes vecinos se tocan y CDL los junta en una mancha. Se encoge la
+    # máscara `--erode-m` para separarlos y, al final, se devuelve ese radio.
+    mask = grouped.gt(0).And(summer.gt(args.min_ndvi))
+    eroded = mask.focalMin(radius=args.erode_m, kernelType="circle", units="meters")
     vectors = (
-        cdl.updateMask(grouped.gt(0).And(summer.gt(args.min_ndvi)))
+        cdl.updateMask(eroded)
         .toInt()
         .reduceToVectors(
             geometry=region, scale=30, geometryType="polygon", eightConnected=False,
@@ -76,7 +85,7 @@ def main() -> None:
     for i, field in enumerate(fields, start=1):
         p = field["properties"]
         lon, lat = p["center"]
-        radius = math.sqrt(p["ha"] * 1e4 / math.pi) - EDGE_MARGIN_M
+        radius = math.sqrt(p["ha"] * 1e4 / math.pi) + args.erode_m - EDGE_MARGIN_M
         code = int(p["cdl_code"])
         group = next((g for g in GROUP_ORDER if code in CDL_GROUPS[g]), "other")
         features.append(
@@ -90,7 +99,8 @@ def main() -> None:
                     "group_ref": group,
                     "note": (
                         f"Propuesta derivada de datos: campo con clase {code} de USDA CDL y vigor "
-                        f"de verano de HLS > {args.min_ndvi} en {args.year}; {p['ha']:.1f} ha, compacidad {p['compact']:.2f}. Círculo "
+                        f"de verano de HLS > {args.min_ndvi} en {args.year}; encogido {args.erode_m:.0f} m "
+                        f"para separar pivotes vecinos ({p['ha']:.1f} ha tras encoger), compacidad {p['compact']:.2f}. Círculo "
                         f"con radio equivalente menos {EDGE_MARGIN_M} m ({radius:.0f} m). "
                         "No es un lindero oficial."
                     ),

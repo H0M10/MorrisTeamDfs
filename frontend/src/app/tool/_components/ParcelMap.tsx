@@ -2,21 +2,36 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import type { Evaluation } from "@/lib/contract";
+import type { Evaluation, PilotSummary } from "@/lib/contract";
 import { useI18n } from "@/lib/i18n";
 
 type ParcelData = Evaluation["parcel"];
 
-export function ParcelMap({ parcel }: { parcel: ParcelData }) {
+export function ParcelMap({
+  parcel,
+  pilots = [],
+  onSelect,
+}: {
+  parcel: ParcelData;
+  /** Las demás parcelas evaluables: se pintan como puntos que se pueden elegir. */
+  pilots?: PilotSummary[];
+  onSelect?: (id: string) => void;
+}) {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const { pick } = useI18n();
+  const { pick, t } = useI18n();
+  const selectRef = useRef(onSelect);
+  useEffect(() => {
+    selectRef.current = onSelect;
+  }, [onSelect]);
 
   useEffect(() => {
     if (!mapContainer.current) return;
 
     const defaultCenter: [number, number] = [20.5888, -100.3899];
     const initialCenter: [number, number] =
-      parcel.center && typeof parcel.center.lat === "number" && typeof parcel.center.lon === "number"
+      parcel.center &&
+      typeof parcel.center.lat === "number" &&
+      typeof parcel.center.lon === "number"
         ? [parcel.center.lat, parcel.center.lon]
         : defaultCenter;
 
@@ -28,6 +43,21 @@ export function ParcelMap({ parcel }: { parcel: ParcelData }) {
     }).addTo(map);
 
     const layerGroup = L.layerGroup().addTo(map);
+
+    // Las demás parcelas: un clic recalcula todo para esa parcela.
+    for (const pilot of pilots) {
+      if (pilot.id === parcel.id) continue;
+      const marker = L.circleMarker([pilot.center.lat, pilot.center.lon], {
+        radius: 7,
+        color: "#000000",
+        weight: 1,
+        fillColor: "#E9B824",
+        fillOpacity: 0.9,
+      });
+      marker.bindTooltip(pick(pilot.name));
+      marker.on("click", () => selectRef.current?.(pilot.id));
+      layerGroup.addLayer(marker);
+    }
 
     if (
       parcel.polygon_wgs84 &&
@@ -49,7 +79,11 @@ export function ParcelMap({ parcel }: { parcel: ParcelData }) {
 
         const bounds = polygonLayer.getBounds();
         if (bounds.isValid()) {
-          map.fitBounds(bounds, { padding: [40, 40], maxZoom: 16 });
+          // Con más parcelas alrededor se aleja un poco para que se vean las vecinas.
+          map.fitBounds(bounds, {
+            padding: [40, 40],
+            maxZoom: pilots.length > 1 ? 13 : 16,
+          });
         }
       } catch (e) {
         console.error("Error al renderizar el polígono en Leaflet:", e);
@@ -59,7 +93,7 @@ export function ParcelMap({ parcel }: { parcel: ParcelData }) {
     return () => {
       map.remove();
     };
-  }, [parcel]);
+  }, [parcel, pilots, pick]);
 
   const footprints = parcel.native_pixel_footprints_m
     ? Object.entries(parcel.native_pixel_footprints_m)
@@ -67,7 +101,10 @@ export function ParcelMap({ parcel }: { parcel: ParcelData }) {
 
   return (
     <section aria-labelledby="map-heading" style={{ margin: "1.5rem 0" }}>
-      <h2 id="map-heading">Mapa de la parcela: {pick(parcel.name)}</h2>
+      <h2 id="map-heading">
+        {t.tool.parcel.mapTitle}: {pick(parcel.name)}
+      </h2>
+      {pilots.length > 1 && <p>{t.tool.parcel.mapHelp}</p>}
       <div
         ref={mapContainer}
         role="region"
@@ -85,14 +122,25 @@ export function ParcelMap({ parcel }: { parcel: ParcelData }) {
         {footprints.length > 0 ? (
           <dl className="facts">
             {footprints.map(([source, meters]) => (
-              <div key={source} style={{ display: "flex", gap: "0.5rem", marginBottom: "0.25rem" }}>
-                <dt style={{ fontWeight: "bold" }}>{source.replaceAll("_", " ")}:</dt>
+              <div
+                key={source}
+                style={{
+                  display: "flex",
+                  gap: "0.5rem",
+                  marginBottom: "0.25rem",
+                }}
+              >
+                <dt style={{ fontWeight: "bold" }}>
+                  {source.replaceAll("_", " ")}:
+                </dt>
                 <dd style={{ margin: 0 }}>{String(meters)} metros por píxel</dd>
               </div>
             ))}
           </dl>
         ) : (
-          <p>Información de resolución espacial no disponible para esta parcela.</p>
+          <p>
+            Información de resolución espacial no disponible para esta parcela.
+          </p>
         )}
       </div>
     </section>

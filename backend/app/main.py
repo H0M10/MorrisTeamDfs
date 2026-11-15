@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import contextlib
+import threading
 from typing import Annotated, Any
 
 from fastapi import Depends, FastAPI
@@ -11,7 +13,7 @@ from app.api.v1 import get_registry, router
 from app.config import Settings, get_settings
 from app.errors import ApiError, api_error_handler
 from app.models.loader import ModelRegistry
-from app.services.evaluation import contract_version
+from app.services.evaluation import contract_version, list_pilots
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -44,7 +46,20 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "models": registry.summary(),
         }
 
+    @app.on_event("startup")
+    def warm_pilots() -> None:
+        # Con decenas de parcelas reales la primera lista tarda unos segundos:
+        # se arma en segundo plano al arrancar para que nadie la espere.
+        if settings.data_mode == "real":
+            threading.Thread(target=_warm, args=(settings,), daemon=True).start()
+
     return app
+
+
+def _warm(settings: Settings) -> None:
+    # Solo precalienta: si falla, la petición real reporta el error.
+    with contextlib.suppress(Exception):
+        list_pilots(settings)
 
 
 app = create_app()

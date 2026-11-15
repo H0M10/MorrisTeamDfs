@@ -51,19 +51,43 @@ def contract_version() -> str:
     return next(iter(load_fixtures().values()))["contract_version"]
 
 
+def _data_signature(data_dir: Path) -> tuple[tuple[str, int, int], ...]:
+    """Nombre, tamaño y fecha de cada archivo de datos: si algo cambia, la lista se rehace."""
+    if not data_dir.is_dir():
+        return ()
+    return tuple(
+        (path.name, path.stat().st_size, path.stat().st_mtime_ns)
+        for path in sorted(data_dir.iterdir())
+        if path.suffix in {".parquet", ".json"}
+    )
+
+
+_PILOTS_CACHE: dict[tuple[Any, ...], dict[str, Any]] = {}
+
+
 def list_pilots(settings: Settings) -> dict[str, Any]:
     if settings.data_mode == "real":
-        pilots = []
-        for parcel_id in sorted(table_to_contract.find_tables(_data_dir(settings))):
-            try:
-                pilots.append(_summary(evaluate(parcel_id, settings)))
-            except ApiError:
-                continue  # tabla incompleta: no se ofrece como piloto
-        return {"data_status": "real", "pilots": pilots}
+        data_dir = _data_dir(settings)
+        key = (str(data_dir), str(settings.resolve(settings.models_dir)), _data_signature(data_dir))
+        if key not in _PILOTS_CACHE:
+            _PILOTS_CACHE.clear()
+            _PILOTS_CACHE[key] = _real_pilots(settings)
+        return copy.deepcopy(_PILOTS_CACHE[key])
     return {
         "data_status": "fixture",
         "pilots": [_summary(data) for data in load_fixtures().values()],
     }
+
+
+def _real_pilots(settings: Settings) -> dict[str, Any]:
+    """Resumen de cada parcela real. Evalúa todas: se guarda en memoria."""
+    pilots = []
+    for parcel_id in sorted(table_to_contract.find_tables(_data_dir(settings))):
+        try:
+            pilots.append(_summary(evaluate(parcel_id, settings)))
+        except ApiError:
+            continue  # tabla incompleta: no se ofrece como piloto
+    return {"data_status": "real", "pilots": pilots}
 
 
 def _summary(data: EvaluationDict) -> dict[str, Any]:

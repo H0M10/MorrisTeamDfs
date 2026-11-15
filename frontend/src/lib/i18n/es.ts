@@ -73,6 +73,13 @@ export const es = {
       unlabeled: "Sin registros de cultivo",
       mapPending: "Aquí irá el mapa con el tamaño real del píxel de cada fuente sobre la parcela.",
       saved: "Esta elección queda guardada en este dispositivo.",
+      cases: "Casos del reto",
+      detected: (n: number) => `Diamond Valley: ${n} pivotes detectados con satélite`,
+      detectedNote: (n: number) =>
+        `Los ${n} pivotes de Diamond Valley se encontraron con datos de satélite (manchas de cultivo de USDA y vigor de verano de Landsat). Cada uno se evalúa en el servidor con sus propios datos al elegirlo. Su forma es un círculo aproximado, no un lindero oficial.`,
+      noneViableShort: "ninguna rotación viable",
+      mapTitle: "Mapa",
+      mapHelp: "Los puntos amarillos son otras parcelas. Toca uno para evaluarlo.",
     },
     constraints: {
       intro: "Primero revisamos lo que tienes. Si una rotación no cabe aquí, se descarta antes de calcular lo demás.",

@@ -1,0 +1,58 @@
+{
+  "name": {
+    "es": "Diamond Valley · pivote 32",
+    "en": "Diamond Valley · pivot 32"
+  },
+  "constraints": {
+    "max_water_mm_year": 720,
+    "available_machinery": [
+      "pivote_central",
+      "sembradora_grano",
+      "empacadora"
+    ],
+    "crops_without_buyer": [
+      "ajo",
+      "algodon",
+      "avena_forrajera",
+      "brocoli",
+      "canola",
+      "cebolla",
+      "chile",
+      "frijol_seco",
+      "garbanzo",
+      "girasol",
+      "lenteja",
+      "papa",
+      "sorgo_grano",
+      "soya",
+      "tomate"
+    ],
+    "planting_window": {
+      "start_month": 4,
+      "end_month": 10
+    }
+  },
+  "constraints_source": "Supuesto con datos, no declarado por un agricultor. Agua: riego que ya usa el campo según OpenET menos lluvia efectiva (720 mm/año; no se asigna agua extra). Ventana: NASA POWER, meses con temperatura media de 5 °C o más (germinación de cereales de clima frío, supuesto): de abril a octubre. Maquinaria: la que pide el cultivo actual (alfalfa). Sin comprador: cultivos sin registro en el censo 2022 de QuickStats ni más de 100 acres en CDL del condado.",
+  "context_notes": [
+    {
+      "es": "Precio recibido por otro heno en NV (USD por tonelada) — 2023: 162, 2024: 150, 2025: 175. Fuente: USDA NASS QuickStats, encuesta anual. Es un precio estatal, no de la parcela.",
+      "en": "Price received for other hay in NV (USD per ton) — 2023: 162, 2024: 150, 2025: 175. Source: USDA NASS QuickStats annual survey. State price, not the field's."
+    },
+    {
+      "es": "Precio recibido por heno de alfalfa en NV (USD por tonelada) — 2023: 192, 2024: 173, 2025: 162. Fuente: USDA NASS QuickStats, encuesta anual. Es un precio estatal, no de la parcela.",
+      "en": "Price received for alfalfa hay in NV (USD per ton) — 2023: 192, 2024: 173, 2025: 162. Source: USDA NASS QuickStats annual survey. State price, not the field's."
+    },
+    {
+      "es": "Censo agrícola 2022, condado Eureka: acres cosechados — Barley: (D); Corn, Silage: 216; Hay, (Excl Alfalfa): 4,799; Hay, Alfalfa: 31,519 ((D) = dato reservado por confidencialidad). Fuente: USDA NASS QuickStats.",
+      "en": "2022 Census of Agriculture, Eureka County: acres harvested — Barley: (D); Corn, Silage: 216; Hay, (Excl Alfalfa): 4,799; Hay, Alfalfa: 31,519 ((D) = withheld). Source: USDA NASS QuickStats."
+    }
+  ],
+  "aquifer_name": {
+    "es": "Cuenca Hidrográfica de Diamond Valley (Área 153, Nevada — Contexto Regional)",
+    "en": "Diamond Valley Hydrographic Basin (Area 153, Nevada — Regional Context)"
+  },
+  "aquifer_status_note": {
+    "es": "Contexto regional de cuenca (NDWR, Área Hidrográfica 153): rendimiento perenne oficial de 30,000 acre-pies/año (~37.0 hm³/año) frente a un bombeo histórico cercano a 76,000 acre-pies/año; designada Área de Manejo Crítico (CMA) por Orden 1264 (2015-08-25) con Plan de Manejo de Agua Subterránea (GMP) aprobado por Orden 1302 (2019-01-11). Sujeto a verificación de derechos individuales del predio.",
+    "en": "Regional basin context (NDWR, Hydrographic Area 153): official perennial yield of 30,000 acre-feet/yr (~37.0 hm³/yr) against historical pumping near 76,000 acre-feet/yr; designated a Critical Management Area (CMA) by Order 1264 (2015-08-25) with Groundwater Management Plan (GMP) approved by Order 1302 (2019-01-11). Subject to parcel-level water-right verification."
+  }
+}

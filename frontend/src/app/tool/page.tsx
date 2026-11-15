@@ -2,14 +2,21 @@
 import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { EvaluationGate } from "@/lib/components/LoadGate";
+import type { PilotSummary } from "@/lib/contract";
 import { PARCEL_ID_ALIASES, useParcelId, usePilots } from "@/lib/evaluation";
 import { useI18n } from "@/lib/i18n";
 import { useToolEvaluation } from "./_components/useToolEvaluation";
 
-const ParcelMap = dynamic(() => import("./_components/ParcelMap").then((mod) => mod.ParcelMap), {
-  ssr: false,
-  loading: () => <p role="status">Cargando mapa...</p>,
-});
+const ParcelMap = dynamic(
+  () => import("./_components/ParcelMap").then((mod) => mod.ParcelMap),
+  {
+    ssr: false,
+    loading: () => <p role="status">…</p>,
+  },
+);
+
+/** Pivotes detectados automáticamente en Diamond Valley (dv-f001…) frente a los casos del reto. */
+const isDetected = (pilot: PilotSummary) => /^dv-f\d+$/.test(pilot.id);
 
 export default function ParcelPage() {
   const { t, pick, value } = useI18n();
@@ -20,15 +27,25 @@ export default function ParcelPage() {
     if (pilots.status !== "ready" || pilots.data.pilots.length === 0) return;
     const available = pilots.data.pilots;
     if (available.some((pilot) => pilot.id === parcelId)) return;
-    const first = available[0];
+    const first = available.find((pilot) => !isDetected(pilot)) ?? available[0];
     if (!first) return;
     const aliased = PARCEL_ID_ALIASES[parcelId];
     const match =
-      (aliased && available.find((pilot) => pilot.id === aliased)?.id) ?? first.id;
+      (aliased && available.find((pilot) => pilot.id === aliased)?.id) ??
+      first.id;
     setParcelId(match);
   }, [pilots, parcelId, setParcelId]);
 
   const evaluationState = useToolEvaluation(parcelId);
+  const all = pilots.status === "ready" ? pilots.data.pilots : [];
+  const cases = all.filter((pilot) => !isDetected(pilot));
+  const detected = all.filter(isDetected);
+  const option = (pilot: PilotSummary) => (
+    <option key={pilot.id} value={pilot.id}>
+      {pick(pilot.name)} · {value(pilot.area_ha)}
+      {pilot.has_viable_options ? "" : ` · ${t.tool.parcel.noneViableShort}`}
+    </option>
+  );
 
   return (
     <>
@@ -40,44 +57,54 @@ export default function ParcelPage() {
 
       {pilots.status === "ready" && (
         <>
-          <fieldset className="border-2 border-black p-4 rounded mb-6">
-            <legend className="font-bold px-2">{t.tool.parcel.legend}</legend>
-            <ul className="choice-list">
-              {pilots.data.pilots.map((pilot) => {
-                const isSelected = pilot.id === parcelId;
-                return (
-                  <li key={pilot.id}>
-                    <label
-                      className={`choice ${isSelected ? "border-[#1247B8] bg-blue-50" : ""}`}
-                    >
-                      <input
-                        type="radio"
-                        name="parcel"
-                        value={pilot.id}
-                        checked={isSelected}
-                        onChange={() => setParcelId(pilot.id)}
-                      />
-                      <span>
-                        <strong>{pick(pilot.name)}</strong>
-                        <br />
-                        {t.tool.parcel.area}: {value(pilot.area_ha)}.{" "}
-                        {pilot.region_mode === "labeled"
-                          ? t.tool.parcel.labeled
-                          : t.tool.parcel.unlabeled}
-                        .
-                      </span>
-                    </label>
-                  </li>
-                );
-              })}
-            </ul>
-          </fieldset>
+          <p>
+            <label htmlFor="parcel-select" className="field-label">
+              {t.tool.parcel.legend}
+            </label>
+            <select
+              id="parcel-select"
+              className="field field-wide"
+              value={parcelId}
+              onChange={(event) => setParcelId(event.target.value)}
+            >
+              {cases.length > 0 && (
+                <optgroup label={t.tool.parcel.cases}>
+                  {cases.map(option)}
+                </optgroup>
+              )}
+              {detected.length > 0 && (
+                <optgroup label={t.tool.parcel.detected(detected.length)}>
+                  {detected.map(option)}
+                </optgroup>
+              )}
+            </select>
+          </p>
+          {detected.length > 0 && (
+            <p>{t.tool.parcel.detectedNote(detected.length)}</p>
+          )}
           <p>{t.tool.parcel.saved}</p>
         </>
       )}
 
       <EvaluationGate state={evaluationState}>
-        {(evaluation) => <ParcelMap key={evaluation.parcel.id} parcel={evaluation.parcel} />}
+        {(evaluation) => (
+          <>
+            <p>
+              <strong>{pick(evaluation.parcel.name)}</strong>:{" "}
+              {t.tool.parcel.area} {value(evaluation.parcel.area_ha)}.{" "}
+              {evaluation.parcel.region_mode === "labeled"
+                ? t.tool.parcel.labeled
+                : t.tool.parcel.unlabeled}
+              .
+            </p>
+            <ParcelMap
+              key={evaluation.parcel.id}
+              parcel={evaluation.parcel}
+              pilots={all}
+              onSelect={setParcelId}
+            />
+          </>
+        )}
       </EvaluationGate>
     </>
   );
