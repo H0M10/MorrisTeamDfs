@@ -851,7 +851,7 @@ export const en: Dictionary = {
       },
       {
         title: "Model 3 neural net",
-        detail: "32-unit GRU with temporal attention reading 12 months of HLS color and indices.",
+        detail: "32-unit GRU with temporal attention reading 12 months of HLS indices; colors accompany the visualization.",
         tag: "CPU ONNX runtime",
       },
       {
@@ -861,8 +861,8 @@ export const en: Dictionary = {
       },
     ],
     neural: {
-      title: "Live brain: Model 3 (GRU + Temporal Attention)",
-      lead: "Interactive 3D view wired to the active field: 12 months of HLS (30 m) satellite color and indices enter 32 recurrent units and weight key months toward four crop classes.",
+      title: "Crop history: Model 3 (GRU + Temporal Attention)",
+      lead: "3D schematic connected to the field: the network receives 12 months of HLS indices (30 m) and a missing-image flag. Its 32 recurrent units and attention produce a reading of four crop groups. Colors illustrate the months; they are not model inputs.",
       leadPlain: "This 3D map shows how the model reads 12 months of satellite images to tell what crop grew in the field.",
       controlsLabel: "3D neural network controls",
       morph: "MORPH",
@@ -887,7 +887,7 @@ export const en: Dictionary = {
       canvasAlt: "Interactive 3D visualization of Model 3 neural network linking 12 HLS satellite months, 32 recurrent GRU units, and 4 crop classes.",
       parcelLabel: "Field in view",
       modelStatusLabel: "Model 3 status",
-      statusTrained: "Trained live (ONNX)",
+      statusTrained: "Inference with trained model (ONNX)",
       statusArchitectural: "Architecture + evaluation view (prediction API offline or fixture mode)",
       metricF1Label: "Unseen-valley macro F1",
       baselineF1Label: "Baseline",

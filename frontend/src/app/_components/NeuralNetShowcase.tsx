@@ -71,11 +71,12 @@ function formatPct(value: number | null | undefined): string {
   return `${Math.round(value * 100)} %`;
 }
 
-export function NeuralNetShowcase() {
+export function NeuralNetShowcase({ selectedParcelId }: { selectedParcelId?: string } = {}) {
   const { t, lang, pick, month } = useI18n();
   const n = t.landing.neural;
   const { profile } = useA11y();
-  const [parcelId] = useParcelId();
+  const [storedParcelId] = useParcelId();
+  const parcelId = selectedParcelId ?? storedParcelId;
   const evalState = useEvaluation(parcelId);
 
   const systemReduced = useSyncExternalStore(

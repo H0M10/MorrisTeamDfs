@@ -857,7 +857,7 @@ export const es = {
       },
       {
         title: "Red neuronal Modelo 3",
-        detail: "GRU de 32 unidades con atención temporal sobre 12 meses de color e índices HLS.",
+        detail: "GRU de 32 unidades con atención temporal sobre 12 meses de índices HLS; los colores acompañan la visualización.",
         tag: "ONNX en CPU",
       },
       {
@@ -867,8 +867,8 @@ export const es = {
       },
     ],
     neural: {
-      title: "Cerebro en vivo: Modelo 3 (GRU + Atención temporal)",
-      lead: "Visualización 3D conectada a los datos de la parcela activa: 12 meses de color e índices satelitales HLS (30 m) entran a 32 unidades recurrentes y ponderan los meses clave hacia cuatro clases de cultivo.",
+      title: "Lectura del historial: Modelo 3 (GRU + Atención temporal)",
+      lead: "Esquema 3D conectado a la parcela: la red recibe 12 meses de índices HLS (30 m) y una marca de imagen faltante. Sus 32 unidades recurrentes y la atención producen una lectura de cuatro grupos de cultivo. Los colores ilustran los meses; no son entradas del modelo.",
       leadPlain: "Este mapa 3D muestra cómo el modelo lee 12 meses de fotos de satélite para reconocer qué cultivo hubo en el campo.",
       controlsLabel: "Controles de la red neuronal 3D",
       morph: "MORPH",
@@ -893,7 +893,7 @@ export const es = {
       canvasAlt: "Visualización 3D interactiva de la red neuronal Modelo 3 conectada a 12 meses de observaciones satelitales HLS, 32 unidades recurrentes y 4 clases de cultivo.",
       parcelLabel: "Parcela en vista",
       modelStatusLabel: "Estado del Modelo 3",
-      statusTrained: "Entrenado en vivo (ONNX)",
+      statusTrained: "Inferencia con modelo entrenado (ONNX)",
       statusArchitectural: "Arquitectura + evaluación (servidor de predicciones sin conexión o modo ejemplo)",
       metricF1Label: "F1 macro en valle no visto",
       baselineF1Label: "Línea base",
