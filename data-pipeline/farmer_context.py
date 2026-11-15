@@ -397,6 +397,10 @@ def unlabeled_with_siap(args: argparse.Namespace, table: pd.DataFrame) -> dict:
             "planting_window": {"start_month": first, "end_month": last},
         },
         "constraints_source": source,
+        "history_source": (
+            "Supuesto con datos, no declarado por un agricultor: meses verdes de esta parcela en "
+            f"HLS con el cultivo de riego de mayor superficie en SIAP para cada ciclo ({summary})"
+        ),
         "context_notes": notes,
         "aquifer_name": {
             "es": "Acuífero Valle de San Juan del Río (Clave 2203, Querétaro — Contexto Regional)",

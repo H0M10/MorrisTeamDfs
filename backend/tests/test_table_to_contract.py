@@ -238,7 +238,7 @@ def test_strategies_water_and_models(
     assert "OpenET" in current["annual_water_mm"]["source"]
     assert current["annual_water_mm"]["native_scale"] == "30 m (campo)"
     assert current["water_delta_vs_current_mm"]["value"] == 0
-    assert current["soil_cover_months_36m"]["value"] == 36
+    assert current["soil_cover_months_36m"]["value"] == 36  # alfalfa en pie todo el año
     assert current["prior_crop_vigor_delta_pct"]["value"] is None  # modelo 2 no inventa
     assert current["frost_risk_days_year"]["value"] == 30
 
@@ -252,7 +252,11 @@ def test_strategies_water_and_models(
     )
     assert less["soil_cover_months_36m"]["type"] == "assumed"  # la secuencia es una plantilla
     assert "plantilla" in by_id["less_water"]["evidence_card"]["information_gaps"][2]["es"]
-    assert by_id["more_soil"]["metrics"]["soil_cover_months_36m"]["value"] == 36
+    # El rastrojo no cuenta como cultivo vivo: "más suelo" ya no puede dar 36 automáticamente.
+    more = by_id["more_soil"]["metrics"]["soil_cover_months_36m"]["value"]
+    less_cover = by_id["less_water"]["metrics"]["soil_cover_months_36m"]["value"]
+    assert 0 < less_cover < 36
+    assert more >= less_cover
 
     for strategy in by_id.values():
         assert len(strategy["sequence_36m"]) == 36
@@ -455,9 +459,7 @@ def test_model_2_trained_note_replaces_fallback_only_when_labeled(tmp_path: Path
 
     folder = write_table(tmp_path / "data", make_table(labeled=True))
     rows = ttc.read_rows(folder / f"{PARCEL}.parquet", PARCEL)
-    evaluation = ttc.build_evaluation(
-        rows, ttc.ParcelMeta(), FakeRegistry(tmp_path / "x"), "0.1.1"
-    )
+    evaluation = ttc.build_evaluation(rows, ttc.ParcelMeta(), FakeRegistry(tmp_path / "x"), "0.1.1")
     assert_contract(evaluation)
     current = evaluation["strategies"][0]
     assert "-6.3 %" in current["metrics"]["prior_crop_vigor_delta_pct"]["source"]
@@ -586,3 +588,41 @@ def test_history_by_specific_month_wins_over_calendar_month(
     assert by_month["2023-07"] == "maiz"
     assert by_month["2022-07"] == "barbecho"
     assert by_month["2024-07"] == "barbecho"
+
+
+def test_alternatives_only_use_crops_with_a_local_buyer(
+    make_settings: Callable[..., Settings], tmp_path: Path
+) -> None:
+    def constraints(no_buyer: list[str]) -> dict[str, Any]:
+        return {
+            "max_water_mm_year": 2000,
+            "available_machinery": ["pivote_central", "sembradora_grano", "empacadora"],
+            "crops_without_buyer": no_buyer,
+            "planting_window": {"start_month": 1, "end_month": 12},
+        }
+
+    folder = tmp_path / "data"
+    write_table(folder, make_table(), {"constraints": constraints([])})
+    open_market = evaluation_service.evaluate(PARCEL, real_settings(make_settings, folder))
+    less = open_market["strategies"][1]
+    assert "elegida por el motor" in less["metrics"]["soil_cover_months_36m"]["source"]
+
+    # Si nadie compra cebada en la zona, ninguna alternativa elegida puede llevar cebada.
+    write_table(folder, make_table(), {"constraints": constraints(["cebada_forrajera"])})
+    no_barley = evaluation_service.evaluate(PARCEL, real_settings(make_settings, folder))
+    for strategy in no_barley["strategies"][1:]:
+        codes = {m["crop_code"] for m in strategy["sequence_36m"]}
+        assert "cebada_forrajera" not in codes, strategy["id"]
+        assert strategy["viable"] is True
+
+
+def test_history_source_is_declared_when_not_from_a_farmer(
+    make_settings: Callable[..., Settings], tmp_path: Path
+) -> None:
+    history = {str(m): ("maiz" if 6 <= m <= 10 else "barbecho") for m in range(1, 13)}
+    meta = {"declared_history": history, "history_source": "Supuesto con datos: HLS + SIAP"}
+    folder = write_table(tmp_path / "data", make_table(labeled=False), meta)
+    current = evaluation_service.evaluate(PARCEL, real_settings(make_settings, folder))[
+        "strategies"
+    ][0]
+    assert current["metrics"]["soil_cover_months_36m"]["source"] == "Supuesto con datos: HLS + SIAP"
