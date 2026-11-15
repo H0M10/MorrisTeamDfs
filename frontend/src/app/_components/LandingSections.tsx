@@ -386,7 +386,6 @@ export function OptionalCoverage() {
     ["yes", "Harmonize resolutions: every source is aggregated to field and month, keeping its original scale on record.", "Armonizar resoluciones: cada fuente se agrega a campo y mes, conservando su escala original."],
     ["yes", "Farmer priorities and constraints: water, machinery, buyers, planting window and “what matters most”.", "Prioridades y restricciones del agricultor: agua, maquinaria, compradores, ventana de siembra y «qué te importa más»."],
     ["yes", "Timeline and scenario: 36-month calendar and a “what if your water limit changes?” scenario.", "Línea de tiempo y escenario: calendario de 36 meses y el escenario «¿y si cambia tu límite de agua?»."],
-    ["part", "Market suitability: buyers are a hard constraint; prices are shown as missing information, not guessed.", "Mercado: el comprador es una restricción obligatoria; los precios se muestran como información que falta, no se adivinan."],
   ];
   const label = { yes: en ? "Covered" : "Cubierto", part: en ? "Partly" : "En parte", no: en ? "Not yet" : "Todavía no" };
   return (
