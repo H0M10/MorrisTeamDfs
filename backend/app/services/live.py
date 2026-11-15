@@ -16,6 +16,7 @@ resultado se guarda en disco por punto, así que /evaluate, /simulate, /ask y
 
 from __future__ import annotations
 
+import hashlib
 import json
 import struct
 from datetime import date
@@ -218,19 +219,27 @@ def build_rows(
     return rows
 
 
-def _meta(lat: float, lon: float) -> table_to_contract.ParcelMeta:
-    return table_to_contract.ParcelMeta(
-        name=LocalizedText(
+def _meta(lat: float, lon: float, drawn: bool = False) -> table_to_contract.ParcelMeta:
+    if drawn:
+        name = LocalizedText(
+            es=f"Área definida en el mapa ({lat:.4f}, {lon:.4f})",
+            en=f"Area defined on the map ({lat:.4f}, {lon:.4f})",
+        )
+    else:
+        name = LocalizedText(
             es=f"Punto elegido en el mapa ({lat:.4f}, {lon:.4f})",
             en=f"Point picked on the map ({lat:.4f}, {lon:.4f})",
         )
-    )
+    return table_to_contract.ParcelMeta(name=name)
 
 
-def _save(path: Path, rows: list[dict[str, Any]], lat: float, lon: float) -> None:
+def _save(
+    path: Path, rows: list[dict[str, Any]], lat: float, lon: float, drawn: bool = False
+) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     serial = [{**r, "geometry": r["geometry"].hex()} for r in rows]
-    path.write_text(json.dumps({"lat": lat, "lon": lon, "rows": serial}), encoding="utf-8")
+    payload = {"lat": lat, "lon": lon, "drawn": drawn, "rows": serial}
+    path.write_text(json.dumps(payload), encoding="utf-8")
 
 
 def load(
@@ -241,13 +250,55 @@ def load(
         return None
     data = json.loads(path.read_text(encoding="utf-8"))
     rows = [{**r, "geometry": bytes.fromhex(r["geometry"])} for r in data["rows"]]
-    return rows, _meta(data["lat"], data["lon"])
+    return rows, _meta(data["lat"], data["lon"], bool(data.get("drawn")))
 
 
-def analyze(lat: float, lon: float, settings: Settings) -> str:
-    """Trae y procesa los datos del punto; devuelve el id de la parcela en vivo."""
+MIN_AREA_HA, MAX_AREA_HA = 0.5, 1000.0
+MAX_VERTICES = 200
+
+
+def field_ring(
+    lat: float, lon: float, polygon: list[list[float]] | None
+) -> tuple[list[list[float]], float, float, str]:
+    """Anillo del campo, su centro y el sufijo del id.
+
+    Sin polígono: el círculo de 250 m de siempre (ids de antes, sin sufijo). Con
+    polígono (dibujado o una figura predeterminada): se valida y el id lleva una
+    huella corta de sus vértices, así cada figura distinta es una parcela distinta.
+    """
+    if polygon is None:
+        return earth_engine.circle_ring(lon, lat, RADIUS_M), lat, lon, ""
+    ring = [[round(float(x), 6), round(float(y), 6)] for x, y in polygon]
+    if ring[0] != ring[-1]:
+        ring.append(ring[0])
+    if not 4 <= len(ring) <= MAX_VERTICES + 1:
+        raise _error(
+            422,
+            "bad_polygon",
+            "El área necesita al menos 3 esquinas (y no más de 200).",
+            "The area needs at least 3 corners (and no more than 200).",
+        )
+    c_lat, c_lon, area = table_to_contract.polygon_center_and_area_ha(ring)
+    if not MIN_AREA_HA <= area <= MAX_AREA_HA:
+        raise _error(
+            422,
+            "bad_polygon",
+            f"El área mide {area:.1f} ha; debe estar entre {MIN_AREA_HA} y {MAX_AREA_HA:.0f} ha.",
+            f"The area is {area:.1f} ha; it must be between {MIN_AREA_HA} and "
+            f"{MAX_AREA_HA:.0f} ha.",
+        )
+    digest = hashlib.sha1(json.dumps(ring).encode()).hexdigest()[:8]
+    return ring, c_lat, c_lon, f"-a{digest}"
+
+
+def analyze(
+    lat: float, lon: float, settings: Settings, polygon: list[list[float]] | None = None
+) -> str:
+    """Trae y procesa los datos del campo; devuelve el id de la parcela en vivo."""
+    ring, lat, lon, suffix = field_ring(lat, lon, polygon)
     south, north, west, east = CONUS
-    if not (south <= lat <= north and west <= lon <= east):
+    inside = all(south <= y <= north and west <= x <= east for x, y in ring)
+    if not (south <= lat <= north and west <= lon <= east) or not inside:
         raise _error(
             422,
             "outside_coverage",
@@ -265,12 +316,11 @@ def analyze(lat: float, lon: float, settings: Settings) -> str:
             "Live analysis is not configured (Earth Engine is missing). "
             "The fields in the list keep working.",
         )
-    parcel_id = live_id(lat, lon)
+    parcel_id = live_id(lat, lon) + suffix
     if _cache_path(settings, parcel_id).is_file():
         return parcel_id
-    ring = earth_engine.circle_ring(lon, lat, RADIUS_M)
     try:
-        monthly, static, cdl = earth_engine.fetch_field(settings, lon, lat, RADIUS_M, YEARS)
+        monthly, static, cdl = earth_engine.fetch_field(settings, ring, YEARS)
     except earth_engine.EarthEngineError as exc:
         raise _error(
             503,
@@ -303,5 +353,5 @@ def analyze(lat: float, lon: float, settings: Settings) -> str:
             f"Earth Engine devolvió {len(rows)} meses de {len(YEARS) * 12}.",
             f"Earth Engine returned {len(rows)} months of {len(YEARS) * 12}.",
         )
-    _save(_cache_path(settings, parcel_id), rows, lat, lon)
+    _save(_cache_path(settings, parcel_id), rows, lat, lon, drawn=bool(suffix))
     return parcel_id

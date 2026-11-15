@@ -238,11 +238,14 @@ def _get_info(job: Any, tries: int = 3) -> Any:
 
 
 def fetch_field(
-    settings: Settings, lon: float, lat: float, radius_m: float, years: list[int]
+    settings: Settings, ring: list[list[float]], years: list[int]
 ) -> tuple[list[dict[str, Any]], dict[str, Any], dict[int, int | None]]:
-    """Filas mensuales, valores fijos (suelo, elevación) y CDL por año de un campo circular."""
+    """Filas mensuales, valores fijos (suelo, elevación) y CDL por año del campo.
+
+    `ring` es el anillo exterior en [lon, lat].
+    """
     ee = initialize(settings)
-    field = ee.Feature(ee.Geometry.Polygon([circle_ring(lon, lat, radius_m)]))
+    field = ee.Feature(ee.Geometry.Polygon([ring]))
     jobs = [_month_feature(ee, field, year, month) for year in years for month in range(1, 13)]
     jobs.append(_static(ee, field, years[0] - 1, years[-1]))
     try:

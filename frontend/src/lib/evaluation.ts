@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ApiError, api } from "./api";
 import type { ConstraintsInput, Evaluation, PilotsResponse } from "./contract";
 import { DEFAULT_PARCEL_ID, loadFixture, loadFixturePilots } from "./fixtures";
+import { recallLiveRequest, type LiveRequest } from "./shapes";
 import {
   readConstraints,
   readLastParcelId,
@@ -62,9 +63,14 @@ export async function loadEvaluation(
   } catch (error) {
     // Un punto analizado en vivo vive en el disco del servidor, que se borra en cada
     // despliegue. Si ya no está, se vuelve a analizar con las coordenadas de su id.
-    const point = liveCoordinates(parcelId);
+    // Si se dibujó un área, se pide la misma figura; si no, el círculo del id.
+    const point = recallLiveRequest(parcelId) ?? liveCoordinates(parcelId);
     if (point && error instanceof ApiError && error.status === 404) {
-      return { data: await api.analyze(point.lat, point.lon), origin: "api" };
+      const polygon = (point as LiveRequest).polygon;
+      return {
+        data: await api.analyze(point.lat, point.lon, polygon),
+        origin: "api",
+      };
     }
     const realId = REAL_ID_ALIAS[parcelId];
     if (realId) {

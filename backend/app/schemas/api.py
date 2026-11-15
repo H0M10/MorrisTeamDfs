@@ -40,10 +40,15 @@ class EvaluateRequest(StrictModel):
 
 
 class AnalyzeRequest(StrictModel):
-    """Un punto del mapa. Se analiza un círculo de 250 m de radio alrededor."""
+    """Un punto del mapa y, si se quiere, el área exacta del campo.
+
+    Sin `polygon` se analiza un círculo de 250 m alrededor del punto. Con `polygon`
+    (lista de [lon, lat]: una figura predeterminada o dibujada) se analiza esa área.
+    """
 
     lat: float = Field(ge=-90, le=90)
     lon: float = Field(ge=-180, le=180)
+    polygon: list[tuple[float, float]] | None = Field(default=None, max_length=201)
 
 
 class SimulateRequest(StrictModel):

@@ -173,7 +173,21 @@ export const en: Dictionary = {
     live: {
       title: "Or analyze any field",
       intro:
-        "Tap a field on the map or type its coordinates. The server requests 36 months of satellite and weather data for a 250 m circle around it and runs the same engine and the same models.",
+        "Choose the area shape: a circle or a square around a point, or draw your field by tapping its corners on the map. The server requests 36 months of satellite and weather data for that area and runs the same engine and the same models.",
+      shapeLegend: "Area shape",
+      shapes: { circle: "Circle", square: "Square", draw: "Draw the area" },
+      radius: "Radius",
+      radiusOption: (m: number) =>
+        m === 400 ? `${m} m (a typical pivot, about 50 ha)` : `${m} m`,
+      side: "Side",
+      sideOption: (m: number) => `${m} m`,
+      drawHelp:
+        "Tap the corners of your field on the map, one at a time. Three or more close the shape. If you make a mistake, undo the last corner.",
+      corners: (n: number) => (n === 1 ? "1 corner" : `${n} corners`),
+      undo: "Undo the last corner",
+      clear: "Clear the shape",
+      needCorners: "Tap at least three corners of the field on the map.",
+      areaPreview: (ha: string) => `Area to analyze: ${ha} ha.`,
       lat: "Latitude",
       lon: "Longitude",
       submit: "Analyze this point",
@@ -184,7 +198,7 @@ export const en: Dictionary = {
       seconds: (n: number) => `${n} s`,
       badCoordinates: "Type a latitude and a longitude as numbers.",
       error: "That point could not be analyzed.",
-      note: "For now only in the contiguous United States, where there is water use (OpenET) and crop history (USDA) data. The circle approximates the field; it is not a boundary.",
+      note: "For now only in the contiguous United States, where there is water use (OpenET) and crop history (USDA) data. A circle or a square approximates the field; drawing it is more exact, but it is not an official boundary either.",
     },
     ask: {
       title: "Ask in your own words",

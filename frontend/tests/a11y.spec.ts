@@ -282,3 +282,44 @@ test("/showcase permite recorrer los meses con teclado", async ({ page }) => {
   await page.keyboard.press("ArrowLeft");
   await expect(page.getByText(/Mes: ene 2023/)).toBeVisible();
 });
+
+test("se puede dibujar el área del campo tocando esquinas en el mapa", async ({
+  page,
+}) => {
+  await ready(page, "/tool");
+  await page.getByRole("radio", { name: "Dibujar el área" }).check();
+  const map = page.getByRole("region", { name: /Mapa interactivo/ });
+  await expect(map).toBeVisible();
+  await map.scrollIntoViewIfNeeded();
+  const box = await map.boundingBox();
+  if (!box) throw new Error("sin mapa");
+  const corners = [
+    [0.3, 0.3],
+    [0.7, 0.3],
+    [0.7, 0.7],
+    [0.3, 0.7],
+  ];
+  for (const [fx, fy] of corners) {
+    await page.mouse.click(box.x + box.width * fx, box.y + box.height * fy);
+  }
+  await expect(page.getByText("4 esquinas")).toBeVisible();
+  await expect(page.getByText(/Área a analizar: \d/)).toBeVisible();
+  await page
+    .getByRole("button", { name: "Deshacer la última esquina" })
+    .click();
+  await expect(page.getByText("3 esquinas")).toBeVisible();
+  expect(await axe(page)).toEqual([]);
+});
+
+test("círculo y cuadrado alrededor de un punto escrito con el teclado", async ({
+  page,
+}) => {
+  await ready(page, "/tool");
+  await page.getByLabel("Latitud").fill("39.7");
+  await page.getByLabel("Longitud").fill("-116.0");
+  await page.getByLabel("Radio").selectOption("400");
+  await expect(page.getByText(/Área a analizar: 50\.\d ha/)).toBeVisible();
+  await page.getByRole("radio", { name: "Cuadrado" }).check();
+  await page.getByLabel("Lado").selectOption("400");
+  await expect(page.getByText("Área a analizar: 16.0 ha.")).toBeVisible();
+});

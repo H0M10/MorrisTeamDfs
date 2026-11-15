@@ -128,7 +128,8 @@ def analyze(body: AnalyzeRequest, settings: SettingsDep) -> JSONResponse:
     """
     if settings.data_mode != "real":
         raise live_service.not_in_real_mode()
-    parcel_id = live_service.analyze(body.lat, body.lon, settings)
+    polygon = [list(p) for p in body.polygon] if body.polygon else None
+    parcel_id = live_service.analyze(body.lat, body.lon, settings, polygon)
     return JSONResponse(evaluation_service.evaluate(parcel_id, settings))
 
 

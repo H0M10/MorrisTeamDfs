@@ -5,7 +5,8 @@ import { EvaluationGate } from "@/lib/components/LoadGate";
 import type { PilotSummary } from "@/lib/contract";
 import { PARCEL_ID_ALIASES, useParcelId, usePilots } from "@/lib/evaluation";
 import { useI18n } from "@/lib/i18n";
-import { LiveAnalyze } from "./_components/LiveAnalyze";
+import { circleRing, squareRing, type Ring } from "@/lib/shapes";
+import { LiveAnalyze, type ShapeState } from "./_components/LiveAnalyze";
 import { useToolEvaluation } from "./_components/useToolEvaluation";
 
 const ParcelMap = dynamic(
@@ -40,9 +41,29 @@ export default function ParcelPage() {
   }, [pilots, parcelId, setParcelId]);
 
   const evaluationState = useToolEvaluation(parcelId);
-  const [picked, setPicked] = useState<{ lat: number; lon: number } | null>(
-    null,
-  );
+  const [shape, setShape] = useState<ShapeState>({
+    mode: "circle",
+    radius: 250,
+    side: 400,
+    point: null,
+    vertices: [],
+  });
+  // La figura a analizar: círculo o cuadrado alrededor del punto, o la dibujada.
+  let draft: Ring | null = null;
+  if (shape.mode === "draw") {
+    draft = shape.vertices.length > 0 ? shape.vertices : null;
+  } else if (shape.point) {
+    draft =
+      shape.mode === "circle"
+        ? circleRing(shape.point.lat, shape.point.lon, shape.radius)
+        : squareRing(shape.point.lat, shape.point.lon, shape.side);
+  }
+  const onMapClick = (lat: number, lon: number) =>
+    setShape((s) =>
+      s.mode === "draw"
+        ? { ...s, vertices: [...s.vertices, [lon, lat]] }
+        : { ...s, point: { lat, lon } },
+    );
   const all = pilots.status === "ready" ? pilots.data.pilots : [];
   const cases = all.filter((pilot) => !isDetected(pilot));
   const detected = all.filter(isDetected);
@@ -93,10 +114,11 @@ export default function ParcelPage() {
       )}
 
       <LiveAnalyze
-        point={picked}
-        onPoint={setPicked}
+        shape={shape}
+        onShape={setShape}
+        ring={draft && draft.length >= 3 ? draft : null}
         onDone={(id) => {
-          setPicked(null);
+          setShape((s) => ({ ...s, point: null, vertices: [] }));
           setParcelId(id);
         }}
       />
@@ -117,8 +139,8 @@ export default function ParcelPage() {
               parcel={evaluation.parcel}
               pilots={all}
               onSelect={setParcelId}
-              onPickPoint={(lat, lon) => setPicked({ lat, lon })}
-              picked={picked}
+              onPickPoint={onMapClick}
+              draft={draft}
             />
           </>
         )}

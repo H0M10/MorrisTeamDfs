@@ -12,7 +12,7 @@ export function ParcelMap({
   pilots = [],
   onSelect,
   onPickPoint,
-  picked,
+  draft,
 }: {
   parcel: ParcelData;
   /** Las demás parcelas evaluables: se pintan como puntos que se pueden elegir. */
@@ -20,7 +20,8 @@ export function ParcelMap({
   onSelect?: (id: string) => void;
   /** Tocar el mapa fuera de un punto propone ese lugar para analizarlo en vivo. */
   onPickPoint?: (lat: number, lon: number) => void;
-  picked?: { lat: number; lon: number } | null;
+  /** Figura propuesta para el análisis en vivo, en [lon, lat]. */
+  draft?: [number, number][] | null;
 }) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const { pick, t } = useI18n();
@@ -110,23 +111,38 @@ export function ParcelMap({
     };
   }, [parcel, pilots, pick]);
 
-  // El punto propuesto para el análisis en vivo, sin rehacer el mapa.
+  // La figura propuesta para el análisis en vivo, sin rehacer el mapa.
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
     pickedLayer.current?.remove();
     pickedLayer.current = null;
-    if (picked) {
-      pickedLayer.current = L.circle([picked.lat, picked.lon], {
-        radius: 250,
-        color: "#000000",
-        weight: 2,
-        dashArray: "6 4",
-        fillColor: "#2F7D32",
-        fillOpacity: 0.25,
-      }).addTo(map);
+    if (!draft || draft.length === 0) return;
+    const latLngs = draft.map(([x, y]) => [y, x] as [number, number]);
+    const style = {
+      color: "#000000",
+      weight: 2,
+      dashArray: "6 4",
+      fillColor: "#2F7D32",
+      fillOpacity: 0.25,
+    };
+    const group = L.layerGroup();
+    if (latLngs.length >= 3) group.addLayer(L.polygon(latLngs, style));
+    else if (latLngs.length === 2) group.addLayer(L.polyline(latLngs, style));
+    // Las esquinas se marcan para ver dónde se tocó.
+    for (const point of latLngs) {
+      group.addLayer(
+        L.circleMarker(point, {
+          radius: 4,
+          color: "#000000",
+          weight: 1,
+          fillColor: "#FFFFFF",
+          fillOpacity: 1,
+        }),
+      );
     }
-  }, [picked, parcel, pilots]);
+    pickedLayer.current = group.addTo(map);
+  }, [draft, parcel, pilots]);
 
   const footprints = parcel.native_pixel_footprints_m
     ? Object.entries(parcel.native_pixel_footprints_m)

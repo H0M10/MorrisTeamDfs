@@ -84,10 +84,10 @@ export const api = {
   evaluate: (parcelId: string) =>
     post<Evaluation>("/api/v1/evaluate", { parcel_id: parcelId }),
   /** Analiza en vivo un punto: trae satélite y clima. Tarda de 30 a 90 s la primera vez. */
-  analyze: (lat: number, lon: number) =>
+  analyze: (lat: number, lon: number, polygon?: [number, number][]) =>
     request<Evaluation>(
       "/api/v1/analyze",
-      { method: "POST", body: JSON.stringify({ lat, lon }) },
+      { method: "POST", body: JSON.stringify({ lat, lon, polygon }) },
       150_000,
     ),
   simulate: (parcelId: string, constraints: ConstraintsInput) =>

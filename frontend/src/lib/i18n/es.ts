@@ -172,7 +172,21 @@ export const es = {
     live: {
       title: "O analiza cualquier campo",
       intro:
-        "Toca un campo en el mapa o escribe sus coordenadas. El servidor pide 36 meses de imágenes de satélite y de clima para un círculo de 250 m alrededor y los procesa con el mismo motor y los mismos modelos.",
+        "Elige la forma del área: un círculo o un cuadrado alrededor de un punto, o dibuja tu campo tocando sus esquinas en el mapa. El servidor pide 36 meses de imágenes de satélite y de clima de esa área y los procesa con el mismo motor y los mismos modelos.",
+      shapeLegend: "Forma del área",
+      shapes: { circle: "Círculo", square: "Cuadrado", draw: "Dibujar el área" },
+      radius: "Radio",
+      radiusOption: (m: number) =>
+        m === 400 ? `${m} m (un pivote típico, unas 50 ha)` : `${m} m`,
+      side: "Lado",
+      sideOption: (m: number) => `${m} m`,
+      drawHelp:
+        "Toca en el mapa las esquinas de tu campo, una por una. Con tres o más se cierra la figura. Si te equivocas, deshaz la última esquina.",
+      corners: (n: number) => (n === 1 ? "1 esquina" : `${n} esquinas`),
+      undo: "Deshacer la última esquina",
+      clear: "Borrar la figura",
+      needCorners: "Toca al menos tres esquinas del campo en el mapa.",
+      areaPreview: (ha: string) => `Área a analizar: ${ha} ha.`,
       lat: "Latitud",
       lon: "Longitud",
       submit: "Analizar este punto",
@@ -183,7 +197,7 @@ export const es = {
       seconds: (n: number) => `${n} s`,
       badCoordinates: "Escribe una latitud y una longitud con números.",
       error: "No se pudo analizar ese punto.",
-      note: "Por ahora solo en los 48 estados contiguos de EE. UU., donde hay datos de agua usada (OpenET) e historial de cultivos (USDA). El círculo es una aproximación del campo, no un lindero.",
+      note: "Por ahora solo en los 48 estados contiguos de EE. UU., donde hay datos de agua usada (OpenET) e historial de cultivos (USDA). Un círculo o un cuadrado aproximan el campo; dibujarlo es más exacto, pero tampoco es un lindero oficial.",
     },
     ask: {
       title: "Pregunta en tus palabras",

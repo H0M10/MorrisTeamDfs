@@ -3,6 +3,7 @@ reemplazan por las filas reales de Diamond Valley que ya están en backend/data.
 
 from __future__ import annotations
 
+import math
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -143,3 +144,52 @@ def test_predictions_reads_crops_per_year_without_earth_engine(
     # Sin Earth Engine, Dynamic World se declara no disponible y lo demás responde.
     assert body["dynamic_world"]["available"] is False
     assert client.get("/api/v1/predictions/no-existe").status_code == 404
+
+
+def _square(lat: float, lon: float, side_m: float) -> list[list[float]]:
+    dlat = side_m / 2 / 111_195
+    dlon = side_m / 2 / (111_195 * math.cos(math.radians(lat)))
+    return [
+        [lon - dlon, lat - dlat],
+        [lon + dlon, lat - dlat],
+        [lon + dlon, lat + dlat],
+        [lon - dlon, lat + dlat],
+    ]
+
+
+def test_analyze_a_drawn_area_uses_its_real_size(
+    live_client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _fake_sources(monkeypatch)
+    square = _square(39.7, -116.0, 400)  # 16 ha
+    response = live_client.post(
+        "/api/v1/analyze", json={"lat": 39.7, "lon": -116.0, "polygon": square}
+    )
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["parcel"]["id"].startswith("live-39.7000n-116.0000w-a")
+    assert body["parcel"]["area_ha"]["value"] == pytest.approx(16, rel=0.02)
+    assert body["parcel"]["name"]["es"].startswith("Área definida en el mapa")
+    # Otra figura en el mismo lugar es otra parcela.
+    other = live_client.post(
+        "/api/v1/analyze",
+        json={"lat": 39.7, "lon": -116.0, "polygon": _square(39.7, -116.0, 800)},
+    )
+    assert other.json()["parcel"]["id"] != body["parcel"]["id"]
+    assert other.json()["parcel"]["area_ha"]["value"] == pytest.approx(64, rel=0.02)
+
+
+@pytest.mark.parametrize(
+    "polygon",
+    [
+        [[-116.0, 39.7], [-116.001, 39.7]],  # dos esquinas
+        _square(39.7, -116.0, 30),  # 0.09 ha: demasiado chica
+        _square(39.7, -116.0, 5000),  # 2 500 ha: demasiado grande
+    ],
+)
+def test_analyze_rejects_bad_areas(live_client: TestClient, polygon: list[list[float]]) -> None:
+    response = live_client.post(
+        "/api/v1/analyze", json={"lat": 39.7, "lon": -116.0, "polygon": polygon}
+    )
+    assert response.status_code == 422
+    assert response.json()["error"] == "bad_polygon"
