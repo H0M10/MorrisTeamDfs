@@ -350,7 +350,7 @@ export function Guide({ onOpenSettings }: { onOpenSettings: () => void }) {
     setSpeaking(false);
     const auto = !welcome && mode !== "off" && readFlag(AUTO_KEY, "session") === true;
     setPlaying(auto);
-    setBubbleOpen(welcome || auto);
+    setBubbleOpen(auto); // nunca se abre sola: estorbaba en las pruebas con personas
     if (auto) {
       const id = runId.current;
       timer.current = window.setTimeout(() => {

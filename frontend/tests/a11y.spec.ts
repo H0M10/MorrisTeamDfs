@@ -10,14 +10,14 @@ const TOOL_ROUTES = [
   "/tool/compartir",
 ];
 const JUDGE_ROUTES = ["/showcase", "/engineer", "/remote"];
-const ALL_ROUTES = ["/", "/accesibilidad", ...TOOL_ROUTES, ...JUDGE_ROUTES];
+const ALL_ROUTES = ["/", "/campo", "/accesibilidad", ...TOOL_ROUTES, ...JUDGE_ROUTES];
 const WCAG = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
 
 /** Espera a que la página termine de pintar sus datos. */
 async function ready(page: Page, route: string) {
   await page.goto(route);
   await expect(page.locator("main#contenido h1")).toBeVisible();
-  if (route !== "/" && route !== "/accesibilidad" && route !== "/tool")
+  if (!["/", "/campo", "/accesibilidad", "/tool"].includes(route))
     await expect(page.getByTestId("fixture-banner")).toBeVisible();
 }
 
@@ -424,6 +424,9 @@ test("la Guía saluda, explica sola la pantalla y se puede apagar", async ({
   });
   await ready(page, "/tool/rotaciones");
   const guide = page.getByRole("complementary", { name: "Guía" });
+  // No se abre sola: espera en la esquina hasta que la persona la toca.
+  await expect(page.locator(".guide-bubble")).toHaveCount(0);
+  await guide.getByRole("button", { name: "Guía" }).click();
   await expect(guide).toContainText("Hola, soy la Guía");
   await guide.getByRole("button", { name: "Explícame esta pantalla" }).click();
   await expect(page.locator(".guide-spot")).toHaveCount(1, { timeout: 12_000 });
@@ -454,4 +457,37 @@ test("la Guía entiende órdenes escritas sin IA ni conexión", async ({ page })
   await guide.getByLabel("Escribe tu pregunta").fill("siguiente");
   await guide.getByRole("button", { name: "Preguntar" }).click();
   await expect(page).toHaveURL(/\/tool\/restricciones$/);
+});
+
+test("flujo sencillo: ejemplo, dos preguntas y la respuesta primero", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/campo");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("¿Dónde está tu campo?");
+  await page.getByRole("button", { name: "Ver un campo de ejemplo" }).click();
+  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+  await page.getByRole("button", { name: "La de siempre" }).click();
+  await page.getByRole("button", { name: /Ahorrar agua/ }).click();
+  const card = page.locator(".answer-card");
+  await expect(card).toContainText("La mejor opción para ahorrar agua");
+  await expect(card.getByRole("heading")).toContainText("menos agua");
+  await expect(page.getByTestId("fixture-banner")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Llevar esto a mi técnico" })).toBeVisible();
+  expect(await axe(page)).toEqual([]);
+  const overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  );
+  expect(overflow).toBeLessThanOrEqual(0);
+  await page.screenshot({ path: "test-results/campo-result.png", fullPage: true });
+});
+
+test("flujo sencillo: el mapa se confirma con un botón, sin tocar el mapa", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/campo");
+  await page.getByRole("button", { name: "Buscarlo en el mapa" }).click();
+  await expect(page.getByRole("button", { name: "Este es mi campo" })).toBeVisible();
+  await page.waitForTimeout(1500);
+  expect(await axe(page)).toEqual([]);
+  await page.screenshot({ path: "test-results/campo-map.png" });
+  await page.getByRole("button", { name: "Este es mi campo" }).click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("¿Cuánta agua tienes este año?");
 });

@@ -47,7 +47,7 @@ export function SiteHeader() {
       </header>
       {withGuide ? (
         <Guide onOpenSettings={() => setSettingsOpen(true)} />
-      ) : (
+      ) : pathname === "/campo" ? null : (
         <FirstVisitPrompt
           onChoose={() => setSettingsOpen(true)}
           onSkip={() => settingsButton.current?.focus()}

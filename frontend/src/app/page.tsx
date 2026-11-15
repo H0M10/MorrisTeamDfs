@@ -17,7 +17,7 @@ export default function HomePage() {
         <p className="home-lead not-plain">{h.lead}</p>
         <p className="home-lead only-plain">{h.leadPlain}</p>
         <div className="home-actions">
-          <Link href="/tool" className="button primary home-cta" data-guide-id="home.start">
+          <Link href="/campo" className="button primary home-cta" data-guide-id="home.start">
             {h.cta}
           </Link>
           <Link href="/showcase" className="button">

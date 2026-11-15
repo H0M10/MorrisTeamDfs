@@ -1,0 +1,185 @@
+/* Flujo sencillo: una decisión por pantalla, botones grandes, poco texto. */
+.simple {
+  max-width: 40rem;
+}
+
+.simple h1:focus {
+  outline: none;
+}
+
+.simple-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  font-weight: 700;
+}
+
+.simple-dots {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.simple-dots i {
+  width: 2.2rem;
+  height: 8px;
+  border-radius: 4px;
+  border: 1px solid var(--color-tinta);
+}
+
+.simple-dots i[data-on="true"] {
+  background: var(--color-compuerta);
+  border-color: var(--color-compuerta);
+}
+
+.simple-choices {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.big {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 64px;
+  padding: 0.8rem 1rem;
+  font-size: 1.15rem;
+  border-radius: 0.6rem;
+  text-align: center;
+}
+
+.big-help {
+  font-weight: 400;
+  font-size: 0.9em;
+}
+
+.simple-working {
+  padding: 0.5rem 0.75rem;
+  border-left: 0.5rem solid var(--color-paja);
+  background: #fdf6dd;
+}
+
+.simple-wait {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.simple-spinner {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1rem;
+  border: 6px solid var(--color-tinta-claro);
+  border-top-color: var(--color-compuerta);
+  border-radius: 50%;
+  animation: simple-spin 1s linear infinite;
+}
+
+@keyframes simple-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Mapa: el círculo está fijo en el centro; se mueve el mapa. */
+.finder {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.finder-search {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.finder-search input {
+  flex: 1;
+  min-width: 0;
+}
+
+.finder-status {
+  margin: 0;
+  font-weight: 700;
+}
+
+.finder-map {
+  width: 100%;
+  height: min(42vh, 420px);
+  border: 2px solid var(--color-tinta);
+  border-radius: 0.5rem;
+}
+
+.finder-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.finder-size {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* La respuesta. */
+.answer-field {
+  margin: 0.25rem 0 0.75rem;
+}
+
+.answer-card {
+  border: 3px solid var(--color-hoja);
+  border-left-width: 0.75rem;
+  border-radius: 0.6rem;
+  padding: 1rem;
+}
+
+.answer-kicker {
+  margin: 0;
+  font-weight: 700;
+  color: var(--color-hoja);
+}
+
+.answer-card h2 {
+  margin: 0.25rem 0 0.5rem;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.answer-why {
+  font-size: 1.1rem;
+}
+
+.answer-facts {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.75rem 0 0;
+}
+
+.answer-facts div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-tinta);
+}
+
+.answer-facts dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+.answer-others {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.answer-others li {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.6rem 0.8rem;
+  border: 2px solid var(--color-tinta);
+  border-radius: 0.5rem;
+}
