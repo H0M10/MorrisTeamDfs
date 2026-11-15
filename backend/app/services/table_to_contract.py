@@ -138,6 +138,135 @@ TEMPLATES: dict[str, dict[str, list[list[str]]]] = {
     },
 }
 
+# Catálogo de alternativas por sistema y objetivo. La primera de cada lista es la
+# plantilla regional auditada (H-03). El motor elige entre las que solo usan cultivos
+# con siembra y venta registradas en la zona (los que NO están en crops_without_buyer,
+# que sale del censo y CDL en EE. UU. o de SIAP en México): para "menos agua" la de
+# menor riego FAO-56; para "más suelo" la de más meses cubiertos. Las coberturas no se
+# venden y no necesitan comprador.
+CATALOG: dict[str, dict[str, list[tuple[str, list[list[str]]]]]] = {
+    "alfalfa": {
+        "less_water": [
+            ("cebada, trigo de primavera y vuelta a alfalfa", TEMPLATES["alfalfa"]["less_water"]),
+            (
+                "granos de primavera los tres años",
+                [
+                    _year(_R, m4_7="cebada_forrajera"),
+                    _year(_R, m4_7="trigo_primavera"),
+                    _year(_R, m4_7="cebada_forrajera"),
+                ],
+            ),
+            (
+                "trigo de invierno y cebada de primavera",
+                [
+                    _year(_R, m1_6="trigo_invierno", m10_12="trigo_invierno"),
+                    _year(_R, m1_6="trigo_invierno"),
+                    _year(_R, m4_7="cebada_forrajera"),
+                ],
+            ),
+            (
+                "trigos de primavera e invierno",
+                [
+                    _year(_R, m4_7="trigo_primavera", m10_12="trigo_invierno"),
+                    _year(_R, m1_6="trigo_invierno"),
+                    _year(_R, m4_7="trigo_primavera"),
+                ],
+            ),
+            (
+                "avena de primavera y vuelta a alfalfa",
+                [
+                    _year(_R, m4_7="avena_forrajera"),
+                    _year(_R, m4_7="cebada_forrajera"),
+                    _year(_R, m4_10="alfalfa", m11_12="alfalfa_dormant"),
+                ],
+            ),
+        ],
+        "more_soil": [
+            ("trigo de invierno, coberturas y alfalfa", TEMPLATES["alfalfa"]["more_soil"]),
+            (
+                "trigo de primavera con coberturas y alfalfa",
+                [
+                    _year(_RD, m4_7="trigo_primavera", m8_10="cubierta_mixta"),
+                    _year(_RD, m4_7="trigo_primavera", m8_10="avena_veza"),
+                    _year(_RD, m4_10="alfalfa", m11_12="alfalfa_dormant"),
+                ],
+            ),
+            (
+                "granos de primavera con cobertura de verano",
+                [
+                    _year(_RD, m4_7="cebada_forrajera", m8_10="cubierta_mixta"),
+                    _year(_RD, m4_7="trigo_primavera", m8_10="avena_veza"),
+                    _year(_RD, m4_10="alfalfa", m11_12="alfalfa_dormant"),
+                ],
+            ),
+        ],
+    },
+    "summer_grain": {
+        "less_water": [
+            ("sorgo de verano", TEMPLATES["summer_grain"]["less_water"]),
+            (
+                "cebada de invierno y descanso en verano",
+                [_year(_R, m12_12="cebada_forrajera", m1_4="cebada_forrajera")] * 3,
+            ),
+            (
+                "avena de invierno y sorgo de verano",
+                [_year(_R, m12_12="avena_forrajera", m1_3="avena_forrajera", m6_10="sorgo_grano")]
+                * 3,
+            ),
+        ],
+        "more_soil": [
+            ("milpa con triticale de cobertura", TEMPLATES["summer_grain"]["more_soil"]),
+            (
+                "maíz de verano y avena de invierno",
+                [_year(_RD, m6_10="maiz", m12_12="avena_forrajera", m1_4="avena_forrajera")] * 3,
+            ),
+        ],
+    },
+}
+
+
+def has_market(crops: list[str], no_buyer: frozenset[str]) -> bool:
+    """¿Todos los cultivos que se venden tienen comprador registrado en la zona?"""
+    for code in set(crops):
+        spec = crop_bank.get_crop_spec(code)
+        if spec is None:
+            return False
+        if spec.sold and (code in no_buyer or code.removesuffix("_dormant") in no_buyer):
+            return False
+    return True
+
+
+def choose_alternative(
+    system: str,
+    objective: str,
+    months: list[str],
+    et0: list[float | None],
+    rain: list[float | None],
+    no_buyer: frozenset[str] | None,
+) -> tuple[list[str], str]:
+    """Secuencia de 36 meses y nombre de la opción elegida del catálogo."""
+
+    def sequence(years: list[list[str]]) -> list[str]:
+        return [years[i // 12][int(months[i][5:7]) - 1] for i in range(MONTHS_REQUIRED)]
+
+    options = [(name, sequence(years)) for name, years in CATALOG[system][objective]]
+    if no_buyer is None:
+        return options[0][1], options[0][0]  # sin datos de mercado: la plantilla auditada
+    eligible = [(n, crops) for n, crops in options if has_market(crops, no_buyer)]
+    if not eligible:
+        return options[0][1], options[0][0]  # las restricciones la descartarán y lo dirán
+    if objective == "less_water":
+
+        def score(item: tuple[str, list[str]]) -> float:
+            water = annual_water_mm(months, item[1], et0, rain)
+            return float("inf") if water is None else water
+
+        name, crops = min(eligible, key=score)
+    else:
+        name, crops = max(eligible, key=lambda item: sum(is_cover(c) for c in item[1]))
+    return crops, name
+
+
 PALETTE_BY_GROUP = {
     "alfalfa": ("leaf", "solid"),
     "corn": ("leaf", "solid"),
@@ -169,6 +298,8 @@ class ParcelMeta(BaseModel):
     aquifer_status_note: LocalizedText | None = None
     # De dónde salen las restricciones si no las dijo el agricultor (supuesto con dato).
     constraints_source: str | None = None
+    # De dónde sale declared_history si no lo dijo el agricultor (por ejemplo, HLS + SIAP).
+    history_source: str | None = None
     # Contexto con fuente (mercado, censo, precios): se agrega a la evidencia de cada rotación.
     context_notes: list[LocalizedText] | None = None
 
@@ -389,9 +520,10 @@ def palette(code: str) -> tuple[str, str]:
 
 
 def is_cover(code: str) -> bool:
-    """¿El suelo queda cubierto ese mes? Cultivo en pie o rastrojo retenido."""
+    """¿Hay un cultivo vivo en el campo ese mes? El rastrojo protege algo, pero no cuenta:
+    si contara, todas las rotaciones saldrían con 36 de 36 meses y no se podrían comparar."""
     spec = crop_bank.get_crop_spec(code)
-    return spec is not None and (spec.sown or "rastrojo" in code)
+    return spec is not None and spec.sown
 
 
 SRC_OPENET_WATER = (
@@ -746,10 +878,14 @@ def build_evaluation(
     # --- rotaciones ---
     system = "alfalfa" if any(code.startswith("alfalfa") for code in current) else "summer_grain"
     sequences = {"current": current}
-    for strategy_id, years in TEMPLATES[system].items():
-        sequences[strategy_id] = [
-            years[i // 12][int(months[i][5:7]) - 1] for i in range(MONTHS_REQUIRED)
-        ]
+    no_buyer = (
+        frozenset(meta.constraints.crops_without_buyer) if meta.constraints is not None else None
+    )
+    chosen: dict[str, str] = {}
+    for strategy_id in ("less_water", "more_soil"):
+        sequences[strategy_id], chosen[strategy_id] = choose_alternative(
+            system, strategy_id, months, et0, rain, no_buyer
+        )
     water = {key: annual_water_mm(months, crops, et0, rain) for key, crops in sequences.items()}
     water_source = dict.fromkeys(water, SRC_FAO_WATER)
     observed = observed_net_irrigation(rows)
@@ -776,6 +912,9 @@ def build_evaluation(
             period,
             labeled,
             model_2_trained=model_2_trained,
+            option=chosen.get(key),
+            market_filtered=no_buyer is not None,
+            history_source=meta.history_source,
         )
         for key in ("current", "less_water", "more_soil")
     ]
@@ -915,6 +1054,9 @@ def _strategy(
     labeled: bool,
     *,
     model_2_trained: bool = False,
+    option: str | None = None,
+    market_filtered: bool = False,
+    history_source: str | None = None,
 ) -> dict[str, Any]:
     is_current = key == "current"
     distinct = [
@@ -933,10 +1075,22 @@ def _strategy(
     # Sin cultivo conocido no se sabe si el suelo estuvo cubierto: queda sin dato, no en cero.
     cover = sum(is_cover(c) for c in crops) if known else None
     sequence_type = ("modeled" if labeled else "assumed") if is_current else "assumed"
+    template_source = TEMPLATE_SOURCE
+    if option and market_filtered:
+        objective = "menor riego FAO-56" if key == "less_water" else "más meses de suelo cubierto"
+        template_source = (
+            f"Opción del catálogo del equipo «{option}», elegida por el motor por {objective} "
+            "entre las que solo usan cultivos con siembra y venta registradas en la zona "
+            "(censo y CDL en EE. UU., SIAP en México)"
+        )
     sequence_source = (
-        ("USDA CDL, clase anual de cultivo" if labeled else "Historial declarado por el agricultor")
+        (
+            "USDA CDL, clase anual de cultivo"
+            if labeled
+            else history_source or "Historial declarado por el agricultor"
+        )
         if is_current
-        else TEMPLATE_SOURCE
+        else template_source
     )
     water_text = "sin dato" if mine is None else f"{mine:.0f} mm"
     water_text_en = "no data" if mine is None else f"{mine:.0f} mm"
@@ -956,9 +1110,10 @@ def _strategy(
         }
     else:
         why = {
-            "es": f"Mantiene el suelo cubierto {cover} de 36 meses con cultivos de cobertura "
-            "y rastrojo.",
-            "en": f"It keeps the soil covered {cover} of 36 months with cover crops and residue.",
+            "es": f"Mantiene un cultivo vivo en el campo {cover} de 36 meses, con cultivos "
+            "de cobertura entre cosechas.",
+            "en": f"It keeps a living crop in the field {cover} of 36 months, with cover crops "
+            "between harvests.",
         }
     evidence = [
         {
@@ -970,8 +1125,8 @@ def _strategy(
     ]
     benefits = [
         {
-            "es": f"Suelo cubierto {cover} de 36 meses según la secuencia.",
-            "en": f"Soil covered {cover} of 36 months according to the sequence.",
+            "es": f"Cultivo vivo en el campo {cover} de 36 meses según la secuencia.",
+            "en": f"Living crop in the field {cover} of 36 months according to the sequence.",
         }
         if known
         else {
