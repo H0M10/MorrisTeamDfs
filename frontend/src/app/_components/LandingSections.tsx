@@ -171,7 +171,7 @@ export function ChallengeMap() {
     ["Bare-field periods and vulnerable seasons", "Periodos sin cobertura y temporadas vulnerables", "/tool/retrato", "“When is your field exposed?” from satellite greenness and frost and heat days", "«¿Cuándo está expuesto tu campo?» con el verdor del satélite y los días de helada y calor"],
     ["Uncertainty explained", "Incertidumbre explicada", "/presentacion/modelos/4", "90% intervals and model-vs-baseline metrics", "Intervalos al 90 % y métricas contra línea base"],
     ["Supports, does not replace, local expertise", "Apoya, no reemplaza, al experto local", "/tool/compartir", "Shareable sheet and technician review", "Hoja para compartir y revisión del técnico"],
-    ["Farmer-centered, plain language", "Centrado en el agricultor, lenguaje llano", "/accesibilidad", "Voice tutor, screen readers, sun mode, US units", "Tutor por voz, lectores de pantalla, modo sol, unidades de EE. UU."],
+    ["Farmer-centered, plain language", "Centrado en el agricultor, lenguaje llano", "/presentacion/personas#interfaz", "Voice tutor, screen readers, sun mode, US units", "Tutor por voz, lectores de pantalla, modo sol, unidades de EE. UU."],
   ];
   return (
     <section className="present-shell present-section" aria-labelledby="map-title">
@@ -387,7 +387,6 @@ export function OptionalCoverage() {
     ["yes", "Farmer priorities and constraints: water, machinery, buyers, planting window and “what matters most”.", "Prioridades y restricciones del agricultor: agua, maquinaria, compradores, ventana de siembra y «qué te importa más»."],
     ["yes", "Timeline and scenario: 36-month calendar and a “what if your water limit changes?” scenario.", "Línea de tiempo y escenario: calendario de 36 meses y el escenario «¿y si cambia tu límite de agua?»."],
     ["part", "Market suitability: buyers are a hard constraint; prices are shown as missing information, not guessed.", "Mercado: el comprador es una restricción obligatoria; los precios se muestran como información que falta, no se adivinan."],
-    ["no", "Erosion-risk zones, pest-cycle disruption and nitrogen credits of legumes: not modeled yet, and the evidence cards say so.", "Zonas de riesgo de erosión, ciclos de plagas y el nitrógeno que aportan las leguminosas: todavía no se modelan, y las fichas de evidencia lo dicen."],
   ];
   const label = { yes: en ? "Covered" : "Cubierto", part: en ? "Partly" : "En parte", no: en ? "Not yet" : "Todavía no" };
   return (
@@ -504,6 +503,194 @@ export function FarmerAdoption() {
         <a href="https://www.mckinsey.com/industries/agriculture/our-insights/agtech-breaking-down-the-farmer-adoption-dilemma" rel="noreferrer" target="_blank">
           McKinsey, Agtech: breaking down the farmer adoption dilemma
         </a>
+      </p>
+    </section>
+  );
+}
+
+/** "Farmer-Centered Design" del reto, punto por punto, con capturas reales de la herramienta. */
+export function FarmerFriendly() {
+  const { lang } = useI18n();
+  const en = lang === "en";
+  const items: {
+    quote: string;
+    title: [string, string];
+    text: [string, string];
+    shots: { src: string; alt: [string, string] }[];
+  }[] = [
+    {
+      quote:
+        "Consider how to make the tool easily interpretable for farmers who may have limited technical or geospatial experience.",
+      title: ["Readable without being an expert", "Se entiende sin ser experto"],
+      text: [
+        "One decision per screen and a progress bar. The field is a strip of real satellite colors, one square per month: no maps of indices, no acronyms. A tutor character walks through each part by voice or text when the farmer asks.",
+        "Una decisión por pantalla y una barra de avance. El campo es una tira con los colores reales del satélite, un cuadro por mes: sin mapas de índices ni siglas. Un tutor recorre cada parte, por voz o por texto, cuando el agricultor lo pide.",
+      ],
+      shots: [
+        { src: "/presentacion/tool-strip.webp", alt: ["The field strip: 36 months of real satellite color, one square per month.", "La tira del campo: 36 meses del color real del satélite, un cuadro por mes."] },
+        { src: "/presentacion/tool-guide.webp", alt: ["The tutor points at the step bar and explains it, with buttons to talk or write.", "El tutor señala la barra de pasos y la explica, con botones para hablar o escribir."] },
+      ],
+    },
+    {
+      quote:
+        "Think about ways to allow farmers to input their own priorities or constraints, such as water availability, equipment limitations, or market preferences.",
+      title: ["The farmer sets the rules", "El agricultor pone las reglas"],
+      text: [
+        "Water per year, available machinery, crops nobody would buy and the planting window are entered with large checkboxes. “What matters most to you?” orders the options, without invented scores.",
+        "El agua por año, la maquinaria disponible, los cultivos que nadie compraría y la ventana de siembra se marcan con casillas grandes. «¿Qué te importa más?» ordena las opciones, sin puntajes inventados.",
+      ],
+      shots: [
+        { src: "/presentacion/tool-limits.webp", alt: ["Constraint editor: large checkboxes for machinery and crops without a buyer.", "Editor de restricciones: casillas grandes para maquinaria y cultivos sin comprador."] },
+        { src: "/presentacion/tool-priorities.webp", alt: ["“What matters most to you?” with save water selected.", "«¿Qué te importa más?» con ahorrar agua elegido."] },
+      ],
+    },
+    {
+      quote:
+        "Share reminders that the tool is intended to support—not replace—local expertise, and highlight where human judgment is particularly important.",
+      title: ["It says what it rules out, and what a person must check", "Dice qué descarta y qué debe revisar una persona"],
+      text: [
+        "On the real Diamond Valley case, the current alfalfa rotation is ruled out because it needs more water than the declared limit, and the screen says so with both numbers. Every rotation ends with “risks that someone local must review”, and the adviser can approve, correct or reject it.",
+        "En el caso real de Diamond Valley, la rotación actual de alfalfa queda descartada porque pide más agua que el límite declarado, y la pantalla lo dice con las dos cifras. Cada rotación termina con «riesgos que debe revisar alguien local», y el técnico la puede aprobar, corregir o descartar.",
+      ],
+      shots: [
+        { src: "/presentacion/tool-evidence.webp", alt: ["Evidence screen: the current rotation is ruled out with the water it needs and the limit.", "Pantalla de evidencia: la rotación actual descartada con el agua que pide y el límite."] },
+      ],
+    },
+  ];
+  return (
+    <section id="interfaz" className="present-shell present-section" aria-labelledby="friendly-title">
+      <p className="present-kicker">{en ? "Farmer-centered design" : "Diseño centrado en el agricultor"}</p>
+      <h2 id="friendly-title">{en ? "An interface made for the farmer." : "Una interfaz hecha para el agricultor."}</h2>
+      <p className="present-lead">
+        {en
+          ? "The challenge lists three points under Farmer-Centered Design. These are real screens of the tool on a phone, with real Diamond Valley data."
+          : "El reto enumera tres puntos en Farmer-Centered Design. Estas son pantallas reales de la herramienta en un teléfono, con datos reales de Diamond Valley."}
+      </p>
+      {items.map((item) => (
+        <article className="friendly-row" key={item.quote}>
+          <div className="friendly-copy">
+            <blockquote className="landing-quote" lang="en">
+              <p>“{item.quote}”</p>
+            </blockquote>
+            <h3>{en ? item.title[0] : item.title[1]}</h3>
+            <p>{en ? item.text[0] : item.text[1]}</p>
+          </div>
+          <div className="friendly-shots">
+            {item.shots.map((shot) => (
+              <figure key={shot.src}>
+                <img src={shot.src} alt={en ? shot.alt[0] : shot.alt[1]} width={390} height={750} loading="lazy" />
+              </figure>
+            ))}
+          </div>
+        </article>
+      ))}
+      <p className="present-note">
+        {en ? "Real screenshots of the tool. " : "Capturas reales de la herramienta. "}
+        <Link href="/tool">{en ? "Open it on your phone" : "Ábrela en tu teléfono"} ↗</Link>
+      </p>
+    </section>
+  );
+}
+
+/** Lo que sigue: lo que el reto sugiere y todavía no modelamos, como hoja de ruta. */
+export function Roadmap() {
+  const { lang } = useI18n();
+  const en = lang === "en";
+  const items: [string, string][] = [
+    ["Erosion-risk zones with RUSLE, from SRTM slope and soil texture.", "Zonas de riesgo de erosión con RUSLE, a partir de la pendiente de SRTM y la textura del suelo."],
+    ["Nitrogen credit of alfalfa and other legumes for the next crop, from extension tables.", "El nitrógeno que la alfalfa y otras leguminosas dejan al siguiente cultivo, con tablas de extensión agrícola."],
+    ["Pest-cycle disruption by crop family.", "Interrupción de ciclos de plagas por familia de cultivo."],
+    ["Published market prices (USDA NASS) as reference, never as predicted income.", "Precios de mercado publicados (USDA NASS) como referencia, nunca como ganancia predicha."],
+    ["A field trial with irrigators and local advisers in Diamond Valley.", "Una prueba en campo con regantes y técnicos locales de Diamond Valley."],
+  ];
+  return (
+    <section className="present-shell present-section" aria-labelledby="roadmap-title">
+      <p className="present-kicker">{en ? "Next" : "Lo que sigue"}</p>
+      <h2 id="roadmap-title">{en ? "Where Field Shift grows next." : "Hacia dónde crece Field Shift."}</h2>
+      <ol className="landing-asks">
+        {items.map(([enText, esText]) => (
+          <li key={enText}>
+            <span>{en ? enText : esText}</span>
+          </li>
+        ))}
+      </ol>
+      <p className="present-note">
+        {en
+          ? "Until they exist, the evidence cards state these points as missing information instead of guessing."
+          : "Mientras no existan, las fichas de evidencia los muestran como información que falta en lugar de adivinar."}
+      </p>
+    </section>
+  );
+}
+
+/** Alcance: Diamond Valley no es la excepción. Cifras oficiales (USDA NASS, USGS). */
+export function ImpactScale({ compact = false }: { compact?: boolean }) {
+  const { lang } = useI18n();
+  const en = lang === "en";
+  const nf = new Intl.NumberFormat(en ? "en-US" : "es-MX");
+  const facts: [string, string, string][] = [
+    [nf.format(212714), "irrigated farms in the United States, on 53.1 million acres (2023).", "granjas de riego en Estados Unidos, sobre 53.1 millones de acres (2023)."],
+    ["54 %", "of their irrigation water comes from on-farm wells, as in Diamond Valley.", "de su agua de riego sale de pozos en la finca, como en Diamond Valley."],
+    [nf.format(106253), "farms irrigate with sprinklers such as center pivots, the kind of field Field Shift reads from space.", "granjas riegan por aspersión, como los pivotes centrales, el tipo de campo que Field Shift lee desde el espacio."],
+  ];
+  const more: [string, string, string][] = [
+    ["≈ 71 %", "of the groundwater pumped in the United States goes to irrigating crops.", "del agua subterránea que se bombea en Estados Unidos se usa para regar cultivos."],
+    ["≈ 1 000 km³", "of groundwater were lost in the United States between 1900 and 2008.", "de agua subterránea perdió Estados Unidos entre 1900 y 2008."],
+  ];
+  const list = compact ? facts : [...facts, ...more];
+  return (
+    <section className="present-shell present-section" aria-labelledby={compact ? "scale-title-home" : "scale-title"}>
+      <p className="present-kicker">{en ? "Impact" : "Impacto"}</p>
+      <h2 id={compact ? "scale-title-home" : "scale-title"}>
+        {en ? "Diamond Valley is not the exception." : "Diamond Valley no es la excepción."}
+      </h2>
+      {!compact && (
+        <p className="present-lead">
+          {en
+            ? "Field Shift already works for any irrigated field in the 48 contiguous states, where OpenET measures water use and USDA records what was grown. It is free, runs in a phone browser, in English and Spanish, and works with screen readers and by voice."
+            : "Field Shift ya funciona para cualquier campo de riego de los 48 estados contiguos, donde OpenET mide el agua usada y el USDA registra qué se sembró. Es gratis, funciona en el navegador del teléfono, en español e inglés, con lector de pantalla y por voz."}
+        </p>
+      )}
+      <dl className="landing-facts">
+        {list.map(([big, enText, esText]) => (
+          <div key={big}>
+            <dt>{big}</dt>
+            <dd>{en ? enText : esText}</dd>
+          </div>
+        ))}
+      </dl>
+      {!compact && (
+        <p className="present-lead">
+          {en
+            ? "Who it reaches beyond the farmer: 62% of US farmworkers prefer to speak Spanish (NAWS 2019–2020), and 28% of US adults read at the lowest literacy levels (PIAAC 2023). Bilingual screens, plain language and a voice tutor are how a decision tool reaches them."
+            : "A quién llega más allá del agricultor: el 62 % de los trabajadores agrícolas de EE. UU. prefiere hablar en español (NAWS 2019–2020), y el 28 % de los adultos de EE. UU. lee en los niveles más bajos (PIAAC 2023). Pantallas bilingües, lenguaje llano y un tutor por voz son la forma de que una herramienta de decisión les llegue."}
+        </p>
+      )}
+      <p className="present-note">
+        {en ? "Sources: " : "Fuentes: "}
+        <a href="https://nass.usda.gov/Publications/AgCensus/2022/Online_Resources/Farm_and_Ranch_Irrigation_Survey/iwms.txt" rel="noreferrer" target="_blank">
+          USDA NASS, 2023 Irrigation and Water Management Survey
+        </a>
+        {!compact && (
+          <>
+            {" · "}
+            <a href="https://www.usgs.gov/publications/estimated-groundwater-withdrawals-principal-aquifers-united-states-2015" rel="noreferrer" target="_blank">
+              USGS, groundwater withdrawals
+            </a>
+            {" · "}
+            <a href="https://catalog.data.gov/dataset/groundwater-depletion-in-the-united-states-1900-2008" rel="noreferrer" target="_blank">
+              USGS, groundwater depletion 1900–2008
+            </a>
+            {" · "}
+            <a href="https://ncfh.org/naws-fact-sheet.html" rel="noreferrer" target="_blank">
+              NAWS (NCFH)
+            </a>
+            {" · "}
+            <a href="https://ies.ed.gov/use-work/resource-library/report/first-look-ed-tab/highlights-2023-u-s-piaac-results" rel="noreferrer" target="_blank">
+              NCES, PIAAC 2023
+            </a>
+          </>
+        )}
       </p>
     </section>
   );

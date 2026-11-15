@@ -1076,3 +1076,55 @@ html[data-sun]
     gap: 0.2rem;
   }
 }
+
+/* Diseño centrado en el agricultor: cita del reto + capturas reales */
+.friendly-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: start;
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.friendly-copy h3 {
+  font-size: 1.3rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.friendly-copy > p {
+  color: var(--quiet);
+}
+
+.friendly-shots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+
+.friendly-shots figure {
+  margin: 0;
+  width: min(15rem, 100%);
+}
+
+.friendly-shots img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 1.4rem;
+  border: 6px solid #1f2933;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.45);
+  background: #fff;
+}
+
+@media (max-width: 52rem) {
+  .friendly-row {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .friendly-shots figure {
+    width: calc(50% - 0.5rem);
+  }
+}

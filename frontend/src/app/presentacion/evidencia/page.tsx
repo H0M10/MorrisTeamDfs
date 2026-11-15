@@ -1,4 +1,4 @@
-import { Differentiators, ModelProof } from "../../_components/LandingSections";
+import { Differentiators, ModelProof, Roadmap } from "../../_components/LandingSections";
 import { EvidenceChapter } from "../../_components/MissionChapters";
 export default function Page() {
   return (
@@ -7,6 +7,7 @@ export default function Page() {
       <ModelProof />
       <Differentiators />
       <EvidenceChapter />
+      <Roadmap />
     </>
   );
 }

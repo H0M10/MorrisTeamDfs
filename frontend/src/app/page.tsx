@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
 import { MissionShell } from "./_components/MissionShell";
 import { FieldFilm } from "./_components/PresentationLab";
-import { ProblemNote } from "./_components/LandingSections";
+import { ImpactScale, ProblemNote } from "./_components/LandingSections";
 const HeroMap = dynamic(() => import("./_components/HeroMap"), { ssr: false });
 
 export default function HomePage() {
@@ -64,6 +64,7 @@ export default function HomePage() {
           </figcaption>
         </figure>
       </section>
+      <ImpactScale compact />
       <section
         className="mission-directory"
         aria-label={tr("Explorar la presentación", "Explore the presentation")}
