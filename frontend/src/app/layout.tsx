@@ -1,10 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import { Atkinson_Hyperlegible_Next } from "next/font/google";
 import type { ReactNode } from "react";
+import { A11Y_BOOT_SCRIPT } from "@/lib/a11y/boot";
+import { A11yProvider } from "@/lib/a11y/profile";
 import { LanguageProvider } from "@/lib/i18n";
 import { SkipLink } from "@/lib/components/SkipLink";
 // import {SimulationProvider} from "@/lib/components/SimulationProvider";
 import "./globals.css";
+// Perfil de accesibilidad: después de globals.css para ganarle (P1-1).
+import "@/lib/a11y/a11y.css";
 
 const atkinson = Atkinson_Hyperlegible_Next({
   subsets: ["latin", "latin-ext"],
@@ -26,12 +30,19 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="es" className={atkinson.variable}>
+    // suppressHydrationWarning: el script de abajo pone los data-* del perfil
+    // en <html> antes de que React hidrate.
+    <html lang="es" className={atkinson.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: A11Y_BOOT_SCRIPT }} />
+      </head>
       <body>
-        <LanguageProvider>
-          <SkipLink />
-          {children}
-        </LanguageProvider>
+        <A11yProvider>
+          <LanguageProvider>
+            <SkipLink />
+            {children}
+          </LanguageProvider>
+        </A11yProvider>
       </body>
     </html>
   );

@@ -33,3 +33,8 @@ export function readConstraints(parcelId: string): string | null {
 }
 export const saveConstraints = (parcelId: string, json: string | null) =>
   write(CONSTRAINTS_KEY(parcelId), json);
+
+// Perfil de accesibilidad y unidades (P1-1, P1-5). Un solo JSON por dispositivo.
+const A11Y_KEY = "fieldshift:a11y";
+export const readA11yProfile = () => read(A11Y_KEY);
+export const saveA11yProfile = (json: string) => write(A11Y_KEY, json);

@@ -1,0 +1,96 @@
+/* Portada (P1-4). Fondo blanco, texto negro; el único color es el botón
+   principal en Azul compuerta (AGENTS.md §8). Sin tarjetas ni degradados. */
+
+.home {
+  padding-top: 2rem;
+}
+
+.home-title {
+  font-size: clamp(1.9rem, 6vw, 2.75rem);
+  line-height: 1.15;
+  max-width: 22ch;
+  margin-bottom: 1rem;
+}
+
+.home-lead {
+  font-size: 1.15rem;
+  max-width: 48ch;
+}
+
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.home-cta {
+  min-height: 3.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.2rem;
+}
+
+.home-coverage {
+  margin-bottom: 2.5rem;
+}
+
+.home-how {
+  list-style: none;
+  counter-reset: paso;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  max-width: 48rem;
+}
+
+.home-how li {
+  counter-increment: paso;
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-top: 2px solid var(--color-tinta);
+}
+
+.home-how li:last-child {
+  border-bottom: 2px solid var(--color-tinta);
+}
+
+.home-how li::before {
+  content: counter(paso);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.home-trust {
+  font-weight: 700;
+}
+
+.home-footer {
+  max-width: 60rem;
+  margin: 2rem auto 0;
+  padding: 1rem;
+  border-top: 2px solid var(--color-tinta);
+}
+
+.home-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.home-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+/* Teléfono: botones a todo lo ancho, al alcance del pulgar. */
+@media (max-width: 40rem) {
+  .home-actions .button {
+    width: 100%;
+  }
+}

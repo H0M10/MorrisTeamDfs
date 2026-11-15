@@ -10,14 +10,14 @@ const TOOL_ROUTES = [
   "/tool/compartir",
 ];
 const JUDGE_ROUTES = ["/showcase", "/engineer", "/remote"];
-const ALL_ROUTES = ["/", ...TOOL_ROUTES, ...JUDGE_ROUTES];
+const ALL_ROUTES = ["/", "/accesibilidad", ...TOOL_ROUTES, ...JUDGE_ROUTES];
 const WCAG = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
 
 /** Espera a que la página termine de pintar sus datos. */
 async function ready(page: Page, route: string) {
   await page.goto(route);
   await expect(page.locator("main#contenido h1")).toBeVisible();
-  if (route !== "/")
+  if (route !== "/" && route !== "/accesibilidad")
     await expect(page.getByTestId("fixture-banner")).toBeVisible();
 }
 

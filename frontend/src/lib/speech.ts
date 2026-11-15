@@ -74,3 +74,31 @@ export function listenOnce(lang: Lang): { result: Promise<string>; stop: () => v
   recognition.start();
   return { result, stop: () => recognition.stop() };
 }
+
+/**
+ * Lee un texto largo (una pantalla entera) en trozos cortos: algunos
+ * navegadores cortan una sola frase muy larga a los pocos segundos.
+ * `onEnd` se llama al terminar el último trozo o si se detiene.
+ */
+export function speakLong(text: string, lang: Lang, onEnd?: () => void): void {
+  if (!canSpeak()) return;
+  window.speechSynthesis.cancel();
+  const chunks = text
+    .split(/\n+|(?<=[.!?…:;])\s+/)
+    .map((part) => part.replace(/\s+/g, " ").trim())
+    .filter((part) => part.length > 0);
+  if (chunks.length === 0) {
+    onEnd?.();
+    return;
+  }
+  chunks.forEach((chunk, i) => {
+    const utterance = new SpeechSynthesisUtterance(chunk);
+    utterance.lang = VOICE_LANG[lang];
+    utterance.rate = 0.95;
+    if (i === chunks.length - 1 && onEnd) {
+      utterance.onend = onEnd;
+      utterance.onerror = onEnd;
+    }
+    window.speechSynthesis.speak(utterance);
+  });
+}

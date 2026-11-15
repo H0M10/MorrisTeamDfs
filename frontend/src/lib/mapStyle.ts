@@ -9,6 +9,7 @@
 //              sombreado de laderas: se ven las sierras que rodean el valle
 //   map        mapa topográfico plano
 import { setWorkerUrl, type Map as MapLibreMap, type StyleSpecification } from "maplibre-gl";
+import { prefersReducedMotion } from "./a11y/motion";
 
 // El worker se sirve desde public/maplibre/ (scripts/copy-maplibre-worker.mjs): sin él,
 // las capas GeoJSON (figuras, contornos y puntos) no se dibujan.
@@ -93,7 +94,7 @@ export function whenReady(map: MapLibreMap, fn: () => void): void {
 /** 0 si la persona pidió reducir el movimiento (AGENTS.md §9). */
 export function motion(ms: number): number {
   if (typeof window === "undefined") return ms;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : ms;
+  return prefersReducedMotion() ? 0 : ms;
 }
 
 /** Cambia la vista sin rehacer el mapa. */

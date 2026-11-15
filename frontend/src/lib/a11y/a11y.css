@@ -1,0 +1,189 @@
+/* Perfil de accesibilidad (PLAN_DOMINGO §6.8, P1-1).
+   Lo aplica lib/a11y/profile.tsx con atributos en <html>. Este archivo no
+   cambia nada mientras el perfil esté en sus valores por omisión.
+   Va aparte de globals.css a propósito: se importa después y gana por
+   especificidad (html[data-*] ...), sin !important salvo en movimiento. */
+
+/* ---------- Letra más grande: 18 → 22 → 26 px ----------
+   Todo el diseño está en rem, así que escalar la raíz escala la página
+   entera; es la misma prueba que el zoom al 200 %. */
+html[data-text-size="1"] {
+  font-size: 137.5%;
+}
+html[data-text-size="2"] {
+  font-size: 162.5%;
+}
+
+/* ---------- Menos movimiento (aunque el sistema no lo pida) ---------- */
+html[data-reduce-motion] *,
+html[data-reduce-motion] *::before,
+html[data-reduce-motion] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ---------- Lenguaje sencillo ----------
+   Para textos con dos versiones en el HTML: .only-plain se ve solo con el
+   ajuste activo y .not-plain solo sin él. display:none también los oculta
+   del lector de pantalla, así que nunca se leen los dos. */
+html:not([data-plain]) .only-plain,
+html[data-plain] .not-plain {
+  display: none;
+}
+
+/* ---------- Modo sol: negro sobre blanco puro, bordes gruesos ---------- */
+html[data-sun] {
+  /* Sin grises claros: los tonos claros pasan a blanco o a negro. */
+  --color-tinta-claro: #ffffff;
+  --color-tierra-claro: #000000;
+}
+html[data-sun] body {
+  background: #ffffff;
+  color: #000000;
+}
+html[data-sun] a {
+  text-decoration-thickness: 2px;
+}
+html[data-sun] :focus-visible {
+  outline: 4px solid #000000;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 8px #e9b824;
+}
+html[data-sun] button,
+html[data-sun] .button {
+  border-width: 3px;
+}
+html[data-sun] :is(table, th, td, fieldset, .table-wrap, .choice, .pick, .evidence-card, .editor, .site-header, .pager) {
+  border-color: #000000;
+}
+html[data-sun] :is(th, td) {
+  border-width: 2px;
+}
+/* Paneles con fondo de color claro: blanco con borde negro. */
+html[data-sun] :is(.answer, .picker-next, .picker-done) {
+  background: #ffffff;
+  border: 2px solid #000000;
+}
+html[data-sun] .picker-go:disabled {
+  background: #ffffff;
+  color: #000000;
+  border: 3px dashed #000000;
+}
+/* Tramas más marcadas en el calendario de cultivos. */
+html[data-sun] .crop-cell {
+  --pattern-ink: rgb(0 0 0 / 0.95);
+  border: 2px solid #000000;
+}
+html[data-sun] .crop-cell:is([data-palette="leaf"], [data-palette="earth"], [data-palette="gate_blue"]) {
+  --pattern-ink: #ffffff;
+}
+
+/* ---------- Encabezado: herramientas de lectura ---------- */
+.header-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.units-switch {
+  display: flex;
+  gap: 0.5rem;
+}
+.units-switch button {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* ---------- Pregunta de primera visita (no modal: no roba el foco) ---------- */
+.first-visit {
+  margin: 0;
+  padding: 1rem;
+  border-bottom: 2px solid currentColor;
+}
+.first-visit-inner {
+  max-width: 60rem;
+  margin: 0 auto;
+}
+.first-visit h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+.first-visit p {
+  margin: 0 0 0.75rem;
+}
+.a11y-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+/* ---------- Diálogo "Ajustes de lectura" ---------- */
+.a11y-dialog {
+  width: min(40rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  padding: 1.25rem;
+  border: 3px solid #000000;
+  background: #ffffff;
+  color: #000000;
+}
+.a11y-dialog::backdrop {
+  background: rgb(0 0 0 / 0.6);
+}
+.a11y-dialog h2 {
+  margin-top: 0;
+}
+.a11y-dialog fieldset {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border: 2px solid #000000;
+}
+.a11y-dialog legend {
+  font-weight: 700;
+  padding: 0 0.25rem;
+}
+.a11y-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 44px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.a11y-option input {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: none;
+  margin: 0;
+  accent-color: #1247b8;
+}
+.a11y-hint {
+  margin: 0 0 0.75rem 2.25rem;
+}
+.a11y-toggles {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+
+@media (forced-colors: active) {
+  .a11y-dialog,
+  .a11y-dialog fieldset {
+    border-color: CanvasText;
+  }
+}
+
+/* La hoja impresa no lleva los controles de lectura y conserva su letra de 12 pt. */
+@media print {
+  html[data-text-size] {
+    font-size: 12pt;
+  }
+  .header-tools,
+  .first-visit,
+  .a11y-dialog {
+    display: none !important;
+  }
+}
