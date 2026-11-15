@@ -7,9 +7,12 @@ import { FieldFilm } from "./_components/PresentationLab";
 import {
   ChallengeMap,
   Differentiators,
+  HowItWorks,
   ModelProof,
-  PeopleTest,
-  ProblemNote,
+  NasaChallenge,
+  NasaData,
+  OptionalCoverage,
+  ValleyProblem,
 } from "./_components/LandingSections";
 const HeroMap = dynamic(() => import("./_components/HeroMap"), { ssr: false });
 
@@ -20,19 +23,25 @@ export default function HomePage() {
     <MissionShell>
       <section className="mission-home" aria-labelledby="mission-title">
         <div className="mission-home-copy">
-          <p className="mission-designation">The CSC / Field Shift / 2026</p>
-          <h1 id="mission-title">
-            {tr("Observar la Tierra.", "Observe Earth.")}
-            <br />
-            {tr("Decidir en el campo.", "Decide in the field.")}
-          </h1>
-          <p>
+          <p className="mission-designation">
             {tr(
-              "Datos de la NASA, modelos medidos y límites reales del agricultor. Una herramienta para explorar qué sembrar después.",
-              "NASA data, measured models and real farming constraints. A tool to explore what to plant next.",
+              "NASA Space Apps Challenge 2026 · Equipo The CSC",
+              "NASA Space Apps Challenge 2026 · Team The CSC",
             )}
           </p>
-          <ProblemNote />
+          <h1 id="mission-title">Field Shift</h1>
+          <p className="landing-tagline">
+            {tr(
+              "Una herramienta de apoyo a la decisión para elegir la siguiente rotación de cultivos con datos de la NASA, el suelo del campo y lo que el agricultor puede y quiere hacer.",
+              "A decision-support tool to choose the next crop rotation with NASA data, the field's soil and what the farmer can and wants to do.",
+            )}
+          </p>
+          <p className="landing-small">
+            {tr(
+              "Reto: «Field Shift: Adapting Farms with NASA Data». Caso de prueba: Diamond Valley, Nevada.",
+              "Challenge: “Field Shift: Adapting Farms with NASA Data”. Test case: Diamond Valley, Nevada.",
+            )}
+          </p>
           <div className="present-actions">
             <Link className="button primary" href="/tool" data-guide-id="home.start">
               {tr("Analiza un campo que tú elijas", "Analyze a field you choose")} ↗
@@ -64,10 +73,14 @@ export default function HomePage() {
         </figure>
       </section>
       <div className="landing-sections">
-        <Differentiators />
-        <ModelProof />
+        <NasaChallenge />
         <ChallengeMap />
-        <PeopleTest />
+        <OptionalCoverage />
+        <ValleyProblem />
+        <Differentiators />
+        <NasaData />
+        <HowItWorks />
+        <ModelProof />
       </div>
       <section
         className="mission-directory"
