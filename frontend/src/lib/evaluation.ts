@@ -24,10 +24,32 @@ const NOT_FOUND = new ApiError(404, "parcel_not_found", {
   en: "That parcel does not exist.",
 });
 
+const PARCEL_CHANGE_EVENT = "fieldshift:parcel-change";
+
+export const PARCEL_ID_ALIASES: Record<string, string> = {
+  "dv-nv-fixture-01": "dv-nv-01",
+  "qro-sjr-fixture-01": "qro-sjr-01",
+  "dv-nv-01": "dv-nv-fixture-01",
+  "qro-sjr-01": "qro-sjr-fixture-01",
+};
+
+const REAL_ID_ALIAS: Record<string, string> = {
+  "dv-nv-fixture-01": "dv-nv-01",
+  "qro-sjr-fixture-01": "qro-sjr-01",
+};
+
 export async function loadEvaluation(parcelId: string): Promise<Loaded<Evaluation>> {
   try {
     return { data: await api.evaluate(parcelId), origin: "api" };
   } catch (error) {
+    const realId = REAL_ID_ALIAS[parcelId];
+    if (realId) {
+      try {
+        return { data: await api.evaluate(realId), origin: "api" };
+      } catch {
+        // cae a la copia local
+      }
+    }
     // Sin conexión o API en modo real sin datos: se usa la copia local.
     const fixture = await loadFixture(parcelId);
     if (fixture) return { data: fixture, origin: "local" };
@@ -72,10 +94,17 @@ export function useParcelId(): [string, (id: string) => void] {
     // Lectura única de localStorage tras hidratar: no existe en el servidor.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     if (stored) setParcelId(stored);
+    const onChange = (event: Event) => {
+      const nextId = (event as CustomEvent<string>).detail;
+      if (nextId) setParcelId(nextId);
+    };
+    window.addEventListener(PARCEL_CHANGE_EVENT, onChange);
+    return () => window.removeEventListener(PARCEL_CHANGE_EVENT, onChange);
   }, []);
   const choose = (id: string) => {
     setParcelId(id);
     saveLastParcelId(id);
+    window.dispatchEvent(new CustomEvent<string>(PARCEL_CHANGE_EVENT, { detail: id }));
   };
   return [parcelId, choose];
 }
