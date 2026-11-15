@@ -86,7 +86,10 @@ SPECS: tuple[ModelSpec, ...] = (
         algorithm="GRU pequeña con atención temporal (ONNX)",
         metric_name=_t("F1 por clase en un valle no visto", "Per-class F1 on an unseen valley"),
         metric_unit="F1",
-        baseline_name=_t("Historial declarado por el agricultor", "Grower-declared crop history"),
+        baseline_name=_t(
+            "Decir siempre el cultivo más común (alfalfa)",
+            "Always predict the most common crop (alfalfa)",
+        ),
         native_scale="30 m",
         fallback_note=_t(
             "Respaldo activo: el agricultor declara su historial de cultivos.",

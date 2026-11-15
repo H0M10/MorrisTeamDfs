@@ -1,48 +1,46 @@
 # Ficha del modelo: 2. Efecto del cultivo anterior
 
-> **Estado: ENTRENADO Y MEDIDO — SIN EVIDENCIA DE MEJORA (2026-11-14).** Artefacto en `backend/artifacts/model_2_prior_crop_effect/` (`model.ubj` + `metrics.json`). En la prueba sobre un valle no visto **pierde frente a la línea base (`-6.3 %`)**: se reporta íntegro conforme a `AGENTS.md` §5 y no debe presentarse como evidencia de ganancia causal.
-
-Media página. Llénala con la salida de `train.py` y el `metrics.json` que
-escribe. No copies cifras de una corrida con `--sample`: son sintéticas.
+> **Estado: ENTRENADO Y MEDIDO — SIN EVIDENCIA DE MEJORA (2026-11-14, tabla grande).** Artefacto en `backend/artifacts/model_2_prior_crop_effect/`. Agregar el cultivo anterior **empeora** la predicción del vigor máximo en el valle no visto (`-4.6 %`). Se reporta íntegro y la herramienta dice "sin evidencia local".
 
 ## Qué hace
 
-Describe cómo fue el vigor máximo de un cultivo según qué se sembró antes, en campos parecidos.
+Describe cómo fue el vigor máximo de un cultivo según qué se sembró antes, en campos parecidos. Es observacional: nunca se presenta como causa ni produce cifras de ahorro.
 
 ## Datos
 
-- **Etiqueta:** Secuencias de cultivo de USDA CDL (`crop_group`, `prev_crop_group`) y vigor máximo anual (`ndvi` máximo mensual) de Landsat/HLS.
-- **Entradas:** `crop_code`, `et0_season_mm`, `rain_year_mm`, `elevation_m`, `clay_pct`, `prev_crop_code`.
-- **Tabla:** `data-pipeline/exports/multi_valley_us.parquet` agregado por parcela y año (`39` parcela-años dentro de `CROP_GROUPS`: `30` en entrenamiento, `9` en prueba), `2021–2024` (usando CDL `2020` para `prev_crop_group` de `2021`).
-- **Fuentes y escala nativa:** USDA CDL (`30 m`), Landsat/HLS (`30 m`), NASA POWER (`cerca de 50 km`), SRTM (`30 m`), SoilGrids (`250 m`).
+- **Etiqueta:** NDVI máximo del año (HLS, `30 m`).
+- **Entradas:** grupo de cultivo, ET de referencia de la temporada, lluvia del año, elevación, arcilla y grupo de cultivo del año anterior (CDL).
+- **Tabla:** `data-pipeline/exports/train_fields.parquet`: `1 138` parcelas en `6` valles de riego (`diamond_valley_nv` 94, `millard_ut` 240, `snake_river_id` 240, `lovelock_nv` 240, `mason_valley_nv` 154, `sevier_ut` 170), `2016-01` a `2024-12`, `122 904` filas mensuales. Cada parcela es el interior de un campo (círculo de 45 m donde CDL da el mismo grupo en 5 × 5 píxeles), muestreado por grupo de cultivo con `ee_sample_fields.py`. Corrida anterior: 15 parcelas, 2021–2024.
+- `8 835` parcela-años dentro de los 4 grupos: `8 208` de entrenamiento, `627` del valle de prueba (`546` con todos los datos).
 
 ## Partición
 
-- **Por valle:** entrenado en `millard_ut` + `snake_river_id` (`30` parcela-años); medido en `diamond_valley_nv` (`9` parcela-años).
-- **Último año fuera:** `2024` dentro de los valles de entrenamiento (`MAE` con cultivo anterior `0.0570` vs sin él `0.0566`).
-- Ninguna fila de `diamond_valley_nv` se usó para entrenar ni para ajustar.
+- **Por valle:** entrenado en los 5 valles que no son `diamond_valley_nv`; medido en `diamond_valley_nv`.
+- **Último año fuera:** `2024` de los valles de entrenamiento.
 
 ## Métrica contra la línea base
 
-| | Valle no visto (`diamond_valley_nv`, `n = 9`) | Último año (`2024`, entrenamiento) |
-| --- | --- | --- |
-| **Modelo** (XGBoost con `prev_crop_code`) | `0.1541` MAE NDVI (`-6.3 %` de mejora) | `0.0570` MAE NDVI |
-| **Línea base** (XGBoost sin cultivo anterior) | `0.1450` MAE NDVI | `0.0566` MAE NDVI |
+| | Valle no visto (`diamond_valley_nv`, n = 546) |
+| --- | --- |
+| **Modelo con el cultivo anterior** | error medio `0.1199` NDVI |
+| **Línea base: el mismo modelo sin el cultivo anterior** | `0.1146` NDVI |
+| **Mejora** | **-4.6 %** (empeora) |
 
-- **Métrica:** reducción del error (MAE de vigor máximo anual) al agregar el cultivo anterior, en un valle no visto: **`-6.3 %`** (empeora ligeramente frente al modelo sin cultivo anterior).
-- **¿Gana a la línea base?** **No** (`-6.3 %` en `diamond_valley_nv`; también pierde levemente en el último año). Conforme a `AGENTS.md` §5, se reporta el resultado negativo tal cual y se concluye **"sin evidencia local"** de mejora predictiva en esta muestra.
+- La corrida anterior daba `-6.3 %` con `9` casos de prueba; ahora con `546` el resultado se sostiene: en estos valles el cultivo anterior no ayuda a predecir el vigor.
+- Lo que sí queda como dato descriptivo (`metrics.json`, `observed_peak_ndvi_by_sequence`): por ejemplo, alfalfa después de grano pequeño llegó a un NDVI máximo medio de `0.84` (n = 342) contra `0.81` después de alfalfa (n = 3 384). Es lo que pasó, no una causa.
 
 ## Límites
 
-- **Es observacional.** Se presenta como "lo que pasó en campos parecidos", nunca como causa.
-- **No produce cifras de ahorro de agua.**
-- No existe fuera de EE. UU. (no hay CDL): ahí el estado es `absent`.
-- Muestra pequeña (`39` parcela-años en `15` parcelas): varias combinaciones (`corn` tras `alfalfa`, `small_grain` tras `fallow`) tienen `count = 1` en entrenamiento (`metrics.json` → `observed_peak_ndvi_by_sequence`), insuficiente para generalizar entre valles.
+- Observacional: el cultivo anterior va junto con decisiones del agricultor que no vemos (riego, fertilización).
+- En el valle de prueba solo hay alfalfa y grano pequeño.
 
 ## Cómo se reproduce
 
 ```bash
-python -m uv --directory backend run --no-sync python ../models/model_2_prior_crop_effect/train.py --table ../data-pipeline/exports/multi_valley_us.parquet --test-valley diamond_valley_nv
+python data-pipeline/ee_sample_fields.py --valleys diamond_valley_nv --per-group 80 --ref-years 2018 2020 2022 2024 --min-spacing-m 400 --out parcels/...
+python data-pipeline/ee_export_batched.py --parcels data-pipeline/parcels/train_fields.geojson --start-year 2016 --end-year 2024 --local-dir data-pipeline/exports/train_fields --batch 50 --years-per-call 1
+python data-pipeline/build_table.py --parcels data-pipeline/parcels/train_fields.geojson --exports data-pipeline/exports/train_fields --prefix train_fields --out data-pipeline/exports/train_fields.parquet
+python models/model_2_prior_crop_effect/train.py --table data-pipeline/exports/train_fields.parquet --test-valley diamond_valley_nv
 ```
 
-Fecha de entrenamiento: 2026-11-14. Quién lo corrió: `@H0M10` / ARGON. Dónde: CPU local sobre tablas exportadas de Google Earth Engine (`luca-497507`).
+Fecha de entrenamiento: 2026-11-14 (noche, reentrenamiento con la tabla grande). Quién lo corrió: `@H0M10` / Claude Code. Dónde: CPU local (XGBoost) sobre tablas reducidas en Google Earth Engine (`luca-497507`).

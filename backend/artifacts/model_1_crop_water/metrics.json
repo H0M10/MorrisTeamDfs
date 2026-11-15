@@ -1,7 +1,7 @@
 {
   "model": "model_1_crop_water",
   "metric": {
-    "value": 9.2512,
+    "value": 12.9578,
     "unit": "mm",
     "type": "modeled",
     "source": "MAE mensual contra OpenET en 'diamond_valley_nv'",
@@ -9,7 +9,7 @@
     "native_scale": "30 m"
   },
   "baseline_metric": {
-    "value": 29.0496,
+    "value": 25.2491,
     "unit": "mm",
     "type": "modeled",
     "source": "MAE de FAO-56 (Kc × ET0) en 'diamond_valley_nv'",
@@ -34,8 +34,8 @@
       "ndmi",
       "elevation_m"
     ],
-    "mae_last_year_mm": 9.626,
-    "n_test": 120,
-    "best_iteration": 65
+    "mae_last_year_mm": 8.792,
+    "n_test": 7524,
+    "best_iteration": 95
   }
 }

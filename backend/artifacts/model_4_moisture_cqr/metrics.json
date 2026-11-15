@@ -1,7 +1,7 @@
 {
   "model": "model_4_moisture_cqr",
   "metric": {
-    "value": 58.3333,
+    "value": 96.2963,
     "unit": "%",
     "type": "modeled",
     "source": "Cobertura real del intervalo CQR al 90 % en 'diamond_valley_nv'",
@@ -9,7 +9,7 @@
     "native_scale": "9 km (contexto regional, validado a escala de zona)"
   },
   "baseline_metric": {
-    "value": 22.9167,
+    "value": 62.037,
     "unit": "%",
     "type": "modeled",
     "source": "Cobertura del rango histórico sobre el balance FAO-56 en 'diamond_valley_nv'",
@@ -33,13 +33,13 @@
       "root_zone_index"
     ],
     "target_coverage": 0.9,
-    "conformal_q": 0.035940577416062616,
-    "balance_slope": 0.04223818765078867,
-    "balance_intercept": 0.13995348908163793,
+    "conformal_q": 0.025178029226420068,
+    "balance_slope": 0.056735457278771696,
+    "balance_intercept": 0.14730614039950352,
     "taw_mm_assumed": 150.0,
-    "mean_width_m3m3": 0.13434,
-    "baseline_mean_width_m3m3": 0.07638,
-    "n_calibration": 24,
-    "n_test": 48
+    "mean_width_m3m3": 0.15395,
+    "baseline_mean_width_m3m3": 0.11764,
+    "n_calibration": 540,
+    "n_test": 108
   }
 }

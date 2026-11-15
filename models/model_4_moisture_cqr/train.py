@@ -58,38 +58,54 @@ def coverage(truth: np.ndarray, lower: np.ndarray, upper: np.ndarray) -> float:
     return float(np.mean((truth >= lower) & (truth <= upper)) * 100)
 
 
+def fit(rows: pd.DataFrame, alphas: np.ndarray):
+    """Balance (recta índice -> SMAP) + residual por cuantiles. Devuelve (recta, árboles)."""
+    slope, intercept = np.polyfit(rows["root_zone_index"], rows[TARGET], 1)
+    residual = rows[TARGET] - (slope * rows["root_zone_index"] + intercept)
+    booster = xgb.train(
+        {"objective": "reg:quantileerror", "quantile_alpha": alphas, "max_depth": 3, "eta": 0.08,
+         "subsample": 0.8, "nthread": 4, "seed": 7},
+        xgb.QuantileDMatrix(rows[FEATURES], label=residual),
+        num_boost_round=150,
+    )
+    return (float(slope), float(intercept)), booster
+
+
+def interval(line: tuple[float, float], booster, frame: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
+    base = line[0] * frame["root_zone_index"].to_numpy() + line[1]
+    quantiles = booster.predict(xgb.DMatrix(frame[FEATURES]))
+    return base + quantiles[:, 0], base + quantiles[:, 1]
+
+
 def main() -> None:
     args = common.parse_args(__doc__.splitlines()[0], "model_4_moisture_cqr")
     zone = zone_table(common.load_table(args))
     train, test = common.split_by_valley(zone, args.test_valley)
-    fit_rows, calibration = common.split_last_year(train)  # el último año calibra el intervalo
+    alphas = np.array([(1 - COVERAGE) / 2, 1 - (1 - COVERAGE) / 2])
 
-    # 1. Balance: recta entre el índice relativo y la humedad de SMAP.
-    slope, intercept = np.polyfit(fit_rows["root_zone_index"], fit_rows[TARGET], 1)
+    # CQR con calibración dejando un valle fuera: cada valle de entrenamiento se
+    # predice con un modelo que no lo vio. Así el margen conformal mide el error
+    # al cambiar de valle, que es lo que pasa en el valle de prueba.
+    scores = []
+    for valley in sorted(train["valley"].unique()):
+        held = train[train["valley"] == valley]
+        line_v, booster_v = fit(train[train["valley"] != valley], alphas)
+        low_v, high_v = interval(line_v, booster_v, held)
+        truth_v = held[TARGET].to_numpy()
+        scores.append(np.maximum(low_v - truth_v, truth_v - high_v))
+    scores = np.concatenate(scores)
+    level = min(1.0, math.ceil((len(scores) + 1) * COVERAGE) / len(scores))
+    q_hat = float(np.quantile(scores, level, method="higher"))
+    calibration = train  # todas sus filas sirvieron de calibración fuera de su valle
+
+    # Modelo final con todos los valles de entrenamiento.
+    (slope, intercept), booster = fit(train, alphas)
 
     def balance(frame: pd.DataFrame) -> np.ndarray:
         return slope * frame["root_zone_index"].to_numpy() + intercept
 
-    # 2. Residual con árboles, cuantiles 5 % y 95 %.
-    alphas = np.array([(1 - COVERAGE) / 2, 1 - (1 - COVERAGE) / 2])
-    booster = xgb.train(
-        {"objective": "reg:quantileerror", "quantile_alpha": alphas, "max_depth": 3, "eta": 0.08,
-         "subsample": 0.8, "nthread": 4, "seed": 7},
-        xgb.QuantileDMatrix(fit_rows[FEATURES], label=fit_rows[TARGET] - balance(fit_rows)),
-        num_boost_round=150,
-    )
-
     def raw_interval(frame: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
-        quantiles = booster.predict(xgb.DMatrix(frame[FEATURES]))
-        base = balance(frame)
-        return base + quantiles[:, 0], base + quantiles[:, 1]
-
-    # 3. CQR: se ensancha el intervalo con el cuantil de los errores de calibración.
-    low, high = raw_interval(calibration)
-    truth = calibration[TARGET].to_numpy()
-    scores = np.maximum(low - truth, truth - high)
-    level = min(1.0, math.ceil((len(scores) + 1) * COVERAGE) / len(scores))
-    q_hat = float(np.quantile(scores, level, method="higher"))
+        return interval((slope, intercept), booster, frame)
 
     low, high = raw_interval(test)
     model_coverage = coverage(test[TARGET].to_numpy(), low - q_hat, high + q_hat)

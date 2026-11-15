@@ -1,48 +1,46 @@
 # Ficha del modelo: 1. Agua que usa cada cultivo
 
-> **Estado: ENTRENADO Y MEDIDO (2026-11-14).** Artefacto en `backend/artifacts/model_1_crop_water/` (`model.ubj` + `metrics.json`) entrenado en CPU sobre tabla real multi-valle (`2021–2024`). Ver sección Límites.
-
-Media página. Llénala con la salida de `train.py` y el `metrics.json` que
-escribe. No copies cifras de una corrida con `--sample`: son sintéticas.
+> **Estado: ENTRENADO Y MEDIDO (2026-11-14, tabla grande).** Artefacto en `backend/artifacts/model_1_crop_water/` (`model.ubj` + `metrics.json`). Gana a FAO-56 en el valle no visto: `12.96 mm` contra `25.25 mm` de error medio mensual, en `7 524` meses de prueba.
 
 ## Qué hace
 
-Estima la evapotranspiración mensual de un cultivo en una parcela a partir del clima y del vigor observado.
+Estima la evapotranspiración mensual de un campo (mm) según su cultivo, el clima y su vigor visto desde el satélite.
 
 ## Datos
 
-- **Etiqueta:** OpenET mensual por píxel (`openet_et_mm`), con el cultivo de USDA CDL (`cdl_code` / `crop_group`).
-- **Entradas:** `crop_code`, `month_num`, `et0_mm`, `rain_mm`, `tmax_c`, `tmin_c`, `ndvi`, `ndmi`, `elevation_m`.
-- **Tabla:** `data-pipeline/exports/multi_valley_us.parquet` (`720` filas totales; `540` filas en los 4 grupos `CROP_GROUPS` usadas tras filtrar clases fuera de grupo y vacíos), `15` parcelas en `3` valles, `2021-01` a `2024-12`.
-- **Fuentes y escala nativa:** OpenET (`30 m`, `modeled`), USDA CDL (`30 m`), Landsat/HLS (`30 m`, `observed`), SRTM (`30 m`, `observed`), NASA POWER (`cerca de 50 km`, `modeled`).
+- **Etiqueta:** OpenET (conjunto de modelos, `30 m`), mensual.
+- **Entradas:** grupo de cultivo de CDL, mes, ET de referencia, lluvia, temperaturas máxima y mínima (NASA POWER), NDVI y NDMI (HLS), elevación (SRTM).
+- **Tabla:** `data-pipeline/exports/train_fields.parquet`: `1 138` parcelas en `6` valles de riego (`diamond_valley_nv` 94, `millard_ut` 240, `snake_river_id` 240, `lovelock_nv` 240, `mason_valley_nv` 154, `sevier_ut` 170), `2016-01` a `2024-12`, `122 904` filas mensuales. Cada parcela es el interior de un campo (círculo de 45 m donde CDL da el mismo grupo en 5 × 5 píxeles), muestreado por grupo de cultivo con `ee_sample_fields.py`. Corrida anterior: 15 parcelas, 2021–2024.
+- Filas útiles (cultivo en los 4 grupos, con OpenET y NDVI): `102 953`; entrenamiento `96 077`.
 
 ## Partición
 
-- **Por valle:** entrenado en `millard_ut` + `snake_river_id` (`420` filas); medido en `diamond_valley_nv` (`120` filas, nunca visto).
-- **Último año fuera:** `2024` dentro de los valles de entrenamiento (`early stopping` y segunda prueba).
-- Ninguna fila de `diamond_valley_nv` se usó para entrenar ni para ajustar.
+- **Por valle:** entrenado en los 5 valles que no son `diamond_valley_nv`; medido en `diamond_valley_nv` (`7 524` parcela-meses, nunca visto).
+- **Último año fuera:** `2024` de los valles de entrenamiento para detener el entrenamiento y como segunda prueba (`8.79 mm`).
 
 ## Métrica contra la línea base
 
-| | Valle no visto (`diamond_valley_nv`) | Último año (`2024`, entrenamiento) |
-| --- | --- | --- |
-| **Modelo** (XGBoost, `best_iteration = 65`) | **9.2512 mm** (`9.3 mm`) | **9.626 mm** (`9.6 mm`) |
-| **Línea base** (FAO-56, Kc × ET0) | **29.0496 mm** (`29.0 mm`) | — |
+| | Valle no visto (`diamond_valley_nv`, n = 7 524) |
+| --- | --- |
+| **Modelo** (XGBoost) | **12.96 mm** de error medio mensual |
+| **Línea base** (FAO-56, Kc × ET0) | **25.25 mm** |
 
-- **Métrica:** error medio absoluto (MAE) en mm por mes en un valle no visto.
-- **¿Gana a la línea base?** **Sí** (`9.25 mm` vs `29.05 mm` de FAO-56 en `diamond_valley_nv`).
+- **¿Gana?** Sí: reduce el error a la mitad. La corrida anterior daba `9.25 mm` pero con solo `120` meses de prueba en 3 parcelas; esta cifra es más alta y mucho más confiable.
+- **Variante sin satélite** (cultivo, clima, suelo y elevación; sirve para rotaciones que nadie ha sembrado): `20.11 mm` contra `25.25 mm`. Gana, por menos. Resultado guardado aparte; todavía no está conectada al motor.
 
 ## Límites
 
-- Solo vale donde hay OpenET y CDL para entrenar (EE. UU. contiguos; en México corre fuera de su dominio de entrenamiento o entra su respaldo FAO-56).
-- OpenET es a su vez un conjunto de modelos: el error se mide contra OpenET, no contra lisímetros ni torres de flujo en campo.
-- Muestra de `15` parcelas elegidas por USDA CDL en 3 valles (`NV`, `ID`, `UT`).
-- En `/evaluate` (`A-07` en `table_to_contract.py`), el modelo no se invoca directamente sobre rotaciones contrafactuales porque requiere `ndvi` y `ndmi` observados del dosel en pie (inyectar los de la rotación actual filtraría el vigor presente hacia rotaciones alternativas y perdería los 20 cultivos específicos del banco). Por ello, en regiones `labeled` (`dv-nv-01`) la rotación actual usa `OpenET` observado (`30 m`) y las alternativas usan `FAO-56` calibrado por parcela (`factor = observado / FAO-56`), mientras en `unlabeled` (`qro-sjr-01`) corre el balance `FAO-56` declarado.
+- En el valle de prueba solo hay alfalfa y grano pequeño: el error de maíz y barbecho se mide solo en el último año de los otros valles.
+- Usa el NDVI del cultivo que de verdad se sembró: no sirve tal cual para rotaciones hipotéticas. Por eso el motor calcula el agua de las alternativas con FAO-56 calibrado por OpenET de la parcela.
+- Solo vale donde hay OpenET y CDL (EE. UU. contiguos). En México es experimental.
 
 ## Cómo se reproduce
 
 ```bash
-python -m uv --directory backend run --no-sync python ../models/model_1_crop_water/train.py --table ../data-pipeline/exports/multi_valley_us.parquet --test-valley diamond_valley_nv
+python data-pipeline/ee_sample_fields.py --valleys diamond_valley_nv --per-group 80 --ref-years 2018 2020 2022 2024 --min-spacing-m 400 --out parcels/...
+python data-pipeline/ee_export_batched.py --parcels data-pipeline/parcels/train_fields.geojson --start-year 2016 --end-year 2024 --local-dir data-pipeline/exports/train_fields --batch 50 --years-per-call 1
+python data-pipeline/build_table.py --parcels data-pipeline/parcels/train_fields.geojson --exports data-pipeline/exports/train_fields --prefix train_fields --out data-pipeline/exports/train_fields.parquet
+python models/model_1_crop_water/train.py --table data-pipeline/exports/train_fields.parquet --test-valley diamond_valley_nv
 ```
 
-Fecha de entrenamiento: 2026-11-14. Quién lo corrió: `@H0M10` / ARGON. Dónde: CPU local sobre tablas exportadas de Google Earth Engine (`luca-497507`).
+Fecha de entrenamiento: 2026-11-14 (noche, reentrenamiento con la tabla grande). Quién lo corrió: `@H0M10` / Claude Code. Dónde: CPU local (XGBoost) sobre tablas reducidas en Google Earth Engine (`luca-497507`).

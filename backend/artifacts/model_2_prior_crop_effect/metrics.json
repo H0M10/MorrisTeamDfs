@@ -1,7 +1,7 @@
 {
   "model": "model_2_prior_crop_effect",
   "metric": {
-    "value": -6.3,
+    "value": -4.6214,
     "unit": "%",
     "type": "modeled",
     "source": "Reducción del MAE de vigor máximo al agregar el cultivo anterior, en 'diamond_valley_nv'",
@@ -9,7 +9,7 @@
     "native_scale": "30 m"
   },
   "baseline_metric": {
-    "value": 0.145,
+    "value": 0.1146,
     "unit": "NDVI",
     "type": "modeled",
     "source": "MAE del mismo modelo sin el cultivo anterior, en 'diamond_valley_nv'",
@@ -31,63 +31,105 @@
       "clay_pct",
       "prev_crop_code"
     ],
-    "mae_with_prior": 0.15409,
-    "n_test": 9,
+    "mae_with_prior": 0.11991,
+    "n_test": 546,
     "observational_only": true,
     "observed_peak_ndvi_by_sequence": [
       {
         "crop_group": "alfalfa",
         "prev_crop_group": "alfalfa",
-        "mean": 0.8459,
-        "count": 9
+        "mean": 0.8094,
+        "count": 3384
       },
       {
         "crop_group": "alfalfa",
         "prev_crop_group": "corn",
-        "mean": 0.839,
-        "count": 1
+        "mean": 0.7947,
+        "count": 127
+      },
+      {
+        "crop_group": "alfalfa",
+        "prev_crop_group": "fallow",
+        "mean": 0.7637,
+        "count": 141
+      },
+      {
+        "crop_group": "alfalfa",
+        "prev_crop_group": "small_grain",
+        "mean": 0.8399,
+        "count": 342
       },
       {
         "crop_group": "corn",
         "prev_crop_group": "alfalfa",
-        "mean": 0.7724,
-        "count": 1
+        "mean": 0.8252,
+        "count": 451
       },
       {
         "crop_group": "corn",
         "prev_crop_group": "corn",
         "mean": 0.8482,
-        "count": 2
+        "count": 764
+      },
+      {
+        "crop_group": "corn",
+        "prev_crop_group": "fallow",
+        "mean": 0.8436,
+        "count": 40
       },
       {
         "crop_group": "corn",
         "prev_crop_group": "small_grain",
-        "mean": 0.773,
-        "count": 6
+        "mean": 0.8461,
+        "count": 331
+      },
+      {
+        "crop_group": "fallow",
+        "prev_crop_group": "alfalfa",
+        "mean": 0.3811,
+        "count": 97
+      },
+      {
+        "crop_group": "fallow",
+        "prev_crop_group": "corn",
+        "mean": 0.5685,
+        "count": 47
       },
       {
         "crop_group": "fallow",
         "prev_crop_group": "fallow",
-        "mean": 0.1731,
-        "count": 3
+        "mean": 0.3221,
+        "count": 661
+      },
+      {
+        "crop_group": "fallow",
+        "prev_crop_group": "small_grain",
+        "mean": 0.4015,
+        "count": 130
+      },
+      {
+        "crop_group": "small_grain",
+        "prev_crop_group": "alfalfa",
+        "mean": 0.7741,
+        "count": 248
       },
       {
         "crop_group": "small_grain",
         "prev_crop_group": "corn",
-        "mean": 0.7869,
-        "count": 5
+        "mean": 0.8222,
+        "count": 403
       },
       {
         "crop_group": "small_grain",
         "prev_crop_group": "fallow",
-        "mean": 0.8473,
-        "count": 1
+        "mean": 0.7143,
+        "count": 165
       },
       {
         "crop_group": "small_grain",
         "prev_crop_group": "small_grain",
-        "mean": 0.5908,
-        "count": 2
+        "mean": 0.7874,
+        "count": 298
       }
     ]
   }
