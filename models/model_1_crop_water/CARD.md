@@ -1,6 +1,6 @@
 # Ficha del modelo: 1. Agua que usa cada cultivo
 
-> **Estado: ENTRENADO Y MEDIDO (2026-11-14, tabla grande).** Artefacto en `backend/artifacts/model_1_crop_water/` (`model.ubj` + `metrics.json`). Gana a FAO-56 en el valle no visto: `12.96 mm` contra `25.25 mm` de error medio mensual, en `7 524` meses de prueba.
+> **Estado: ENTRENADO, MEDIDO Y EN USO (2026-11-15).** Artefacto en `backend/artifacts/model_1_crop_water/` (`model.ubj` + `metrics.json`). Versión **sin satélite**: cultivo, clima y suelo. Gana a FAO-56 en el valle no visto: `20.11 mm` contra `25.25 mm` de error medio mensual, en `7 524` meses de prueba. **Predice en vivo el agua de las rotaciones alternativas** en las parcelas con etiquetas.
 
 ## Qué hace
 
@@ -9,7 +9,7 @@ Estima la evapotranspiración mensual de un campo (mm) según su cultivo, el cli
 ## Datos
 
 - **Etiqueta:** OpenET (conjunto de modelos, `30 m`), mensual.
-- **Entradas:** grupo de cultivo de CDL, mes, ET de referencia, lluvia, temperaturas máxima y mínima (NASA POWER), NDVI y NDMI (HLS), elevación (SRTM).
+- **Entradas:** grupo de cultivo de CDL, mes, ET de referencia, lluvia, temperaturas máxima y mínima (NASA POWER), elevación (SRTM), arcilla y arena (SoilGrids). **Sin NDVI ni NDMI** a propósito: el vigor solo existe para lo que de verdad se sembró, y el modelo tiene que predecir rotaciones que nadie ha sembrado.
 - **Tabla:** `data-pipeline/exports/train_fields.parquet`: `1 138` parcelas en `6` valles de riego (`diamond_valley_nv` 94, `millard_ut` 240, `snake_river_id` 240, `lovelock_nv` 240, `mason_valley_nv` 154, `sevier_ut` 170), `2016-01` a `2024-12`, `122 904` filas mensuales. Cada parcela es el interior de un campo (círculo de 45 m donde CDL da el mismo grupo en 5 × 5 píxeles), muestreado por grupo de cultivo con `ee_sample_fields.py`. Corrida anterior: 15 parcelas, 2021–2024.
 - Filas útiles (cultivo en los 4 grupos, con OpenET y NDVI): `102 953`; entrenamiento `96 077`.
 
@@ -22,16 +22,23 @@ Estima la evapotranspiración mensual de un campo (mm) según su cultivo, el cli
 
 | | Valle no visto (`diamond_valley_nv`, n = 7 524) |
 | --- | --- |
-| **Modelo** (XGBoost) | **12.96 mm** de error medio mensual |
+| **Modelo** (XGBoost, sin satélite) | **20.11 mm** de error medio mensual |
 | **Línea base** (FAO-56, Kc × ET0) | **25.25 mm** |
 
-- **¿Gana?** Sí: reduce el error a la mitad. La corrida anterior daba `9.25 mm` pero con solo `120` meses de prueba en 3 parcelas; esta cifra es más alta y mucho más confiable.
-- **Variante sin satélite** (cultivo, clima, suelo y elevación; sirve para rotaciones que nadie ha sembrado): `20.11 mm` contra `25.25 mm`. Gana, por menos. Resultado guardado aparte; todavía no está conectada al motor.
+- **¿Gana?** Sí, un 20 % menos de error. La variante con NDVI y NDMI daba `12.96 mm`, pero no sirve para escenarios hipotéticos y no se usa.
+- Último año de los valles de entrenamiento: `15.21 mm`.
+
+## Cómo se usa en la herramienta
+
+- `table_to_contract.model1_water`: para cada mes de la rotación, si el cultivo es alfalfa, grano pequeño, maíz o barbecho, predice la ET con el modelo; los demás cultivos usan FAO-56. El riego es ET menos lluvia efectiva (USDA SCS), promedio por año.
+- **Ajuste por parcela:** en Diamond Valley el modelo sobreestima la rotación actual entre `+93` y `+153 mm/año` frente a lo que midió OpenET. Las alternativas se multiplican por el factor `medido / predicho` de la misma parcela (por ejemplo `0.82` en `dv-nv-01`): el modelo aporta la diferencia entre cultivos según clima y suelo; la medición del campo, el nivel. La ficha de la rotación actual muestra esa comprobación.
+- Resultado en `dv-nv-01`: actual `697 mm` (OpenET), menos agua `442 mm`, más suelo `521 mm`. FAO-56 calibrado daba `369` y `512`: según lo aprendido en 5 valles, los granos ahorran menos agua de lo que promete la tabla.
+- Solo en parcelas con etiquetas (EE. UU.). Sin OpenET en la parcela no hay ajuste y se usa la predicción tal cual.
 
 ## Límites
 
 - En el valle de prueba solo hay alfalfa y grano pequeño: el error de maíz y barbecho se mide solo en el último año de los otros valles.
-- Usa el NDVI del cultivo que de verdad se sembró: no sirve tal cual para rotaciones hipotéticas. Por eso el motor calcula el agua de las alternativas con FAO-56 calibrado por OpenET de la parcela.
+- Sesgo alto en Diamond Valley (1 808 m, el valle más alto): por eso se ajusta con OpenET de cada parcela.
 - Solo vale donde hay OpenET y CDL (EE. UU. contiguos). En México es experimental.
 
 ## Cómo se reproduce

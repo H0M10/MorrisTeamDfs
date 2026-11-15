@@ -35,6 +35,7 @@ from app.schemas.contract import Evaluation
 from app.services import ask as ask_service
 from app.services import evaluation as evaluation_service
 from app.services import live as live_service
+from app.services import predictions as predictions_service
 from app.services.share import ShareStore
 
 router = APIRouter(prefix="/api/v1")
@@ -186,3 +187,24 @@ def add_review(token: str, body: ReviewIn, store: ShareDep) -> dict[str, Any]:
 def reviews(token: str, store: ShareDep) -> dict[str, Any]:
     """Revisiones del técnico sobre una evaluación compartida, de la más antigua a la nueva."""
     return {"token": token, "reviews": store.reviews(token)}
+
+
+@router.get("/predictions/{parcel_id}", response_model=None, responses=EVALUATION_RESPONSES)
+def predictions(
+    parcel_id: str, settings: SettingsDep, registry: Annotated[ModelRegistry, Depends(get_registry)]
+) -> JSONResponse:
+    """Lo que leen los modelos de la parcela, al lado de la evaluación (no cambia sus cifras).
+
+    - `crop_reading`: Modelo 3, grupo de cultivo por año con su probabilidad y USDA CDL.
+    - `dynamic_world`: probabilidad de cultivo por año de Google Dynamic World (externo).
+    """
+    if settings.data_mode != "real":
+        raise live_service.not_in_real_mode()
+    rows, _ = evaluation_service.parcel_rows(parcel_id, settings)
+    return JSONResponse(
+        {
+            "parcel_id": parcel_id,
+            "crop_reading": predictions_service.crop_reading(rows, registry),
+            "dynamic_world": predictions_service.dynamic_world(parcel_id, rows, settings),
+        }
+    )

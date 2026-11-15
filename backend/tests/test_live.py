@@ -118,3 +118,28 @@ def test_analyze_without_earth_engine_is_503_and_the_rest_works(
 def test_unknown_live_id_is_404(live_client: TestClient) -> None:
     response = live_client.post("/api/v1/evaluate", json={"parcel_id": "live-1.0000n-1.0000w"})
     assert response.status_code == 404
+
+
+def test_predictions_reads_crops_per_year_without_earth_engine(
+    make_client: Callable[..., TestClient],
+) -> None:
+    backend = Path(__file__).resolve().parent.parent
+    client = make_client(
+        data_mode="real",
+        ee_project="",
+        data_dir=backend / "data",
+        models_dir=backend / "artifacts",
+    )
+    response = client.get("/api/v1/predictions/dv-nv-01")
+    assert response.status_code == 200
+    body = response.json()
+    reading = body["crop_reading"]
+    if reading["status"] == "trained":
+        assert [y["year"] for y in reading["years"]] == ["2022", "2023", "2024"]
+        for year in reading["years"]:
+            assert 0 <= year["probability"] <= 1
+            assert abs(sum(year["probabilities"].values()) - 1) < 0.01
+            assert year["usda_cdl_group"] is not None  # hay registro oficial: se compara
+    # Sin Earth Engine, Dynamic World se declara no disponible y lo demás responde.
+    assert body["dynamic_world"]["available"] is False
+    assert client.get("/api/v1/predictions/no-existe").status_code == 404

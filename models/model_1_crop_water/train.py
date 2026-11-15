@@ -22,7 +22,7 @@ import xgboost as xgb
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import common  # noqa: E402
 
-FEATURES = ["crop_code", "month_num", "et0_mm", "rain_mm", "tmax_c", "tmin_c", "ndvi", "ndmi", "elevation_m"]
+FEATURES = ["crop_code", "month_num", "et0_mm", "rain_mm", "tmax_c", "tmin_c", "elevation_m", "clay_pct", "sand_pct"]
 TARGET = "openet_et_mm"
 
 

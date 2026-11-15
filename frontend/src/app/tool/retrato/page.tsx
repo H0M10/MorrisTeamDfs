@@ -1,6 +1,7 @@
 "use client";
 import { EvaluationGate } from "@/lib/components/LoadGate";
 import { useI18n } from "@/lib/i18n";
+import { ModelReadings } from "../_components/ModelReadings";
 import { ParcelStrip } from "../_components/ParcelStrip";
 import { useToolEvaluation } from "../_components/useToolEvaluation";
 
@@ -18,6 +19,12 @@ export default function PortraitPage() {
               <strong>{pick(evaluation.parcel.name)}</strong>
             </p>
             <ParcelStrip timeline={evaluation.timeline} />
+            {evaluation.data_status === "real" && (
+              <ModelReadings
+                parcelId={evaluation.parcel.id}
+                labeled={evaluation.parcel.region_mode === "labeled"}
+              />
+            )}
           </>
         )}
       </EvaluationGate>

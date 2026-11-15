@@ -9,7 +9,7 @@ import json
 import struct
 from collections.abc import Callable
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 import pandas as pd
 import pytest
@@ -452,6 +452,7 @@ def test_moisture_intervals_are_attached_when_model_4_is_trained(tmp_path: Path)
 def test_model_2_trained_note_replaces_fallback_only_when_labeled(tmp_path: Path) -> None:
     class FakeModel2:
         status = "trained"
+        metrics: ClassVar[dict[str, Any]] = {"metric": {"value": -4.6}}
 
     class FakeRegistry(ModelRegistry):
         def get(self, name: str) -> Any:
@@ -462,8 +463,9 @@ def test_model_2_trained_note_replaces_fallback_only_when_labeled(tmp_path: Path
     evaluation = ttc.build_evaluation(rows, ttc.ParcelMeta(), FakeRegistry(tmp_path / "x"), "0.1.1")
     assert_contract(evaluation)
     current = evaluation["strategies"][0]
-    assert "-6.3 %" in current["metrics"]["prior_crop_vigor_delta_pct"]["source"]
-    assert "-6.3 %" in current["evidence_card"]["information_gaps"][0]["es"]
+    # El texto usa la métrica del artefacto, no una cifra escrita a mano.
+    assert "-4.6 %" in current["metrics"]["prior_crop_vigor_delta_pct"]["source"]
+    assert "-4.6 %" in current["evidence_card"]["information_gaps"][0]["es"]
     assert "OpenET (30 m en parcela)" in current["evidence_card"]["information_gaps"][1]["es"]
     alt = evaluation["strategies"][1]
     assert "calibrada con el OpenET" in alt["evidence_card"]["information_gaps"][1]["es"]
@@ -626,3 +628,28 @@ def test_history_source_is_declared_when_not_from_a_farmer(
         "strategies"
     ][0]
     assert current["metrics"]["soil_cover_months_36m"]["source"] == "Supuesto con datos: HLS + SIAP"
+
+
+def test_model_1_predicts_alternative_water_with_the_real_artifact() -> None:
+    """Con el artefacto entrenado, el agua de las alternativas la predice el modelo 1,
+    ajustada con lo que OpenET midió en la misma parcela, y la ficha muestra la prueba."""
+    backend = Path(__file__).resolve().parent.parent
+    data = backend / "data"
+    rows = ttc.read_rows(data / "diamond_valley.parquet", "dv-nv-01")
+    registry = ModelRegistry(backend / "artifacts")
+    if registry.get("model_1_crop_water").status != "trained":
+        pytest.skip("sin artefacto del modelo 1")
+    evaluation = ttc.build_evaluation(rows, ttc.ParcelMeta(), registry, "0.1.1")
+    assert_contract(evaluation)
+    current, less, more = evaluation["strategies"]
+    assert current["metrics"]["annual_water_mm"]["source"].startswith("Riego neto observado")
+    for alt in (less, more):
+        source = alt["metrics"]["annual_water_mm"]["source"]
+        assert source.startswith("Modelo 1")
+        assert "ajustado con el riego que OpenET midió" in source
+        assert (
+            alt["metrics"]["annual_water_mm"]["value"]
+            < current["metrics"]["annual_water_mm"]["value"]
+        )
+    checks = [n for n in current["evidence_card"]["supporting_evidence"] if "Modelo 1" in n["es"]]
+    assert len(checks) == 1

@@ -11,7 +11,15 @@ import type {
 } from "./types";
 
 export type Evaluation = FieldShiftEvaluationContract;
-export type { Constraints, LocalizedText, MetricValue, ModelReport, Parcel, Strategy, TimelineMonth };
+export type {
+  Constraints,
+  LocalizedText,
+  MetricValue,
+  ModelReport,
+  Parcel,
+  Strategy,
+  TimelineMonth,
+};
 
 export type DataStatus = Evaluation["data_status"];
 export type StrategyId = Strategy["id"];
@@ -102,6 +110,45 @@ export interface CropsResponse {
   type: MetricValue["type"];
   source: string;
   crops: CropSummary[];
+}
+
+/** Lo que leen los modelos de una parcela (GET /api/v1/predictions/{id}). No es parte del contrato. */
+export interface CropReadingYear {
+  year: string;
+  predicted: string;
+  predicted_label: LocalizedText;
+  probability: number;
+  probabilities: Record<string, number>;
+  usda_cdl_group: string | null;
+  usda_cdl_label: LocalizedText | null;
+  agrees: boolean | null;
+}
+
+export interface DynamicWorldYear {
+  year: string;
+  n_images: number | null;
+  crop_probability: number | null;
+  top_class: string | null;
+  top_label: LocalizedText | null;
+  top_probability: number | null;
+}
+
+export interface PredictionsResponse {
+  parcel_id: string;
+  crop_reading: {
+    status: string;
+    metric_f1: number | null;
+    baseline_f1: number | null;
+    source: string;
+    years: CropReadingYear[];
+  };
+  dynamic_world: {
+    available: boolean;
+    reason?: string;
+    source: string;
+    native_scale: string;
+    years: DynamicWorldYear[];
+  };
 }
 
 export interface ApiErrorBody {

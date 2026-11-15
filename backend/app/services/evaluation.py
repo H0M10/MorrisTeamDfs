@@ -105,6 +105,30 @@ def _data_dir(settings: Settings) -> Path:
     return settings.resolve(settings.data_dir)
 
 
+def parcel_rows(
+    parcel_id: str, settings: Settings
+) -> tuple[list[dict[str, Any]], table_to_contract.ParcelMeta]:
+    """Las 36 filas mensuales y la meta de una parcela real (fija o en vivo)."""
+    if live.is_live(parcel_id):
+        loaded = live.load(settings, parcel_id)
+        if loaded is None:
+            raise parcel_not_found(parcel_id)
+        return loaded
+    data_dir = _data_dir(settings)
+    tables = table_to_contract.find_tables(data_dir)
+    if not tables:
+        raise real_data_unavailable(parcel_id)
+    if parcel_id not in tables and FIXTURE_TO_REAL_PARCEL.get(parcel_id) in tables:
+        parcel_id = FIXTURE_TO_REAL_PARCEL[parcel_id]
+    if parcel_id not in tables:
+        raise parcel_not_found(parcel_id)
+    try:
+        rows = table_to_contract.read_rows(tables[parcel_id], parcel_id)
+        return rows, table_to_contract.load_meta(data_dir, parcel_id)
+    except table_to_contract.TableError as exc:
+        raise real_data_incomplete(parcel_id, str(exc)) from exc
+
+
 def _real_base(
     parcel_id: str, settings: Settings
 ) -> tuple[EvaluationDict, table_to_contract.ParcelMeta]:

@@ -1,7 +1,7 @@
 {
   "model": "model_1_crop_water",
   "metric": {
-    "value": 12.9578,
+    "value": 20.1089,
     "unit": "mm",
     "type": "modeled",
     "source": "MAE mensual contra OpenET en 'diamond_valley_nv'",
@@ -30,12 +30,12 @@
       "rain_mm",
       "tmax_c",
       "tmin_c",
-      "ndvi",
-      "ndmi",
-      "elevation_m"
+      "elevation_m",
+      "clay_pct",
+      "sand_pct"
     ],
-    "mae_last_year_mm": 8.792,
+    "mae_last_year_mm": 15.207,
     "n_test": 7524,
-    "best_iteration": 95
+    "best_iteration": 293
   }
 }

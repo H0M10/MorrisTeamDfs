@@ -149,6 +149,27 @@ export const en: Dictionary = {
       rotation: "Rotation",
       status: "Status",
     },
+    readings: {
+      loading: "Asking the models what they read on this field…",
+      title: "What the models read on your field",
+      intro:
+        "Two neural networks look at the same satellite images and say what was on the field each year. They do not change the figures above: they are shown so you can see when they are right and when they are not.",
+      experimental:
+        "Experimental here: the crop model learned on United States fields and there is no official record in this area to check it.",
+      caption: "Reading of each year",
+      year: "Year",
+      model3: "Our crop model reads",
+      official: "Official crop record (US)",
+      world: "Google Dynamic World",
+      agrees: "matches",
+      disagrees: "does not match",
+      worldValue: (p: string, label: string) => `${p} crop (most likely: ${label})`,
+      model3Metric: (f1: string, base: string) =>
+        `Our crop model is a neural network that reads 12 months of satellite data. On a valley it never saw while training it scored an F1 of ${f1}, against ${base} for always saying alfalfa.`,
+      worldNote:
+        "Google Dynamic World is a Google neural network on 10 m Sentinel-2 images. The figure is the mean crop probability over the year, including months without a crop. It is an external product: we did not measure it.",
+      worldOff: "Google Dynamic World is not available for this field right now.",
+    },
     live: {
       title: "Or analyze any field",
       intro:

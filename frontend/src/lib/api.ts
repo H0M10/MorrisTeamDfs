@@ -4,6 +4,7 @@ import type {
   AskResponse,
   ConstraintsInput,
   CropsResponse,
+  PredictionsResponse,
   Evaluation,
   Lang,
   LocalizedText,
@@ -74,6 +75,12 @@ const post = <T>(path: string, body: unknown) =>
 export const api = {
   pilots: () => request<PilotsResponse>("/api/v1/pilots"),
   crops: () => request<CropsResponse>("/api/v1/crops"),
+  predictions: (parcelId: string) =>
+    request<PredictionsResponse>(
+      `/api/v1/predictions/${encodeURIComponent(parcelId)}`,
+      undefined,
+      40_000,
+    ),
   evaluate: (parcelId: string) =>
     post<Evaluation>("/api/v1/evaluate", { parcel_id: parcelId }),
   /** Analiza en vivo un punto: trae satélite y clima. Tarda de 30 a 90 s la primera vez. */

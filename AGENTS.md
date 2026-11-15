@@ -66,6 +66,8 @@ Datos y Modelos trabajan en pareja el sábado por la mañana: sin tablas no hay 
 
 **Si sobra tiempo:** ECOSTRESS (70 m, cola asíncrona en AppEEARS), GPM IMERG (lluvia para las partículas del 3D), GRACE como contexto de cuenca, QuickStats y precios de AMS, Sentinel-2.
 
+**Externo aprobado (15 de noviembre, Hanniel):** Google Dynamic World (`GOOGLE/DYNAMICWORLD/V1`, 10 m), solo como lectura al lado ("probabilidad de cultivo según Google"), citado como producto externo. No cambia ninguna cifra de la evaluación.
+
 **No se usan:** GEDI, LANDFIRE, NAIP, NLCD, CoCoRaHS, NLDAS, ERA5.
 
 Correcciones que ya se decidieron y no se reabren:

@@ -4,6 +4,8 @@ Regla de gobernanza: El contrato se congela el **sábado 14 de noviembre de 2026
 
 ## API (sin cambio al contrato de evaluación) - 2026-11-15 madrugada
 ### Agregado
+- `GET /api/v1/predictions/{parcel_id}`: `crop_reading` (Modelo 3, grupo de cultivo por año con probabilidad y comparación con USDA CDL) y `dynamic_world` (probabilidad de cultivo por año de Google Dynamic World, externo). No cambia cifras de la evaluación.
+- `strategies[].metrics.annual_water_mm` de las alternativas ahora puede venir del Modelo 1 (fuente "Modelo 1 …", ajustado con OpenET de la parcela). Mismo esquema.
 - `POST /api/v1/analyze` con `{lat, lon}`: análisis en vivo de un círculo de 250 m (Earth Engine + NASA POWER + motor y modelos). Devuelve una evaluación normal con `parcel.id` = `live-…`, que después sirve en `/evaluate`, `/simulate`, `/ask` y `/share`. Errores: 422 `outside_coverage` (fuera de los 48 estados contiguos), 422 `not_cropland`, 503 `live_unavailable`. `schema.json` no cambia.
 
 ## API (sin cambio al contrato de evaluación) - 2026-11-14 noche

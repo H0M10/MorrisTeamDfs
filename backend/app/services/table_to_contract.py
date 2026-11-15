@@ -536,6 +536,85 @@ SRC_FAO_CALIBRATED = (
 )
 
 
+# Orden de los grupos del modelo 1 (models/common.py, CROP_GROUPS).
+MODEL1_GROUPS = ("alfalfa", "small_grain", "corn", "fallow")
+SRC_MODEL1 = (
+    "Modelo 1 (XGBoost entrenado con OpenET en 5 valles; error medio de {mae:.1f} mm/mes en "
+    "Diamond Valley, sin verlo al entrenar): ET de cada mes según cultivo, clima de NASA POWER "
+    "y suelo, menos lluvia efectiva USDA SCS; {months}{calibration}"
+)
+
+
+def _model1_source(mae: float, used: int, factor: float | None) -> str:
+    months = (
+        "los 36 meses con el modelo"
+        if used == 36
+        else f"{used} de 36 meses con el modelo y el resto con FAO-56"
+    )
+    calibration = (
+        ""
+        if factor is None
+        else f"; ajustado con el riego que OpenET midió en esta parcela (factor {factor:.2f})"
+    )
+    return SRC_MODEL1.format(mae=mae, months=months, calibration=calibration)
+
+
+def model1_water(
+    rows: list[Row], crops: list[str], registry: ModelRegistry
+) -> tuple[float | None, int]:
+    """Riego neto medio por año (mm) predicho por el modelo 1, y en cuántos meses se usó.
+
+    El modelo predice la ET mensual de alfalfa, grano pequeño, maíz o barbecho a partir
+    del cultivo, el clima y el suelo, sin mirar el satélite: por eso sirve para rotaciones
+    que nadie ha sembrado. Los meses con otro cultivo usan FAO-56 (Kc × ET0).
+    """
+    model = registry.get("model_1_crop_water")
+    if model.status != "trained" or not model.metrics:
+        return None, 0
+    names = list((model.metrics.get("extra") or {}).get("features") or [])
+    if not names:
+        return None, 0
+    features: list[list[float]] = []
+    index: list[int] = []
+    for i, (row, code) in enumerate(zip(rows, crops, strict=True)):
+        spec = crop_bank.get_crop_spec(code)
+        group = spec.crop_group if spec else None
+        values = {**row, "month_num": int(row["month"][5:7])}
+        if group in MODEL1_GROUPS:
+            values["crop_code"] = MODEL1_GROUPS.index(group)
+            if all(values.get(n) is not None for n in names):
+                features.append([float(values[n]) for n in names])
+                index.append(i)
+    if not index:
+        return None, 0
+    import numpy as np  # noqa: PLC0415  (carga diferida, como en los otros modelos)
+
+    predicted = dict(
+        zip(index, np.asarray(model.predict(np.asarray(features, dtype=np.float32))), strict=True)
+    )
+    per_year: dict[str, float] = {}
+    for i, (row, code) in enumerate(zip(rows, crops, strict=True)):
+        et0, rain = row.get("et0_mm"), row.get("rain_mm")
+        if et0 is None or rain is None:
+            return None, 0
+        if i in predicted:
+            etc = max(0.0, float(predicted[i]))
+        else:
+            kc = crop_bank.kc_for_month(code, int(row["month"][5:7]))
+            if kc is None:
+                return None, 0
+            etc = wb.crop_et(float(et0), kc)
+        need = wb.net_irrigation_requirement(etc, wb.effective_rain_usda(float(rain)))
+        per_year[row["month"][:4]] = per_year.get(row["month"][:4], 0.0) + need
+    return sum(per_year.values()) / len(per_year), len(index)
+
+
+def model_metric(registry: ModelRegistry, name: str) -> float | None:
+    model = registry.get(name)
+    value = ((getattr(model, "metrics", None) or {}).get("metric") or {}).get("value")
+    return None if value is None else float(value)
+
+
 def water_scale(source: str) -> str:
     return "30 m (campo)" if "OpenET" in source else SCALE_POWER
 
@@ -899,6 +978,22 @@ def build_evaluation(
                 water_source[key] = SRC_FAO_CALIBRATED.format(factor=factor)
         water["current"] = observed
         water_source["current"] = SRC_OPENET_WATER
+    # Modelo 1: predice el agua de las alternativas. Solo donde se entrenó (con etiquetas).
+    # Como FAO-56, se ajusta con lo que OpenET midió en la misma parcela: el modelo pone
+    # la diferencia entre cultivos según clima y suelo; la medición del campo, el nivel.
+    model1_check: tuple[float, float] | None = None
+    mae = model_metric(registry, "model_1_crop_water")
+    if labeled and mae is not None:
+        current_predicted, _ = model1_water(rows, sequences["current"], registry)
+        factor = None
+        if current_predicted and observed is not None:
+            factor = observed / current_predicted
+            model1_check = (current_predicted, observed)
+        for key in ("less_water", "more_soil"):
+            predicted, used = model1_water(rows, sequences[key], registry)
+            if predicted is not None and used > 0:
+                water[key] = predicted * (factor or 1.0)
+                water_source[key] = _model1_source(mae, used, factor)
     model_2_trained = labeled and registry.get("model_2_prior_crop_effect").status == "trained"
     strategies = [
         _strategy(
@@ -912,6 +1007,7 @@ def build_evaluation(
             period,
             labeled,
             model_2_trained=model_2_trained,
+            model_2_metric=model_metric(registry, "model_2_prior_crop_effect"),
             option=chosen.get(key),
             market_filtered=no_buyer is not None,
             history_source=meta.history_source,
@@ -921,6 +1017,21 @@ def build_evaluation(
     for strategy in strategies:
         strategy["evidence_card"]["supporting_evidence"].extend(
             note.model_dump() for note in meta.context_notes or []
+        )
+    if model1_check is not None:
+        predicted, measured = model1_check
+        # Prueba a la vista: el mismo modelo que predice las alternativas, contra lo medido.
+        strategies[0]["evidence_card"]["supporting_evidence"].append(
+            {
+                "es": f"Comprobación del Modelo 1 en esta parcela: para la rotación actual "
+                f"predice {predicted:.0f} mm/año sin mirar el satélite; OpenET midió "
+                f"{measured:.0f} mm/año (diferencia de {predicted - measured:+.0f} mm). Las "
+                "alternativas se ajustan con esa diferencia.",
+                "en": f"Model 1 check on this field: for the current rotation it predicts "
+                f"{predicted:.0f} mm/yr without looking at the satellite; OpenET measured "
+                f"{measured:.0f} mm/yr (difference of {predicted - measured:+.0f} mm). The "
+                "alternatives are adjusted by that difference.",
+            }
         )
 
     footprints = dict(PIXEL_FOOTPRINTS_M) | (LABELED_FOOTPRINTS_M if labeled else {})
@@ -1054,6 +1165,7 @@ def _strategy(
     labeled: bool,
     *,
     model_2_trained: bool = False,
+    model_2_metric: float | None = None,
     option: str | None = None,
     market_filtered: bool = False,
     history_source: str | None = None,
@@ -1136,16 +1248,18 @@ def _strategy(
         }
     ]
     if model_2_trained:
+        shown = "sin dato" if model_2_metric is None else f"{model_2_metric:+.1f} %"
+        shown_en = "no data" if model_2_metric is None else f"{model_2_metric:+.1f}%"
         prior_source = (
-            "Sin evidencia local: en la validación por valle (Modelo 2, -6.3 %) el cultivo "
+            f"Sin evidencia local: en la validación por valle (Modelo 2, {shown}) el cultivo "
             "anterior no mejoró la predicción de vigor"
         )
         prior_gap = {
             "es": "Sin evidencia local del efecto del cultivo anterior: en la validación por "
-            "valle (Modelo 2, -6.3 % frente a la línea base) agregar el cultivo previo no "
+            f"valle (Modelo 2, {shown} frente a la línea base) agregar el cultivo previo no "
             "mejoró la predicción de vigor.",
             "en": "No local evidence on the prior-crop effect: in unseen-valley validation "
-            "(Model 2, -6.3% vs baseline) adding the prior crop did not improve vigor "
+            f"(Model 2, {shown_en} vs baseline) adding the prior crop did not improve vigor "
             "prediction.",
         }
     else:
@@ -1160,6 +1274,15 @@ def _strategy(
             "del clima regional de NASA POWER (cerca de 50 km).",
             "en": "Actual ET comes from OpenET (30 m on field), while effective rainfall comes "
             "from NASA POWER regional climate (about 50 km).",
+        }
+    elif water_source[key].startswith("Modelo 1"):
+        water_gap = {
+            "es": "El agua de esta alternativa la predice el Modelo 1 con clima regional de "
+            "cerca de 50 km y suelo de 250 m: es una predicción de un escenario que no se ha "
+            "sembrado aquí, con su error medido en un valle que el modelo no vio.",
+            "en": "Water for this alternative is predicted by Model 1 from regional climate "
+            "at about 50 km and 250 m soil: it is a prediction for a scenario not yet planted "
+            "here, with its error measured on a valley the model never saw.",
         }
     elif "calibrado" in water_source[key]:
         water_gap = {

@@ -148,6 +148,27 @@ export const es = {
       rotation: "Rotación",
       status: "Estado",
     },
+    readings: {
+      loading: "Preguntando a los modelos qué leen en esta parcela…",
+      title: "Lo que leen los modelos en tu parcela",
+      intro:
+        "Dos redes neuronales miran las mismas imágenes de satélite y dicen qué hubo en el campo cada año. No cambian las cifras de arriba: se muestran para que veas cuándo aciertan y cuándo no.",
+      experimental:
+        "Experimental aquí: el modelo de cultivos aprendió en campos de Estados Unidos y en esta zona no hay registro oficial para comprobarlo.",
+      caption: "Lectura de cada año",
+      year: "Año",
+      model3: "Nuestro modelo de cultivos lee",
+      official: "Registro oficial de cultivos (EE. UU.)",
+      world: "Google Dynamic World",
+      agrees: "coincide",
+      disagrees: "no coincide",
+      worldValue: (p: string, label: string) => `${p} cultivo (lo más probable: ${label})`,
+      model3Metric: (f1: string, base: string) =>
+        `Nuestro modelo de cultivos es una red neuronal que lee 12 meses de satélite. En un valle que no vio al entrenar acertó con una puntuación F1 de ${f1}, contra ${base} de decir siempre alfalfa.`,
+      worldNote:
+        "Google Dynamic World es una red neuronal de Google sobre imágenes Sentinel-2 de 10 m. La cifra es la probabilidad media de cultivo en el año, contando también los meses sin cultivo. Es un producto externo: no lo medimos nosotros.",
+      worldOff: "Google Dynamic World no está disponible ahora para esta parcela.",
+    },
     live: {
       title: "O analiza cualquier campo",
       intro:
