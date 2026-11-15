@@ -58,6 +58,12 @@ export function Differentiators() {
 }
 
 type ModelKey = keyof Evaluation["models"];
+const NAMES: Record<ModelKey, [string, string]> = {
+  model_1_crop_water: ["1. Agua que usa cada cultivo", "1. Water each crop uses"],
+  model_2_prior_crop_effect: ["2. Efecto del cultivo anterior", "2. Effect of the previous crop"],
+  model_3_crop_history_gru: ["3. Lectura del historial de cultivos", "3. Reading the crop history"],
+  model_4_moisture_cqr: ["4. Humedad del suelo con intervalo", "4. Soil moisture with an interval"],
+};
 /** Cómo se decide si el modelo gana a su línea base (dirección de la métrica). */
 const WINS: Record<ModelKey, (m: number, b: number) => boolean> = {
   model_1_crop_water: (m, b) => m < b, // error en mm: menos es mejor
@@ -117,7 +123,10 @@ export function ModelProof() {
                 const won = m !== null && b !== null ? WINS[key](m, b) : null;
                 return (
                   <tr key={key}>
-                    <th scope="row">{report.algorithm}</th>
+                    <th scope="row">
+                      {en ? NAMES[key][1] : NAMES[key][0]}
+                      <span className="landing-small"> · {report.algorithm}</span>
+                    </th>
                     <td>{report.metric_name ? pick(report.metric_name) : "—"}</td>
                     <td>{report.metric ? fmt(report.metric) : "—"}</td>
                     <td>
